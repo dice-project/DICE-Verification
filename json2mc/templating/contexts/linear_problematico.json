@@ -1,0 +1,52 @@
+
+{
+    "app_name": "LINEAR TOPOLOGY SCALATO AE2BVZOT THR3 NO PERIODIC",
+    "description": "",
+    "version": "0.1",
+    "topology":
+    {
+        "bolts": [
+            {
+                "id": "MY_BOLT_1",
+                "alpha": 0.8279,
+                "sigma": 0.989,
+                "d": 0.0,
+                "min_ttf": 500.0,
+                "parallelism": 3,
+                "subs": [
+                    "MY_SPOUT"
+                ]
+            },
+            {
+                "id": "MY_BOLT_2",
+                "alpha": 0.8149,
+                "sigma": 0.0,
+                "d": 0.0,
+                "min_ttf":  500.0,
+                "parallelism": 1,
+                "subs": [
+                    "MY_BOLT_1"
+                ]
+            }
+        ],
+        "spouts": [
+            {
+                "id": "MY_SPOUT",
+                "avg_emit_rate": 1.20591
+            }
+        ],
+      "min_reboot_time":10,
+      "max_reboot_time":100,
+      "max_idle_time":  0.001,
+      "queue_threshold": 10
+    },
+    "verification_params":
+    {
+      "plugin" : "ae2bvzot",
+      "max_time" :  20000,
+      "base_quantity":5,
+      "num_steps":20,
+      "periodic_queues":[]
+    }
+
+}
