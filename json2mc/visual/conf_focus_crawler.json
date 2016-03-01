@@ -48,5 +48,29 @@
           "style":"sk-",
           "markersize":1
       }
-    ]}
+    ]},
+    {
+    "title":"articleExtraction profile",
+    "varlist":
+        [
+          {
+              "id":"R_EMIT_expander",
+              "linewidth": 4,
+              "style":"^r--",
+              "markersize":12
+          },
+          {
+            "id":"R_PROCESS_articleExtraction",
+            "linewidth": 4,
+            "style":"^b-",
+            "markersize":1
+        },
+          {
+            "id":"Q_articleExtraction",
+            "linewidth": 2,
+            "style":"sk-",
+            "markersize":1
+        }
+      ]}
+
     ]}

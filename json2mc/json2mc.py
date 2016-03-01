@@ -138,7 +138,7 @@ def plot_hist(app_name, step, records, bool_set,
 def main(argv):  # noqa
     # if the FORMAL_DICE env variable is not set,
     # we assume to be in the same directory as json2mc.py
-    base_dir = os.environ.get('FORMAL_DICE', './')
+    base_dir = os.environ.get('FORMAL_DICE', os.getcwd()+'/')
     template_path = base_dir + \
         "templating/templates/storm_topology_template.lisp"
     context_path = base_dir + \
@@ -205,9 +205,13 @@ def main(argv):  # noqa
         with open(app_dir+"/zot_in.lisp", "w+") as out_file:
             out_file.write(template.render(context))
 
-        print "Copying ", template_path, 'to ', app_dir
-        shutil.copy(template_path, app_dir+'/'+'conf')
-        shutil.copy(context_path, app_dir+'/'+'conf')
+        template_filename = template_path.split('/')[-1]
+        context_filename = context_path.split('/')[-1]
+        print "Copying ", template_path, 'and ', context_path, 'to ', app_dir
+        shutil.copy(template_path, app_dir+'/' +
+                    'conf/copy_of_' + template_filename)
+        shutil.copy(context_path, app_dir+'/' +
+                    'conf/copy_of_' + context_filename)
 # print os.getcwd()
     os.chdir(app_dir)
     print 'moving to: ' + os.getcwd()
