@@ -1,0 +1,72 @@
+{
+    "app_name": "FOCUSED CRAWLER",
+    "description": "",
+    "version": "0.1",
+    "topology": {
+        "bolts": [
+            {
+                "id": "WpDeserializer",
+                "parallelism": 4,
+                "subs": [
+                    "wpSpout"
+                ],
+                "alpha":    0.5,
+                "sigma":    2.0,
+                "d":        0.0,
+                "min_ttf":  1000
+            },
+            {
+                "id": "expander",
+                "parallelism": 8,
+                "subs": [
+                    "WpDeserializer"
+                ],
+                "alpha":    3.0,
+                "sigma":    0.75,
+                "d":        0.0,
+                "min_ttf":  1000
+            },
+            {
+                "id": "articleExtraction",
+                "parallelism": 1,
+                "subs": [
+                    "expander"
+                ],
+                "alpha":    1.0,
+                "sigma":    1.0,
+                "d":        0.0,
+                "min_ttf":  1000
+            },
+            {
+                "id": "mediaExtraction",
+                "parallelism": 1,
+                "subs": [
+                    "expander"
+                ],
+                "alpha":    1.0,
+                "sigma":    1.0,
+                "d":        0.0,
+                "min_ttf":  1000
+            }
+        ],
+        "spouts": [
+            {
+                "id": "wpSpout",
+                "avg_emit_rate":4.0
+            }
+        ],
+        "min_reboot_time":10,
+        "max_reboot_time":100,
+        "max_idle_time":  1.0,
+        "init_queues":4,
+        "queue_threshold": 0
+    },
+    "verification_params":
+    {
+      "plugin" : "ae2bvzot",
+      "max_time" :  20000,
+      "base_quantity":10,
+      "num_steps":20,
+      "periodic_queues":["WpDeserializer", "expander", "articleExtraction","mediaExtraction"]
+    }
+}

@@ -105,7 +105,7 @@ def plot_hist(app_name, step, records, bool_set,
                         in records[var_id]else 0 for j in range(step + 1)]
                 plt.plot(steplist, bool_series, var_style, label=var_id,
                          linewidth=var_lw, markersize=var_msize)
-        plt.title(p["title"])
+        plt.title(p["title"], fontsize=20)
 #        plt.suptitle(file_name)
         # limit the y axis to the maximum value present among the plots
         plt.ylim([0, y_max + 1])
@@ -115,7 +115,7 @@ def plot_hist(app_name, step, records, bool_set,
         plt.ylabel('#tuples')
         if i == num_rows:
             plt.xticks(steplist, rounded_totaltime, rotation=45)
-            plt.xlabel('TOTALTIME')
+            plt.xlabel('TOTALTIME', fontsize=22)
         else:
             plt.xticks(steplist, ['' for s in steplist])
         fontP = FontProperties()
@@ -123,7 +123,7 @@ def plot_hist(app_name, step, records, bool_set,
         plt.legend(prop=fontP, loc='upper left')
 #        plt.legend(loc='upper left')
         plt.grid()
-        plt.axvspan(records['LOOP'], step, color='red', alpha=0.5)
+        plt.axvspan(records['LOOP'], step, color='red', alpha=0.3)
         i += 1  # end for
 #    plt.tight_layout()
     make_sure_path_exists(plot_saving_dir + 'imgs')
@@ -143,15 +143,16 @@ def main(argv):  # noqa
         "templating/templates/storm_topology_template.lisp"
     context_path = base_dir + \
         "templating/contexts/zot_storm_context.json"
-    output_dir = base_dir + "templating/generated_files"
+    output_dir = base_dir + "output-dir"
     plot_conf_path = base_dir + "visual/plot_conf_simple.json"
     plot_only = False
     app_name = None
     display = False
     try:
-        opts, args = getopt.getopt(argv, "ht:c:o:v:n:d",
-                                   ["template=", "context=", "output=",
-                                    "plot-conf=", "plotonly=", "display"])
+        opts, args = getopt.getopt(argv, "ht:c:m:o:v:n:d",
+                                   ["template=", "context=", "model",
+                                    "output=", "plot-conf=", "plotonly=",
+                                    "display"])
     except getopt.GetoptError:
         usage()
         sys.exit(2)
@@ -163,6 +164,10 @@ def main(argv):  # noqa
             template_path = arg
         elif opt in ("-c", "--context"):
             context_path = arg
+        elif opt in ("-m", "--model"):
+            context_path = base_dir + \
+                            "templating/contexts/" + arg + "_context.json"
+            plot_conf_path = os.getcwd()+'/visual/conf_' + arg + ".json"
         elif opt in ("-o", "--output"):
             output_dir = arg
         elif opt in ("-d", "--display"):
