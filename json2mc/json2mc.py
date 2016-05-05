@@ -4,10 +4,18 @@ from jinja2 import Template
 from datetime import datetime as dt
 import json
 import os
+import signal
 import sys
 import getopt
 import errno
 import shutil
+import atexit
+import time
+import psutil
+
+from multiprocessing import Process, Queue
+from Queue import Empty
+from subprocess import Popen, PIPE
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -134,6 +142,61 @@ def plot_hist(app_name, step, records, bool_set,
     if display:
         plt.show()
 
+def kill_child(child_pid):
+    if child_pid is None:
+        pass
+    else:
+        os.kill(child_pid, signal.SIGTERM)
+
+
+def queue_get_all(q):
+    items = []
+    while 1:
+        try:
+            items.append(q.get_nowait())
+        except Empty:
+            break
+    return items
+
+def parallel_launch(app_dir, template, context, template_path,
+                    context_path, solver, solvers_queue, pids_queue):
+            app_dir = app_dir+'/'+solver
+            print 'Creating ', app_dir, 'directory'
+            make_sure_path_exists(app_dir+'/conf')
+            # make_sure_path_exists(app_dir)
+            context["verification_params"]["plugin"] = solver
+            with open(app_dir+"/zot_in.lisp", "w+") as out_file:
+                out_file.write(template.render(context))
+            template_filename = template_path.split('/')[-1]
+            context_filename = context_path.split('/')[-1]
+            print "Copying ", template_path, 'and ', context_path, 'to ', app_dir
+            shutil.copy(template_path, app_dir+'/' +
+                        'conf/copy_of_' + template_filename)
+            shutil.copy(context_path, app_dir+'/' +
+                        'conf/copy_of_' + context_filename)
+        # print os.getcwd()
+            os.chdir(app_dir)
+            print 'moving to: ' + os.getcwd()
+
+            proc = Popen(["zot", "zot_in.lisp"], stdout=PIPE, stderr=PIPE)
+    #        global child_pid
+            child_pid = proc.pid
+            print "started pid", child_pid
+    #        atexit.register(kill_child, child_pid)
+            pids_queue.put(child_pid)
+            print "just put ", child_pid, "on pids_queue"
+            # Now we can wait for the child to complete
+            (output, error) = proc.communicate()
+            if error:
+                print "error:", error
+            print str(child_pid) + "Terminated -> output:"  # , output
+    #        bashCommand = "zot zot_in.lisp"
+    #        os.system(bashCommand)
+            print "putting solver", solver
+            solvers_queue.put(solver)
+            print "DONE putting!", solver
+
+
 
 def main(argv):  # noqa
     # if the FORMAL_DICE env variable is not set,
@@ -204,6 +267,35 @@ def main(argv):  # noqa
     #        '_THR_' + str(context["topology"]["queue_threshold"]) + \
     #        '_STEPS_' + str(context["verification_params"]["num_steps"])
         app_dir = output_dir+'/'+app_name
+        processes = []
+        pids_queue = Queue()
+        solvers_queue = Queue()
+        for solver in context["verification_params"]["plugin"]:
+            print 'launching process for', solver
+            p = Process(target=parallel_launch, args=(app_dir, template,
+                        context, template_path, context_path, solver,
+                        solvers_queue, pids_queue))
+            p.start()
+            processes.append(p)
+        print "waiting for first process to terminate"
+        first_to_terminate = solvers_queue.get()
+        print "Getting results from: ", first_to_terminate
+#        time.sleep(10)
+        for p in processes:
+            print "terminating ", p.pid
+            p.terminate()
+        pids = queue_get_all(pids_queue)
+        print "pids: ", pids
+        for pid in pids:
+            if psutil.pid_exists(pid):
+                print "killing", pid, "..."
+                os.kill(pid, signal.SIGTERM)
+
+        os.chdir(app_dir + '/' + first_to_terminate)
+    else:
+        os.chdir(app_dir)
+        print 'moving to: ' + os.getcwd()
+        '''
         print 'Creating ', app_dir, 'directory'
         make_sure_path_exists(app_dir+'/'+'conf')
         # make_sure_path_exists(app_dir)
@@ -223,7 +315,7 @@ def main(argv):  # noqa
     if not plot_only:
         bashCommand = "zot zot_in.lisp"
         os.system(bashCommand)
-
+        '''
     res_f = open(result_file)
     outcome = res_f.readline().strip()
     if(outcome == 'sat'):
@@ -234,13 +326,14 @@ def main(argv):  # noqa
         # this call returns and you want the next to last
         timestamp = dt.fromtimestamp(moddate_seconds)
         timestamp_str = timestamp.strftime(format)
-#       print timestamp_str
+    #       print timestamp_str
         my_step, my_records, my_bool_set = parse_hist(my_file_path)
         plot_hist(app_name, my_step, my_records,
                   my_bool_set, timestamp_str, plot_conf_path, './', display)
     elif(outcome == 'unsat'):
         print 'UNSAT!!!'
-    print 'Result saved to ', app_dir, ' directory.'
+    print 'Result saved to ', app_dir + '/' + first_to_terminate, ' directory.'
+
 
 if __name__ == "__main__":
     main(sys.argv[1:])

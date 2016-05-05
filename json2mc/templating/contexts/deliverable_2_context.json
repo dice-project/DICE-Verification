@@ -1,5 +1,5 @@
 {
-    "app_name": "FOCUSED CRAWLER",
+    "app_name": "FOCUSED-CRAWLER",
     "description": "",
     "version": "0.1",
     "topology": {
@@ -63,7 +63,7 @@
     },
     "verification_params":
     {
-      "plugin" : "ae2bvzot",
+      "plugin" : ["ae2bvzot", "ae2zot"],
       "max_time" :  20000,
       "base_quantity":10,
       "num_steps":20,
