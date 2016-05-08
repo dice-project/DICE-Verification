@@ -335,7 +335,7 @@ def main(argv):  # noqa
         else:
             print "Outcome:", outcome, " -> there may be a problem. See output.1.txt"
         print "Verification time: ", str(verification_time)
-        print 'Result saved to ', os.getcwd() + app_dir, ' directory.'
+        print 'Result saved to ', app_dir, ' directory.'
     else:
         print "Empty output.1.txt file!"
 
