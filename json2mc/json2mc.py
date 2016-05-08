@@ -9,8 +9,6 @@ import sys
 import getopt
 import errno
 import shutil
-import atexit
-import time
 import psutil
 
 from multiprocessing import Process, Queue
@@ -32,6 +30,11 @@ def usage():
     print sys.argv[0] + \
         ' -t <template_file_path> -c <context_file_path> -o <output_dir> \
         -v <plot_conf_file_path> --plotonly <zot_history_dir> -d'
+
+
+def signal_handler(signal, frame):
+        print('['+str(os.getpid())+'] Received SIGTERM')
+        sys.exit(0)
 
 
 def make_sure_path_exists(path):
@@ -78,13 +81,13 @@ def parse_hist(file_path):
 
 
 def plot_hist(app_name, step, records, bool_set,
-              timestamp, conf_path, plot_saving_dir, display):
+              timestamp, conf_path, plot_saving_dir, ver_time, display):
     """Plot the trace provided in the records dictionary."""
     with open(conf_path) as param_file:
         conf = json.load(param_file)
     file_name = app_name if app_name is not None else conf["app_name"]
     steplist = np.arange(step+1)
-    num_rows = 3
+    num_rows = min(3, len(conf["plots"]))
     i = 1
     y_max = 1
     if len(conf["plots"]) % 3:
@@ -92,6 +95,8 @@ def plot_hist(app_name, step, records, bool_set,
     else:
         columns = len(conf["plots"])/3
     #  first round to get the maximum y value
+    my_dpi = 96
+    plt.figure(figsize=(1460/my_dpi, 900/my_dpi), dpi=my_dpi)
     for p in conf["plots"]:
         for var in p["varlist"]:
             var_id = string.upper(var["id"])
@@ -113,7 +118,11 @@ def plot_hist(app_name, step, records, bool_set,
                         in records[var_id]else 0 for j in range(step + 1)]
                 plt.plot(steplist, bool_series, var_style, label=var_id,
                          linewidth=var_lw, markersize=var_msize)
-        plt.title(p["title"], fontsize=20)
+        if i == 1:
+            plt.title("verification time: " + str(ver_time) + "\n\n" +
+                      p["title"], fontsize=20)
+        else:
+            plt.title(p["title"], fontsize=20)
 #        plt.suptitle(file_name)
         # limit the y axis to the maximum value present among the plots
         plt.ylim([0, y_max + 1])
@@ -136,17 +145,11 @@ def plot_hist(app_name, step, records, bool_set,
 #    plt.tight_layout()
     make_sure_path_exists(plot_saving_dir + 'imgs')
     plt.savefig(plot_saving_dir+'imgs/'+file_name+'_'+timestamp+'.png',
-                figsize=(20, 16), dpi=300, facecolor='w', edgecolor='k')
+                facecolor='w', edgecolor='k')
     plt.savefig(plot_saving_dir+'imgs/'+file_name+'_'+timestamp+'.eps',
-                format='eps', dpi=1000)
+                format='eps')
     if display:
         plt.show()
-
-def kill_child(child_pid):
-    if child_pid is None:
-        pass
-    else:
-        os.kill(child_pid, signal.SIGTERM)
 
 
 def queue_get_all(q):
@@ -158,10 +161,22 @@ def queue_get_all(q):
             break
     return items
 
+
+def kill_child_processes(parent_pid, sig=signal.SIGTERM):
+    try:
+        parent = psutil.Process(parent_pid)
+    except psutil.NoSuchProcess:
+        return
+    children = parent.children(recursive=True)
+    for process in children:
+        process.send_signal(sig)
+
+
 def parallel_launch(app_dir, template, context, template_path,
-                    context_path, solver, solvers_queue, pids_queue):
+                    context_path, solver, solvers_queue):
             app_dir = app_dir+'/'+solver
-            print 'Creating ', app_dir, 'directory'
+            prefix = "[" + solver + "] "
+            print prefix, 'Creating ', app_dir, 'directory'
             make_sure_path_exists(app_dir+'/conf')
             # make_sure_path_exists(app_dir)
             context["verification_params"]["plugin"] = solver
@@ -169,38 +184,36 @@ def parallel_launch(app_dir, template, context, template_path,
                 out_file.write(template.render(context))
             template_filename = template_path.split('/')[-1]
             context_filename = context_path.split('/')[-1]
-            print "Copying ", template_path, 'and ', context_path, 'to ', app_dir
+            print prefix, "Copying ", template_path, ', ', context_path, \
+                'to ', app_dir
             shutil.copy(template_path, app_dir+'/' +
                         'conf/copy_of_' + template_filename)
             shutil.copy(context_path, app_dir+'/' +
                         'conf/copy_of_' + context_filename)
         # print os.getcwd()
             os.chdir(app_dir)
-            print 'moving to: ' + os.getcwd()
-
-            proc = Popen(["zot", "zot_in.lisp"], stdout=PIPE, stderr=PIPE)
-    #        global child_pid
+            command_list = ["zot", "zot_in.lisp"]
+            print prefix, 'moving to: ' + os.getcwd()
+            proc = Popen(command_list, stdout=PIPE, stderr=PIPE)
             child_pid = proc.pid
-            print "started pid", child_pid
-    #        atexit.register(kill_child, child_pid)
-            pids_queue.put(child_pid)
-            print "just put ", child_pid, "on pids_queue"
-            # Now we can wait for the child to complete
+            print prefix, "Launched command " + " ".join(command_list) +\
+                " with solver " + solver + " (" + str(child_pid) + ")"
+            # wait for the child to complete
             (output, error) = proc.communicate()
             if error:
-                print "error:", error
-            print str(child_pid) + "Terminated -> output:"  # , output
+                print prefix, "error:", error
+            print prefix, str(child_pid) + "Terminated -> output:", output
     #        bashCommand = "zot zot_in.lisp"
     #        os.system(bashCommand)
-            print "putting solver", solver
+            print prefix, "putting solver", solver, "on queue"
             solvers_queue.put(solver)
-            print "DONE putting!", solver
-
+#            print "DONE putting!", solver
 
 
 def main(argv):  # noqa
     # if the FORMAL_DICE env variable is not set,
     # we assume to be in the same directory as json2mc.py
+    signal.signal(signal.SIGINT, signal_handler)
     base_dir = os.environ.get('FORMAL_DICE', os.getcwd()+'/')
     template_path = base_dir + \
         "templating/templates/storm_topology_template.lisp"
@@ -232,7 +245,7 @@ def main(argv):  # noqa
                             "templating/contexts/" + arg + "_context.json"
             plot_conf_path = os.getcwd()+'/visual/conf_' + arg + ".json"
         elif opt in ("-o", "--output"):
-            output_dir = arg
+            output_dir = arg.rstrip('/')
         elif opt in ("-d", "--display"):
             display = True
         elif opt in ("-v", "--plot-conf"):
@@ -268,13 +281,12 @@ def main(argv):  # noqa
     #        '_STEPS_' + str(context["verification_params"]["num_steps"])
         app_dir = output_dir+'/'+app_name
         processes = []
-        pids_queue = Queue()
         solvers_queue = Queue()
         for solver in context["verification_params"]["plugin"]:
             print 'launching process for', solver
             p = Process(target=parallel_launch, args=(app_dir, template,
                         context, template_path, context_path, solver,
-                        solvers_queue, pids_queue))
+                        solvers_queue))
             p.start()
             processes.append(p)
         print "waiting for first process to terminate"
@@ -282,57 +294,50 @@ def main(argv):  # noqa
         print "Getting results from: ", first_to_terminate
 #        time.sleep(10)
         for p in processes:
-            print "terminating ", p.pid
-            p.terminate()
-        pids = queue_get_all(pids_queue)
-        print "pids: ", pids
-        for pid in pids:
-            if psutil.pid_exists(pid):
-                print "killing", pid, "..."
-                os.kill(pid, signal.SIGTERM)
-
-        os.chdir(app_dir + '/' + first_to_terminate)
+            if p.is_alive():
+                print "terminating children of ", p.pid
+                kill_child_processes(p.pid)
+                print "terminating ", p.pid
+                p.terminate()
+#        pids = queue_get_all(pids_queue)
+#        print "pids: ", pids
+#        for pid in pids:
+#            if psutil.pid_exists(pid):
+#                print "killing", pid, "..."
+#                os.kill(pid, signal.SIGTERM)
+        app_dir = app_dir + '/' + first_to_terminate
+        os.chdir(app_dir)
     else:
         os.chdir(app_dir)
         print 'moving to: ' + os.getcwd()
-        '''
-        print 'Creating ', app_dir, 'directory'
-        make_sure_path_exists(app_dir+'/'+'conf')
-        # make_sure_path_exists(app_dir)
-        with open(app_dir+"/zot_in.lisp", "w+") as out_file:
-            out_file.write(template.render(context))
-
-        template_filename = template_path.split('/')[-1]
-        context_filename = context_path.split('/')[-1]
-        print "Copying ", template_path, 'and ', context_path, 'to ', app_dir
-        shutil.copy(template_path, app_dir+'/' +
-                    'conf/copy_of_' + template_filename)
-        shutil.copy(context_path, app_dir+'/' +
-                    'conf/copy_of_' + context_filename)
-# print os.getcwd()
-    os.chdir(app_dir)
-    print 'moving to: ' + os.getcwd()
-    if not plot_only:
-        bashCommand = "zot zot_in.lisp"
-        os.system(bashCommand)
-        '''
     res_f = open(result_file)
-    outcome = res_f.readline().strip()
-    if(outcome == 'sat'):
-        my_file_path = hist_file  # app_dir+'/'+'output.hist.txt'
-        format = "%Y-%m-%d__%H-%M-%S"
-        # GETTING LAST MODIFIED DATE FROM THE FILE
-        moddate_seconds = os.stat(my_file_path)[8]  # there are 10 attributes
-        # this call returns and you want the next to last
-        timestamp = dt.fromtimestamp(moddate_seconds)
-        timestamp_str = timestamp.strftime(format)
-    #       print timestamp_str
-        my_step, my_records, my_bool_set = parse_hist(my_file_path)
-        plot_hist(app_name, my_step, my_records,
-                  my_bool_set, timestamp_str, plot_conf_path, './', display)
-    elif(outcome == 'unsat'):
-        print 'UNSAT!!!'
-    print 'Result saved to ', app_dir + '/' + first_to_terminate, ' directory.'
+    lines = res_f.readlines()
+    if lines:
+        outcome = lines[0].strip()
+    #    verification_time = " ".join(lines[-1].strip().strip(':').strip(')').split()).split(" ")
+        verification_time = float(lines[-1].strip().strip(':').strip(')').split(" ")[-1])
+    #    outcome = res_f.readline().strip()
+        if(outcome == 'sat'):
+            my_file_path = hist_file  # app_dir+'/'+'output.hist.txt'
+            format = "%Y-%m-%d__%H-%M-%S"
+            # GETTING LAST MODIFIED DATE FROM THE FILE
+            moddate_seconds = os.stat(my_file_path)[8]  # there are 10 attributes
+            # this call returns and you want the next to last
+            timestamp = dt.fromtimestamp(moddate_seconds)
+            timestamp_str = timestamp.strftime(format)
+        #       print timestamp_str
+            my_step, my_records, my_bool_set = parse_hist(my_file_path)
+            plot_hist(app_name, my_step, my_records,
+                      my_bool_set, timestamp_str, plot_conf_path, './',
+                      verification_time, display)
+        elif(outcome == 'unsat'):
+            print 'UNSAT!!!'
+        else:
+            print "Outcome:", outcome, " -> there may be a problem. See output.1.txt"
+        print "Verification time: ", str(verification_time)
+        print 'Result saved to ', os.getcwd() + app_dir, ' directory.'
+    else:
+        print "Empty output.1.txt file!"
 
 
 if __name__ == "__main__":

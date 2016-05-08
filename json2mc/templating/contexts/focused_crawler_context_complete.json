@@ -1,5 +1,5 @@
 {
-    "app_name": "COMPLETE FOCUSED CRAWLER",
+    "app_name": "FOCUSED-CRAWLER-COMPLETE-ALL",
     "description": "",
     "version": "0.1",
     "topology": {
@@ -110,10 +110,10 @@
     },
     "verification_params":
     {
-      "plugin" : "ae2bvzot",
+      "plugin" : ["ae2bvzot", "ae2sbvzot"],
       "max_time" :  20000,
       "base_quantity":10,
       "num_steps":20,
-      "periodic_queues":["expander"]
+      "periodic_queues":["WpDeserializer", "expander", "articleExtraction","mediaExtraction", "webPageUpdater","textIndexer", "mediaupdater", "mediatextindexer"]
     }
 }

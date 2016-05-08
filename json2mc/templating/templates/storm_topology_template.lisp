@@ -1018,6 +1018,12 @@
     (loop for j in bolts collect
         `([<] ( -V-,(intern (format nil "Q_~S" j))) ,threshold)))))
 
+(defmacro growingConstraint(bolts)
+`(&&
+  ,@(nconc
+    (loop for j in bolts collect
+        `([>] ( -V-,(intern (format nil "Q_~S" j))) 0)))))
+
 ; NO FAILURES ARE HAPPENING
 (defmacro noFailures(bolts)
 `(&&
@@ -1053,6 +1059,10 @@
 
 (defun f-queueConstraint (bolts threshold)
 	(eval `(queueConstraint ,bolts ,threshold)))
+
+(defun f-growingConstraint (bolts)
+	(eval `(growingConstraint ,bolts)))
+
 
 (defun f-noFailures (bolts)
   (eval `(noFailures ,bolts)))
@@ -1174,6 +1184,10 @@
 				)
 			))
 
+        {%  if verification_params.strictly_monotonic_queues | length %}
+        (somf (alwf(f-growingConstraint '({{ verification_params.strictly_monotonic_queues | join(' ') }}))))
+        {% endif %}
+
     {%  if topology.queue_threshold %}
         (somf (!! (f-queueConstraint the-bolts QUEUE_THRESHOLD)))
     {% endif %}
@@ -1187,8 +1201,16 @@
 		:logic :QF_UFRDL
 		:over-clocks MAX_TIME
 		:parametric-regions 't
+        {% if verification_params.strictly_monotonic_queues | length %}
+        :smt-assumptions "(and {% for s in verification_params.strictly_monotonic_queues %}(= (R_ADD_{{s}} i_loop) (R_ADD_{{s}} {{verification_params.num_steps + 1}})){%endfor%})"
+        {% endif %}
+        ;:smt-assumptions "(= (r_add_EXPANDER i_loop) (r_add_EXPANDER (+ {{verification_params.num_steps}} 1)))"
 		:discrete-counters (gen-counters-list the-spouts the-bolts the-impacts-table)
     {%  if verification_params.periodic_queues | length %}
-    :periodic-terms '(Q_{{ verification_params.periodic_queues | join(' Q_') }})
+    :l-monotonic '(Q_{{ verification_params.periodic_queues | join(' Q_') }})
     {% endif %}
+    {%  if verification_params.strictly_monotonic_queues | length %}
+    :l-strictly-monotonic '(Q_{{ verification_params.strictly_monotonic_queues | join(' Q_') }})
+    {% endif %}
+
 )
