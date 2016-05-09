@@ -3,7 +3,7 @@
 Download as [zip file](https://github.com/franco-maroni/DICE-Verification/raw/master/json2mc/exp-data/ICFEM.zip)
 
 |Topology  | Bolts | Time | Max Memory | Outcome | Spurious|
-|----------------|---|---|---|---|
+|----------------|---|---|---|---|---|
 |[simple-DIA-cfg-1](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/simple-DIA-cfg-1) |  3  |  60s  |  104MB  |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/simple-DIA-cfg-1.png))  |  no	|
 |[simple-DIA-cfg-2](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/simple-DIA-cfg-2)	 |  3  |  1058s  |  150MB  |  UNSAT |  N/A |
 |[simple-DIA-cfg-3](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/simple-DIA-cfg-3)	 |  3  |  223s  |  96MB  |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/simple-DIA-cfg-3.png)) |  no	|
