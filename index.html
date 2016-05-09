@@ -1,55 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-us">
   <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <meta charset="UTF-8">
+    <title>Dice-verification by franco-maroni</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
-
-    <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <title>Dice-verification by franco-maroni</title>
   </head>
-
   <body>
-    <header>
-      <div class="inner">
-        <h1>Dice-verification</h1>
-        <h2>Verification tool for the DICE project.</h2>
-        <a href="https://github.com/franco-maroni/DICE-Verification" class="button"><small>View project on</small> GitHub</a>
-      </div>
-    </header>
+    <section class="page-header">
+      <h1 class="project-name">Dice-verification</h1>
+      <h2 class="project-tagline">Verification tool for the DICE project.</h2>
+      <a href="https://github.com/franco-maroni/DICE-Verification" class="btn">View on GitHub</a>
+      <a href="https://github.com/franco-maroni/DICE-Verification/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/franco-maroni/DICE-Verification/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
 
-    <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content">
-          <h1>
-<a id="dice-verification" class="anchor" href="#dice-verification" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>DICE-Verification</h1>
+    <section class="main-content">
+      <h2>
+<a id="icfem-paper---experimental-results" class="anchor" href="#icfem-paper---experimental-results" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>ICFEM Paper - Experimental results</h2>
 
-<p>Verification tool for the DICE project.</p>
-        </section>
+<p>Download as <a href="https://github.com/franco-maroni/DICE-Verification/raw/master/json2mc/exp-data/ICFEM.zip">zip file</a></p>
 
-        <aside id="sidebar">
-          <a href="https://github.com/franco-maroni/DICE-Verification/zipball/master" class="button">
-            <small>Download</small>
-            .zip file
-          </a>
-          <a href="https://github.com/franco-maroni/DICE-Verification/tarball/master" class="button">
-            <small>Download</small>
-            .tar.gz file
-          </a>
+<table>
+<thead>
+<tr>
+<th>Topology</th>
+<th>Bolts</th>
+<th>Time</th>
+<th>Max Memory</th>
+<th>Outcome</th>
+<th>Spurious</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/simple-DIA-cfg-1">simple-DIA-cfg-1</a></td>
+<td>3</td>
+<td>60s</td>
+<td>104MB</td>
+<td>SAT (<a href="https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/simple-DIA-cfg-1.png">trace</a>)</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/simple-DIA-cfg-2">simple-DIA-cfg-2</a></td>
+<td>3</td>
+<td>1058s</td>
+<td>150MB</td>
+<td>UNSAT</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><a href="https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/simple-DIA-cfg-3">simple-DIA-cfg-3</a></td>
+<td>3</td>
+<td>223s</td>
+<td>96MB</td>
+<td>SAT (<a href="https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/simple-DIA-cfg-3.png">trace</a>)</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-complete">focused-crawler-complete</a></td>
+<td>8</td>
+<td>2664s</td>
+<td>448MB</td>
+<td>SAT (<a href="https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-complete.png">trace</a>)</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1">focused-crawler-reduced-cfg-1</a></td>
+<td>4</td>
+<td>95s</td>
+<td>142MB</td>
+<td>SAT (<a href="https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-1.png">trace</a>)</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-2">focused-crawler-reduced-cfg-2</a></td>
+<td>4</td>
+<td>253s</td>
+<td>195MB</td>
+<td>SAT (<a href="https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-2.png">trace</a>)</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-3">focused-crawler-reduced-cfg-3</a></td>
+<td>4</td>
+<td>327s</td>
+<td>215MB</td>
+<td>SAT (<a href="https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-3.png">trace</a>)</td>
+<td>no</td>
+</tr>
+<tr>
+<td><a href="https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-4">focused-crawler-reduced-cfg-4</a></td>
+<td>4</td>
+<td>333s</td>
+<td>206MB</td>
+<td>SAT (<a href="https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-4.png">trace</a>)</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-5">focused-crawler-reduced-cfg-5</a></td>
+<td>4</td>
+<td>3184s</td>
+<td>317MB</td>
+<td>SAT (<a href="https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-5.png">trace</a>)</td>
+<td>yes</td>
+</tr>
+<tr>
+<td><a href="https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-6">focused-crawler-reduced-cfg-6</a></td>
+<td>4</td>
+<td>1060s</td>
+<td>229MB</td>
+<td>SAT (<a href="https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-6.png">trace</a>)</td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
 
-          <p class="repo-owner"><a href="https://github.com/franco-maroni/DICE-Verification"></a> is maintained by <a href="https://github.com/franco-maroni">franco-maroni</a>.</p>
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/franco-maroni/DICE-Verification">Dice-verification</a> is maintained by <a href="https://github.com/franco-maroni">franco-maroni</a>.</span>
 
-          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
-        </aside>
-      </div>
-    </div>
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
 
   
   </body>
