@@ -1,0 +1,6441 @@
+sat
+(model 
+  (define-fun i-loop () Int
+    10)
+  (define-fun zot-p956 () (_ BitVec 22)
+    #b1100011111111111111110)
+  (define-fun add_wpdeserializer () (_ BitVec 22)
+    #b0010010001100011001111)
+  (define-fun zot-p561 () (_ BitVec 22)
+    #b0000000000000000001011)
+  (define-fun zot-p562 () (_ BitVec 22)
+    #b0000000000000011111110)
+  (define-fun zot-p542 () (_ BitVec 22)
+    #b0101011101001001000100)
+  (define-fun zot-p736 () (_ BitVec 22)
+    #b0100000000001001000100)
+  (define-fun zot-p427 () (_ BitVec 22)
+    #b0111111100001101111100)
+  (define-fun zot-p19 () (_ BitVec 22)
+    #b0000000000000000000101)
+  (define-fun idle_wpdeserializer () (_ BitVec 22)
+    #b0011111111100110100101)
+  (define-fun zot-p1009 () (_ BitVec 22)
+    #b1101111110111001110101)
+  (define-fun zot-p1082 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p1014 () (_ BitVec 22)
+    #b0010011111000110001111)
+  (define-fun zot-p377 () (_ BitVec 22)
+    #b0010000000100010000101)
+  (define-fun zot-p496 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun take_mediaextraction () (_ BitVec 22)
+    #b0000000100000100010100)
+  (define-fun zot-p589 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p566 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p624 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun idle_articleextraction () (_ BitVec 22)
+    #b1100000001111011000011)
+  (define-fun zot-p1035 () (_ BitVec 22)
+    #b1010000000010010011000)
+  (define-fun add_articleextraction () (_ BitVec 22)
+    #b0001000000000010010000)
+  (define-fun zot-p911 () (_ BitVec 22)
+    #b1111111111111111111110)
+  (define-fun zot-p290 () (_ BitVec 22)
+    #b1111111111111111100111)
+  (define-fun fail_articleextraction () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p967 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p16 () (_ BitVec 22)
+    #b1111011101011101011011)
+  (define-fun zot-p723 () (_ BitVec 22)
+    #b0100000000001001000100)
+  (define-fun zot-p24 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p1065 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p947 () (_ BitVec 22)
+    #b1100000000111111001110)
+  (define-fun take_expander () (_ BitVec 22)
+    #b1000000000010000100100)
+  (define-fun process_articleextraction () (_ BitVec 22)
+    #b0111111110001101111100)
+  (define-fun zot-p737 () (_ BitVec 22)
+    #b1111111011111011101110)
+  (define-fun zot-p393 () (_ BitVec 22)
+    #b1000000000010000000100)
+  (define-fun zot-p790 () (_ BitVec 22)
+    #b0000000000000000000001)
+  (define-fun zot-p64 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p63 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p82 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun startidle_articleextraction () (_ BitVec 22)
+    #b0100000000001001000001)
+  (define-fun zot-p421 () (_ BitVec 22)
+    #b1100110011111011111110)
+  (define-fun zot-p499 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p66 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p373 () (_ BitVec 22)
+    #b1000000111110110010111)
+  (define-fun zot-p380 () (_ BitVec 22)
+    #b0000100010100010000000)
+  (define-fun zot-p1048 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p281 () (_ BitVec 22)
+    #b1111111111111111100111)
+  (define-fun zot-p922 () (_ BitVec 22)
+    #b0000000000000000000001)
+  (define-fun zot-p61 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p383 () (_ BitVec 22)
+    #b0001000000000010010000)
+  (define-fun zot-p356 () (_ BitVec 22)
+    #b0000000000000000001100)
+  (define-fun zot-p505 () (_ BitVec 22)
+    #b0111101110101110101101)
+  (define-fun zot-p56 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p21 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p648 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p748 () (_ BitVec 22)
+    #b0000000000000000000001)
+  (define-fun zot-p541 () (_ BitVec 22)
+    #b1111111111111111110100)
+  (define-fun zot-p724 () (_ BitVec 22)
+    #b1111111101111011101110)
+  (define-fun zot-p389 () (_ BitVec 22)
+    #b0100000001001001001010)
+  (define-fun zot-p840 () (_ BitVec 22)
+    #b1111000000111110111111)
+  (define-fun zot-p684 () (_ BitVec 22)
+    #b0010000001000010001010)
+  (define-fun process_wpdeserializer () (_ BitVec 22)
+    #b1100110011111011111110)
+  (define-fun zot-p898 () (_ BitVec 22)
+    #b1100011111111111111100)
+  (define-fun zot-p84 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun noop_wpdeserializer () (_ BitVec 22)
+    #b0011001100000100000001)
+  (define-fun zot-p697 () (_ BitVec 22)
+    #b0100000001001001001010)
+  (define-fun fail_expander () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p493 () (_ BitVec 22)
+    #b0010101010100010100100)
+  (define-fun zot-p358 () (_ BitVec 22)
+    #b0000000000000000001100)
+  (define-fun zot-p520 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p887 () (_ BitVec 22)
+    #b0111111110001101110001)
+  (define-fun zot-p652 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p45 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p62 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p1043 () (_ BitVec 22)
+    #b1000000000110001000000)
+  (define-fun zot-p81 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p348 () (_ BitVec 22)
+    #b1111111011111011101011)
+  (define-fun zot-p576 () (_ BitVec 22)
+    #b1111000111111111110000)
+  (define-fun zot-p20 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p664 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p79 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p909 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p369 () (_ BitVec 22)
+    #b1000000011110110010111)
+  (define-fun zot-p488 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p433 () (_ BitVec 22)
+    #b1101010101011001111110)
+  (define-fun zot-p101 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p587 () (_ BitVec 22)
+    #b1101101110011100110000)
+  (define-fun zot-p851 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p330 () (_ BitVec 22)
+    #b1011101110110110110101)
+  (define-fun startfailure_expander () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p1007 () (_ BitVec 22)
+    #b1111101111011110111010)
+  (define-fun zot-p668 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p54 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p685 () (_ BitVec 22)
+    #b1111101111011110111010)
+  (define-fun zot-p964 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p846 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p954 () (_ BitVec 22)
+    #b1111111100111111111111)
+  (define-fun zot-p1001 () (_ BitVec 22)
+    #b0001010111100001000011)
+  (define-fun zot-p806 () (_ BitVec 22)
+    #b0000000000000000000001)
+  (define-fun zot-p86 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun add_mediaextraction () (_ BitVec 22)
+    #b0001000000000010010000)
+  (define-fun zot-p1075 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p1069 () (_ BitVec 22)
+    #b0100000000001000100000)
+  (define-fun zot-p1018 () (_ BitVec 22)
+    #b0000000000000000000100)
+  (define-fun zot-p583 () (_ BitVec 22)
+    #b0010010001100111001111)
+  (define-fun zot-p65 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun noop_mediaextraction () (_ BitVec 22)
+    #b1000000011110010000011)
+  (define-fun zot-p838 () (_ BitVec 22)
+    #b1011111111110111100111)
+  (define-fun zot-p463 () (_ BitVec 22)
+    #b1011111101110100111101)
+  (define-fun zot-p962 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p386 () (_ BitVec 22)
+    #b0001000000000010010000)
+  (define-fun zot-p1060 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p342 () (_ BitVec 22)
+    #b1111111101111011101011)
+  (define-fun zot-p7 () (_ BitVec 22)
+    #b1000000011110010000011)
+  (define-fun zot-p365 () (_ BitVec 22)
+    #b1110000000011100100111)
+  (define-fun startidle_wpdeserializer () (_ BitVec 22)
+    #b0000000000100010100101)
+  (define-fun take_articleextraction () (_ BitVec 22)
+    #b0000000010000100010100)
+  (define-fun zot-p608 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p1026 () (_ BitVec 22)
+    #b1001100000110001000000)
+  (define-fun zot-p413 () (_ BitVec 22)
+    #b0010010001100011001111)
+  (define-fun zot-p577 () (_ BitVec 22)
+    #b0111111100001101111100)
+  (define-fun zot-p32 () (_ BitVec 22)
+    #b0000010000100010100101)
+  (define-fun zot-p423 () (_ BitVec 22)
+    #b1001111111110011111100)
+  (define-fun zot-p415 () (_ BitVec 22)
+    #b0000100010100010100100)
+  (define-fun zot-p27 () (_ BitVec 22)
+    #b0000000000000000000001)
+  (define-fun zot-p13 () (_ BitVec 22)
+    #b0000000000000000000111)
+  (define-fun zot-p70 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p864 () (_ BitVec 22)
+    #b0000000000000000000001)
+  (define-fun zot-p517 () (_ BitVec 22)
+    #b0101000000001010010010)
+  (define-fun zot-p46 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p73 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p77 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun noop_articleextraction () (_ BitVec 22)
+    #b1000000001110010000011)
+  (define-fun zot-p41 () (_ BitVec 22)
+    #b0000000100000100010001)
+  (define-fun zot-p6 () (_ BitVec 22)
+    #b1000000001110010000011)
+  (define-fun zot-p5 () (_ BitVec 22)
+    #b0110000000001100000011)
+  (define-fun process_expander () (_ BitVec 22)
+    #b1001111111110011111100)
+  (define-fun zot-p640 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p1058 () (_ BitVec 22)
+    #b1000000000010000000000)
+  (define-fun zot-p29 () (_ BitVec 22)
+    #b0000010000100001000101)
+  (define-fun zot-p1052 () (_ BitVec 22)
+    #b0000101000000000000000)
+  (define-fun zot-p419 () (_ BitVec 22)
+    #b0001000000000010010000)
+  (define-fun zot-p97 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p672 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p92 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p91 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p76 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p858 () (_ BitVec 22)
+    #b1111111111111110000000)
+  (define-fun zot-p534 () (_ BitVec 22)
+    #b1110111111111101101111)
+  (define-fun zot-p17 () (_ BitVec 22)
+    #b1110111111111101101111)
+  (define-fun zot-p1024 () (_ BitVec 22)
+    #b1100001110011000111000)
+  (define-fun zot-p39 () (_ BitVec 22)
+    #b1011111111110110111011)
+  (define-fun zot-p401 () (_ BitVec 22)
+    #b0000000100000100000100)
+  (define-fun zot-p263 () (_ BitVec 22)
+    #b0100000001001101111111)
+  (define-fun zot-p571 () (_ BitVec 22)
+    #b1111000011111111110000)
+  (define-fun zot-p75 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p68 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p997 () (_ BitVec 22)
+    #b0010000001000110001011)
+  (define-fun fail_wpdeserializer () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p773 () (_ BitVec 22)
+    #b1100011111111111111110)
+  (define-fun zot-p782 () (_ BitVec 22)
+    #b1111111111111111111110)
+  (define-fun zot-p1012 () (_ BitVec 22)
+    #b0011110001100111000111)
+  (define-fun zot-p582 () (_ BitVec 22)
+    #b1111111111111011111111)
+  (define-fun zot-p57 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p656 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p936 () (_ BitVec 22)
+    #b1100000011111011001000)
+  (define-fun zot-p556 () (_ BitVec 22)
+    #b0000111000000000001111)
+  (define-fun zot-p780 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p30 () (_ BitVec 22)
+    #b1101111110111101110101)
+  (define-fun zot-p1031 () (_ BitVec 22)
+    #b0110011111001110111111)
+  (define-fun zot-p572 () (_ BitVec 22)
+    #b0111111110001101111100)
+  (define-fun zot-p58 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p80 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p410 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p74 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p547 () (_ BitVec 22)
+    #b1000000000010010100100)
+  (define-fun zot-p489 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p361 () (_ BitVec 22)
+    #b0111011101001101001011)
+  (define-fun zot-p43 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p336 () (_ BitVec 22)
+    #b0111111111101111011011)
+  (define-fun zot-p42 () (_ BitVec 22)
+    #b1011111111110110111011)
+  (define-fun idle_expander () (_ BitVec 22)
+    #b0111000000001110000011)
+  (define-fun startfailure_articleextraction () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p33 () (_ BitVec 22)
+    #b1011111110110110110101)
+  (define-fun zot-p100 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p98 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p711 () (_ BitVec 22)
+    #b0111111111101111011110)
+  (define-fun zot-p44 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun fail_mediaextraction () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p60 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun take_wpdeserializer () (_ BitVec 22)
+    #b0100010001001001001010)
+  (define-fun zot-p974 () (_ BitVec 22)
+    #b1111111111111111111100)
+  (define-fun zot-p636 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p71 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p1029 () (_ BitVec 22)
+    #b0011110001100111001111)
+  (define-fun zot-p523 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p354 () (_ BitVec 22)
+    #b1000000000010001111100)
+  (define-fun zot-p352 () (_ BitVec 22)
+    #b1101111111011001000000)
+  (define-fun emit_mediaextraction () (_ BitVec 22)
+    #b0100000000001001001000)
+  (define-fun zot-p35 () (_ BitVec 22)
+    #b1000000000010000100001)
+  (define-fun emit_wpspout () (_ BitVec 22)
+    #b0010010001100011001111)
+  (define-fun zot-p600 () (_ BitVec 22)
+    #b0001001100000000000000)
+  (define-fun zot-p829 () (_ BitVec 22)
+    #b1001111111110111100111)
+  (define-fun zot-p536 () (_ BitVec 22)
+    #b1110011111111100100111)
+  (define-fun zot-p417 () (_ BitVec 22)
+    #b0001000000000010010000)
+  (define-fun zot-p15 () (_ BitVec 22)
+    #b0000000000000000000111)
+  (define-fun zot-p95 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p67 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun idle_mediaextraction () (_ BitVec 22)
+    #b1100000111111011011111)
+  (define-fun zot-p443 () (_ BitVec 22)
+    #b1010111111110101101101)
+  (define-fun zot-p83 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p788 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p501 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p38 () (_ BitVec 22)
+    #b0000000010000100010001)
+  (define-fun emit_wpdeserializer () (_ BitVec 22)
+    #b0000100010100010100100)
+  (define-fun zot-p942 () (_ BitVec 22)
+    #b0011111111000000111001)
+  (define-fun zot-p884 () (_ BitVec 22)
+    #b0011111111000000111011)
+  (define-fun zot-p820 () (_ BitVec 22)
+    #b0111100000001110011000)
+  (define-fun zot-p411 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p698 () (_ BitVec 22)
+    #b1111101111011101011010)
+  (define-fun zot-p771 () (_ BitVec 22)
+    #b0011110001100110100101)
+  (define-fun zot-p991 () (_ BitVec 22)
+    #b0000010000100001000101)
+  (define-fun zot-p795 () (_ BitVec 22)
+    #b1111111111111111111110)
+  (define-fun zot-p551 () (_ BitVec 22)
+    #b0000111100000000001111)
+  (define-fun zot-p78 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p36 () (_ BitVec 22)
+    #b1110111111111101111011)
+  (define-fun zot-p69 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p853 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun o () (_ BitVec 22)
+    #b0000000000000000000001)
+  (define-fun zot-p916 () (_ BitVec 22)
+    #b1111111111111111000000)
+  (define-fun zot-p848 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p397 () (_ BitVec 22)
+    #b0000000010000100000100)
+  (define-fun zot-p906 () (_ BitVec 22)
+    #b0000000000000000000001)
+  (define-fun zot-p510 () (_ BitVec 22)
+    #b1111011101011101011011)
+  (define-fun zot-p945 () (_ BitVec 22)
+    #b0111111100001101110111)
+  (define-fun zot-p632 () (_ BitVec 22)
+    #b0001001100000000000000)
+  (define-fun zot-p272 () (_ BitVec 22)
+    #b1111111111011100000111)
+  (define-fun zot-p88 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p14 () (_ BitVec 22)
+    #b0000000000000000000111)
+  (define-fun add_expander () (_ BitVec 22)
+    #b0000100010100010100100)
+  (define-fun zot-p800 () (_ BitVec 22)
+    #b1111111111111110000000)
+  (define-fun zot-p904 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p18 () (_ BitVec 22)
+    #b0000100000000000000001)
+  (define-fun zot-p676 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun noop_expander () (_ BitVec 22)
+    #b0110000000001100000011)
+  (define-fun zot-p878 () (_ BitVec 22)
+    #b1100000001111011001110)
+  (define-fun zot-p1063 () (_ BitVec 22)
+    #b0111111111101111111111)
+  (define-fun startfailure_mediaextraction () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p616 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p1077 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p552 () (_ BitVec 22)
+    #b0000000000000000000100)
+  (define-fun zot-p889 () (_ BitVec 22)
+    #b1100000000111111001100)
+  (define-fun zot-p793 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p1046 () (_ BitVec 22)
+    #b0111111111101111001111)
+  (define-fun zot-p567 () (_ BitVec 22)
+    #b0000000000000000011100)
+  (define-fun zot-p512 () (_ BitVec 22)
+    #b0111001100001100001001)
+  (define-fun zot-p23 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p1080 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun emit_expander () (_ BitVec 22)
+    #b0001000000000010010000)
+  (define-fun zot-p55 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p85 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p896 () (_ BitVec 22)
+    #b1111111110111111110111)
+  (define-fun startidle_mediaextraction () (_ BitVec 22)
+    #b0100000000001001000001)
+  (define-fun zot-p529 () (_ BitVec 22)
+    #b1111011111111110110111)
+  (define-fun zot-p1041 () (_ BitVec 22)
+    #b1000000000010000110000)
+  (define-fun zot-p831 () (_ BitVec 22)
+    #b1111000000111110011111)
+  (define-fun zot-p89 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p72 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p557 () (_ BitVec 22)
+    #b0000000000000000000100)
+  (define-fun zot-p453 () (_ BitVec 22)
+    #b1011111110110100111101)
+  (define-fun zot-p826 () (_ BitVec 22)
+    #b1000111111110001110000)
+  (define-fun process_mediaextraction () (_ BitVec 22)
+    #b0111111100001101111100)
+  (define-fun zot-p49 () (_ BitVec 22)
+    #b1111111111111111111110)
+  (define-fun zot-p94 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun startfailure_wpdeserializer () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun zot-p660 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p969 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p644 () (_ BitVec 22)
+    #b0000000000000000000000)
+  (define-fun emit_articleextraction () (_ BitVec 22)
+    #b0100000000001001001000)
+  (define-fun zot-p22 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p710 () (_ BitVec 22)
+    #b0001000000000010000100)
+  (define-fun zot-p408 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p12 () (_ BitVec 22)
+    #b0000000000000000001001)
+  (define-fun zot-p525 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p425 () (_ BitVec 22)
+    #b0111111110001101111100)
+  (define-fun zot-p409 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p4 () (_ BitVec 22)
+    #b0011001100000100000001)
+  (define-fun zot-p768 () (_ BitVec 22)
+    #b1011111110110110110101)
+  (define-fun startidle_expander () (_ BitVec 22)
+    #b0001000000000010000001)
+  (define-fun zot-p546 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p59 () (_ BitVec 22)
+    #b1111111111111111111111)
+  (define-fun zot-p762 () (_ BitVec 22)
+    #b1111101110011001011010)
+  (define-fun i_loop () (_ BitVec 22)
+    #b0000000000000000001010)
+  (define-fun pt_wpspout_1 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.27
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.2758333333?
+    (ite (= x!1 5) 0.3008333333?
+    (ite (= x!1 6) 0.775
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0008333333?
+    (ite (= x!1 9) 0.4508333333?
+    (ite (= x!1 10) 0.7525
+    (ite (= x!1 11) 0.775
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.2725
+    (ite (= x!1 14) 0.2733333333?
+    (ite (= x!1 15) 0.2741666666?
+    (ite (= x!1 16) 0.275
+    (ite (= x!1 17) 0.545
+    (ite (= x!1 18) 0.5458333333?
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.2758333333?
+    (ite (= x!1 21) 0.0
+    (ite (= x!1 0) 0.225
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1172 ((x!1 Int)) Int
+    (ite (= x!1 0) 1
+    (ite (= x!1 1) 2
+    (ite (= x!1 2) 3
+    (ite (= x!1 3) 3
+    (ite (= x!1 4) 5
+    (ite (= x!1 5) 1
+    (ite (= x!1 6) 3
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 5
+    (ite (= x!1 9) 3
+    (ite (= x!1 10) 1
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 4
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 4
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 3
+    (ite (= x!1 19) 5
+    (ite (= x!1 20) 35
+      1))))))))))))))))))))))
+  (define-fun zot-a1185 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 9
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 6
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 6
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun r_process_mediaextraction ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 4
+    (ite (= x!1 6) 4
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 4
+    (ite (= x!1 9) 4
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 4
+    (ite (= x!1 15) 4
+    (ite (= x!1 16) 4
+    (ite (= x!1 17) 4
+    (ite (= x!1 18) 4
+    (ite (= x!1 19) 4
+    (ite (= x!1 20) 4
+    (ite (= x!1 21) 36
+      4)))))))))))))))))))))))
+  (define-fun zot-a1152 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 8.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 8.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 6.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 4.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 2.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1038.0
+      0.0))))))))))))))))))))))
+  (define-fun r_process_wpdeserializer ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 4
+    (ite (= x!1 6) 4
+    (ite (= x!1 7) 4
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 3
+    (ite (= x!1 10) 3
+    (ite (= x!1 11) 3
+    (ite (= x!1 12) 2
+    (ite (= x!1 13) 2
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 3
+    (ite (= x!1 21) 3
+      4)))))))))))))))))))))))
+  (define-fun zot-a1109 ((x!1 Int)) Real
+    (ite (= x!1 1) 5.0
+    (ite (= x!1 2) 10.0
+    (ite (= x!1 3) 8.0
+    (ite (= x!1 4) 11.0
+    (ite (= x!1 5) 7.0
+    (ite (= x!1 6) 7.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 7.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 6.0
+    (ite (= x!1 11) 3.0
+    (ite (= x!1 12) 4.0
+    (ite (= x!1 13) 4.0
+    (ite (= x!1 14) 2.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 2.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 3.0
+      7.0)))))))))))))))))))))
+  (define-fun zot-a1231 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 1
+    (ite (= x!1 3) 1
+    (ite (= x!1 4) 1
+    (ite (= x!1 5) 1
+    (ite (= x!1 6) 1
+    (ite (= x!1 7) 1
+    (ite (= x!1 8) 1
+    (ite (= x!1 9) 1
+    (ite (= x!1 10) 1
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 1
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 1
+    (ite (= x!1 20) 1
+      1)))))))))))))))))))))
+  (define-fun zot-a1175 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a464 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 4
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 4
+    (ite (= x!1 8) 4
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 4
+    (ite (= x!1 14) 4
+    (ite (= x!1 15) 4
+    (ite (= x!1 16) 4
+    (ite (= x!1 17) 4
+    (ite (= x!1 18) 4
+    (ite (= x!1 19) 4
+    (ite (= x!1 20) 36
+      4))))))))))))))))))))))
+  (define-fun zot-a1161 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) (- 12.0)
+    (ite (= x!1 5) (- 12.0)
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) (- 8.0)
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 8.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) (- 2.0)
+    (ite (= x!1 13) (- 2.0)
+    (ite (= x!1 14) 2.0
+    (ite (= x!1 15) 2.0
+    (ite (= x!1 16) 2.0
+    (ite (= x!1 17) 2.0
+    (ite (= x!1 18) 4.0
+    (ite (= x!1 19) 4.0
+    (ite (= x!1 20) 12.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1228 ((x!1 Int)) Int
+    (ite (= x!1 0) 1
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 1
+    (ite (= x!1 3) 1
+    (ite (= x!1 4) 1
+    (ite (= x!1 5) 1
+    (ite (= x!1 6) 1
+    (ite (= x!1 7) 1
+    (ite (= x!1 8) 1
+    (ite (= x!1 9) 1
+    (ite (= x!1 10) 1
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 1
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 1
+    (ite (= x!1 19) 1
+    (ite (= x!1 20) 23
+      1))))))))))))))))))))))
+  (define-fun zot-a502 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 4
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 3
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 2
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0))))))))))))))))))))))
+  (define-fun zot-a1227 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a1210 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.2058333333?
+    (ite (= x!1 1) 0.4758333333?
+    (ite (= x!1 2) 1.0008333333?
+    (ite (= x!1 3) 1.2766666666?
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.4741666666?
+    (ite (= x!1 6) 0.7475
+    (ite (= x!1 7) 0.7483333333?
+    (ite (= x!1 8) 1.1983333333?
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0225
+    (ite (= x!1 11) 0.2791666666?
+    (ite (= x!1 12) 0.5516666666?
+    (ite (= x!1 13) 0.5525
+    (ite (= x!1 14) 0.5533333333?
+    (ite (= x!1 15) 0.5541666666?
+    (ite (= x!1 16) 0.8241666666?
+    (ite (= x!1 17) 0.825
+    (ite (= x!1 18) 0.8258333333?
+    (ite (= x!1 19) 1.1016666666?
+    (ite (= x!1 20) 1.1025
+      0.0))))))))))))))))))))))
+  (define-fun zot-a601 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0))))))))))))))))))))))
+  (define-fun zot-a1193 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 999.7308333333?
+    (ite (= x!1 3) 1000.0008333333?
+    (ite (= x!1 4) 1000.5258333333?
+    (ite (= x!1 5) 1000.8016666666?
+    (ite (= x!1 6) 1000.8266666666?
+    (ite (= x!1 7) 1001.3008333333?
+    (ite (= x!1 8) 1001.5741666666?
+    (ite (= x!1 9) 1001.575
+    (ite (= x!1 10) 1002.025
+    (ite (= x!1 11) 1002.3266666666?
+    (ite (= x!1 12) 1002.3491666666?
+    (ite (= x!1 13) 1002.6058333333?
+    (ite (= x!1 14) 1002.8783333333?
+    (ite (= x!1 15) 1002.8791666666?
+    (ite (= x!1 16) 1002.88
+    (ite (= x!1 17) 1002.8808333333?
+    (ite (= x!1 18) 1003.1508333333?
+    (ite (= x!1 19) 1003.1516666666?
+    (ite (= x!1 20) 1003.1525
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1096 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 8.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 13.0
+    (ite (= x!1 4) 9.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 11.0
+    (ite (= x!1 7) 15.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 11.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 13.0
+    (ite (= x!1 18) 13.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 1066.0
+      7.0))))))))))))))))))))))
+  (define-fun zot-a337 ((x!1 Int)) Int
+    (ite (= x!1 0) 4
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 8
+    (ite (= x!1 8) 8
+    (ite (= x!1 9) 8
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 6
+    (ite (= x!1 12) 6
+    (ite (= x!1 13) 10
+    (ite (= x!1 14) 10
+    (ite (= x!1 15) 10
+    (ite (= x!1 16) 10
+    (ite (= x!1 17) 12
+    (ite (= x!1 18) 12
+    (ite (= x!1 19) 12
+    (ite (= x!1 20) 12
+      0))))))))))))))))))))))
+  (define-fun zot-a1117 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1145 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 4.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 4.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 3.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 2.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a500 ((x!1 Int)) Real
+    (ite (= x!1 0) (- 1.0)
+    (ite (= x!1 1) (- 1.0)
+    (ite (= x!1 2) 7.0
+    (ite (= x!1 3) (- 1.0)
+    (ite (= x!1 4) (- 1.0)
+    (ite (= x!1 5) 7.0
+    (ite (= x!1 6) (- 1.0)
+    (ite (= x!1 7) 7.0
+    (ite (= x!1 8) (- 1.0)
+    (ite (= x!1 9) (- 1.0)
+    (ite (= x!1 10) (- 1.0)
+    (ite (= x!1 11) 5.0
+    (ite (= x!1 12) (- 1.0)
+    (ite (= x!1 13) 3.0
+    (ite (= x!1 14) (- 1.0)
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) (- 1.0)
+    (ite (= x!1 19) (- 1.0)
+    (ite (= x!1 20) (- 1.0)
+    (ite (= x!1 21) 1040.0
+      (- 1.0))))))))))))))))))))))))
+  (define-fun zot-a1168 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 12.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 8.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 6.0
+    (ite (= x!1 11) 6.0
+    (ite (= x!1 12) 10.0
+    (ite (= x!1 13) 10.0
+    (ite (= x!1 14) 10.0
+    (ite (= x!1 15) 10.0
+    (ite (= x!1 16) 12.0
+    (ite (= x!1 17) 12.0
+    (ite (= x!1 18) 12.0
+    (ite (= x!1 19) 12.0
+    (ite (= x!1 20) 1030.0
+      8.0))))))))))))))))))))))
+  (define-fun zot-a494 ((x!1 Int)) Real
+    (ite (= x!1 0) (- 1.0)
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 8.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 4.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 4.0
+    (ite (= x!1 8) 4.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 3.0
+    (ite (= x!1 12) 5.0
+    (ite (= x!1 13) 2.0
+    (ite (= x!1 14) 2.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 3.0
+    (ite (= x!1 21) 1037.0
+      4.0)))))))))))))))))))))))
+  (define-fun pt_wpspout_0 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.2258333333?
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.525
+    (ite (= x!1 4) 0.8008333333?
+    (ite (= x!1 5) 0.8258333333?
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.2733333333?
+    (ite (= x!1 8) 0.2741666666?
+    (ite (= x!1 9) 0.7241666666?
+    (ite (= x!1 10) 1.0258333333?
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.2566666666?
+    (ite (= x!1 13) 0.5291666666?
+    (ite (= x!1 14) 0.53
+    (ite (= x!1 15) 0.5308333333?
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.27
+    (ite (= x!1 18) 0.2708333333?
+    (ite (= x!1 19) 0.2716666666?
+    (ite (= x!1 20) 0.5475
+    (ite (= x!1 21) 0.0
+    (ite (= x!1 0) 0.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1166 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 9.0
+    (ite (= x!1 4) 5.0
+    (ite (= x!1 5) 5.0
+    (ite (= x!1 6) 11.0
+    (ite (= x!1 7) 11.0
+    (ite (= x!1 8) 7.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 3.0
+    (ite (= x!1 14) 3.0
+    (ite (= x!1 15) 3.0
+    (ite (= x!1 16) 3.0
+    (ite (= x!1 17) 9.0
+    (ite (= x!1 18) 9.0
+    (ite (= x!1 19) 9.0
+    (ite (= x!1 20) 1031.0
+      7.0))))))))))))))))))))))
+  (define-fun zot-a1173 ((x!1 Int)) Int
+    (ite (= x!1 1) 1
+    (ite (= x!1 2) 1
+    (ite (= x!1 3) 2
+    (ite (= x!1 4) 3
+    (ite (= x!1 5) 3
+    (ite (= x!1 6) 5
+    (ite (= x!1 7) 1
+    (ite (= x!1 8) 3
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 5
+    (ite (= x!1 11) 3
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 1
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 4
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 4
+    (ite (= x!1 19) 1
+    (ite (= x!1 20) 3
+      1)))))))))))))))))))))
+  (define-fun zot-a1157 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) (- 4.0)
+    (ite (= x!1 5) 5.0
+    (ite (= x!1 6) 1.0
+    (ite (= x!1 7) 1.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 3.0
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) (- 1.0)
+    (ite (= x!1 18) (- 1.0)
+    (ite (= x!1 19) 5.0
+    (ite (= x!1 20) 5.0
+      7.0)))))))))))))))))))))
+  (define-fun zot-a1144 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 4.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 2.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1042.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a619 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 8.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 13.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 9.0
+    (ite (= x!1 7) 11.0
+    (ite (= x!1 8) 15.0
+    (ite (= x!1 9) 11.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 11.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 7.0
+    (ite (= x!1 18) 13.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 13.0
+    (ite (= x!1 21) 1066.0
+      7.0)))))))))))))))))))))))
+  (define-fun zot-a1135 ((x!1 Int)) Real
+    (ite (= x!1 1) (- 1.0)
+    (ite (= x!1 2) (- 1.0)
+    (ite (= x!1 3) (- 1.0)
+    (ite (= x!1 4) (- 1.0)
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) (- 1.0)
+    (ite (= x!1 7) (- 1.0)
+    (ite (= x!1 8) 5.0
+    (ite (= x!1 9) (- 1.0)
+    (ite (= x!1 10) (- 1.0)
+    (ite (= x!1 11) (- 1.0)
+    (ite (= x!1 12) (- 1.0)
+    (ite (= x!1 13) (- 1.0)
+    (ite (= x!1 14) (- 1.0)
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) (- 1.0)
+    (ite (= x!1 18) (- 1.0)
+    (ite (= x!1 19) 5.0
+    (ite (= x!1 20) (- 1.0)
+      (- 1.0))))))))))))))))))))))
+  (define-fun zot-a1156 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) (- 4.0)
+    (ite (= x!1 3) 5.0
+    (ite (= x!1 4) 1.0
+    (ite (= x!1 5) 1.0
+    (ite (= x!1 6) 11.0
+    (ite (= x!1 7) 7.0
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 3.0
+    (ite (= x!1 14) (- 1.0)
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) 5.0
+    (ite (= x!1 18) 5.0
+    (ite (= x!1 19) 5.0
+    (ite (= x!1 20) 1036.0
+      7.0))))))))))))))))))))))
+  (define-fun zot-a625 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0))))))))))))))))))))))
+  (define-fun zot-a1179 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 9
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 6
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 6
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a1230 ((x!1 Int)) Int
+    (ite (= x!1 0) 1
+    (ite (= x!1 1) 1
+    (ite (= x!1 2) 1
+    (ite (= x!1 3) 1
+    (ite (= x!1 4) 1
+    (ite (= x!1 5) 1
+    (ite (= x!1 6) 1
+    (ite (= x!1 7) 1
+    (ite (= x!1 8) 1
+    (ite (= x!1 9) 1
+    (ite (= x!1 10) 1
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 1
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 1
+    (ite (= x!1 19) 1
+    (ite (= x!1 20) 22
+      1))))))))))))))))))))))
+  (define-fun zot-a434 ((x!1 Int)) Int
+    (ite (= x!1 0) 4
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 4
+    (ite (= x!1 6) 4
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 3
+    (ite (= x!1 9) 3
+    (ite (= x!1 10) 3
+    (ite (= x!1 11) 2
+    (ite (= x!1 12) 2
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 3
+    (ite (= x!1 20) 3
+      4))))))))))))))))))))))
+  (define-fun zot-a1105 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 24.0
+    (ite (= x!1 4) 12.0
+    (ite (= x!1 5) 12.0
+    (ite (= x!1 6) 16.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 16.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 8.0
+    (ite (= x!1 11) 16.0
+    (ite (= x!1 12) 14.0
+    (ite (= x!1 13) 14.0
+    (ite (= x!1 14) 18.0
+    (ite (= x!1 15) 18.0
+    (ite (= x!1 16) 18.0
+    (ite (= x!1 17) 18.0
+    (ite (= x!1 18) 20.0
+    (ite (= x!1 19) 20.0
+    (ite (= x!1 20) 12.0
+      18.0)))))))))))))))))))))
+  (define-fun zot-a610 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 24.0
+    (ite (= x!1 3) 12.0
+    (ite (= x!1 4) 12.0
+    (ite (= x!1 5) 16.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 16.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 16.0
+    (ite (= x!1 11) 14.0
+    (ite (= x!1 12) 14.0
+    (ite (= x!1 13) 18.0
+    (ite (= x!1 14) 18.0
+    (ite (= x!1 15) 18.0
+    (ite (= x!1 16) 18.0
+    (ite (= x!1 17) 20.0
+    (ite (= x!1 18) 20.0
+    (ite (= x!1 19) 12.0
+    (ite (= x!1 20) 12.0
+    (ite (= x!1 21) 1062.0
+      18.0)))))))))))))))))))))))
+  (define-fun zot-a1233 ((x!1 Int)) Int
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 5
+    (ite (= x!1 7) 5
+    (ite (= x!1 8) 5
+    (ite (= x!1 9) 11
+    (ite (= x!1 10) 7
+    (ite (= x!1 11) 7
+    (ite (= x!1 12) 7
+    (ite (= x!1 13) 7
+    (ite (= x!1 14) 7
+    (ite (= x!1 15) 3
+    (ite (= x!1 16) 3
+    (ite (= x!1 17) 3
+    (ite (= x!1 18) 3
+    (ite (= x!1 19) 3
+    (ite (= x!1 20) 9
+      7)))))))))))))))))))))
+  (define-fun zot-a1154 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 8.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) 4.0
+    (ite (= x!1 7) 4.0
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 5.0
+    (ite (= x!1 12) 2.0
+    (ite (= x!1 13) 2.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 1.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 3.0
+    (ite (= x!1 20) 1037.0
+      4.0))))))))))))))))))))))
+  (define-fun r_add_wpdeserializer ((x!1 Int)) Int
+    (ite (= x!1 0) 1
+    (ite (= x!1 1) 1
+    (ite (= x!1 2) 2
+    (ite (= x!1 3) 3
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 1
+    (ite (= x!1 7) 3
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 3
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 25
+      0)))))))))))))))))))))))
+  (define-fun zot-a1147 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun r_failure_mediaextractionwpspout ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 0
+      0)))))))))))))))))))))))
+  (define-fun zot-a495 ((x!1 Int)) Int
+    (ite (= x!1 0) (- 1)
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 4
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 4
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 3
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 2
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 1
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0))))))))))))))))))))))
+  (define-fun zot-a594 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1056.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1211 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.2058333333?
+    (ite (= x!1 3) 0.4758333333?
+    (ite (= x!1 4) 1.0008333333?
+    (ite (= x!1 5) 1.2766666666?
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.4741666666?
+    (ite (= x!1 8) 0.7475
+    (ite (= x!1 9) 0.7483333333?
+    (ite (= x!1 10) 1.1983333333?
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0225
+    (ite (= x!1 13) 0.2791666666?
+    (ite (= x!1 14) 0.5516666666?
+    (ite (= x!1 15) 0.5525
+    (ite (= x!1 16) 0.5533333333?
+    (ite (= x!1 17) 0.5541666666?
+    (ite (= x!1 18) 0.8241666666?
+    (ite (= x!1 19) 0.825
+    (ite (= x!1 20) 0.8258333333?
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1111 ((x!1 Int)) Real
+    (ite (= x!1 1) 5.0
+    (ite (= x!1 2) 10.0
+    (ite (= x!1 3) 8.0
+    (ite (= x!1 4) 11.0
+    (ite (= x!1 5) 7.0
+    (ite (= x!1 6) 7.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 7.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 6.0
+    (ite (= x!1 11) 3.0
+    (ite (= x!1 12) 4.0
+    (ite (= x!1 13) 4.0
+    (ite (= x!1 14) 2.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 2.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 3.0
+      7.0)))))))))))))))))))))
+  (define-fun zot-a1108 ((x!1 Int)) Real
+    (ite (= x!1 0) 10.0
+    (ite (= x!1 1) 8.0
+    (ite (= x!1 2) 11.0
+    (ite (= x!1 3) 7.0
+    (ite (= x!1 4) 7.0
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) 7.0
+    (ite (= x!1 7) 3.0
+    (ite (= x!1 8) 6.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 4.0
+    (ite (= x!1 11) 4.0
+    (ite (= x!1 12) 2.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 2.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 3.0
+    (ite (= x!1 19) 6.0
+    (ite (= x!1 20) 1060.0
+      7.0))))))))))))))))))))))
+  (define-fun zot-a1221 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0008333333?
+    (ite (= x!1 3) 0.2708333333?
+    (ite (= x!1 4) 0.7958333333?
+    (ite (= x!1 5) 1.0716666666?
+    (ite (= x!1 6) 1.0966666666?
+    (ite (= x!1 7) 1.5708333333?
+    (ite (= x!1 8) 1.8441666666?
+    (ite (= x!1 9) 1.845
+    (ite (= x!1 10) 2.295
+    (ite (= x!1 11) 2.5966666666?
+    (ite (= x!1 12) 2.6191666666?
+    (ite (= x!1 13) 2.8758333333?
+    (ite (= x!1 14) 3.1483333333?
+    (ite (= x!1 15) 3.1491666666?
+    (ite (= x!1 16) 3.15
+    (ite (= x!1 17) 3.1508333333?
+    (ite (= x!1 18) 3.4208333333?
+    (ite (= x!1 19) 3.4216666666?
+    (ite (= x!1 20) 3.4225
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1199 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 998.1575
+    (ite (= x!1 3) 998.4275
+    (ite (= x!1 4) 998.9525
+    (ite (= x!1 5) 999.2283333333?
+    (ite (= x!1 6) 999.2533333333?
+    (ite (= x!1 7) 999.7275
+    (ite (= x!1 8) 1000.0008333333?
+    (ite (= x!1 9) 1000.0016666666?
+    (ite (= x!1 10) 1000.4516666666?
+    (ite (= x!1 11) 1000.7533333333?
+    (ite (= x!1 12) 1000.7758333333?
+    (ite (= x!1 13) 1001.0325
+    (ite (= x!1 14) 1001.305
+    (ite (= x!1 15) 1001.3058333333?
+    (ite (= x!1 16) 1001.3066666666?
+    (ite (= x!1 17) 1001.3075
+    (ite (= x!1 18) 1001.5775
+    (ite (= x!1 19) 1001.5783333333?
+    (ite (= x!1 20) 1001.5791666666?
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1093 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 8.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 13.0
+    (ite (= x!1 6) 9.0
+    (ite (= x!1 7) 9.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 15.0
+    (ite (= x!1 10) 11.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 11.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 7.0
+    (ite (= x!1 18) 7.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 13.0
+      7.0)))))))))))))))))))))
+  (define-fun zot-a362 ((x!1 Int)) Real
+    (ite (= x!1 0) 5.0
+    (ite (= x!1 1) 2.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 3.0
+    (ite (= x!1 4) (- 1.0)
+    (ite (= x!1 5) (- 1.0)
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) (- 1.0)
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) (- 3.0)
+    (ite (= x!1 11) (- 2.0)
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) (- 2.0)
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) (- 1.0)
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 3.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1033.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1151 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 8.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 6.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 4.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 2.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1149 ((x!1 Int)) Real
+    (ite (= x!1 1) (- 1.0)
+    (ite (= x!1 2) (- 1.0)
+    (ite (= x!1 3) 7.0
+    (ite (= x!1 4) (- 1.0)
+    (ite (= x!1 5) (- 1.0)
+    (ite (= x!1 6) 7.0
+    (ite (= x!1 7) (- 1.0)
+    (ite (= x!1 8) 7.0
+    (ite (= x!1 9) (- 1.0)
+    (ite (= x!1 10) (- 1.0)
+    (ite (= x!1 11) (- 1.0)
+    (ite (= x!1 12) 5.0
+    (ite (= x!1 13) (- 1.0)
+    (ite (= x!1 14) 3.0
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) (- 1.0)
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) (- 1.0)
+    (ite (= x!1 20) (- 1.0)
+      (- 1.0))))))))))))))))))))))
+  (define-fun zot-a1190 ((x!1 Int)) Int
+    (ite (= x!1 0) 1
+    (ite (= x!1 1) 2
+    (ite (= x!1 2) 3
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 1
+    (ite (= x!1 6) 3
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 1
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 3
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 25
+      0))))))))))))))))))))))
+  (define-fun buffer_wpdeserializer ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 4
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 4
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 3
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 2
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 0
+      0)))))))))))))))))))))))
+  (define-fun zot-a611 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 24.0
+    (ite (= x!1 3) 12.0
+    (ite (= x!1 4) 12.0
+    (ite (= x!1 5) 16.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 16.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 16.0
+    (ite (= x!1 11) 14.0
+    (ite (= x!1 12) 14.0
+    (ite (= x!1 13) 18.0
+    (ite (= x!1 14) 18.0
+    (ite (= x!1 15) 18.0
+    (ite (= x!1 16) 18.0
+    (ite (= x!1 17) 20.0
+    (ite (= x!1 18) 20.0
+    (ite (= x!1 19) 12.0
+    (ite (= x!1 20) 12.0
+    (ite (= x!1 21) 1063.0
+      18.0)))))))))))))))))))))))
+  (define-fun zot-a1222 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a1099 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 8.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 13.0
+    (ite (= x!1 6) 9.0
+    (ite (= x!1 7) 9.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 15.0
+    (ite (= x!1 10) 11.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 11.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 7.0
+    (ite (= x!1 18) 7.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 13.0
+      7.0)))))))))))))))))))))
+  (define-fun zot-a1197 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 998.1575
+    (ite (= x!1 3) 998.4275
+    (ite (= x!1 4) 998.9525
+    (ite (= x!1 5) 999.2283333333?
+    (ite (= x!1 6) 999.2533333333?
+    (ite (= x!1 7) 999.7275
+    (ite (= x!1 8) 1000.0008333333?
+    (ite (= x!1 9) 1000.0016666666?
+    (ite (= x!1 10) 1000.4516666666?
+    (ite (= x!1 11) 1000.7533333333?
+    (ite (= x!1 12) 1000.7758333333?
+    (ite (= x!1 13) 1001.0325
+    (ite (= x!1 14) 1001.305
+    (ite (= x!1 15) 1001.3058333333?
+    (ite (= x!1 16) 1001.3066666666?
+    (ite (= x!1 17) 1001.3075
+    (ite (= x!1 18) 1001.5775
+    (ite (= x!1 19) 1001.5783333333?
+    (ite (= x!1 20) 1001.5791666666?
+      0.0)))))))))))))))))))))
+  (define-fun clock_bf_articleextraction ((x!1 Int)) Real
+    (ite (= x!1 1) 998.4308333333?
+    (ite (= x!1 2) 998.7008333333?
+    (ite (= x!1 3) 999.2258333333?
+    (ite (= x!1 4) 999.5016666666?
+    (ite (= x!1 5) 999.5266666666?
+    (ite (= x!1 6) 1000.0008333333?
+    (ite (= x!1 7) 1000.2741666666?
+    (ite (= x!1 8) 1000.275
+    (ite (= x!1 9) 1000.725
+    (ite (= x!1 10) 1001.0266666666?
+    (ite (= x!1 11) 1001.0491666666?
+    (ite (= x!1 12) 1001.3058333333?
+    (ite (= x!1 13) 1001.5783333333?
+    (ite (= x!1 14) 1001.5791666666?
+    (ite (= x!1 15) 1001.58
+    (ite (= x!1 16) 1001.5808333333?
+    (ite (= x!1 17) 1001.8508333333?
+    (ite (= x!1 18) 1001.8516666666?
+    (ite (= x!1 19) 1001.8525
+    (ite (= x!1 20) 1002.1283333333?
+    (ite (= x!1 21) 1002.1291666666?
+    (ite (= x!1 0) 0.0
+      998.4308333333?)))))))))))))))))))))))
+  (define-fun zot-a1132 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) (- 0.0000006)
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) (- 0.0000004)
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) (- 0.0000004)
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1048.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1118 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1055.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1189 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 8
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 8
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 8
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 6
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 4
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 2
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a1219 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.2258333333?
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.525
+    (ite (= x!1 5) 0.8008333333?
+    (ite (= x!1 6) 0.8258333333?
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.2733333333?
+    (ite (= x!1 9) 0.2741666666?
+    (ite (= x!1 10) 0.7241666666?
+    (ite (= x!1 11) 1.0258333333?
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.2566666666?
+    (ite (= x!1 14) 0.5291666666?
+    (ite (= x!1 15) 0.53
+    (ite (= x!1 16) 0.5308333333?
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.27
+    (ite (= x!1 19) 0.2708333333?
+    (ite (= x!1 20) 0.2716666666?
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1106 ((x!1 Int)) Real
+    (ite (= x!1 0) 5.0
+    (ite (= x!1 1) 6.0
+    (ite (= x!1 2) 7.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 5.0
+    (ite (= x!1 6) 7.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 4.0
+    (ite (= x!1 11) 3.0
+    (ite (= x!1 12) 2.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 2.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 3.0
+    (ite (= x!1 19) 3.0
+    (ite (= x!1 20) 1061.0
+      3.0))))))))))))))))))))))
+  (define-fun zot-a454 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 4
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 4
+    (ite (= x!1 8) 4
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 4
+    (ite (= x!1 13) 4
+    (ite (= x!1 14) 4
+    (ite (= x!1 15) 4
+    (ite (= x!1 16) 4
+    (ite (= x!1 17) 4
+    (ite (= x!1 18) 4
+    (ite (= x!1 19) 4
+    (ite (= x!1 20) 37
+      4))))))))))))))))))))))
+  (define-fun zot-a344 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 9.0
+    (ite (= x!1 5) 5.0
+    (ite (= x!1 6) 5.0
+    (ite (= x!1 7) 11.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 3.0
+    (ite (= x!1 15) 3.0
+    (ite (= x!1 16) 3.0
+    (ite (= x!1 17) 3.0
+    (ite (= x!1 18) 9.0
+    (ite (= x!1 19) 9.0
+    (ite (= x!1 20) 9.0
+    (ite (= x!1 21) 1031.0
+      7.0)))))))))))))))))))))))
+  (define-fun zot-a604 ((x!1 Int)) Real
+    (ite (= x!1 0) 1.0
+    (ite (= x!1 1) 5.0
+    (ite (= x!1 2) 6.0
+    (ite (= x!1 3) 7.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 4.0
+    (ite (= x!1 6) 5.0
+    (ite (= x!1 7) 7.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 4.0
+    (ite (= x!1 12) 3.0
+    (ite (= x!1 13) 2.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 2.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 3.0
+    (ite (= x!1 20) 3.0
+    (ite (= x!1 21) 1061.0
+      3.0)))))))))))))))))))))))
+  (define-fun zot-a1098 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 8.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 13.0
+    (ite (= x!1 4) 9.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 11.0
+    (ite (= x!1 7) 15.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 11.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 13.0
+    (ite (= x!1 18) 13.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 1065.0
+      7.0))))))))))))))))))))))
+  (define-fun zot-a1183 ((x!1 Int)) Int
+    (ite (= x!1 1) 1
+    (ite (= x!1 2) 1
+    (ite (= x!1 3) 2
+    (ite (= x!1 4) 3
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 1
+    (ite (= x!1 8) 3
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 3
+      0)))))))))))))))))))))
+  (define-fun pt_mediaextraction_0 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0008333333?
+    (ite (= x!1 2) 0.2708333333?
+    (ite (= x!1 3) 0.7958333333?
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.025
+    (ite (= x!1 6) 0.4991666666?
+    (ite (= x!1 7) 0.7725
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.45
+    (ite (= x!1 10) 0.7516666666?
+    (ite (= x!1 11) 0.7741666666?
+    (ite (= x!1 12) 1.0308333333?
+    (ite (= x!1 13) 1.3033333333?
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0008333333?
+    (ite (= x!1 16) 0.0016666666?
+    (ite (= x!1 17) 0.2716666666?
+    (ite (= x!1 18) 0.2725
+    (ite (= x!1 19) 0.2733333333?
+    (ite (= x!1 20) 0.5491666666?
+    (ite (= x!1 21) 0.55
+    (ite (= x!1 0) 0.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1229 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 1
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 1
+    (ite (= x!1 5) 1
+    (ite (= x!1 6) 1
+    (ite (= x!1 7) 1
+    (ite (= x!1 8) 1
+    (ite (= x!1 9) 1
+    (ite (= x!1 10) 1
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 1
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 1
+    (ite (= x!1 19) 1
+    (ite (= x!1 20) 1
+      1)))))))))))))))))))))
+  (define-fun zot-a1124 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1052.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a332 ((x!1 Int)) Real
+    (ite (= x!1 0) 5.0
+    (ite (= x!1 1) 6.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 7.0
+    (ite (= x!1 4) 3.0
+    (ite (= x!1 5) 3.0
+    (ite (= x!1 6) 4.0
+    (ite (= x!1 7) 3.0
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 1.0
+    (ite (= x!1 12) 2.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 3.0
+    (ite (= x!1 20) 3.0
+    (ite (= x!1 21) 1029.0
+      3.0)))))))))))))))))))))))
+  (define-fun buffer_articleextraction ((x!1 Int)) Int
+    (ite (= x!1 1) 1
+    (ite (= x!1 2) 1
+    (ite (= x!1 3) 1
+    (ite (= x!1 4) 1
+    (ite (= x!1 5) 1
+    (ite (= x!1 6) 1
+    (ite (= x!1 7) 1
+    (ite (= x!1 8) 1
+    (ite (= x!1 9) 1
+    (ite (= x!1 10) 1
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 1
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 1
+    (ite (= x!1 19) 1
+    (ite (= x!1 20) 1
+    (ite (= x!1 21) 22
+    (ite (= x!1 0) 0
+      1)))))))))))))))))))))))
+  (define-fun r_failure_articleextractionwpspout ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 0
+      0)))))))))))))))))))))))
+  (define-fun zot-a1207 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.5508333333?
+    (ite (= x!1 3) 0.8208333333?
+    (ite (= x!1 4) 1.3458333333?
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.025
+    (ite (= x!1 7) 0.4991666666?
+    (ite (= x!1 8) 0.7725
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.45
+    (ite (= x!1 11) 0.7516666666?
+    (ite (= x!1 12) 0.7741666666?
+    (ite (= x!1 13) 1.0308333333?
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0008333333?
+    (ite (= x!1 16) 0.0016666666?
+    (ite (= x!1 17) 0.0025
+    (ite (= x!1 18) 0.2725
+    (ite (= x!1 19) 0.2733333333?
+    (ite (= x!1 20) 0.2741666666?
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1195 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 998.4308333333?
+    (ite (= x!1 3) 998.7008333333?
+    (ite (= x!1 4) 999.2258333333?
+    (ite (= x!1 5) 999.5016666666?
+    (ite (= x!1 6) 999.5266666666?
+    (ite (= x!1 7) 1000.0008333333?
+    (ite (= x!1 8) 1000.2741666666?
+    (ite (= x!1 9) 1000.275
+    (ite (= x!1 10) 1000.725
+    (ite (= x!1 11) 1001.0266666666?
+    (ite (= x!1 12) 1001.0491666666?
+    (ite (= x!1 13) 1001.3058333333?
+    (ite (= x!1 14) 1001.5783333333?
+    (ite (= x!1 15) 1001.5791666666?
+    (ite (= x!1 16) 1001.58
+    (ite (= x!1 17) 1001.5808333333?
+    (ite (= x!1 18) 1001.8508333333?
+    (ite (= x!1 19) 1001.8516666666?
+    (ite (= x!1 20) 1001.8525
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1187 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 9
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 6
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 6
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun delta ((x!1 Int)) Real
+    (ite (= x!1 1) 0.27
+    (ite (= x!1 2) 0.525
+    (ite (= x!1 3) 0.2758333333?
+    (ite (= x!1 4) 0.025
+    (ite (= x!1 5) 0.4741666666?
+    (ite (= x!1 6) 0.2733333333?
+    (ite (= x!1 7) 0.0008333333?
+    (ite (= x!1 8) 0.45
+    (ite (= x!1 9) 0.3016666666?
+    (ite (= x!1 10) 0.0225
+    (ite (= x!1 11) 0.2566666666?
+    (ite (= x!1 12) 0.2725
+    (ite (= x!1 13) 0.0008333333?
+    (ite (= x!1 14) 0.0008333333?
+    (ite (= x!1 15) 0.0008333333?
+    (ite (= x!1 16) 0.27
+    (ite (= x!1 17) 0.0008333333?
+    (ite (= x!1 18) 0.0008333333?
+    (ite (= x!1 19) 0.2758333333?
+    (ite (= x!1 20) 0.0008333333?
+    (ite (= x!1 21) 0.0008333333?
+      0.0008333333?))))))))))))))))))))))
+  (define-fun zot-a1217 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.225
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.27
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.2758333333?
+    (ite (= x!1 6) 0.3008333333?
+    (ite (= x!1 7) 0.775
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0008333333?
+    (ite (= x!1 10) 0.4508333333?
+    (ite (= x!1 11) 0.7525
+    (ite (= x!1 12) 0.775
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.2725
+    (ite (= x!1 15) 0.2733333333?
+    (ite (= x!1 16) 0.2741666666?
+    (ite (= x!1 17) 0.275
+    (ite (= x!1 18) 0.545
+    (ite (= x!1 19) 0.5458333333?
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a504 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 4.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 4.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 3.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 2.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1042.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1235 ((x!1 Int)) Int
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 5
+    (ite (= x!1 3) 2
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 3
+    (ite (= x!1 6) 3
+    (ite (= x!1 7) 3
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 3
+    (ite (= x!1 10) 3
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a1184 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 9
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 6
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 6
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 28
+      0))))))))))))))))))))))
+  (define-fun clock_bf_wpdeserializer ((x!1 Int)) Real
+    (ite (= x!1 1) 998.1575
+    (ite (= x!1 2) 998.4275
+    (ite (= x!1 3) 998.9525
+    (ite (= x!1 4) 999.2283333333?
+    (ite (= x!1 5) 999.2533333333?
+    (ite (= x!1 6) 999.7275
+    (ite (= x!1 7) 1000.0008333333?
+    (ite (= x!1 8) 1000.0016666666?
+    (ite (= x!1 9) 1000.4516666666?
+    (ite (= x!1 10) 1000.7533333333?
+    (ite (= x!1 11) 1000.7758333333?
+    (ite (= x!1 12) 1001.0325
+    (ite (= x!1 13) 1001.305
+    (ite (= x!1 14) 1001.3058333333?
+    (ite (= x!1 15) 1001.3066666666?
+    (ite (= x!1 16) 1001.3075
+    (ite (= x!1 17) 1001.5775
+    (ite (= x!1 18) 1001.5783333333?
+    (ite (= x!1 19) 1001.5791666666?
+    (ite (= x!1 20) 1001.855
+    (ite (= x!1 21) 0.0
+    (ite (= x!1 0) 0.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1180 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 8
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 8
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 8
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 6
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 4
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 2
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 30
+      0))))))))))))))))))))))
+  (define-fun zot-a1178 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 9
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 6
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 6
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 31
+      0))))))))))))))))))))))
+  (define-fun zot-a1239 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 4
+    (ite (= x!1 6) 4
+    (ite (= x!1 7) 4
+    (ite (= x!1 8) 4
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 3
+    (ite (= x!1 11) 3
+    (ite (= x!1 12) 3
+    (ite (= x!1 13) 2
+    (ite (= x!1 14) 2
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 1
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      4)))))))))))))))))))))
+  (define-fun pt_expander_0 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.2058333333?
+    (ite (= x!1 2) 0.4758333333?
+    (ite (= x!1 3) 1.0008333333?
+    (ite (= x!1 4) 1.2766666666?
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.4741666666?
+    (ite (= x!1 7) 0.7475
+    (ite (= x!1 8) 0.7483333333?
+    (ite (= x!1 9) 1.1983333333?
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0225
+    (ite (= x!1 12) 0.2791666666?
+    (ite (= x!1 13) 0.5516666666?
+    (ite (= x!1 14) 0.5525
+    (ite (= x!1 15) 0.5533333333?
+    (ite (= x!1 16) 0.5541666666?
+    (ite (= x!1 17) 0.8241666666?
+    (ite (= x!1 18) 0.825
+    (ite (= x!1 19) 0.8258333333?
+    (ite (= x!1 20) 1.1016666666?
+    (ite (= x!1 21) 1.1025
+    (ite (= x!1 0) 0.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1139 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 6.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 6.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun pt_expander_1 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0008333333?
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.525
+    (ite (= x!1 4) 0.8008333333?
+    (ite (= x!1 5) 0.8258333333?
+    (ite (= x!1 6) 1.3
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0008333333?
+    (ite (= x!1 9) 0.4508333333?
+    (ite (= x!1 10) 0.7525
+    (ite (= x!1 11) 0.775
+    (ite (= x!1 12) 1.0316666666?
+    (ite (= x!1 13) 1.3041666666?
+    (ite (= x!1 14) 1.305
+    (ite (= x!1 15) 1.3058333333?
+    (ite (= x!1 16) 1.3066666666?
+    (ite (= x!1 17) 1.5766666666?
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0008333333?
+    (ite (= x!1 20) 0.2766666666?
+    (ite (= x!1 21) 0.2775
+    (ite (= x!1 0) 0.6741666666?
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1107 ((x!1 Int)) Real
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 5.0
+    (ite (= x!1 3) 6.0
+    (ite (= x!1 4) 7.0
+    (ite (= x!1 5) 4.0
+    (ite (= x!1 6) 4.0
+    (ite (= x!1 7) 5.0
+    (ite (= x!1 8) 7.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 3.0
+    (ite (= x!1 12) 4.0
+    (ite (= x!1 13) 3.0
+    (ite (= x!1 14) 2.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 2.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 3.0
+      0.0)))))))))))))))))))))
+  (define-fun r_process_expander ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 12
+    (ite (= x!1 3) 12
+    (ite (= x!1 4) 12
+    (ite (= x!1 5) 8
+    (ite (= x!1 6) 8
+    (ite (= x!1 7) 8
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 8
+    (ite (= x!1 11) 8
+    (ite (= x!1 12) 8
+    (ite (= x!1 13) 8
+    (ite (= x!1 14) 8
+    (ite (= x!1 15) 8
+    (ite (= x!1 16) 8
+    (ite (= x!1 17) 8
+    (ite (= x!1 18) 8
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 38
+      8)))))))))))))))))))))))
+  (define-fun zot-a506 ((x!1 Int)) Real
+    (ite (= x!1 0) 1.0
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 1.0
+    (ite (= x!1 3) 1.0
+    (ite (= x!1 4) 1.0
+    (ite (= x!1 5) 1.0
+    (ite (= x!1 6) 1.0
+    (ite (= x!1 7) 1.0
+    (ite (= x!1 8) 1.0
+    (ite (= x!1 9) 1.0
+    (ite (= x!1 10) 1.0
+    (ite (= x!1 11) 1.0
+    (ite (= x!1 12) 1.0
+    (ite (= x!1 13) 1.0
+    (ite (= x!1 14) 1.0
+    (ite (= x!1 15) 1.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 1.0
+    (ite (= x!1 20) 1.0
+    (ite (= x!1 21) 1043.0
+      1.0)))))))))))))))))))))))
+  (define-fun zot-a526 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 12
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 8
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 8
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0))))))))))))))))))))))
+  (define-fun zot-a1165 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 5.0
+    (ite (= x!1 7) 5.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 11.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 3.0
+    (ite (= x!1 17) 3.0
+    (ite (= x!1 18) 3.0
+    (ite (= x!1 19) 9.0
+    (ite (= x!1 20) 9.0
+      7.0)))))))))))))))))))))
+  (define-fun zot-a1136 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 9.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 6.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 6.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1046.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1198 ((x!1 Int)) Real
+    (ite (= x!1 0) 998.1575
+    (ite (= x!1 1) 998.4275
+    (ite (= x!1 2) 998.9525
+    (ite (= x!1 3) 999.2283333333?
+    (ite (= x!1 4) 999.2533333333?
+    (ite (= x!1 5) 999.7275
+    (ite (= x!1 6) 1000.0008333333?
+    (ite (= x!1 7) 1000.0016666666?
+    (ite (= x!1 8) 1000.4516666666?
+    (ite (= x!1 9) 1000.7533333333?
+    (ite (= x!1 10) 1000.7758333333?
+    (ite (= x!1 11) 1001.0325
+    (ite (= x!1 12) 1001.305
+    (ite (= x!1 13) 1001.3058333333?
+    (ite (= x!1 14) 1001.3066666666?
+    (ite (= x!1 15) 1001.3075
+    (ite (= x!1 16) 1001.5775
+    (ite (= x!1 17) 1001.5783333333?
+    (ite (= x!1 18) 1001.5791666666?
+    (ite (= x!1 19) 1001.855
+    (ite (= x!1 20) 0.0
+      998.1575))))))))))))))))))))))
+  (define-fun zot-a1153 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 8.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 6.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 4.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 2.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun l_emit_wpspout ((x!1 Int)) Int
+    (ite (= x!1 0) 1
+    (ite (= x!1 1) 1
+    (ite (= x!1 2) 2
+    (ite (= x!1 3) 3
+    (ite (= x!1 4) 3
+    (ite (= x!1 5) 5
+    (ite (= x!1 6) 1
+    (ite (= x!1 7) 3
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 5
+    (ite (= x!1 10) 3
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 1
+    (ite (= x!1 15) 4
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 4
+    (ite (= x!1 18) 1
+    (ite (= x!1 19) 3
+    (ite (= x!1 20) 5
+    (ite (= x!1 21) 35
+      1)))))))))))))))))))))))
+  (define-fun zot-a1209 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.6741666666?
+    (ite (= x!1 2) 0.0008333333?
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.525
+    (ite (= x!1 5) 0.8008333333?
+    (ite (= x!1 6) 0.8258333333?
+    (ite (= x!1 7) 1.3
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0008333333?
+    (ite (= x!1 10) 0.4508333333?
+    (ite (= x!1 11) 0.7525
+    (ite (= x!1 12) 0.775
+    (ite (= x!1 13) 1.0316666666?
+    (ite (= x!1 14) 1.3041666666?
+    (ite (= x!1 15) 1.305
+    (ite (= x!1 16) 1.3058333333?
+    (ite (= x!1 17) 1.3066666666?
+    (ite (= x!1 18) 1.5766666666?
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0008333333?
+      0.0)))))))))))))))))))))
+  (define-fun zot-a444 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 12
+    (ite (= x!1 2) 12
+    (ite (= x!1 3) 12
+    (ite (= x!1 4) 8
+    (ite (= x!1 5) 8
+    (ite (= x!1 6) 8
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 8
+    (ite (= x!1 10) 8
+    (ite (= x!1 11) 8
+    (ite (= x!1 12) 8
+    (ite (= x!1 13) 8
+    (ite (= x!1 14) 8
+    (ite (= x!1 15) 8
+    (ite (= x!1 16) 8
+    (ite (= x!1 17) 8
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 38
+      8))))))))))))))))))))))
+  (define-fun zot-a1150 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 8.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 8.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 6.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 4.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 2.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1039.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1224 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a627 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 8.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 13.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 9.0
+    (ite (= x!1 7) 11.0
+    (ite (= x!1 8) 15.0
+    (ite (= x!1 9) 11.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 11.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 7.0
+    (ite (= x!1 18) 13.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 13.0
+    (ite (= x!1 21) 1069.0
+      7.0)))))))))))))))))))))))
+  (define-fun pt_wpdeserializer_1 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.27
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.2758333333?
+    (ite (= x!1 5) 0.3008333333?
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.2733333333?
+    (ite (= x!1 8) 0.2741666666?
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.3016666666?
+    (ite (= x!1 11) 0.3241666666?
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.2725
+    (ite (= x!1 14) 0.2733333333?
+    (ite (= x!1 15) 0.2741666666?
+    (ite (= x!1 16) 0.275
+    (ite (= x!1 17) 0.545
+    (ite (= x!1 18) 0.5458333333?
+    (ite (= x!1 19) 0.5466666666?
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 0.0
+    (ite (= x!1 0) 100.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1174 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 34
+      0))))))))))))))))))))))
+  (define-fun zot-a350 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 9.0
+    (ite (= x!1 5) 5.0
+    (ite (= x!1 6) 5.0
+    (ite (= x!1 7) 11.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 3.0
+    (ite (= x!1 16) 3.0
+    (ite (= x!1 17) 3.0
+    (ite (= x!1 18) 9.0
+    (ite (= x!1 19) 9.0
+    (ite (= x!1 20) 9.0
+    (ite (= x!1 21) 1032.0
+      7.0)))))))))))))))))))))))
+  (define-fun zot-a1138 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 9.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 6.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 6.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1045.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1238 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 12
+    (ite (= x!1 4) 12
+    (ite (= x!1 5) 12
+    (ite (= x!1 6) 8
+    (ite (= x!1 7) 8
+    (ite (= x!1 8) 8
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 8
+    (ite (= x!1 12) 8
+    (ite (= x!1 13) 8
+    (ite (= x!1 14) 8
+    (ite (= x!1 15) 8
+    (ite (= x!1 16) 8
+    (ite (= x!1 17) 8
+    (ite (= x!1 18) 8
+    (ite (= x!1 19) 8
+    (ite (= x!1 20) 0
+      8)))))))))))))))))))))
+  (define-fun zot-a1130 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 12.0000006
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 8.0000004
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 8.0000004
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1049.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1116 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1056.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1169 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 12.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 8.0
+    (ite (= x!1 11) 8.0
+    (ite (= x!1 12) 6.0
+    (ite (= x!1 13) 6.0
+    (ite (= x!1 14) 10.0
+    (ite (= x!1 15) 10.0
+    (ite (= x!1 16) 10.0
+    (ite (= x!1 17) 10.0
+    (ite (= x!1 18) 12.0
+    (ite (= x!1 19) 12.0
+    (ite (= x!1 20) 12.0
+      8.0)))))))))))))))))))))
+  (define-fun zot-a593 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1055.0
+      0.0)))))))))))))))))))))))
+  (define-fun pt_articleextraction_0 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.5508333333?
+    (ite (= x!1 2) 0.8208333333?
+    (ite (= x!1 3) 1.3458333333?
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.025
+    (ite (= x!1 6) 0.4991666666?
+    (ite (= x!1 7) 0.7725
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.45
+    (ite (= x!1 10) 0.7516666666?
+    (ite (= x!1 11) 0.7741666666?
+    (ite (= x!1 12) 1.0308333333?
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0008333333?
+    (ite (= x!1 15) 0.0016666666?
+    (ite (= x!1 16) 0.0025
+    (ite (= x!1 17) 0.2725
+    (ite (= x!1 18) 0.2733333333?
+    (ite (= x!1 19) 0.2741666666?
+    (ite (= x!1 20) 0.55
+    (ite (= x!1 21) 0.5508333333?
+    (ite (= x!1 0) 0.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1232 ((x!1 Int)) Int
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 5
+    (ite (= x!1 7) 5
+    (ite (= x!1 8) 5
+    (ite (= x!1 9) 11
+    (ite (= x!1 10) 7
+    (ite (= x!1 11) 7
+    (ite (= x!1 12) 7
+    (ite (= x!1 13) 7
+    (ite (= x!1 14) 7
+    (ite (= x!1 15) 7
+    (ite (= x!1 16) 3
+    (ite (= x!1 17) 3
+    (ite (= x!1 18) 3
+    (ite (= x!1 19) 3
+    (ite (= x!1 20) 9
+      7)))))))))))))))))))))
+  (define-fun zot-a1129 ((x!1 Int)) Real
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 1.0
+    (ite (= x!1 3) 1.0
+    (ite (= x!1 4) 1.0
+    (ite (= x!1 5) 0.9999994
+    (ite (= x!1 6) 1.0
+    (ite (= x!1 7) 1.0
+    (ite (= x!1 8) 0.9999996
+    (ite (= x!1 9) 1.0
+    (ite (= x!1 10) 1.0
+    (ite (= x!1 11) 1.0
+    (ite (= x!1 12) 1.0
+    (ite (= x!1 13) 1.0
+    (ite (= x!1 14) 1.0
+    (ite (= x!1 15) 1.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 0.9999996
+    (ite (= x!1 20) 1.0
+      1.0)))))))))))))))))))))
+  (define-fun zot-a349 ((x!1 Int)) Int
+    (ite (= x!1 0) 4
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 5
+    (ite (= x!1 5) 5
+    (ite (= x!1 6) 5
+    (ite (= x!1 7) 11
+    (ite (= x!1 8) 7
+    (ite (= x!1 9) 7
+    (ite (= x!1 10) 7
+    (ite (= x!1 11) 7
+    (ite (= x!1 12) 7
+    (ite (= x!1 13) 7
+    (ite (= x!1 14) 3
+    (ite (= x!1 15) 3
+    (ite (= x!1 16) 3
+    (ite (= x!1 17) 3
+    (ite (= x!1 18) 9
+    (ite (= x!1 19) 9
+    (ite (= x!1 20) 9
+      7))))))))))))))))))))))
+  (define-fun zot-a366 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) (- 12.0)
+    (ite (= x!1 4) (- 12.0)
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) (- 8.0)
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) (- 2.0)
+    (ite (= x!1 12) (- 2.0)
+    (ite (= x!1 13) 2.0
+    (ite (= x!1 14) 2.0
+    (ite (= x!1 15) 2.0
+    (ite (= x!1 16) 2.0
+    (ite (= x!1 17) 4.0
+    (ite (= x!1 18) 4.0
+    (ite (= x!1 19) 12.0
+    (ite (= x!1 20) 12.0
+    (ite (= x!1 21) 1034.0
+      0.0)))))))))))))))))))))))
+  (define-fun r_replay_wpspout ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 24
+      0)))))))))))))))))))))))
+  (define-fun zot-a1114 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1057.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1102 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 24.0
+    (ite (= x!1 2) 12.0
+    (ite (= x!1 3) 12.0
+    (ite (= x!1 4) 16.0
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) 16.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 16.0
+    (ite (= x!1 10) 14.0
+    (ite (= x!1 11) 14.0
+    (ite (= x!1 12) 18.0
+    (ite (= x!1 13) 18.0
+    (ite (= x!1 14) 18.0
+    (ite (= x!1 15) 18.0
+    (ite (= x!1 16) 20.0
+    (ite (= x!1 17) 20.0
+    (ite (= x!1 18) 12.0
+    (ite (= x!1 19) 12.0
+    (ite (= x!1 20) 1063.0
+      18.0))))))))))))))))))))))
+  (define-fun zot-a1133 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) (- 0.0000006)
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) (- 0.0000004)
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) (- 0.0000004)
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1155 ((x!1 Int)) Real
+    (ite (= x!1 1) (- 1.0)
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 8.0
+    (ite (= x!1 5) 4.0
+    (ite (= x!1 6) 4.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 4.0
+    (ite (= x!1 9) 4.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 3.0
+    (ite (= x!1 12) 3.0
+    (ite (= x!1 13) 5.0
+    (ite (= x!1 14) 2.0
+    (ite (= x!1 15) 2.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 1.0
+    (ite (= x!1 20) 0.0
+      4.0)))))))))))))))))))))
+  (define-fun zot-a1123 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun clock_bf_mediaextraction ((x!1 Int)) Real
+    (ite (= x!1 1) 999.7308333333?
+    (ite (= x!1 2) 1000.0008333333?
+    (ite (= x!1 3) 1000.5258333333?
+    (ite (= x!1 4) 1000.8016666666?
+    (ite (= x!1 5) 1000.8266666666?
+    (ite (= x!1 6) 1001.3008333333?
+    (ite (= x!1 7) 1001.5741666666?
+    (ite (= x!1 8) 1001.575
+    (ite (= x!1 9) 1002.025
+    (ite (= x!1 10) 1002.3266666666?
+    (ite (= x!1 11) 1002.3491666666?
+    (ite (= x!1 12) 1002.6058333333?
+    (ite (= x!1 13) 1002.8783333333?
+    (ite (= x!1 14) 1002.8791666666?
+    (ite (= x!1 15) 1002.88
+    (ite (= x!1 16) 1002.8808333333?
+    (ite (= x!1 17) 1003.1508333333?
+    (ite (= x!1 18) 1003.1516666666?
+    (ite (= x!1 19) 1003.1525
+    (ite (= x!1 20) 1003.4283333333?
+    (ite (= x!1 21) 0.0
+    (ite (= x!1 0) 0.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1097 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 8.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 13.0
+    (ite (= x!1 6) 9.0
+    (ite (= x!1 7) 9.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 15.0
+    (ite (= x!1 10) 11.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 11.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 7.0
+    (ite (= x!1 18) 7.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 13.0
+      7.0)))))))))))))))))))))
+  (define-fun zot-a1223 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a1103 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 24.0
+    (ite (= x!1 4) 12.0
+    (ite (= x!1 5) 12.0
+    (ite (= x!1 6) 16.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 16.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 8.0
+    (ite (= x!1 11) 16.0
+    (ite (= x!1 12) 14.0
+    (ite (= x!1 13) 14.0
+    (ite (= x!1 14) 18.0
+    (ite (= x!1 15) 18.0
+    (ite (= x!1 16) 18.0
+    (ite (= x!1 17) 18.0
+    (ite (= x!1 18) 20.0
+    (ite (= x!1 19) 20.0
+    (ite (= x!1 20) 12.0
+      18.0)))))))))))))))))))))
+  (define-fun totaltime ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0008333333?
+    (ite (= x!1 2) 0.2708333333?
+    (ite (= x!1 3) 0.7958333333?
+    (ite (= x!1 4) 1.0716666666?
+    (ite (= x!1 5) 1.0966666666?
+    (ite (= x!1 6) 1.5708333333?
+    (ite (= x!1 7) 1.8441666666?
+    (ite (= x!1 8) 1.845
+    (ite (= x!1 9) 2.295
+    (ite (= x!1 10) 2.5966666666?
+    (ite (= x!1 11) 2.6191666666?
+    (ite (= x!1 12) 2.8758333333?
+    (ite (= x!1 13) 3.1483333333?
+    (ite (= x!1 14) 3.1491666666?
+    (ite (= x!1 15) 3.15
+    (ite (= x!1 16) 3.1508333333?
+    (ite (= x!1 17) 3.4208333333?
+    (ite (= x!1 18) 3.4216666666?
+    (ite (= x!1 19) 3.4225
+    (ite (= x!1 20) 3.6983333333?
+    (ite (= x!1 21) 3.6991666666?
+    (ite (= x!1 0) 0.0
+      0.0008333333?)))))))))))))))))))))))
+  (define-fun zot-a1212 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.27
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.2758333333?
+    (ite (= x!1 4) 0.3008333333?
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.2733333333?
+    (ite (= x!1 7) 0.2741666666?
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.3016666666?
+    (ite (= x!1 10) 0.3241666666?
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.2725
+    (ite (= x!1 13) 0.2733333333?
+    (ite (= x!1 14) 0.2741666666?
+    (ite (= x!1 15) 0.275
+    (ite (= x!1 16) 0.545
+    (ite (= x!1 17) 0.5458333333?
+    (ite (= x!1 18) 0.5466666666?
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1101 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 20.0
+    (ite (= x!1 4) 12.0
+    (ite (= x!1 5) 12.0
+    (ite (= x!1 6) 16.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 16.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 8.0
+    (ite (= x!1 12) 14.0
+    (ite (= x!1 13) 8.0
+    (ite (= x!1 14) 12.0
+    (ite (= x!1 15) 8.0
+    (ite (= x!1 16) 8.0
+    (ite (= x!1 17) 8.0
+    (ite (= x!1 18) 10.0
+    (ite (= x!1 19) 8.0
+    (ite (= x!1 20) 0.0
+      8.0)))))))))))))))))))))
+  (define-fun q_wpdeserializer ((x!1 Int)) Int
+    (ite (= x!1 0) 4
+    (ite (= x!1 1) 5
+    (ite (= x!1 2) 2
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 3
+    (ite (= x!1 5) 3
+    (ite (= x!1 6) 3
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 3
+    (ite (= x!1 9) 3
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 3
+    (ite (= x!1 21) 0
+      0)))))))))))))))))))))))
+  (define-fun zot-a1122 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1053.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1092 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 8.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 13.0
+    (ite (= x!1 4) 9.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 11.0
+    (ite (= x!1 7) 15.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 11.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 13.0
+    (ite (= x!1 18) 13.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 1068.0
+      7.0))))))))))))))))))))))
+  (define-fun zot-a1182 ((x!1 Int)) Int
+    (ite (= x!1 0) 1
+    (ite (= x!1 1) 2
+    (ite (= x!1 2) 3
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 1
+    (ite (= x!1 6) 3
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 1
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 3
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 29
+      0))))))))))))))))))))))
+  (define-fun zot-a1128 ((x!1 Int)) Real
+    (ite (= x!1 0) 1.0
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 1.0
+    (ite (= x!1 3) 0.9999994
+    (ite (= x!1 4) 1.0
+    (ite (= x!1 5) 1.0
+    (ite (= x!1 6) 0.9999996
+    (ite (= x!1 7) 1.0
+    (ite (= x!1 8) 1.0
+    (ite (= x!1 9) 1.0
+    (ite (= x!1 10) 1.0
+    (ite (= x!1 11) 1.0
+    (ite (= x!1 12) 1.0
+    (ite (= x!1 13) 1.0
+    (ite (= x!1 14) 1.0
+    (ite (= x!1 15) 1.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 0.9999996
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 1.0
+    (ite (= x!1 20) 1050.0
+      1.0))))))))))))))))))))))
+  (define-fun r_add_mediaextraction ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 9
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 6
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 6
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 28
+      0)))))))))))))))))))))))
+  (define-fun r_add_articleextraction ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 9
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 6
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 6
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 27
+      0)))))))))))))))))))))))
+  (define-fun pt_articleextraction_1 ((x!1 Int)) Real
+    (ite (= x!1 1) 1.0008333333?
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.525
+    (ite (= x!1 4) 0.8008333333?
+    (ite (= x!1 5) 0.8258333333?
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.2733333333?
+    (ite (= x!1 8) 0.2741666666?
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.3016666666?
+    (ite (= x!1 11) 0.3241666666?
+    (ite (= x!1 12) 0.5808333333?
+    (ite (= x!1 13) 0.8533333333?
+    (ite (= x!1 14) 0.8541666666?
+    (ite (= x!1 15) 0.855
+    (ite (= x!1 16) 0.8558333333?
+    (ite (= x!1 17) 1.1258333333?
+    (ite (= x!1 18) 1.1266666666?
+    (ite (= x!1 19) 1.1275
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 0.0008333333?
+    (ite (= x!1 0) 100.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1170 ((x!1 Int)) Real
+    (ite (= x!1 0) 6.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 7.0
+    (ite (= x!1 3) 3.0
+    (ite (= x!1 4) 3.0
+    (ite (= x!1 5) 4.0
+    (ite (= x!1 6) 3.0
+    (ite (= x!1 7) 3.0
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 1.0
+    (ite (= x!1 11) 2.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 1.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 3.0
+    (ite (= x!1 19) 3.0
+    (ite (= x!1 20) 1029.0
+      3.0))))))))))))))))))))))
+  (define-fun r_failure_expanderwpspout ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 0
+      0)))))))))))))))))))))))
+  (define-fun zot-a530 ((x!1 Int)) Real
+    (ite (= x!1 0) 1.0
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 1.0
+    (ite (= x!1 3) 1.0
+    (ite (= x!1 4) 0.9999994
+    (ite (= x!1 5) 1.0
+    (ite (= x!1 6) 1.0
+    (ite (= x!1 7) 0.9999996
+    (ite (= x!1 8) 1.0
+    (ite (= x!1 9) 1.0
+    (ite (= x!1 10) 1.0
+    (ite (= x!1 11) 1.0
+    (ite (= x!1 12) 1.0
+    (ite (= x!1 13) 1.0
+    (ite (= x!1 14) 1.0
+    (ite (= x!1 15) 1.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 0.9999996
+    (ite (= x!1 19) 1.0
+    (ite (= x!1 20) 1.0
+    (ite (= x!1 21) 1050.0
+      1.0)))))))))))))))))))))))
+  (define-fun zot-a1188 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 8
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 8
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 8
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 6
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 4
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 2
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 26
+      0))))))))))))))))))))))
+  (define-fun zot-a1148 ((x!1 Int)) Real
+    (ite (= x!1 0) (- 1.0)
+    (ite (= x!1 1) 7.0
+    (ite (= x!1 2) (- 1.0)
+    (ite (= x!1 3) (- 1.0)
+    (ite (= x!1 4) 7.0
+    (ite (= x!1 5) (- 1.0)
+    (ite (= x!1 6) 7.0
+    (ite (= x!1 7) (- 1.0)
+    (ite (= x!1 8) (- 1.0)
+    (ite (= x!1 9) (- 1.0)
+    (ite (= x!1 10) 5.0
+    (ite (= x!1 11) (- 1.0)
+    (ite (= x!1 12) 3.0
+    (ite (= x!1 13) (- 1.0)
+    (ite (= x!1 14) (- 1.0)
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) (- 1.0)
+    (ite (= x!1 18) (- 1.0)
+    (ite (= x!1 19) (- 1.0)
+    (ite (= x!1 20) 1040.0
+      (- 1.0)))))))))))))))))))))))
+  (define-fun zot-a1095 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 13.0
+    (ite (= x!1 6) 4.0
+    (ite (= x!1 7) 4.0
+    (ite (= x!1 8) 6.0
+    (ite (= x!1 9) 4.0
+    (ite (= x!1 10) 4.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 4.0
+    (ite (= x!1 15) 4.0
+    (ite (= x!1 16) 4.0
+    (ite (= x!1 17) 4.0
+    (ite (= x!1 18) 4.0
+    (ite (= x!1 19) 10.0
+    (ite (= x!1 20) 4.0
+      4.0)))))))))))))))))))))
+  (define-fun zot-a1143 ((x!1 Int)) Real
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 1.0
+    (ite (= x!1 3) 1.0
+    (ite (= x!1 4) 1.0
+    (ite (= x!1 5) 1.0
+    (ite (= x!1 6) 1.0
+    (ite (= x!1 7) 1.0
+    (ite (= x!1 8) 1.0
+    (ite (= x!1 9) 1.0
+    (ite (= x!1 10) 1.0
+    (ite (= x!1 11) 1.0
+    (ite (= x!1 12) 1.0
+    (ite (= x!1 13) 1.0
+    (ite (= x!1 14) 1.0
+    (ite (= x!1 15) 1.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 1.0
+    (ite (= x!1 20) 1.0
+      1.0)))))))))))))))))))))
+  (define-fun r_emit_articleextraction ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 33
+    (ite (= x!1 0) 0
+      0)))))))))))))))))))))))
+  (define-fun zot-a591 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1053.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1226 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 24
+      0))))))))))))))))))))))
+  (define-fun zot-a1115 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a519 ((x!1 Int)) Int
+    (ite (= x!1 0) 1
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 12
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 8
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 8
+    (ite (= x!1 20) 0
+      0))))))))))))))))))))))
+  (define-fun zot-a1216 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.27
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.2758333333?
+    (ite (= x!1 4) 0.3008333333?
+    (ite (= x!1 5) 0.775
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0008333333?
+    (ite (= x!1 8) 0.4508333333?
+    (ite (= x!1 9) 0.7525
+    (ite (= x!1 10) 0.775
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.2725
+    (ite (= x!1 13) 0.2733333333?
+    (ite (= x!1 14) 0.2741666666?
+    (ite (= x!1 15) 0.275
+    (ite (= x!1 16) 0.545
+    (ite (= x!1 17) 0.5458333333?
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.2758333333?
+    (ite (= x!1 20) 0.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1100 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 20.0
+    (ite (= x!1 2) 12.0
+    (ite (= x!1 3) 12.0
+    (ite (= x!1 4) 16.0
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) 16.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 14.0
+    (ite (= x!1 11) 8.0
+    (ite (= x!1 12) 12.0
+    (ite (= x!1 13) 8.0
+    (ite (= x!1 14) 8.0
+    (ite (= x!1 15) 8.0
+    (ite (= x!1 16) 10.0
+    (ite (= x!1 17) 8.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1064.0
+      8.0))))))))))))))))))))))
+  (define-fun zot-a1181 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 8
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 8
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 8
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 6
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 4
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 2
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a498 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 8.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 6.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 4.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 2.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1039.0
+      0.0)))))))))))))))))))))))
+  (define-fun pt_mediaextraction_1 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0008333333?
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.525
+    (ite (= x!1 4) 0.8008333333?
+    (ite (= x!1 5) 0.8258333333?
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.2733333333?
+    (ite (= x!1 8) 0.2741666666?
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.3016666666?
+    (ite (= x!1 11) 0.3241666666?
+    (ite (= x!1 12) 0.5808333333?
+    (ite (= x!1 13) 0.8533333333?
+    (ite (= x!1 14) 0.8541666666?
+    (ite (= x!1 15) 0.855
+    (ite (= x!1 16) 0.8558333333?
+    (ite (= x!1 17) 1.1258333333?
+    (ite (= x!1 18) 1.1266666666?
+    (ite (= x!1 19) 1.1275
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 0.0008333333?
+    (ite (= x!1 0) 1.0008333333?
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1171 ((x!1 Int)) Real
+    (ite (= x!1 1) 5.0
+    (ite (= x!1 2) 6.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 7.0
+    (ite (= x!1 5) 3.0
+    (ite (= x!1 6) 3.0
+    (ite (= x!1 7) 4.0
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 1.0
+    (ite (= x!1 13) 2.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 3.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a602 ((x!1 Int)) Real
+    (ite (= x!1 0) 5.0
+    (ite (= x!1 1) 10.0
+    (ite (= x!1 2) 8.0
+    (ite (= x!1 3) 11.0
+    (ite (= x!1 4) 7.0
+    (ite (= x!1 5) 7.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 7.0
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 6.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 4.0
+    (ite (= x!1 12) 4.0
+    (ite (= x!1 13) 2.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 2.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 3.0
+    (ite (= x!1 20) 6.0
+    (ite (= x!1 21) 1059.0
+      7.0)))))))))))))))))))))))
+  (define-fun zot-a503 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1041.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1196 ((x!1 Int)) Real
+    (ite (= x!1 0) 998.1575
+    (ite (= x!1 1) 998.4275
+    (ite (= x!1 2) 998.9525
+    (ite (= x!1 3) 999.2283333333?
+    (ite (= x!1 4) 999.2533333333?
+    (ite (= x!1 5) 999.7275
+    (ite (= x!1 6) 1000.0008333333?
+    (ite (= x!1 7) 1000.0016666666?
+    (ite (= x!1 8) 1000.4516666666?
+    (ite (= x!1 9) 1000.7533333333?
+    (ite (= x!1 10) 1000.7758333333?
+    (ite (= x!1 11) 1001.0325
+    (ite (= x!1 12) 1001.305
+    (ite (= x!1 13) 1001.3058333333?
+    (ite (= x!1 14) 1001.3066666666?
+    (ite (= x!1 15) 1001.3075
+    (ite (= x!1 16) 1001.5775
+    (ite (= x!1 17) 1001.5783333333?
+    (ite (= x!1 18) 1001.5791666666?
+    (ite (= x!1 19) 1001.855
+    (ite (= x!1 20) 1001.8558333333?
+      998.1575))))))))))))))))))))))
+  (define-fun zot-a609 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0))))))))))))))))))))))
+  (define-fun q_mediaextraction ((x!1 Int)) Int
+    (ite (= x!1 0) 4
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 5
+    (ite (= x!1 6) 5
+    (ite (= x!1 7) 5
+    (ite (= x!1 8) 11
+    (ite (= x!1 9) 7
+    (ite (= x!1 10) 7
+    (ite (= x!1 11) 7
+    (ite (= x!1 12) 7
+    (ite (= x!1 13) 7
+    (ite (= x!1 14) 7
+    (ite (= x!1 15) 3
+    (ite (= x!1 16) 3
+    (ite (= x!1 17) 3
+    (ite (= x!1 18) 3
+    (ite (= x!1 19) 9
+    (ite (= x!1 20) 9
+    (ite (= x!1 21) 9
+      7)))))))))))))))))))))))
+  (define-fun zot-a1206 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.5508333333?
+    (ite (= x!1 1) 0.8208333333?
+    (ite (= x!1 2) 1.3458333333?
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.025
+    (ite (= x!1 5) 0.4991666666?
+    (ite (= x!1 6) 0.7725
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.45
+    (ite (= x!1 9) 0.7516666666?
+    (ite (= x!1 10) 0.7741666666?
+    (ite (= x!1 11) 1.0308333333?
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0008333333?
+    (ite (= x!1 14) 0.0016666666?
+    (ite (= x!1 15) 0.0025
+    (ite (= x!1 16) 0.2725
+    (ite (= x!1 17) 0.2733333333?
+    (ite (= x!1 18) 0.2741666666?
+    (ite (= x!1 19) 0.55
+    (ite (= x!1 20) 0.5508333333?
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1094 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 13.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 4.0
+    (ite (= x!1 6) 6.0
+    (ite (= x!1 7) 4.0
+    (ite (= x!1 8) 4.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 4.0
+    (ite (= x!1 13) 4.0
+    (ite (= x!1 14) 4.0
+    (ite (= x!1 15) 4.0
+    (ite (= x!1 16) 4.0
+    (ite (= x!1 17) 10.0
+    (ite (= x!1 18) 4.0
+    (ite (= x!1 19) 4.0
+    (ite (= x!1 20) 1067.0
+      4.0))))))))))))))))))))))
+  (define-fun zot-a1163 ((x!1 Int)) Real
+    (ite (= x!1 1) 5.0
+    (ite (= x!1 2) 2.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 3.0
+    (ite (= x!1 5) (- 1.0)
+    (ite (= x!1 6) (- 1.0)
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) (- 1.0)
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) (- 3.0)
+    (ite (= x!1 12) (- 2.0)
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) (- 2.0)
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) (- 1.0)
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 3.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a518 ((x!1 Int)) Real
+    (ite (= x!1 0) 1.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 12.0
+    (ite (= x!1 3) 12.0
+    (ite (= x!1 4) 12.0
+    (ite (= x!1 5) 20.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 8.0
+    (ite (= x!1 11) 8.0
+    (ite (= x!1 12) 8.0
+    (ite (= x!1 13) 8.0
+    (ite (= x!1 14) 8.0
+    (ite (= x!1 15) 8.0
+    (ite (= x!1 16) 8.0
+    (ite (= x!1 17) 8.0
+    (ite (= x!1 18) 8.0
+    (ite (= x!1 19) 8.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1044.0
+      8.0)))))))))))))))))))))))
+  (define-fun zot-a1186 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 9
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 6
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 6
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 27
+      0))))))))))))))))))))))
+  (define-fun zot-a1162 ((x!1 Int)) Real
+    (ite (= x!1 0) 2.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 3.0
+    (ite (= x!1 3) (- 1.0)
+    (ite (= x!1 4) (- 1.0)
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) (- 1.0)
+    (ite (= x!1 7) 3.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) (- 3.0)
+    (ite (= x!1 10) (- 2.0)
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) (- 2.0)
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 3.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1033.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a590 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1052.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a497 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 8.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 6.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 4.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 2.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1038.0
+      0.0)))))))))))))))))))))))
+  (define-fun r_add_expander ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 8
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 8
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 8
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 6
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 4
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 2
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 26
+      0)))))))))))))))))))))))
+  (define-fun zot-a1160 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) (- 12.0)
+    (ite (= x!1 3) (- 12.0)
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) (- 8.0)
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) (- 2.0)
+    (ite (= x!1 11) (- 2.0)
+    (ite (= x!1 12) 2.0
+    (ite (= x!1 13) 2.0
+    (ite (= x!1 14) 2.0
+    (ite (= x!1 15) 2.0
+    (ite (= x!1 16) 4.0
+    (ite (= x!1 17) 4.0
+    (ite (= x!1 18) 12.0
+    (ite (= x!1 19) 12.0
+    (ite (= x!1 20) 1034.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a522 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 9.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 6.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 6.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1046.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a338 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 12.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 8.0
+    (ite (= x!1 11) 6.0
+    (ite (= x!1 12) 6.0
+    (ite (= x!1 13) 10.0
+    (ite (= x!1 14) 10.0
+    (ite (= x!1 15) 10.0
+    (ite (= x!1 16) 10.0
+    (ite (= x!1 17) 12.0
+    (ite (= x!1 18) 12.0
+    (ite (= x!1 19) 12.0
+    (ite (= x!1 20) 12.0
+    (ite (= x!1 21) 1030.0
+      8.0)))))))))))))))))))))))
+  (define-fun zot-a1088 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 13.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 4.0
+    (ite (= x!1 6) 6.0
+    (ite (= x!1 7) 4.0
+    (ite (= x!1 8) 4.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 4.0
+    (ite (= x!1 14) 4.0
+    (ite (= x!1 15) 4.0
+    (ite (= x!1 16) 4.0
+    (ite (= x!1 17) 10.0
+    (ite (= x!1 18) 4.0
+    (ite (= x!1 19) 4.0
+    (ite (= x!1 20) 1070.0
+      4.0))))))))))))))))))))))
+  (define-fun zot-a1191 ((x!1 Int)) Int
+    (ite (= x!1 1) 1
+    (ite (= x!1 2) 1
+    (ite (= x!1 3) 2
+    (ite (= x!1 4) 3
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 1
+    (ite (= x!1 8) 3
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 3
+      0)))))))))))))))))))))
+  (define-fun zot-a1208 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0008333333?
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.525
+    (ite (= x!1 3) 0.8008333333?
+    (ite (= x!1 4) 0.8258333333?
+    (ite (= x!1 5) 1.3
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0008333333?
+    (ite (= x!1 8) 0.4508333333?
+    (ite (= x!1 9) 0.7525
+    (ite (= x!1 10) 0.775
+    (ite (= x!1 11) 1.0316666666?
+    (ite (= x!1 12) 1.3041666666?
+    (ite (= x!1 13) 1.305
+    (ite (= x!1 14) 1.3058333333?
+    (ite (= x!1 15) 1.3066666666?
+    (ite (= x!1 16) 1.5766666666?
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0008333333?
+    (ite (= x!1 19) 0.2766666666?
+    (ite (= x!1 20) 0.2775
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1220 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0008333333?
+    (ite (= x!1 1) 0.2708333333?
+    (ite (= x!1 2) 0.7958333333?
+    (ite (= x!1 3) 1.0716666666?
+    (ite (= x!1 4) 1.0966666666?
+    (ite (= x!1 5) 1.5708333333?
+    (ite (= x!1 6) 1.8441666666?
+    (ite (= x!1 7) 1.845
+    (ite (= x!1 8) 2.295
+    (ite (= x!1 9) 2.5966666666?
+    (ite (= x!1 10) 2.6191666666?
+    (ite (= x!1 11) 2.8758333333?
+    (ite (= x!1 12) 3.1483333333?
+    (ite (= x!1 13) 3.1491666666?
+    (ite (= x!1 14) 3.15
+    (ite (= x!1 15) 3.1508333333?
+    (ite (= x!1 16) 3.4208333333?
+    (ite (= x!1 17) 3.4216666666?
+    (ite (= x!1 18) 3.4225
+    (ite (= x!1 19) 3.6983333333?
+    (ite (= x!1 20) 3.6991666666?
+      0.0008333333?))))))))))))))))))))))
+  (define-fun zot-a1205 ((x!1 Int)) Real
+    (ite (= x!1 1) 100.0
+    (ite (= x!1 2) 1.0008333333?
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.525
+    (ite (= x!1 5) 0.8008333333?
+    (ite (= x!1 6) 0.8258333333?
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.2733333333?
+    (ite (= x!1 9) 0.2741666666?
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.3016666666?
+    (ite (= x!1 12) 0.3241666666?
+    (ite (= x!1 13) 0.5808333333?
+    (ite (= x!1 14) 0.8533333333?
+    (ite (= x!1 15) 0.8541666666?
+    (ite (= x!1 16) 0.855
+    (ite (= x!1 17) 0.8558333333?
+    (ite (= x!1 18) 1.1258333333?
+    (ite (= x!1 19) 1.1266666666?
+    (ite (= x!1 20) 1.1275
+      0.0)))))))))))))))))))))
+  (define-fun buffer_expander ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 12
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 8
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 8
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 0
+      0)))))))))))))))))))))))
+  (define-fun zot-a1134 ((x!1 Int)) Real
+    (ite (= x!1 0) (- 1.0)
+    (ite (= x!1 1) (- 1.0)
+    (ite (= x!1 2) (- 1.0)
+    (ite (= x!1 3) 8.0
+    (ite (= x!1 4) (- 1.0)
+    (ite (= x!1 5) (- 1.0)
+    (ite (= x!1 6) 5.0
+    (ite (= x!1 7) (- 1.0)
+    (ite (= x!1 8) (- 1.0)
+    (ite (= x!1 9) (- 1.0)
+    (ite (= x!1 10) (- 1.0)
+    (ite (= x!1 11) (- 1.0)
+    (ite (= x!1 12) (- 1.0)
+    (ite (= x!1 13) (- 1.0)
+    (ite (= x!1 14) (- 1.0)
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) 5.0
+    (ite (= x!1 18) (- 1.0)
+    (ite (= x!1 19) (- 1.0)
+    (ite (= x!1 20) 1047.0
+      (- 1.0)))))))))))))))))))))))
+  (define-fun zot-a584 ((x!1 Int)) Real
+    (ite (= x!1 0) 1.0
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 2.0
+    (ite (= x!1 3) 3.0
+    (ite (= x!1 4) 3.0
+    (ite (= x!1 5) 5.0
+    (ite (= x!1 6) 1.0
+    (ite (= x!1 7) 3.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 5.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 1.0
+    (ite (= x!1 12) 1.0
+    (ite (= x!1 13) 1.0
+    (ite (= x!1 14) 1.0
+    (ite (= x!1 15) 4.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 4.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 3.0
+    (ite (= x!1 20) 5.0
+    (ite (= x!1 21) 1051.0
+      1.0)))))))))))))))))))))))
+  (define-fun zot-a331 ((x!1 Int)) Int
+    (ite (= x!1 0) 5
+    (ite (= x!1 1) 2
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 3
+    (ite (= x!1 4) 3
+    (ite (= x!1 5) 3
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 3
+    (ite (= x!1 8) 3
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 3
+    (ite (= x!1 20) 0
+      0))))))))))))))))))))))
+  (define-fun zot-a1177 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a1137 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 6.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 6.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1214 ((x!1 Int)) Real
+    (ite (= x!1 0) 1.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.525
+    (ite (= x!1 3) 0.8008333333?
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.4741666666?
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0008333333?
+    (ite (= x!1 8) 0.4508333333?
+    (ite (= x!1 9) 0.7525
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.2566666666?
+    (ite (= x!1 12) 0.5291666666?
+    (ite (= x!1 13) 0.53
+    (ite (= x!1 14) 0.5308333333?
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.27
+    (ite (= x!1 17) 0.2708333333?
+    (ite (= x!1 18) 0.2716666666?
+    (ite (= x!1 19) 0.5475
+    (ite (= x!1 20) 0.5483333333?
+      0.0))))))))))))))))))))))
+  (define-fun zot-a374 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) (- 4.0)
+    (ite (= x!1 4) 5.0
+    (ite (= x!1 5) 1.0
+    (ite (= x!1 6) 1.0
+    (ite (= x!1 7) 11.0
+    (ite (= x!1 8) 7.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 3.0
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) (- 1.0)
+    (ite (= x!1 18) 5.0
+    (ite (= x!1 19) 5.0
+    (ite (= x!1 20) 5.0
+    (ite (= x!1 21) 1036.0
+      7.0)))))))))))))))))))))))
+  (define-fun zot-a603 ((x!1 Int)) Real
+    (ite (= x!1 0) 5.0
+    (ite (= x!1 1) 10.0
+    (ite (= x!1 2) 8.0
+    (ite (= x!1 3) 11.0
+    (ite (= x!1 4) 7.0
+    (ite (= x!1 5) 7.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 7.0
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 6.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 4.0
+    (ite (= x!1 12) 4.0
+    (ite (= x!1 13) 2.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 2.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 3.0
+    (ite (= x!1 20) 6.0
+    (ite (= x!1 21) 1060.0
+      7.0)))))))))))))))))))))))
+  (define-fun r_failure_wpdeserializerwpspout ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 0
+      0)))))))))))))))))))))))
+  (define-fun zot-a1119 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a612 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 20.0
+    (ite (= x!1 3) 12.0
+    (ite (= x!1 4) 12.0
+    (ite (= x!1 5) 16.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 16.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 8.0
+    (ite (= x!1 11) 14.0
+    (ite (= x!1 12) 8.0
+    (ite (= x!1 13) 12.0
+    (ite (= x!1 14) 8.0
+    (ite (= x!1 15) 8.0
+    (ite (= x!1 16) 8.0
+    (ite (= x!1 17) 10.0
+    (ite (= x!1 18) 8.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1064.0
+      8.0)))))))))))))))))))))))
+  (define-fun zot-a527 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) (- 0.0000006)
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) (- 0.0000004)
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) (- 0.0000004)
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1048.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1120 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1054.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1192 ((x!1 Int)) Real
+    (ite (= x!1 0) 999.7308333333?
+    (ite (= x!1 1) 1000.0008333333?
+    (ite (= x!1 2) 1000.5258333333?
+    (ite (= x!1 3) 1000.8016666666?
+    (ite (= x!1 4) 1000.8266666666?
+    (ite (= x!1 5) 1001.3008333333?
+    (ite (= x!1 6) 1001.5741666666?
+    (ite (= x!1 7) 1001.575
+    (ite (= x!1 8) 1002.025
+    (ite (= x!1 9) 1002.3266666666?
+    (ite (= x!1 10) 1002.3491666666?
+    (ite (= x!1 11) 1002.6058333333?
+    (ite (= x!1 12) 1002.8783333333?
+    (ite (= x!1 13) 1002.8791666666?
+    (ite (= x!1 14) 1002.88
+    (ite (= x!1 15) 1002.8808333333?
+    (ite (= x!1 16) 1003.1508333333?
+    (ite (= x!1 17) 1003.1516666666?
+    (ite (= x!1 18) 1003.1525
+    (ite (= x!1 19) 1003.4283333333?
+    (ite (= x!1 20) 0.0
+      999.7308333333?))))))))))))))))))))))
+  (define-fun zot-a343 ((x!1 Int)) Int
+    (ite (= x!1 0) 4
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 5
+    (ite (= x!1 5) 5
+    (ite (= x!1 6) 5
+    (ite (= x!1 7) 11
+    (ite (= x!1 8) 7
+    (ite (= x!1 9) 7
+    (ite (= x!1 10) 7
+    (ite (= x!1 11) 7
+    (ite (= x!1 12) 7
+    (ite (= x!1 13) 3
+    (ite (= x!1 14) 3
+    (ite (= x!1 15) 3
+    (ite (= x!1 16) 3
+    (ite (= x!1 17) 3
+    (ite (= x!1 18) 9
+    (ite (= x!1 19) 9
+    (ite (= x!1 20) 9
+      7))))))))))))))))))))))
+  (define-fun zot-a620 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 13.0
+    (ite (= x!1 5) 4.0
+    (ite (= x!1 6) 4.0
+    (ite (= x!1 7) 6.0
+    (ite (= x!1 8) 4.0
+    (ite (= x!1 9) 4.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 4.0
+    (ite (= x!1 14) 4.0
+    (ite (= x!1 15) 4.0
+    (ite (= x!1 16) 4.0
+    (ite (= x!1 17) 4.0
+    (ite (= x!1 18) 10.0
+    (ite (= x!1 19) 4.0
+    (ite (= x!1 20) 4.0
+    (ite (= x!1 21) 1067.0
+      4.0)))))))))))))))))))))))
+  (define-fun zot-a1089 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 13.0
+    (ite (= x!1 6) 4.0
+    (ite (= x!1 7) 4.0
+    (ite (= x!1 8) 6.0
+    (ite (= x!1 9) 4.0
+    (ite (= x!1 10) 4.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 4.0
+    (ite (= x!1 16) 4.0
+    (ite (= x!1 17) 4.0
+    (ite (= x!1 18) 4.0
+    (ite (= x!1 19) 10.0
+    (ite (= x!1 20) 4.0
+      4.0)))))))))))))))))))))
+  (define-fun zot-a1110 ((x!1 Int)) Real
+    (ite (= x!1 0) 10.0
+    (ite (= x!1 1) 8.0
+    (ite (= x!1 2) 11.0
+    (ite (= x!1 3) 7.0
+    (ite (= x!1 4) 7.0
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) 7.0
+    (ite (= x!1 7) 3.0
+    (ite (= x!1 8) 6.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 4.0
+    (ite (= x!1 11) 4.0
+    (ite (= x!1 12) 2.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 2.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 3.0
+    (ite (= x!1 19) 6.0
+    (ite (= x!1 20) 1059.0
+      7.0))))))))))))))))))))))
+  (define-fun zot-a1140 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 12.0
+    (ite (= x!1 2) 12.0
+    (ite (= x!1 3) 12.0
+    (ite (= x!1 4) 20.0
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) 8.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 8.0
+    (ite (= x!1 11) 8.0
+    (ite (= x!1 12) 8.0
+    (ite (= x!1 13) 8.0
+    (ite (= x!1 14) 8.0
+    (ite (= x!1 15) 8.0
+    (ite (= x!1 16) 8.0
+    (ite (= x!1 17) 8.0
+    (ite (= x!1 18) 8.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1044.0
+      8.0))))))))))))))))))))))
+  (define-fun zot-a1167 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 5.0
+    (ite (= x!1 7) 5.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 11.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 3.0
+    (ite (= x!1 16) 3.0
+    (ite (= x!1 17) 3.0
+    (ite (= x!1 18) 3.0
+    (ite (= x!1 19) 9.0
+    (ite (= x!1 20) 9.0
+      7.0)))))))))))))))))))))
+  (define-fun buffer_mediaextraction ((x!1 Int)) Int
+    (ite (= x!1 1) 1
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 1
+    (ite (= x!1 4) 1
+    (ite (= x!1 5) 1
+    (ite (= x!1 6) 1
+    (ite (= x!1 7) 1
+    (ite (= x!1 8) 1
+    (ite (= x!1 9) 1
+    (ite (= x!1 10) 1
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 1
+    (ite (= x!1 14) 1
+    (ite (= x!1 15) 1
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 1
+    (ite (= x!1 18) 1
+    (ite (= x!1 19) 1
+    (ite (= x!1 20) 1
+    (ite (= x!1 21) 23
+    (ite (= x!1 0) 0
+      1)))))))))))))))))))))))
+  (define-fun zot-a1200 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0008333333?
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.525
+    (ite (= x!1 3) 0.8008333333?
+    (ite (= x!1 4) 0.8258333333?
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.2733333333?
+    (ite (= x!1 7) 0.2741666666?
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.3016666666?
+    (ite (= x!1 10) 0.3241666666?
+    (ite (= x!1 11) 0.5808333333?
+    (ite (= x!1 12) 0.8533333333?
+    (ite (= x!1 13) 0.8541666666?
+    (ite (= x!1 14) 0.855
+    (ite (= x!1 15) 0.8558333333?
+    (ite (= x!1 16) 1.1258333333?
+    (ite (= x!1 17) 1.1266666666?
+    (ite (= x!1 18) 1.1275
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0008333333?
+      0.0))))))))))))))))))))))
+  (define-fun zot-a626 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 8.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 13.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 9.0
+    (ite (= x!1 7) 11.0
+    (ite (= x!1 8) 15.0
+    (ite (= x!1 9) 11.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 11.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 7.0
+    (ite (= x!1 18) 13.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 13.0
+    (ite (= x!1 21) 1068.0
+      7.0)))))))))))))))))))))))
+  (define-fun q_articleextraction ((x!1 Int)) Int
+    (ite (= x!1 0) 4
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 5
+    (ite (= x!1 6) 5
+    (ite (= x!1 7) 5
+    (ite (= x!1 8) 11
+    (ite (= x!1 9) 7
+    (ite (= x!1 10) 7
+    (ite (= x!1 11) 7
+    (ite (= x!1 12) 7
+    (ite (= x!1 13) 7
+    (ite (= x!1 14) 3
+    (ite (= x!1 15) 3
+    (ite (= x!1 16) 3
+    (ite (= x!1 17) 3
+    (ite (= x!1 18) 3
+    (ite (= x!1 19) 9
+    (ite (= x!1 20) 9
+    (ite (= x!1 21) 9
+      7)))))))))))))))))))))))
+  (define-fun zot-a1202 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0008333333?
+    (ite (= x!1 1) 0.2708333333?
+    (ite (= x!1 2) 0.7958333333?
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.025
+    (ite (= x!1 5) 0.4991666666?
+    (ite (= x!1 6) 0.7725
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.45
+    (ite (= x!1 9) 0.7516666666?
+    (ite (= x!1 10) 0.7741666666?
+    (ite (= x!1 11) 1.0308333333?
+    (ite (= x!1 12) 1.3033333333?
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0008333333?
+    (ite (= x!1 15) 0.0016666666?
+    (ite (= x!1 16) 0.2716666666?
+    (ite (= x!1 17) 0.2725
+    (ite (= x!1 18) 0.2733333333?
+    (ite (= x!1 19) 0.5491666666?
+    (ite (= x!1 20) 0.55
+      0.0))))))))))))))))))))))
+  (define-fun clock_bf_expander ((x!1 Int)) Real
+    (ite (= x!1 1) 998.1575
+    (ite (= x!1 2) 998.4275
+    (ite (= x!1 3) 998.9525
+    (ite (= x!1 4) 999.2283333333?
+    (ite (= x!1 5) 999.2533333333?
+    (ite (= x!1 6) 999.7275
+    (ite (= x!1 7) 1000.0008333333?
+    (ite (= x!1 8) 1000.0016666666?
+    (ite (= x!1 9) 1000.4516666666?
+    (ite (= x!1 10) 1000.7533333333?
+    (ite (= x!1 11) 1000.7758333333?
+    (ite (= x!1 12) 1001.0325
+    (ite (= x!1 13) 1001.305
+    (ite (= x!1 14) 1001.3058333333?
+    (ite (= x!1 15) 1001.3066666666?
+    (ite (= x!1 16) 1001.3075
+    (ite (= x!1 17) 1001.5775
+    (ite (= x!1 18) 1001.5783333333?
+    (ite (= x!1 19) 1001.5791666666?
+    (ite (= x!1 20) 1001.855
+    (ite (= x!1 21) 1001.8558333333?
+    (ite (= x!1 0) 0.0
+      998.1575)))))))))))))))))))))))
+  (define-fun r_process_articleextraction ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 4
+    (ite (= x!1 6) 4
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 4
+    (ite (= x!1 9) 4
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 4
+    (ite (= x!1 14) 4
+    (ite (= x!1 15) 4
+    (ite (= x!1 16) 4
+    (ite (= x!1 17) 4
+    (ite (= x!1 18) 4
+    (ite (= x!1 19) 4
+    (ite (= x!1 20) 4
+    (ite (= x!1 21) 37
+      4)))))))))))))))))))))))
+  (define-fun zot-a592 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1054.0
+      0.0)))))))))))))))))))))))
+  (define-fun r_emit_mediaextraction ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 34
+    (ite (= x!1 0) 0
+      0)))))))))))))))))))))))
+  (define-fun zot-a1104 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 24.0
+    (ite (= x!1 2) 12.0
+    (ite (= x!1 3) 12.0
+    (ite (= x!1 4) 16.0
+    (ite (= x!1 5) 8.0
+    (ite (= x!1 6) 16.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 16.0
+    (ite (= x!1 10) 14.0
+    (ite (= x!1 11) 14.0
+    (ite (= x!1 12) 18.0
+    (ite (= x!1 13) 18.0
+    (ite (= x!1 14) 18.0
+    (ite (= x!1 15) 18.0
+    (ite (= x!1 16) 20.0
+    (ite (= x!1 17) 20.0
+    (ite (= x!1 18) 12.0
+    (ite (= x!1 19) 12.0
+    (ite (= x!1 20) 1062.0
+      18.0))))))))))))))))))))))
+  (define-fun zot-a1146 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1041.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1121 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a528 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 12.0000006
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 8.0000004
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 8.0000004
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1049.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1158 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) (- 4.0)
+    (ite (= x!1 3) 5.0
+    (ite (= x!1 4) 1.0
+    (ite (= x!1 5) 1.0
+    (ite (= x!1 6) 11.0
+    (ite (= x!1 7) 7.0
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 3.0
+    (ite (= x!1 13) (- 1.0)
+    (ite (= x!1 14) (- 1.0)
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) 5.0
+    (ite (= x!1 18) 5.0
+    (ite (= x!1 19) 5.0
+    (ite (= x!1 20) 1035.0
+      7.0))))))))))))))))))))))
+  (define-fun zot-a1164 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 9.0
+    (ite (= x!1 4) 5.0
+    (ite (= x!1 5) 5.0
+    (ite (= x!1 6) 11.0
+    (ite (= x!1 7) 11.0
+    (ite (= x!1 8) 7.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 3.0
+    (ite (= x!1 15) 3.0
+    (ite (= x!1 16) 3.0
+    (ite (= x!1 17) 9.0
+    (ite (= x!1 18) 9.0
+    (ite (= x!1 19) 9.0
+    (ite (= x!1 20) 1032.0
+      7.0))))))))))))))))))))))
+  (define-fun zot-a1112 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 1058.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a370 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) (- 4.0)
+    (ite (= x!1 4) 5.0
+    (ite (= x!1 5) 1.0
+    (ite (= x!1 6) 1.0
+    (ite (= x!1 7) 11.0
+    (ite (= x!1 8) 7.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 3.0
+    (ite (= x!1 14) (- 1.0)
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) (- 1.0)
+    (ite (= x!1 18) 5.0
+    (ite (= x!1 19) 5.0
+    (ite (= x!1 20) 5.0
+    (ite (= x!1 21) 1035.0
+      7.0)))))))))))))))))))))))
+  (define-fun zot-a1225 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0)))))))))))))))))))))
+  (define-fun zot-a1131 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 12.0000006
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 8.0000004
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 8.0000004
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1113 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun pt_wpdeserializer_0 ((x!1 Int)) Real
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.525
+    (ite (= x!1 4) 0.8008333333?
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.4741666666?
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0008333333?
+    (ite (= x!1 9) 0.4508333333?
+    (ite (= x!1 10) 0.7525
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.2566666666?
+    (ite (= x!1 13) 0.5291666666?
+    (ite (= x!1 14) 0.53
+    (ite (= x!1 15) 0.5308333333?
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.27
+    (ite (= x!1 18) 0.2708333333?
+    (ite (= x!1 19) 0.2716666666?
+    (ite (= x!1 20) 0.5475
+    (ite (= x!1 21) 0.5483333333?
+    (ite (= x!1 0) 0.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1194 ((x!1 Int)) Real
+    (ite (= x!1 0) 998.4308333333?
+    (ite (= x!1 1) 998.7008333333?
+    (ite (= x!1 2) 999.2258333333?
+    (ite (= x!1 3) 999.5016666666?
+    (ite (= x!1 4) 999.5266666666?
+    (ite (= x!1 5) 1000.0008333333?
+    (ite (= x!1 6) 1000.2741666666?
+    (ite (= x!1 7) 1000.275
+    (ite (= x!1 8) 1000.725
+    (ite (= x!1 9) 1001.0266666666?
+    (ite (= x!1 10) 1001.0491666666?
+    (ite (= x!1 11) 1001.3058333333?
+    (ite (= x!1 12) 1001.5783333333?
+    (ite (= x!1 13) 1001.5791666666?
+    (ite (= x!1 14) 1001.58
+    (ite (= x!1 15) 1001.5808333333?
+    (ite (= x!1 16) 1001.8508333333?
+    (ite (= x!1 17) 1001.8516666666?
+    (ite (= x!1 18) 1001.8525
+    (ite (= x!1 19) 1002.1283333333?
+    (ite (= x!1 20) 1002.1291666666?
+      998.4308333333?))))))))))))))))))))))
+  (define-fun zot-a1234 ((x!1 Int)) Int
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 8
+    (ite (= x!1 10) 8
+    (ite (= x!1 11) 8
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 6
+    (ite (= x!1 14) 6
+    (ite (= x!1 15) 10
+    (ite (= x!1 16) 10
+    (ite (= x!1 17) 10
+    (ite (= x!1 18) 10
+    (ite (= x!1 19) 12
+    (ite (= x!1 20) 12
+      0)))))))))))))))))))))
+  (define-fun zot-a1091 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 8.0
+    (ite (= x!1 4) 4.0
+    (ite (= x!1 5) 13.0
+    (ite (= x!1 6) 9.0
+    (ite (= x!1 7) 9.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 15.0
+    (ite (= x!1 10) 11.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 11.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 7.0
+    (ite (= x!1 18) 7.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 13.0
+      7.0)))))))))))))))))))))
+  (define-fun zot-a1236 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 4
+    (ite (= x!1 6) 4
+    (ite (= x!1 7) 4
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 4
+    (ite (= x!1 10) 4
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 4
+    (ite (= x!1 16) 4
+    (ite (= x!1 17) 4
+    (ite (= x!1 18) 4
+    (ite (= x!1 19) 4
+    (ite (= x!1 20) 4
+      4)))))))))))))))))))))
+  (define-fun zot-a1125 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1090 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 8.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 13.0
+    (ite (= x!1 4) 9.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 11.0
+    (ite (= x!1 7) 15.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 11.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 13.0
+    (ite (= x!1 18) 13.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 1069.0
+      7.0))))))))))))))))))))))
+  (define-fun zot-a617 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+      0))))))))))))))))))))))
+  (define-fun r_emit_wpdeserializer ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 8
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 8
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 8
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 6
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 4
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 2
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 30
+      0)))))))))))))))))))))))
+  (define-fun zot-a628 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 13.0
+    (ite (= x!1 5) 4.0
+    (ite (= x!1 6) 4.0
+    (ite (= x!1 7) 6.0
+    (ite (= x!1 8) 4.0
+    (ite (= x!1 9) 4.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 4.0
+    (ite (= x!1 15) 4.0
+    (ite (= x!1 16) 4.0
+    (ite (= x!1 17) 4.0
+    (ite (= x!1 18) 10.0
+    (ite (= x!1 19) 4.0
+    (ite (= x!1 20) 4.0
+    (ite (= x!1 21) 1070.0
+      4.0)))))))))))))))))))))))
+  (define-fun zot-a596 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1058.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1204 ((x!1 Int)) Real
+    (ite (= x!1 0) 1.0008333333?
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.525
+    (ite (= x!1 3) 0.8008333333?
+    (ite (= x!1 4) 0.8258333333?
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.2733333333?
+    (ite (= x!1 7) 0.2741666666?
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.3016666666?
+    (ite (= x!1 10) 0.3241666666?
+    (ite (= x!1 11) 0.5808333333?
+    (ite (= x!1 12) 0.8533333333?
+    (ite (= x!1 13) 0.8541666666?
+    (ite (= x!1 14) 0.855
+    (ite (= x!1 15) 0.8558333333?
+    (ite (= x!1 16) 1.1258333333?
+    (ite (= x!1 17) 1.1266666666?
+    (ite (= x!1 18) 1.1275
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0008333333?
+      0.0))))))))))))))))))))))
+  (define-fun zot-a618 ((x!1 Int)) Real
+    (ite (= x!1 0) 4.0
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 8.0
+    (ite (= x!1 3) 4.0
+    (ite (= x!1 4) 13.0
+    (ite (= x!1 5) 9.0
+    (ite (= x!1 6) 9.0
+    (ite (= x!1 7) 11.0
+    (ite (= x!1 8) 15.0
+    (ite (= x!1 9) 11.0
+    (ite (= x!1 10) 7.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 11.0
+    (ite (= x!1 14) 7.0
+    (ite (= x!1 15) 7.0
+    (ite (= x!1 16) 7.0
+    (ite (= x!1 17) 7.0
+    (ite (= x!1 18) 13.0
+    (ite (= x!1 19) 13.0
+    (ite (= x!1 20) 13.0
+    (ite (= x!1 21) 1065.0
+      7.0)))))))))))))))))))))))
+  (define-fun zot-a524 ((x!1 Int)) Real
+    (ite (= x!1 0) (- 1.0)
+    (ite (= x!1 1) (- 1.0)
+    (ite (= x!1 2) (- 1.0)
+    (ite (= x!1 3) (- 1.0)
+    (ite (= x!1 4) 8.0
+    (ite (= x!1 5) (- 1.0)
+    (ite (= x!1 6) (- 1.0)
+    (ite (= x!1 7) 5.0
+    (ite (= x!1 8) (- 1.0)
+    (ite (= x!1 9) (- 1.0)
+    (ite (= x!1 10) (- 1.0)
+    (ite (= x!1 11) (- 1.0)
+    (ite (= x!1 12) (- 1.0)
+    (ite (= x!1 13) (- 1.0)
+    (ite (= x!1 14) (- 1.0)
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) (- 1.0)
+    (ite (= x!1 18) 5.0
+    (ite (= x!1 19) (- 1.0)
+    (ite (= x!1 20) (- 1.0)
+    (ite (= x!1 21) 1047.0
+      (- 1.0))))))))))))))))))))))))
+  (define-fun zot-a1159 ((x!1 Int)) Real
+    (ite (= x!1 1) 4.0
+    (ite (= x!1 2) 4.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) (- 4.0)
+    (ite (= x!1 5) 5.0
+    (ite (= x!1 6) 1.0
+    (ite (= x!1 7) 1.0
+    (ite (= x!1 8) 11.0
+    (ite (= x!1 9) 7.0
+    (ite (= x!1 10) 3.0
+    (ite (= x!1 11) 7.0
+    (ite (= x!1 12) 7.0
+    (ite (= x!1 13) 7.0
+    (ite (= x!1 14) 3.0
+    (ite (= x!1 15) (- 1.0)
+    (ite (= x!1 16) (- 1.0)
+    (ite (= x!1 17) (- 1.0)
+    (ite (= x!1 18) (- 1.0)
+    (ite (= x!1 19) 5.0
+    (ite (= x!1 20) 5.0
+      7.0)))))))))))))))))))))
+  (define-fun zot-a1218 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.2258333333?
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.525
+    (ite (= x!1 3) 0.8008333333?
+    (ite (= x!1 4) 0.8258333333?
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.2733333333?
+    (ite (= x!1 7) 0.2741666666?
+    (ite (= x!1 8) 0.7241666666?
+    (ite (= x!1 9) 1.0258333333?
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.2566666666?
+    (ite (= x!1 12) 0.5291666666?
+    (ite (= x!1 13) 0.53
+    (ite (= x!1 14) 0.5308333333?
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.27
+    (ite (= x!1 17) 0.2708333333?
+    (ite (= x!1 18) 0.2716666666?
+    (ite (= x!1 19) 0.5475
+    (ite (= x!1 20) 0.0
+      0.0))))))))))))))))))))))
+  (define-fun zot-a1126 ((x!1 Int)) Real
+    (ite (= x!1 0) 1.0
+    (ite (= x!1 1) 2.0
+    (ite (= x!1 2) 3.0
+    (ite (= x!1 3) 3.0
+    (ite (= x!1 4) 5.0
+    (ite (= x!1 5) 1.0
+    (ite (= x!1 6) 3.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 5.0
+    (ite (= x!1 9) 3.0
+    (ite (= x!1 10) 1.0
+    (ite (= x!1 11) 1.0
+    (ite (= x!1 12) 1.0
+    (ite (= x!1 13) 1.0
+    (ite (= x!1 14) 4.0
+    (ite (= x!1 15) 1.0
+    (ite (= x!1 16) 4.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 3.0
+    (ite (= x!1 19) 5.0
+    (ite (= x!1 20) 1051.0
+      1.0))))))))))))))))))))))
+  (define-fun q_expander ((x!1 Int)) Int
+    (ite (= x!1 0) 4
+    (ite (= x!1 1) 4
+    (ite (= x!1 2) 4
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 8
+    (ite (= x!1 9) 8
+    (ite (= x!1 10) 8
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 6
+    (ite (= x!1 13) 6
+    (ite (= x!1 14) 10
+    (ite (= x!1 15) 10
+    (ite (= x!1 16) 10
+    (ite (= x!1 17) 10
+    (ite (= x!1 18) 12
+    (ite (= x!1 19) 12
+    (ite (= x!1 20) 12
+    (ite (= x!1 21) 12
+      0)))))))))))))))))))))))
+  (define-fun zot-a595 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1057.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1215 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 1.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.525
+    (ite (= x!1 5) 0.8008333333?
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 0.4741666666?
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0008333333?
+    (ite (= x!1 10) 0.4508333333?
+    (ite (= x!1 11) 0.7525
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.2566666666?
+    (ite (= x!1 14) 0.5291666666?
+    (ite (= x!1 15) 0.53
+    (ite (= x!1 16) 0.5308333333?
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 0.27
+    (ite (= x!1 19) 0.2708333333?
+    (ite (= x!1 20) 0.2716666666?
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1201 ((x!1 Int)) Real
+    (ite (= x!1 1) 1.0008333333?
+    (ite (= x!1 2) 0.0008333333?
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 0.525
+    (ite (= x!1 5) 0.8008333333?
+    (ite (= x!1 6) 0.8258333333?
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.2733333333?
+    (ite (= x!1 9) 0.2741666666?
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.3016666666?
+    (ite (= x!1 12) 0.3241666666?
+    (ite (= x!1 13) 0.5808333333?
+    (ite (= x!1 14) 0.8533333333?
+    (ite (= x!1 15) 0.8541666666?
+    (ite (= x!1 16) 0.855
+    (ite (= x!1 17) 0.8558333333?
+    (ite (= x!1 18) 1.1258333333?
+    (ite (= x!1 19) 1.1266666666?
+    (ite (= x!1 20) 1.1275
+      0.0)))))))))))))))))))))
+  (define-fun zot-a1237 ((x!1 Int)) Int
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 4
+    (ite (= x!1 4) 4
+    (ite (= x!1 5) 4
+    (ite (= x!1 6) 4
+    (ite (= x!1 7) 4
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 4
+    (ite (= x!1 10) 4
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 4
+    (ite (= x!1 15) 4
+    (ite (= x!1 16) 4
+    (ite (= x!1 17) 4
+    (ite (= x!1 18) 4
+    (ite (= x!1 19) 4
+    (ite (= x!1 20) 4
+      4)))))))))))))))))))))
+  (define-fun zot-a1127 ((x!1 Int)) Real
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 1.0
+    (ite (= x!1 3) 2.0
+    (ite (= x!1 4) 3.0
+    (ite (= x!1 5) 3.0
+    (ite (= x!1 6) 5.0
+    (ite (= x!1 7) 1.0
+    (ite (= x!1 8) 3.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 5.0
+    (ite (= x!1 11) 3.0
+    (ite (= x!1 12) 1.0
+    (ite (= x!1 13) 1.0
+    (ite (= x!1 14) 1.0
+    (ite (= x!1 15) 1.0
+    (ite (= x!1 16) 4.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 4.0
+    (ite (= x!1 19) 1.0
+    (ite (= x!1 20) 3.0
+      1.0)))))))))))))))))))))
+  (define-fun zot-a1141 ((x!1 Int)) Real
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 12.0
+    (ite (= x!1 4) 12.0
+    (ite (= x!1 5) 12.0
+    (ite (= x!1 6) 20.0
+    (ite (= x!1 7) 8.0
+    (ite (= x!1 8) 8.0
+    (ite (= x!1 9) 8.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 8.0
+    (ite (= x!1 12) 8.0
+    (ite (= x!1 13) 8.0
+    (ite (= x!1 14) 8.0
+    (ite (= x!1 15) 8.0
+    (ite (= x!1 16) 8.0
+    (ite (= x!1 17) 8.0
+    (ite (= x!1 18) 8.0
+    (ite (= x!1 19) 8.0
+    (ite (= x!1 20) 8.0
+      8.0)))))))))))))))))))))
+  (define-fun zot-a1213 ((x!1 Int)) Real
+    (ite (= x!1 1) 100.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.27
+    (ite (= x!1 4) 0.0
+    (ite (= x!1 5) 0.2758333333?
+    (ite (= x!1 6) 0.3008333333?
+    (ite (= x!1 7) 0.0
+    (ite (= x!1 8) 0.2733333333?
+    (ite (= x!1 9) 0.2741666666?
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.3016666666?
+    (ite (= x!1 12) 0.3241666666?
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.2725
+    (ite (= x!1 15) 0.2733333333?
+    (ite (= x!1 16) 0.2741666666?
+    (ite (= x!1 17) 0.275
+    (ite (= x!1 18) 0.545
+    (ite (= x!1 19) 0.5458333333?
+    (ite (= x!1 20) 0.5466666666?
+      0.0)))))))))))))))))))))
+  (define-fun r_emit_expander ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 9
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 6
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 6
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 31
+      0)))))))))))))))))))))))
+  (define-fun zot-a521 ((x!1 Int)) Real
+    (ite (= x!1 0) 0.0
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0
+    (ite (= x!1 3) 0.0
+    (ite (= x!1 4) 9.0
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.0
+    (ite (= x!1 7) 6.0
+    (ite (= x!1 8) 0.0
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.0
+    (ite (= x!1 11) 0.0
+    (ite (= x!1 12) 0.0
+    (ite (= x!1 13) 0.0
+    (ite (= x!1 14) 0.0
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0
+    (ite (= x!1 17) 0.0
+    (ite (= x!1 18) 6.0
+    (ite (= x!1 19) 0.0
+    (ite (= x!1 20) 0.0
+    (ite (= x!1 21) 1045.0
+      0.0)))))))))))))))))))))))
+  (define-fun zot-a1176 ((x!1 Int)) Int
+    (ite (= x!1 0) 0
+    (ite (= x!1 1) 0
+    (ite (= x!1 2) 0
+    (ite (= x!1 3) 0
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 0
+    (ite (= x!1 7) 0
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 0
+    (ite (= x!1 12) 0
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 0
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 0
+    (ite (= x!1 20) 33
+      0))))))))))))))))))))))
+  (define-fun r_emit_wpspout ((x!1 Int)) Int
+    (ite (= x!1 1) 1
+    (ite (= x!1 2) 2
+    (ite (= x!1 3) 3
+    (ite (= x!1 4) 0
+    (ite (= x!1 5) 0
+    (ite (= x!1 6) 1
+    (ite (= x!1 7) 3
+    (ite (= x!1 8) 0
+    (ite (= x!1 9) 0
+    (ite (= x!1 10) 0
+    (ite (= x!1 11) 1
+    (ite (= x!1 12) 1
+    (ite (= x!1 13) 0
+    (ite (= x!1 14) 0
+    (ite (= x!1 15) 0
+    (ite (= x!1 16) 1
+    (ite (= x!1 17) 0
+    (ite (= x!1 18) 0
+    (ite (= x!1 19) 3
+    (ite (= x!1 20) 0
+    (ite (= x!1 21) 29
+    (ite (= x!1 0) 1
+      0)))))))))))))))))))))))
+  (define-fun zot-a1142 ((x!1 Int)) Real
+    (ite (= x!1 0) 1.0
+    (ite (= x!1 1) 1.0
+    (ite (= x!1 2) 1.0
+    (ite (= x!1 3) 1.0
+    (ite (= x!1 4) 1.0
+    (ite (= x!1 5) 1.0
+    (ite (= x!1 6) 1.0
+    (ite (= x!1 7) 1.0
+    (ite (= x!1 8) 1.0
+    (ite (= x!1 9) 1.0
+    (ite (= x!1 10) 1.0
+    (ite (= x!1 11) 1.0
+    (ite (= x!1 12) 1.0
+    (ite (= x!1 13) 1.0
+    (ite (= x!1 14) 1.0
+    (ite (= x!1 15) 1.0
+    (ite (= x!1 16) 1.0
+    (ite (= x!1 17) 1.0
+    (ite (= x!1 18) 1.0
+    (ite (= x!1 19) 1.0
+    (ite (= x!1 20) 1043.0
+      1.0))))))))))))))))))))))
+  (define-fun zot-a1203 ((x!1 Int)) Real
+    (ite (= x!1 1) 0.0
+    (ite (= x!1 2) 0.0008333333?
+    (ite (= x!1 3) 0.2708333333?
+    (ite (= x!1 4) 0.7958333333?
+    (ite (= x!1 5) 0.0
+    (ite (= x!1 6) 0.025
+    (ite (= x!1 7) 0.4991666666?
+    (ite (= x!1 8) 0.7725
+    (ite (= x!1 9) 0.0
+    (ite (= x!1 10) 0.45
+    (ite (= x!1 11) 0.7516666666?
+    (ite (= x!1 12) 0.7741666666?
+    (ite (= x!1 13) 1.0308333333?
+    (ite (= x!1 14) 1.3033333333?
+    (ite (= x!1 15) 0.0
+    (ite (= x!1 16) 0.0008333333?
+    (ite (= x!1 17) 0.0016666666?
+    (ite (= x!1 18) 0.2716666666?
+    (ite (= x!1 19) 0.2725
+    (ite (= x!1 20) 0.2733333333?
+      0.0)))))))))))))))))))))
+)
+(:add-rows            30110339
+ :added-eqs           17509378
+ :arith-conflicts     14894
+ :assert-diseq        5051159
+ :assert-lower        8804085
+ :assert-upper        10459708
+ :binary-propagations 72707190
+ :bound-prop          831993
+ :conflicts           68853
+ :decisions           303479
+ :del-clause          127814
+ :eliminated-vars     1
+ :eq-adapter          16485
+ :final-checks        88
+ :fixed-eqs           3090567
+ :gcd-tests           3147
+ :gomory-cuts         2
+ :ineq-splits         24
+ :interface-eqs       53
+ :max-memory          215.83
+ :memory              42.15
+ :minimized-lits      451387
+ :mk-clause           334496
+ :num-allocs          1292634.00
+ :offset-eqs          3865542
+ :pivots              464747
+ :propagations        198120181
+ :restarts            275
+ :rlimit-count        199832728
+ :time                327.55
+ :total-time          325.62)
