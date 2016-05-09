@@ -1,6 +1,6 @@
 
 {
-    "app_name": "SimpleTopology",
+    "app_name": "simple-DIA-cfg-2",
     "description": "",
     "version": "0.1",
     "topology":
@@ -21,7 +21,7 @@
         {
             "id":       "B1",
             "subs":     ["S1"],
-            "alpha":    5.0,
+            "alpha":    4.0,
             "sigma":    2.0,
             "d":        0.0,
             "min_ttf":  1000,
@@ -30,11 +30,11 @@
         {
             "id":       "B2",
             "subs":     ["S1","S2"],
-            "alpha":    5.0,
+            "alpha":    4.0,
             "sigma":    0.5,
             "d":        0.0,
             "min_ttf":  1000,
-            "parallelism": 12
+            "parallelism": 8
         },
         {
             "id":       "B3",
@@ -43,22 +43,23 @@
             "sigma":    1.0,
             "d":        0.0,
             "min_ttf":  1000,
-            "parallelism": 5
+            "parallelism": 3
         }
       ],
       "min_reboot_time":10,
       "max_reboot_time":100,
       "max_idle_time":  0.01,
-      "init_queues":0,
-      "queue_threshold": 1
+      "queue_threshold": 0,
+      "init_queues":2
     },
     "verification_params":
     {
-      "plugin" : "ae2bvzot",
+      "plugin" : ["ae2sbvzot"],
       "max_time" :  20000,
-      "base_quantity":5,
+      "base_quantity":2,
       "num_steps":15,
-      "periodic_queues":[]
+      "periodic_queues":["B1","B2","B3"],
+      "strictly_monotonic_queues":["B2","B3"]
     }
 
 }

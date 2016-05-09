@@ -1,5 +1,5 @@
 {
-    "app_name": "FOCUSED-CRAWLER-REDUCED",
+    "app_name": "focused-crawler-reduced-cfg-5",
     "description": "",
     "version": "0.1",
     "topology": {
@@ -11,7 +11,7 @@
                     "wpSpout"
                 ],
                 "alpha":    0.5,
-                "sigma":    1.0,
+                "sigma":    2.0,
                 "d":        0.0,
                 "min_ttf":  1000
             },
@@ -21,7 +21,7 @@
                 "subs": [
                     "WpDeserializer"
                 ],
-                "alpha":    0.2,
+                "alpha":    0.3,
                 "sigma":    0.4,
                 "d":        0.0,
                 "min_ttf":  1000
@@ -32,7 +32,7 @@
                 "subs": [
                     "expander"
                 ],
-                "alpha":    0.05,
+                "alpha":    0.1,
                 "sigma":    1.0,
                 "d":        0.0,
                 "min_ttf":  1000
@@ -43,7 +43,7 @@
                 "subs": [
                     "expander"
                 ],
-                "alpha":    0.05,
+                "alpha":    0.1,
                 "sigma":    1.0,
                 "d":        0.0,
                 "min_ttf":  1000
@@ -52,7 +52,7 @@
         "spouts": [
             {
                 "id": "wpSpout",
-                "avg_emit_rate":1.0
+                "avg_emit_rate":1.5
             }
         ],
         "min_reboot_time":10,
@@ -63,7 +63,7 @@
     },
     "verification_params":
     {
-      "plugin" : ["ae2sbvzot"],
+      "plugin" : ["ae2bvzot", "ae2sbvzot"],
       "max_time" :  20000,
       "base_quantity":10,
       "num_steps":20,

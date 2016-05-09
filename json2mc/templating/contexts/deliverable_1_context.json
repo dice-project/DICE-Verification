@@ -1,6 +1,6 @@
 
 {
-    "app_name": "Deliverable Example",
+    "app_name": "SIMPLE-DIA-TOPOLOGY",
     "description": "",
     "version": "0.1",
     "topology":
@@ -54,11 +54,13 @@
     },
     "verification_params":
     {
-      "plugin" : "ae2bvzot",
+      "plugin" : ["ae2sbvzot"],
       "max_time" :  20000,
       "base_quantity":5,
       "num_steps":15,
-      "periodic_queues":["B1","B2","B3"]
+      "periodic_queues":["B1","B2","B3"],
+      "strictly_monotonic_queues":["B1","B2","B3"]
+
     }
 
 }

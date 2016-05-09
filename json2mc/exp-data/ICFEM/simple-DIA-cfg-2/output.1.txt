@@ -1,0 +1,32 @@
+unsat
+(:add-rows            91256495
+ :added-eqs           58073931
+ :arith-conflicts     66996
+ :assert-diseq        15873138
+ :assert-lower        27468845
+ :assert-upper        34993850
+ :binary-propagations 246030798
+ :bound-prop          1440921
+ :conflicts           343609
+ :decisions           559184
+ :del-clause          484884
+ :eliminated-vars     566
+ :eq-adapter          14284
+ :final-checks        37
+ :fixed-eqs           9979127
+ :gcd-tests           637
+ :gomory-cuts         2
+ :ineq-splits         20
+ :interface-eqs       10
+ :max-memory          150.45
+ :memory              20.92
+ :minimized-lits      5398468
+ :mk-clause           535103
+ :num-allocs          669893.00
+ :offset-eqs          10638914
+ :pivots              2200443
+ :propagations        581318534
+ :restarts            800
+ :rlimit-count        575505864
+ :time                1219.09
+ :total-time          1058.26)

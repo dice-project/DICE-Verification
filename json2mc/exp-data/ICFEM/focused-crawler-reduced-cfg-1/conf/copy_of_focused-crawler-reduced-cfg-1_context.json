@@ -1,5 +1,5 @@
 {
-    "app_name": "FOCUSED-CRAWLER-REDUCED",
+    "app_name": "focused-crawler-reduced-cfg-1",
     "description": "",
     "version": "0.1",
     "topology": {
@@ -11,39 +11,39 @@
                     "wpSpout"
                 ],
                 "alpha":    0.5,
-                "sigma":    1.0,
+                "sigma":    2.0,
                 "d":        0.0,
                 "min_ttf":  1000
             },
             {
                 "id": "expander",
-                "parallelism": 10,
+                "parallelism": 8,
                 "subs": [
                     "WpDeserializer"
                 ],
-                "alpha":    0.2,
-                "sigma":    0.4,
+                "alpha":    3.0,
+                "sigma":    0.75,
                 "d":        0.0,
                 "min_ttf":  1000
             },
             {
                 "id": "articleExtraction",
-                "parallelism": 4,
+                "parallelism": 1,
                 "subs": [
                     "expander"
                 ],
-                "alpha":    0.05,
+                "alpha":    1.0,
                 "sigma":    1.0,
                 "d":        0.0,
                 "min_ttf":  1000
             },
             {
                 "id": "mediaExtraction",
-                "parallelism": 4,
+                "parallelism": 1,
                 "subs": [
                     "expander"
                 ],
-                "alpha":    0.05,
+                "alpha":    1.0,
                 "sigma":    1.0,
                 "d":        0.0,
                 "min_ttf":  1000
@@ -52,7 +52,7 @@
         "spouts": [
             {
                 "id": "wpSpout",
-                "avg_emit_rate":1.0
+                "avg_emit_rate":4.0
             }
         ],
         "min_reboot_time":10,
@@ -63,11 +63,10 @@
     },
     "verification_params":
     {
-      "plugin" : ["ae2sbvzot"],
+      "plugin" : ["ae2bvzot", "ae2sbvzot"],
       "max_time" :  20000,
       "base_quantity":10,
       "num_steps":20,
-      "periodic_queues":["WpDeserializer", "expander", "articleExtraction","mediaExtraction"],
-      "strictly_monotonic_queues": ["expander"]
+      "periodic_queues":["WpDeserializer", "expander", "articleExtraction","mediaExtraction"]
     }
 }

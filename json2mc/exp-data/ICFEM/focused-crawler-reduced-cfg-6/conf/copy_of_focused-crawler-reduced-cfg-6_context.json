@@ -1,5 +1,5 @@
 {
-    "app_name": "FOCUSED-CRAWLER-REDUCED",
+    "app_name": "focused-crawler-reduced-cfg-6",
     "description": "",
     "version": "0.1",
     "topology": {
@@ -63,7 +63,7 @@
     },
     "verification_params":
     {
-      "plugin" : ["ae2sbvzot"],
+      "plugin" : ["ae2bvzot", "ae2sbvzot"],
       "max_time" :  20000,
       "base_quantity":10,
       "num_steps":20,

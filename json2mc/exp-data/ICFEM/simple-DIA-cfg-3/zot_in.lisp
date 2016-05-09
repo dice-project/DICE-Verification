@@ -1,4 +1,4 @@
-(asdf:operate 'asdf:load-op '{{verification_params.plugin}})
+(asdf:operate 'asdf:load-op 'ae2sbvzot)
 (use-package :trio-utils)
 
 (defun getReciprocalGZ(x)
@@ -23,28 +23,38 @@
 
 
 ;TOPOLOGY DEFINITION
-  (defconstant the-spouts '({{ topology.spouts|join(' ', attribute='id') }}))
-  (defconstant the-bolts '({{ topology.bolts|join(' ', attribute='id') }}))
+  (defconstant the-spouts '(S1 S2))
+  (defconstant the-bolts '(B1 B2 B3))
 
 	(defvar the-topology-table)
 	(setq the-topology-table (make-hash-table :test 'equalp))
 
-  {% for b in topology.bolts %}
+  
 ;   use this if grouping is taken into account
-;	(setf (gethash '{{b.id}} the-topology-table) '({{b.subs | join(' ', attribute='id')}}))
-    (setf (gethash '{{b.id}} the-topology-table) '({{b.subs | join(' ')}}))
-  {%endfor%}
+;	(setf (gethash 'B1 the-topology-table) '())
+    (setf (gethash 'B1 the-topology-table) '(S1))
+  
+;   use this if grouping is taken into account
+;	(setf (gethash 'B2 the-topology-table) '( ))
+    (setf (gethash 'B2 the-topology-table) '(S1 S2))
+  
+;   use this if grouping is taken into account
+;	(setf (gethash 'B3 the-topology-table) '( ))
+    (setf (gethash 'B3 the-topology-table) '(B1 B2))
+  
 
-(defconstant INIT_QUEUES {{ topology.init_queues }})
+(defconstant INIT_QUEUES 2)
 
 ;NEW --> ACTUAL RATES DEFINITION	TODO:CHECK IF IT MAKES SENSE
 ;	(defconstant BASE_QUANTITY 10	)
-  (defconstant BASE_QUANTITY {{verification_params.base_quantity}})
+  (defconstant BASE_QUANTITY 2)
 ;	(defconstant AVG_EMIT_RATE_S1 0.2)
 ;	(defconstant AVG_EMIT_RATE_S2 0.2)
-  {% for s in topology.spouts %}
-  	(defconstant AVG_EMIT_RATE_{{s.id}} {{s.avg_emit_rate}})
-  {%endfor%}
+  
+  	(defconstant AVG_EMIT_RATE_S1 1.0)
+  
+  	(defconstant AVG_EMIT_RATE_S2 1.0)
+  
 
 
 ;;	SPOUT AVG EMITTING RATES
@@ -52,37 +62,62 @@
 ;	(defconstant C_EMIT_S2 20.0)
 ;	(defconstant MIN_WAIT_FOR_EMIT_S1 100)
 ;	(defconstant MIN_WAIT_FOR_EMIT_S2 100)
-  {% for s in topology.spouts %}
-  	(defconstant C_EMIT_{{s.id}} BASE_QUANTITY)
-  	(defconstant MIN_WAIT_FOR_EMIT_{{s.id}} (/ BASE_QUANTITY AVG_EMIT_RATE_{{s.id}}))
-    (defconstant ALPHA_{{s.id}} (getReciprocalGZ AVG_EMIT_RATE_{{s.id}}))
-  {%endfor%}
+  
+  	(defconstant C_EMIT_S1 BASE_QUANTITY)
+  	(defconstant MIN_WAIT_FOR_EMIT_S1 (/ BASE_QUANTITY AVG_EMIT_RATE_S1))
+    (defconstant ALPHA_S1 (getReciprocalGZ AVG_EMIT_RATE_S1))
+  
+  	(defconstant C_EMIT_S2 BASE_QUANTITY)
+  	(defconstant MIN_WAIT_FOR_EMIT_S2 (/ BASE_QUANTITY AVG_EMIT_RATE_S2))
+    (defconstant ALPHA_S2 (getReciprocalGZ AVG_EMIT_RATE_S2))
+  
 
 
 ;;	BOLTS MAX TAKE RATES, SIGMA AND D
 
-{% for b in topology.bolts %}
-{% if b.parallelism %}
-    (defconstant C_TAKE_{{b.id}} {{b.parallelism}})
-{% else %}
-    (defconstant C_TAKE_{{b.id}} BASE_QUANTITY)
-{% endif %}
-{% if b.max_proc_rate %}
-    (defconstant MAX_PROC_RATE_{{b.id}} {{b.max_proc_rate}})
-{% elif b.alpha %}
-    (defconstant MAX_PROC_RATE_{{b.id}} (/ C_TAKE_{{b.id}} {{b.alpha}}))
-{% endif %}
-	(defconstant SIGMA_{{b.id}} {{b.sigma}})
-	(defconstant D_{{b.id}} {{b.d}})
-    (defconstant SIGMA_REC_{{b.id}} (getReciprocalGZ SIGMA_{{b.id}}))
-	(defconstant MIN_TTF_{{b.id}} {{b.min_ttf}})
-{% if b.alpha %}
-    (defconstant ALPHA_{{b.id}} {{b.alpha}})
-{% elif b.max_proc_rate %}
-;	(defconstant ALPHA_{{b.id}} (getReciprocalGZ MAX_PROC_RATE_{{b.id}}))
-	(defconstant ALPHA_{{b.id}} (/ C_TAKE_{{b.id}} MAX_PROC_RATE_{{b.id}}))
-{% endif %}
-{%endfor%}
+
+
+    (defconstant C_TAKE_B1 5)
+
+
+    (defconstant MAX_PROC_RATE_B1 (/ C_TAKE_B1 4.0))
+
+	(defconstant SIGMA_B1 2.0)
+	(defconstant D_B1 0.0)
+    (defconstant SIGMA_REC_B1 (getReciprocalGZ SIGMA_B1))
+	(defconstant MIN_TTF_B1 1000)
+
+    (defconstant ALPHA_B1 4.0)
+
+
+
+    (defconstant C_TAKE_B2 6)
+
+
+    (defconstant MAX_PROC_RATE_B2 (/ C_TAKE_B2 4.0))
+
+	(defconstant SIGMA_B2 0.5)
+	(defconstant D_B2 0.0)
+    (defconstant SIGMA_REC_B2 (getReciprocalGZ SIGMA_B2))
+	(defconstant MIN_TTF_B2 1000)
+
+    (defconstant ALPHA_B2 4.0)
+
+
+
+    (defconstant C_TAKE_B3 1)
+
+
+    (defconstant MAX_PROC_RATE_B3 (/ C_TAKE_B3 1.0))
+
+	(defconstant SIGMA_B3 1.0)
+	(defconstant D_B3 0.0)
+    (defconstant SIGMA_REC_B3 (getReciprocalGZ SIGMA_B3))
+	(defconstant MIN_TTF_B3 1000)
+
+    (defconstant ALPHA_B3 1.0)
+
+
 
 
     ;RATE THRESHOLDS
@@ -97,29 +132,41 @@
 
 
 
-{% for b in topology.bolts %}
-;	(setf (gethash '{{b.id}} the-rate-threshold-table) (getRateIntervals C_TAKE_{{b.id}}))
-;	(setf (gethash '{{b.id}} the-proc-time-table-2) (getTimeIntervals C_TAKE_{{b.id}} ALPHA_{{b.id}})) ;OLDversion
-    (setf (gethash '{{b.id}} the-proc-time-table) (list (- ALPHA_{{b.id}} (/ ALPHA_{{b.id}} 10.0)) (+ ALPHA_{{b.id}} (/ ALPHA_{{b.id}} 10.0))))
-{%endfor%}
 
-{% for s in topology.spouts %} ;TODO risistemare
-	(setf (gethash '{{s.id}} the-rate-threshold-table) (getRateIntervals {{verification_params.base_quantity}}))
-	;(setf (gethash '{{s.id}} the-proc-time-table) (getTimeIntervals {{verification_params.base_quantity}} ALPHA_{{s.id}}))
-    (setf (gethash '{{s.id}} the-proc-time-table) (getIntervals {{verification_params.base_quantity}} ALPHA_{{s.id}} (/ ALPHA_{{s.id}} 10.0)))
-{%endfor%}
+;	(setf (gethash 'B1 the-rate-threshold-table) (getRateIntervals C_TAKE_B1))
+;	(setf (gethash 'B1 the-proc-time-table-2) (getTimeIntervals C_TAKE_B1 ALPHA_B1)) ;OLDversion
+    (setf (gethash 'B1 the-proc-time-table) (list (- ALPHA_B1 (/ ALPHA_B1 10.0)) (+ ALPHA_B1 (/ ALPHA_B1 10.0))))
+
+;	(setf (gethash 'B2 the-rate-threshold-table) (getRateIntervals C_TAKE_B2))
+;	(setf (gethash 'B2 the-proc-time-table-2) (getTimeIntervals C_TAKE_B2 ALPHA_B2)) ;OLDversion
+    (setf (gethash 'B2 the-proc-time-table) (list (- ALPHA_B2 (/ ALPHA_B2 10.0)) (+ ALPHA_B2 (/ ALPHA_B2 10.0))))
+
+;	(setf (gethash 'B3 the-rate-threshold-table) (getRateIntervals C_TAKE_B3))
+;	(setf (gethash 'B3 the-proc-time-table-2) (getTimeIntervals C_TAKE_B3 ALPHA_B3)) ;OLDversion
+    (setf (gethash 'B3 the-proc-time-table) (list (- ALPHA_B3 (/ ALPHA_B3 10.0)) (+ ALPHA_B3 (/ ALPHA_B3 10.0))))
+
+
+ ;TODO risistemare
+	(setf (gethash 'S1 the-rate-threshold-table) (getRateIntervals 2))
+	;(setf (gethash 'S1 the-proc-time-table) (getTimeIntervals 2 ALPHA_S1))
+    (setf (gethash 'S1 the-proc-time-table) (getIntervals 2 ALPHA_S1 (/ ALPHA_S1 10.0)))
+ ;TODO risistemare
+	(setf (gethash 'S2 the-rate-threshold-table) (getRateIntervals 2))
+	;(setf (gethash 'S2 the-proc-time-table) (getTimeIntervals 2 ALPHA_S2))
+    (setf (gethash 'S2 the-proc-time-table) (getIntervals 2 ALPHA_S2 (/ ALPHA_S2 10.0)))
+
 
 ;TOPOLOGY-INDEPENDENT PARAMETERS: TODO DEFINE BOLT-SPECIFIC VALUES
 
-  (defconstant MIN_REBOOT_TIME {{topology.min_reboot_time}})
-  (defconstant MAX_REBOOT_TIME {{topology.max_reboot_time}})
-;  (defconstant MIN_IDLE_TIME {{topology.min_idle_time}})
-  (defconstant MAX_IDLE_TIME {{topology.max_idle_time}})
+  (defconstant MIN_REBOOT_TIME 10)
+  (defconstant MAX_REBOOT_TIME 100)
+;  (defconstant MIN_IDLE_TIME )
+  (defconstant MAX_IDLE_TIME 0.01)
 
-  (defconstant QUEUE_THRESHOLD {{topology.queue_threshold}})
+  (defconstant QUEUE_THRESHOLD 0)
 
 
-	(defconstant MAX_TIME {{verification_params.max_time}})
+	(defconstant MAX_TIME 20000)
 
 	(defconstant orig
 		(-P- O))
@@ -1161,7 +1208,7 @@
 	(gen-pt-clocks the-spouts the-bolts)
 
 
-	({{verification_params.plugin}}:zot {{verification_params.num_steps}}
+	(ae2sbvzot:zot 15
 		(&&
 			(yesterday (f-init-rates the-spouts the-bolts the-impacts-table))
 
@@ -1179,18 +1226,16 @@
                     (f-clocks-behaviour the-spouts the-bolts the-proc-time-table)
 ;OLD                    (f-spoutClocksBehaviour the-spouts the-rate-threshold-table the-proc-time-table)
                     (f-spoutClocksBehaviour the-spouts the-proc-time-table)
-		            (f-noFailures '({{ topology.bolts|join(' ', attribute='id') }}))
+		            (f-noFailures '(B1 B2 B3))
 ;          (f-queueConstraint the-bolts QUEUE_THRESHOLD);trova run che non satura
 				)
 			))
 
-        {%  if verification_params.strictly_monotonic_queues | length %}
-        (somf (alwf(f-growingConstraint '({{ verification_params.strictly_monotonic_queues | join(' ') }}))))
-        {% endif %}
+        
+        (somf (alwf(f-growingConstraint '(B2 B3))))
+        
 
-    {%  if topology.queue_threshold %}
-        (somf (!! (f-queueConstraint the-bolts QUEUE_THRESHOLD)))
-    {% endif %}
+    
 
 			(&& (yesterday orig) (alwf (!! orig)))
 		)
@@ -1201,16 +1246,16 @@
 		:logic :QF_UFRDL
 		:over-clocks MAX_TIME
 		:parametric-regions 't
-        {% if verification_params.strictly_monotonic_queues | length %}
-        :smt-assumptions "(and {% for s in verification_params.strictly_monotonic_queues %}(= (R_ADD_{{s}} i_loop) (R_ADD_{{s}} {{verification_params.num_steps + 1}})){%endfor%})"
-        {% endif %}
-        ;:smt-assumptions "(= (r_add_EXPANDER i_loop) (r_add_EXPANDER (+ {{verification_params.num_steps}} 1)))"
+        
+        :smt-assumptions "(and (= (R_ADD_B2 i_loop) (R_ADD_B2 16))(= (R_ADD_B3 i_loop) (R_ADD_B3 16)))"
+        
+        ;:smt-assumptions "(= (r_add_EXPANDER i_loop) (r_add_EXPANDER (+ 15 1)))"
 		:discrete-counters (gen-counters-list the-spouts the-bolts the-impacts-table)
-    {%  if verification_params.periodic_queues | length %}
-    :l-monotonic '(Q_{{ verification_params.periodic_queues | join(' Q_') }})
-    {% endif %}
-    {%  if verification_params.strictly_monotonic_queues | length %}
-    :l-strictly-monotonic '(Q_{{ verification_params.strictly_monotonic_queues | join(' Q_') }})
-    {% endif %}
+    
+    :l-monotonic '(Q_B1 Q_B2 Q_B3)
+    
+    
+    :l-strictly-monotonic '(Q_B2 Q_B3)
+    
 
 )

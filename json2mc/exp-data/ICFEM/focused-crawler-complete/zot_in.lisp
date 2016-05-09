@@ -1,4 +1,4 @@
-(asdf:operate 'asdf:load-op '{{verification_params.plugin}})
+(asdf:operate 'asdf:load-op 'ae2sbvzot)
 (use-package :trio-utils)
 
 (defun getReciprocalGZ(x)
@@ -23,28 +23,56 @@
 
 
 ;TOPOLOGY DEFINITION
-  (defconstant the-spouts '({{ topology.spouts|join(' ', attribute='id') }}))
-  (defconstant the-bolts '({{ topology.bolts|join(' ', attribute='id') }}))
+  (defconstant the-spouts '(wpSpout))
+  (defconstant the-bolts '(WpDeserializer expander articleExtraction mediaExtraction webPageUpdater textIndexer mediaupdater mediatextindexer))
 
 	(defvar the-topology-table)
 	(setq the-topology-table (make-hash-table :test 'equalp))
 
-  {% for b in topology.bolts %}
+  
 ;   use this if grouping is taken into account
-;	(setf (gethash '{{b.id}} the-topology-table) '({{b.subs | join(' ', attribute='id')}}))
-    (setf (gethash '{{b.id}} the-topology-table) '({{b.subs | join(' ')}}))
-  {%endfor%}
+;	(setf (gethash 'WpDeserializer the-topology-table) '())
+    (setf (gethash 'WpDeserializer the-topology-table) '(wpSpout))
+  
+;   use this if grouping is taken into account
+;	(setf (gethash 'expander the-topology-table) '())
+    (setf (gethash 'expander the-topology-table) '(WpDeserializer))
+  
+;   use this if grouping is taken into account
+;	(setf (gethash 'articleExtraction the-topology-table) '())
+    (setf (gethash 'articleExtraction the-topology-table) '(expander))
+  
+;   use this if grouping is taken into account
+;	(setf (gethash 'mediaExtraction the-topology-table) '())
+    (setf (gethash 'mediaExtraction the-topology-table) '(expander))
+  
+;   use this if grouping is taken into account
+;	(setf (gethash 'webPageUpdater the-topology-table) '( ))
+    (setf (gethash 'webPageUpdater the-topology-table) '(articleExtraction mediaExtraction))
+  
+;   use this if grouping is taken into account
+;	(setf (gethash 'textIndexer the-topology-table) '())
+    (setf (gethash 'textIndexer the-topology-table) '(articleExtraction))
+  
+;   use this if grouping is taken into account
+;	(setf (gethash 'mediaupdater the-topology-table) '( ))
+    (setf (gethash 'mediaupdater the-topology-table) '(articleExtraction mediaExtraction))
+  
+;   use this if grouping is taken into account
+;	(setf (gethash 'mediatextindexer the-topology-table) '( ))
+    (setf (gethash 'mediatextindexer the-topology-table) '(articleExtraction mediaExtraction))
+  
 
-(defconstant INIT_QUEUES {{ topology.init_queues }})
+(defconstant INIT_QUEUES 4)
 
 ;NEW --> ACTUAL RATES DEFINITION	TODO:CHECK IF IT MAKES SENSE
 ;	(defconstant BASE_QUANTITY 10	)
-  (defconstant BASE_QUANTITY {{verification_params.base_quantity}})
+  (defconstant BASE_QUANTITY 10)
 ;	(defconstant AVG_EMIT_RATE_S1 0.2)
 ;	(defconstant AVG_EMIT_RATE_S2 0.2)
-  {% for s in topology.spouts %}
-  	(defconstant AVG_EMIT_RATE_{{s.id}} {{s.avg_emit_rate}})
-  {%endfor%}
+  
+  	(defconstant AVG_EMIT_RATE_wpSpout 4.0)
+  
 
 
 ;;	SPOUT AVG EMITTING RATES
@@ -52,37 +80,128 @@
 ;	(defconstant C_EMIT_S2 20.0)
 ;	(defconstant MIN_WAIT_FOR_EMIT_S1 100)
 ;	(defconstant MIN_WAIT_FOR_EMIT_S2 100)
-  {% for s in topology.spouts %}
-  	(defconstant C_EMIT_{{s.id}} BASE_QUANTITY)
-  	(defconstant MIN_WAIT_FOR_EMIT_{{s.id}} (/ BASE_QUANTITY AVG_EMIT_RATE_{{s.id}}))
-    (defconstant ALPHA_{{s.id}} (getReciprocalGZ AVG_EMIT_RATE_{{s.id}}))
-  {%endfor%}
+  
+  	(defconstant C_EMIT_wpSpout BASE_QUANTITY)
+  	(defconstant MIN_WAIT_FOR_EMIT_wpSpout (/ BASE_QUANTITY AVG_EMIT_RATE_wpSpout))
+    (defconstant ALPHA_wpSpout (getReciprocalGZ AVG_EMIT_RATE_wpSpout))
+  
 
 
 ;;	BOLTS MAX TAKE RATES, SIGMA AND D
 
-{% for b in topology.bolts %}
-{% if b.parallelism %}
-    (defconstant C_TAKE_{{b.id}} {{b.parallelism}})
-{% else %}
-    (defconstant C_TAKE_{{b.id}} BASE_QUANTITY)
-{% endif %}
-{% if b.max_proc_rate %}
-    (defconstant MAX_PROC_RATE_{{b.id}} {{b.max_proc_rate}})
-{% elif b.alpha %}
-    (defconstant MAX_PROC_RATE_{{b.id}} (/ C_TAKE_{{b.id}} {{b.alpha}}))
-{% endif %}
-	(defconstant SIGMA_{{b.id}} {{b.sigma}})
-	(defconstant D_{{b.id}} {{b.d}})
-    (defconstant SIGMA_REC_{{b.id}} (getReciprocalGZ SIGMA_{{b.id}}))
-	(defconstant MIN_TTF_{{b.id}} {{b.min_ttf}})
-{% if b.alpha %}
-    (defconstant ALPHA_{{b.id}} {{b.alpha}})
-{% elif b.max_proc_rate %}
-;	(defconstant ALPHA_{{b.id}} (getReciprocalGZ MAX_PROC_RATE_{{b.id}}))
-	(defconstant ALPHA_{{b.id}} (/ C_TAKE_{{b.id}} MAX_PROC_RATE_{{b.id}}))
-{% endif %}
-{%endfor%}
+
+
+    (defconstant C_TAKE_WpDeserializer 4)
+
+
+    (defconstant MAX_PROC_RATE_WpDeserializer (/ C_TAKE_WpDeserializer 0.5))
+
+	(defconstant SIGMA_WpDeserializer 2.0)
+	(defconstant D_WpDeserializer 0.0)
+    (defconstant SIGMA_REC_WpDeserializer (getReciprocalGZ SIGMA_WpDeserializer))
+	(defconstant MIN_TTF_WpDeserializer 1000)
+
+    (defconstant ALPHA_WpDeserializer 0.5)
+
+
+
+    (defconstant C_TAKE_expander 8)
+
+
+    (defconstant MAX_PROC_RATE_expander (/ C_TAKE_expander 3.0))
+
+	(defconstant SIGMA_expander 0.75)
+	(defconstant D_expander 0.0)
+    (defconstant SIGMA_REC_expander (getReciprocalGZ SIGMA_expander))
+	(defconstant MIN_TTF_expander 1000)
+
+    (defconstant ALPHA_expander 3.0)
+
+
+
+    (defconstant C_TAKE_articleExtraction 1)
+
+
+    (defconstant MAX_PROC_RATE_articleExtraction (/ C_TAKE_articleExtraction 1.0))
+
+	(defconstant SIGMA_articleExtraction 1.0)
+	(defconstant D_articleExtraction 0.0)
+    (defconstant SIGMA_REC_articleExtraction (getReciprocalGZ SIGMA_articleExtraction))
+	(defconstant MIN_TTF_articleExtraction 1000)
+
+    (defconstant ALPHA_articleExtraction 1.0)
+
+
+
+    (defconstant C_TAKE_mediaExtraction 1)
+
+
+    (defconstant MAX_PROC_RATE_mediaExtraction (/ C_TAKE_mediaExtraction 1.0))
+
+	(defconstant SIGMA_mediaExtraction 1.0)
+	(defconstant D_mediaExtraction 0.0)
+    (defconstant SIGMA_REC_mediaExtraction (getReciprocalGZ SIGMA_mediaExtraction))
+	(defconstant MIN_TTF_mediaExtraction 1000)
+
+    (defconstant ALPHA_mediaExtraction 1.0)
+
+
+
+    (defconstant C_TAKE_webPageUpdater 4)
+
+
+    (defconstant MAX_PROC_RATE_webPageUpdater (/ C_TAKE_webPageUpdater 1.0))
+
+	(defconstant SIGMA_webPageUpdater 1.0)
+	(defconstant D_webPageUpdater 0.0)
+    (defconstant SIGMA_REC_webPageUpdater (getReciprocalGZ SIGMA_webPageUpdater))
+	(defconstant MIN_TTF_webPageUpdater 1000)
+
+    (defconstant ALPHA_webPageUpdater 1.0)
+
+
+
+    (defconstant C_TAKE_textIndexer 1)
+
+
+    (defconstant MAX_PROC_RATE_textIndexer (/ C_TAKE_textIndexer 1.0))
+
+	(defconstant SIGMA_textIndexer 1.0)
+	(defconstant D_textIndexer 0.0)
+    (defconstant SIGMA_REC_textIndexer (getReciprocalGZ SIGMA_textIndexer))
+	(defconstant MIN_TTF_textIndexer 1000)
+
+    (defconstant ALPHA_textIndexer 1.0)
+
+
+
+    (defconstant C_TAKE_mediaupdater 1)
+
+
+    (defconstant MAX_PROC_RATE_mediaupdater (/ C_TAKE_mediaupdater 1.0))
+
+	(defconstant SIGMA_mediaupdater 1.0)
+	(defconstant D_mediaupdater 0.0)
+    (defconstant SIGMA_REC_mediaupdater (getReciprocalGZ SIGMA_mediaupdater))
+	(defconstant MIN_TTF_mediaupdater 1000)
+
+    (defconstant ALPHA_mediaupdater 1.0)
+
+
+
+    (defconstant C_TAKE_mediatextindexer 1)
+
+
+    (defconstant MAX_PROC_RATE_mediatextindexer (/ C_TAKE_mediatextindexer 1.0))
+
+	(defconstant SIGMA_mediatextindexer 1.0)
+	(defconstant D_mediatextindexer 0.0)
+    (defconstant SIGMA_REC_mediatextindexer (getReciprocalGZ SIGMA_mediatextindexer))
+	(defconstant MIN_TTF_mediatextindexer 1000)
+
+    (defconstant ALPHA_mediatextindexer 1.0)
+
+
 
 
     ;RATE THRESHOLDS
@@ -97,29 +216,57 @@
 
 
 
-{% for b in topology.bolts %}
-;	(setf (gethash '{{b.id}} the-rate-threshold-table) (getRateIntervals C_TAKE_{{b.id}}))
-;	(setf (gethash '{{b.id}} the-proc-time-table-2) (getTimeIntervals C_TAKE_{{b.id}} ALPHA_{{b.id}})) ;OLDversion
-    (setf (gethash '{{b.id}} the-proc-time-table) (list (- ALPHA_{{b.id}} (/ ALPHA_{{b.id}} 10.0)) (+ ALPHA_{{b.id}} (/ ALPHA_{{b.id}} 10.0))))
-{%endfor%}
 
-{% for s in topology.spouts %} ;TODO risistemare
-	(setf (gethash '{{s.id}} the-rate-threshold-table) (getRateIntervals {{verification_params.base_quantity}}))
-	;(setf (gethash '{{s.id}} the-proc-time-table) (getTimeIntervals {{verification_params.base_quantity}} ALPHA_{{s.id}}))
-    (setf (gethash '{{s.id}} the-proc-time-table) (getIntervals {{verification_params.base_quantity}} ALPHA_{{s.id}} (/ ALPHA_{{s.id}} 10.0)))
-{%endfor%}
+;	(setf (gethash 'WpDeserializer the-rate-threshold-table) (getRateIntervals C_TAKE_WpDeserializer))
+;	(setf (gethash 'WpDeserializer the-proc-time-table-2) (getTimeIntervals C_TAKE_WpDeserializer ALPHA_WpDeserializer)) ;OLDversion
+    (setf (gethash 'WpDeserializer the-proc-time-table) (list (- ALPHA_WpDeserializer (/ ALPHA_WpDeserializer 10.0)) (+ ALPHA_WpDeserializer (/ ALPHA_WpDeserializer 10.0))))
+
+;	(setf (gethash 'expander the-rate-threshold-table) (getRateIntervals C_TAKE_expander))
+;	(setf (gethash 'expander the-proc-time-table-2) (getTimeIntervals C_TAKE_expander ALPHA_expander)) ;OLDversion
+    (setf (gethash 'expander the-proc-time-table) (list (- ALPHA_expander (/ ALPHA_expander 10.0)) (+ ALPHA_expander (/ ALPHA_expander 10.0))))
+
+;	(setf (gethash 'articleExtraction the-rate-threshold-table) (getRateIntervals C_TAKE_articleExtraction))
+;	(setf (gethash 'articleExtraction the-proc-time-table-2) (getTimeIntervals C_TAKE_articleExtraction ALPHA_articleExtraction)) ;OLDversion
+    (setf (gethash 'articleExtraction the-proc-time-table) (list (- ALPHA_articleExtraction (/ ALPHA_articleExtraction 10.0)) (+ ALPHA_articleExtraction (/ ALPHA_articleExtraction 10.0))))
+
+;	(setf (gethash 'mediaExtraction the-rate-threshold-table) (getRateIntervals C_TAKE_mediaExtraction))
+;	(setf (gethash 'mediaExtraction the-proc-time-table-2) (getTimeIntervals C_TAKE_mediaExtraction ALPHA_mediaExtraction)) ;OLDversion
+    (setf (gethash 'mediaExtraction the-proc-time-table) (list (- ALPHA_mediaExtraction (/ ALPHA_mediaExtraction 10.0)) (+ ALPHA_mediaExtraction (/ ALPHA_mediaExtraction 10.0))))
+
+;	(setf (gethash 'webPageUpdater the-rate-threshold-table) (getRateIntervals C_TAKE_webPageUpdater))
+;	(setf (gethash 'webPageUpdater the-proc-time-table-2) (getTimeIntervals C_TAKE_webPageUpdater ALPHA_webPageUpdater)) ;OLDversion
+    (setf (gethash 'webPageUpdater the-proc-time-table) (list (- ALPHA_webPageUpdater (/ ALPHA_webPageUpdater 10.0)) (+ ALPHA_webPageUpdater (/ ALPHA_webPageUpdater 10.0))))
+
+;	(setf (gethash 'textIndexer the-rate-threshold-table) (getRateIntervals C_TAKE_textIndexer))
+;	(setf (gethash 'textIndexer the-proc-time-table-2) (getTimeIntervals C_TAKE_textIndexer ALPHA_textIndexer)) ;OLDversion
+    (setf (gethash 'textIndexer the-proc-time-table) (list (- ALPHA_textIndexer (/ ALPHA_textIndexer 10.0)) (+ ALPHA_textIndexer (/ ALPHA_textIndexer 10.0))))
+
+;	(setf (gethash 'mediaupdater the-rate-threshold-table) (getRateIntervals C_TAKE_mediaupdater))
+;	(setf (gethash 'mediaupdater the-proc-time-table-2) (getTimeIntervals C_TAKE_mediaupdater ALPHA_mediaupdater)) ;OLDversion
+    (setf (gethash 'mediaupdater the-proc-time-table) (list (- ALPHA_mediaupdater (/ ALPHA_mediaupdater 10.0)) (+ ALPHA_mediaupdater (/ ALPHA_mediaupdater 10.0))))
+
+;	(setf (gethash 'mediatextindexer the-rate-threshold-table) (getRateIntervals C_TAKE_mediatextindexer))
+;	(setf (gethash 'mediatextindexer the-proc-time-table-2) (getTimeIntervals C_TAKE_mediatextindexer ALPHA_mediatextindexer)) ;OLDversion
+    (setf (gethash 'mediatextindexer the-proc-time-table) (list (- ALPHA_mediatextindexer (/ ALPHA_mediatextindexer 10.0)) (+ ALPHA_mediatextindexer (/ ALPHA_mediatextindexer 10.0))))
+
+
+ ;TODO risistemare
+	(setf (gethash 'wpSpout the-rate-threshold-table) (getRateIntervals 10))
+	;(setf (gethash 'wpSpout the-proc-time-table) (getTimeIntervals 10 ALPHA_wpSpout))
+    (setf (gethash 'wpSpout the-proc-time-table) (getIntervals 10 ALPHA_wpSpout (/ ALPHA_wpSpout 10.0)))
+
 
 ;TOPOLOGY-INDEPENDENT PARAMETERS: TODO DEFINE BOLT-SPECIFIC VALUES
 
-  (defconstant MIN_REBOOT_TIME {{topology.min_reboot_time}})
-  (defconstant MAX_REBOOT_TIME {{topology.max_reboot_time}})
-;  (defconstant MIN_IDLE_TIME {{topology.min_idle_time}})
-  (defconstant MAX_IDLE_TIME {{topology.max_idle_time}})
+  (defconstant MIN_REBOOT_TIME 10)
+  (defconstant MAX_REBOOT_TIME 100)
+;  (defconstant MIN_IDLE_TIME )
+  (defconstant MAX_IDLE_TIME 1.0)
 
-  (defconstant QUEUE_THRESHOLD {{topology.queue_threshold}})
+  (defconstant QUEUE_THRESHOLD 0)
 
 
-	(defconstant MAX_TIME {{verification_params.max_time}})
+	(defconstant MAX_TIME 20000)
 
 	(defconstant orig
 		(-P- O))
@@ -1018,12 +1165,6 @@
     (loop for j in bolts collect
         `([<] ( -V-,(intern (format nil "Q_~S" j))) ,threshold)))))
 
-(defmacro growingConstraint(bolts)
-`(&&
-  ,@(nconc
-    (loop for j in bolts collect
-        `([>] ( -V-,(intern (format nil "Q_~S" j))) 0)))))
-
 ; NO FAILURES ARE HAPPENING
 (defmacro noFailures(bolts)
 `(&&
@@ -1059,10 +1200,6 @@
 
 (defun f-queueConstraint (bolts threshold)
 	(eval `(queueConstraint ,bolts ,threshold)))
-
-(defun f-growingConstraint (bolts)
-	(eval `(growingConstraint ,bolts)))
-
 
 (defun f-noFailures (bolts)
   (eval `(noFailures ,bolts)))
@@ -1161,7 +1298,7 @@
 	(gen-pt-clocks the-spouts the-bolts)
 
 
-	({{verification_params.plugin}}:zot {{verification_params.num_steps}}
+	(ae2sbvzot:zot 20
 		(&&
 			(yesterday (f-init-rates the-spouts the-bolts the-impacts-table))
 
@@ -1179,18 +1316,12 @@
                     (f-clocks-behaviour the-spouts the-bolts the-proc-time-table)
 ;OLD                    (f-spoutClocksBehaviour the-spouts the-rate-threshold-table the-proc-time-table)
                     (f-spoutClocksBehaviour the-spouts the-proc-time-table)
-		            (f-noFailures '({{ topology.bolts|join(' ', attribute='id') }}))
+		            (f-noFailures '(WpDeserializer expander articleExtraction mediaExtraction webPageUpdater textIndexer mediaupdater mediatextindexer))
 ;          (f-queueConstraint the-bolts QUEUE_THRESHOLD);trova run che non satura
 				)
 			))
 
-        {%  if verification_params.strictly_monotonic_queues | length %}
-        (somf (alwf(f-growingConstraint '({{ verification_params.strictly_monotonic_queues | join(' ') }}))))
-        {% endif %}
-
-    {%  if topology.queue_threshold %}
-        (somf (!! (f-queueConstraint the-bolts QUEUE_THRESHOLD)))
-    {% endif %}
+    
 
 			(&& (yesterday orig) (alwf (!! orig)))
 		)
@@ -1201,16 +1332,10 @@
 		:logic :QF_UFRDL
 		:over-clocks MAX_TIME
 		:parametric-regions 't
-        {% if verification_params.strictly_monotonic_queues | length %}
-        :smt-assumptions "(and {% for s in verification_params.strictly_monotonic_queues %}(= (R_ADD_{{s}} i_loop) (R_ADD_{{s}} {{verification_params.num_steps + 1}})){%endfor%})"
-        {% endif %}
-        ;:smt-assumptions "(= (r_add_EXPANDER i_loop) (r_add_EXPANDER (+ {{verification_params.num_steps}} 1)))"
 		:discrete-counters (gen-counters-list the-spouts the-bolts the-impacts-table)
-    {%  if verification_params.periodic_queues | length %}
-    :l-monotonic '(Q_{{ verification_params.periodic_queues | join(' Q_') }})
-    {% endif %}
-    {%  if verification_params.strictly_monotonic_queues | length %}
-    :l-strictly-monotonic '(Q_{{ verification_params.strictly_monotonic_queues | join(' Q_') }})
-    {% endif %}
+    
+    :l-monotonic '(Q_WpDeserializer Q_expander Q_articleExtraction Q_mediaExtraction Q_webPageUpdater Q_textIndexer Q_mediaupdater Q_mediatextindexer)
+    
+    
 
 )
