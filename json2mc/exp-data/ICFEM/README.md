@@ -1,0 +1,18 @@
+## ICFEM Paper - Experimental results
+
+Download as [zip file](https://github.com/franco-maroni/DICE-Verification/raw/master/json2mc/exp-data/ICFEM.zip)
+
+|Topology  | Bolts | Time | Max Memory | Outcome | Spurious|
+|----------------|---|---|---|---|
+|[simple-DIA-cfg-1](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/simple-DIA-cfg-1) |  3  |  60s  |  104MB  |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/simple-DIA-cfg-1.png))  |  no	|
+|[simple-DIA-cfg-2](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/simple-DIA-cfg-2)	 |  3  |  1058s  |  150MB  |  UNSAT |  N/A |
+|[simple-DIA-cfg-3](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/simple-DIA-cfg-3)	 |  3  |  223s  |  96MB  |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/simple-DIA-cfg-3.png)) |  no	|
+|[focused-crawler-complete](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-complete)	 |  8  |  2664s  |  448MB  |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-complete.png)) |  no	|
+|[focused-crawler-reduced-cfg-1](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1)	 |  4  |  95s  |  142MB  |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-1.png))  |  no	|
+|[focused-crawler-reduced-cfg-2](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-2)	 |  4  |  253s  |  195MB |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-2.png))  |  no |
+|[focused-crawler-reduced-cfg-3](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-3)	 |  4  |  327s  |  215MB  |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-3.png))  |  no	|
+|[focused-crawler-reduced-cfg-4](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-4)	 |  4  |  333s  |  206MB  |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-4.png))  |  yes	|
+|[focused-crawler-reduced-cfg-5](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-5)	 |  4  |  3184s  |  317MB  |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-5.png))  |  yes	|
+|[focused-crawler-reduced-cfg-6](https://github.com/franco-maroni/DICE-Verification/tree/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-6)	 |  4  |  1060s  |  229MB   |  SAT ([trace](https://raw.githubusercontent.com/franco-maroni/DICE-Verification/master/json2mc/exp-data/ICFEM/focused-crawler-reduced-cfg-1/imgs/focused-crawler-reduced-cfg-6.png))  |  yes |
+
+
