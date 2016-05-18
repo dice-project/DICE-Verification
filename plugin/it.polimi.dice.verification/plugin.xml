@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="verifiers" name="Verifiers" schema="schema/verifiers.exsd"/>
+
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="it.polimi.dice.verification.launcher.VerificationLaunchConfigurationDelegate"
+            id="it.polimi.dice.verification.launchConfigurationType1"
+            modes="run"
+            name="DICE Verification">
+      </launchConfigurationType>
+   </extension>
+
+</plugin>

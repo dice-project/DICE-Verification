@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="it.polimi.dice.verification.ui.launcher.VerificationLaunchConfigurationTabGroup"
+            id="it.polimi.dice.verification.ui.launchConfigurationTabGroup"
+            type="it.polimi.dice.verification.launchConfigurationType1">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabs">
+      <tab
+            class="it.polimi.dice.verification.ui.launcher.MainLaunchConfigurationTab"
+            group="it.polimi.dice.verification.ui.launchConfigurationTabGroup"
+            id="it.polimi.dice.verification.ui.mainTab"
+            name="Main">
+      </tab>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="it.polimi.dice.verification.launchConfigurationType1"
+            icon="icons/verify_icon.png"
+            id="it.polimi.dice.verification.ui.launchConfigurationTypeImage">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <menu
+               id="it.polimi.dice.verification.ui.menus.diceVerificationMenu"
+               label="Verification Tools"
+               mnemonic="M">
+            <command
+                  commandId="it.polimi.dice.verification.ui.commands.launchVerificationCommand"
+                  id="it.polimi.dice.verification.ui.menus.launchVerificationCommand"
+                  icon="icons/verify_icon.png"
+                  mnemonic="S">
+                  <visibleWhen
+                     checkEnabled="true">
+               	  </visibleWhen>
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="it.polimi.dice.verification.ui.toolbars.sampleToolbar">
+            <command
+                  commandId="it.polimi.dice.verification.ui.commands.launchVerificationCommand"
+                  icon="icons/sample.gif"
+                  id="it.polimi.dice.verification.ui.toolbars.LaunchVerificationCommand"
+                  tooltip="Say hello world">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="it.polimi.dice.verification.ui.handlers.LaunchVerificationHandler"
+            commandId="it.polimi.dice.verification.ui.commands.launchVerificationCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="it.polimi.dice.verification.ui.commands.verificationCategory"
+            name="DICE Verification">
+      </category>
+      <command
+            categoryId="it.polimi.dice.verification.ui.commands.verificationCategory"
+            description="Launches  DICE Verification"
+            id="it.polimi.dice.verification.ui.commands.launchVerificationCommand"
+            name="Launch DICE Verification">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            class="it.polimi.dice.verification.ui.launcher.VerificationLaunchShortcut"
+            icon="icons/verify_icon.png"
+            id="it.polimi.dice.verification.ui.shortcut"
+            label="DICE &amp;Verification"
+            modes="run">
+            <contextualLaunch>
+         <enablement>
+           <with variable="selection">
+             <count value="1"/>
+             </with>
+         </enablement>
+ 		</contextualLaunch>
+       <configurationType
+              id="it.polimi.dice.verification.launchConfigurationType1">
+       </configurationType>
+       <description
+              description="Launches a verification task on the specified UML model"
+              mode="run">
+       </description>
+            
+      </shortcut>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="org.eclipse.papyrus.infra.onefile.model.IPapyrusElement"
+            class="it.polimi.dice.verification.adapters.LaunchableDummyAdapterFactory">
+         <adapter
+               type="org.eclipse.debug.ui.actions.ILaunchable">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="org.eclipse.papyrus.infra.onefile.model.IPapyrusElement"
+            class="it.polimi.dice.verification.adapters.UmlModelAdapterFactory">
+         <adapter
+               type="org.eclipse.papyrus.uml.tools.model.UmlModel">
+         </adapter>
+      </factory>
+      <factory
+            adaptableType="org.eclipse.core.resources.IFile"
+            class="it.polimi.dice.verification.adapters.UmlModelAdapterFactory">
+         <adapter
+               type="org.eclipse.papyrus.uml.tools.model.UmlModel">
+         </adapter>
+      </factory>
+   </extension>
+
+</plugin>
