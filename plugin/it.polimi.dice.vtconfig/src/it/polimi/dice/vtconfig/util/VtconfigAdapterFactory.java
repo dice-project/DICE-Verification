@@ -70,12 +70,16 @@ public class VtconfigAdapterFactory extends AdapterFactoryImpl {
 	protected VtconfigSwitch<Adapter> modelSwitch =
 		new VtconfigSwitch<Adapter>() {
 			@Override
-			public Adapter casePetriNetConfig(VerificationToolConfig object) {
-				return createPetriNetConfigAdapter();
+			public Adapter caseVerificationToolConfig(VerificationToolConfig object) {
+				return createVerificationToolConfigAdapter();
 			}
 			@Override
 			public Adapter caseEStringToEFloatObjectsMap(Map.Entry<String, Float> object) {
 				return createEStringToEFloatObjectsMapAdapter();
+			}
+			@Override
+			public Adapter caseEStringToEBooleanObjectsMap(Map.Entry<String, Boolean> object) {
+				return createEStringToEBooleanObjectsMapAdapter();
 			}
 			@Override
 			public Adapter defaultCase(EObject object) {
@@ -107,7 +111,7 @@ public class VtconfigAdapterFactory extends AdapterFactoryImpl {
 	 * @see it.polimi.dice.vtconfig.VerificationToolConfig
 	 * @generated
 	 */
-	public Adapter createPetriNetConfigAdapter() {
+	public Adapter createVerificationToolConfigAdapter() {
 		return null;
 	}
 
@@ -124,6 +128,11 @@ public class VtconfigAdapterFactory extends AdapterFactoryImpl {
 	public Adapter createEStringToEFloatObjectsMapAdapter() {
 		return null;
 	}
+	
+	public Adapter createEStringToEBooleanObjectsMapAdapter() {
+		return null;
+	}
+
 
 	/**
 	 * Creates a new adapter for the default case.

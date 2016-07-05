@@ -26,6 +26,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -38,6 +39,7 @@ import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.CheckboxCellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.EditingSupport;
@@ -60,6 +62,8 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.uml2.uml.Association;
+import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Element;
@@ -68,10 +72,15 @@ import org.eclipse.uml2.uml.Property;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLPackage;
 
+import com.google.gson.Gson;
+
 import it.polimi.dice.verification.DiceVerificationPlugin;
+import it.polimi.dice.verification.json.StormTopology;
 import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationAttributes;
 import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationDelegate;
 import it.polimi.dice.verification.ui.DiceVerificationUiPlugin;
+import it.polimi.dice.verification.uml.diagrams.classdiagram.BoltClass;
+import it.polimi.dice.verification.uml.diagrams.classdiagram.SpoutClass;
 import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
 import it.polimi.dice.vtconfig.VerificationToolConfig;
 import it.polimi.dice.vtconfig.VtConfigFactory;
@@ -83,7 +92,10 @@ import it.polimi.dice.core.ui.dialogs.FileSelectionDialog;
 
 public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 
-	private class MapEntryViewerComparator extends ViewerComparator {
+	private static final Image CHECKED = DiceVerificationUiPlugin.getDefault().getImageRegistry().get(DiceVerificationUiPlugin.IMG_CHECKED);;
+	private static final Image UNCHECKED = DiceVerificationUiPlugin.getDefault().getImageRegistry().get(DiceVerificationUiPlugin.IMG_UNCHECKED);
+
+	private class MapEntryViewerFloatComparator extends ViewerComparator {
 		private static final int DESCENDING = 1;
 		private int propertyIndex = 0;
 		private int direction = -DESCENDING; // ASCENDING
@@ -128,7 +140,53 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 
+	private class MapEntryViewerBooleanComparator extends ViewerComparator {
+		private static final int DESCENDING = 1;
+		private int propertyIndex = 0;
+		private int direction = -DESCENDING; // ASCENDING
 
+		public int getDirection() {
+			return direction == 1 ? SWT.DOWN : SWT.UP;
+		}
+
+		public void setColumn(int column) {
+			if (column == this.propertyIndex) {
+				// Same column as last sort; toggle the direction
+				direction = 1 - direction;
+			} else {
+				// New column; do an ascending sort
+				this.propertyIndex = column;
+				direction = DESCENDING;
+			}
+		}
+
+		@Override
+		public int compare(Viewer viewer, Object e1, Object e2) {
+			@SuppressWarnings("unchecked")
+			Entry<String, Boolean> entry1 = (Entry<String, Boolean>) e1;
+			@SuppressWarnings("unchecked")
+			Entry<String, Boolean> entry2 = (Entry<String, Boolean>) e2;
+			int result = 0;
+			switch (propertyIndex) {
+			case 0:
+				result = entry1.getKey().compareTo(entry2.getKey());
+				break;
+			case 1:
+				result = entry1.getValue().compareTo(entry2.getValue());
+				break;
+			default:
+				result = 0;
+			}
+			// If descending order, flip the direction
+			if (direction == DESCENDING) {
+				result = -result;
+			}
+			return result;
+		}
+	}
+
+	
+	
 	private class FormData {
 		private String inputFile;
 		private String intermediateFilesDir;
@@ -143,7 +201,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		protected String getInputFile() {
 			return inputFile;
 		}
-		protected void setInputFile(String inputFile) {
+		protected void setInputFileBoolean(String inputFile) {
 			this.inputFile = inputFile;
 			String readableInputFile = toReadableString(inputFile);
 			inputFileText.setText(readableInputFile != null ? readableInputFile : StringUtils.EMPTY);
@@ -159,7 +217,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
-		protected void setInputFile2(String inputFile) {
+		protected void setInputFileFloat(String inputFile) {
 			this.inputFile = inputFile;
 			String readableInputFile = toReadableString(inputFile);
 			inputFileText.setText(readableInputFile != null ? readableInputFile : StringUtils.EMPTY);
@@ -180,6 +238,15 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			return intermediateFilesDir;
 		}
 		
+		protected void setIntermediateFilesDir(String intermediateFilesDir) {
+			this.intermediateFilesDir = intermediateFilesDir;
+			String readableFilesDir = toReadableString(intermediateFilesDir);
+			intermediateFilesDirText.setText(readableFilesDir != null ? readableFilesDir : StringUtils.EMPTY);
+			setDirty(true);
+			updateLaunchConfigurationDialog();
+		}
+
+		
 		protected int getTimeBound(){
 			return timeBound;
 		}
@@ -191,18 +258,18 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
-/*		protected boolean keepIntermediateFiles() {
+		protected boolean keepIntermediateFiles() {
 			return keepIntermediateFiles;
 		}
 		protected void setKeepIntermediateFiles(boolean keepIntermediateFiles) {
 			this.keepIntermediateFiles = keepIntermediateFiles;
 			keepIntermediateFilesButton.setSelection(keepIntermediateFiles);
-			timeBoundText.setEnabled(keepIntermediateFiles());
+			intermediateFilesDirText.setEnabled(keepIntermediateFiles());
 			browseIntermediateFilesDirButton.setEnabled(keepIntermediateFiles);
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
-*/		public VerificationToolConfig getConfig() {
+		public VerificationToolConfig getConfig() {
 			return config;
 		}
 		
@@ -257,12 +324,25 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 	
-	private class ValueEditingSupport extends EditingSupport {
+	private class DataContentProviderBoolean implements IStructuredContentProvider {
+		@Override
+		public Object[] getElements(Object inputElement) {
+			return ((FormData)inputElement).getConfig().getMonitoredBolts().toArray();
+		}
+		@Override
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+		}
+		@Override
+		public void dispose() {
+		}
+	}
+	
+	private class ValueEditingSupportFloat extends EditingSupport {
 
 		private final TableViewer viewer;
 		private final CellEditor editor;
 
-		public ValueEditingSupport(TableViewer viewer) {
+		public ValueEditingSupportFloat(TableViewer viewer) {
 			super(viewer);
 			this.viewer = viewer;
 			this.editor = new TextCellEditor(viewer.getTable());
@@ -296,10 +376,55 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			}
 		}
 	}
+
+	private class ValueEditingSupportBoolean extends EditingSupport {
+
+		private final TableViewer viewer;
+		// private final CellEditor editor;
+
+		public ValueEditingSupportBoolean(TableViewer viewer) {
+			super(viewer);
+			this.viewer = viewer;
+			//this.editor = new TextCellEditor(viewer.getTable());
+			//this.editor = new CheckboxCellEditor(viewer.getTable(), SWT.CHECK);
+		}
+
+		@Override
+		protected CellEditor getCellEditor(Object element) {
+			//return editor;
+			return new CheckboxCellEditor(null, SWT.CHECK);
+		}
+
+		@Override
+		protected boolean canEdit(Object element) {
+			return true;
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		protected Object getValue(Object element) {
+			return ((Entry<String, Boolean>) element).getValue();
+		}
+
+		@SuppressWarnings("unchecked")
+		@Override
+		protected void setValue(Object element, Object userInputValue) {
+			try {
+				Boolean value = (Boolean)userInputValue;   //Boolean.valueOf(userInputValue.toString());
+				((Entry<String, Boolean>) element).setValue(value);
+				viewer.update(element, null);
+			} catch (Throwable t) {
+				ErrorDialog.openError(getShell(), Messages.MainLaunchConfigurationTab_errorTitle, Messages.MainLaunchConfigurationTab_invalidBooleanError, new Status(IStatus.ERROR, DiceVerificationPlugin.PLUGIN_ID, t.getLocalizedMessage(), t));
+			}
+		}
+	}
+
+	
 	
 	protected Text inputFileText;
 	protected Button keepIntermediateFilesButton;
 	protected Text timeBoundText;
+	protected Text intermediateFilesDirText;
 	protected Button browseIntermediateFilesDirButton;
 	protected TableViewer viewer;
 	protected TableViewerColumn varViewerColumn;
@@ -355,13 +480,14 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 						dialog.setInitialSelection(files);
 					}
 					if (dialog.open() == Dialog.OK) {
-						data.setInputFile2(dialog.getFile().getLocationURI().toString());
+						data.setInputFileFloat(dialog.getFile().getLocationURI().toString());
+						data.setInputFileBoolean(dialog.getFile().getLocationURI().toString());
 					}
 				}
 			});
 		}
 		
-/*		{ // Options Group
+		{ // Options Group
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 			
@@ -401,7 +527,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			});
 			
 		}
-		*/
+		
 		
 		{//Time Bound group
 		
@@ -453,7 +579,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 
 		}
 		
-/*		{ // Configuration Group 1
+		{ // Configuration Group 1 boolean
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			
@@ -468,11 +594,13 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			viewer.getTable().setLinesVisible(true);
 			viewer.getTable().setHeaderVisible(true);
 
-			viewer.setContentProvider(new DataContentProvider());
+			DataContentProviderBoolean dcpb = new DataContentProviderBoolean();
+			//viewer.setContentProvider(new DataContentProviderBoolean());
+			viewer.setContentProvider(dcpb);
 			
 			viewer.setInput(data);
 			
-			MapEntryViewerComparator comparator = new MapEntryViewerComparator();
+			MapEntryViewerBooleanComparator comparator = new MapEntryViewerBooleanComparator();
 			viewer.setComparator(comparator);
 
 			varViewerColumn = new TableViewerColumn(viewer, SWT.NONE);
@@ -490,7 +618,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			varViewerColumn.getColumn().addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerComparator comparator = (MapEntryViewerComparator) viewer.getComparator();
+					MapEntryViewerBooleanComparator comparator = (MapEntryViewerBooleanComparator) viewer.getComparator();
 					comparator.setColumn(0);
 			        int dir = comparator.getDirection();
 			        viewer.getTable().setSortDirection(dir);
@@ -504,18 +632,45 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			valueViewerColumn.getColumn().setText(Messages.MainLaunchConfigurationTab_valueLabel);
 			valueViewerColumn.getColumn().setResizable(true);
 			valueViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+				
+			      @SuppressWarnings("unchecked")
+				@Override
+			      public String getText(Object element) {
+			    	  
+			    	  Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
+			    	  if (entry.getValue()) {
+				          return "Check";
+				        } else {
+				          return "Uncheck";
+				        }
+			      }
+
+			      @SuppressWarnings("unchecked")
+				@Override
+			      public Image getImage(Object element) {
+			    	Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
+					
+			        if (entry.getValue()) {
+			          return CHECKED;
+			          
+			        } else {
+			          return UNCHECKED;
+			        }
+			      }
+			    });
+			/*valueViewerColumn.setLabelProvider(new ColumnLabelProvider() {
 				@Override
 				public String getText(Object element) {
 					@SuppressWarnings("unchecked")
 					Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
 					return entry.getValue().toString();
 				}
-			});
-			valueViewerColumn.setEditingSupport(new ValueEditingSupport(viewer));
+			});*/
+			valueViewerColumn.setEditingSupport(new ValueEditingSupportBoolean(viewer));
 			valueViewerColumn.getColumn().addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerComparator comparator = (MapEntryViewerComparator) viewer.getComparator();
+					MapEntryViewerBooleanComparator comparator = (MapEntryViewerBooleanComparator) viewer.getComparator();
 					comparator.setColumn(1);
 			        int dir = comparator.getDirection();
 			        viewer.getTable().setSortDirection(dir);
@@ -529,10 +684,10 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			tableComposite.setLayout(tableLayout);
 			viewer.getTable().setSortColumn(varViewerColumn.getColumn());
 			viewer.getTable().setSortDirection(SWT.UP);
-		}*/
+		}
 		
 		
-		{ // Configuration Group 2
+		{ // Configuration Group 2 - float
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			
@@ -551,7 +706,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			
 			viewer.setInput(data);
 			
-			MapEntryViewerComparator comparator = new MapEntryViewerComparator();
+			MapEntryViewerFloatComparator comparator = new MapEntryViewerFloatComparator();
 			viewer.setComparator(comparator);
 
 			varViewerColumn = new TableViewerColumn(viewer, SWT.NONE);
@@ -568,7 +723,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			varViewerColumn.getColumn().addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerComparator comparator = (MapEntryViewerComparator) viewer.getComparator();
+					MapEntryViewerFloatComparator comparator = (MapEntryViewerFloatComparator) viewer.getComparator();
 					comparator.setColumn(0);
 			        int dir = comparator.getDirection();
 			        viewer.getTable().setSortDirection(dir);
@@ -589,11 +744,11 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 					return entry.getValue().toString();
 				}
 			});
-			valueViewerColumn.setEditingSupport(new ValueEditingSupport(viewer));
+			valueViewerColumn.setEditingSupport(new ValueEditingSupportFloat(viewer));
 			valueViewerColumn.getColumn().addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerComparator comparator = (MapEntryViewerComparator) viewer.getComparator();
+					MapEntryViewerFloatComparator comparator = (MapEntryViewerFloatComparator) viewer.getComparator();
 					comparator.setColumn(1);
 			        int dir = comparator.getDirection();
 			        viewer.getTable().setSortDirection(dir);
@@ -619,7 +774,8 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE);
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false);
-		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND);
+		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR);
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION);
 	}
 
@@ -627,14 +783,18 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE)) {
-				data.setInputFile2(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
-				/*data.setInputFile(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));*/
+				data.setInputFileFloat(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
+				data.setInputFileBoolean(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
 			}
-/*			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES)) {
+			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES)) {
 				data.setKeepIntermediateFiles(configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false));
-			}*/
+			}
+			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR)) {
+				data.setIntermediateFilesDir(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, StringUtils.EMPTY));
+			}
+			
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND)) {
-				data.setTimeBound(configuration.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15));
+				data.setTimeBound(configuration.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 20));
 			}
 			String serializedConfig = StringUtils.EMPTY;
 
@@ -655,7 +815,8 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, data.getInputFile());
-		/*configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, data.keepIntermediateFiles());*/
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, data.keepIntermediateFiles());
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, data.intermediateFilesDir);
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, data.getTimeBound());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, VerificationToolConfigSerializer.serialize(data.getConfig()));
 	}
@@ -701,12 +862,12 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			// Check input file exists
 			if (configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false)) {
 				// If keep intermediate files, catch no directory defined
-				if (!configuration.hasAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND)) {
+				if (!configuration.hasAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR)) {
 					setErrorMessage(Messages.MainLaunchConfigurationTab_noDirForIntermediateError);
 					return false;
 				}
 				// Check directory exists
-				File intermediateFilesDir = new File(URI.create(configuration.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, StringUtils.EMPTY)));
+				File intermediateFilesDir = new File(URI.create(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, StringUtils.EMPTY)));
 				if (!intermediateFilesDir.isDirectory()) {
 					// Should not happen...
 					setErrorMessage(Messages.MainLaunchConfigurationTab_intermediateDirNotExistError);
@@ -743,22 +904,30 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		Set<String> vars = new HashSet<>();
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resource = null;
+		StormTopology topology = new StormTopology();
+		List<SpoutClass> spouts = new ArrayList<>();
+		List<BoltClass> bolts = new ArrayList<>();
+		Gson gson = new Gson();
+		//XMLResource r2 = null;
 		try { 
 			resource = resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()), true);
+		//	r2 = (XMLResource)resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()), true);
 			for (Iterator<EObject> it = resource.getAllContents(); it.hasNext();) {
 				EObject eObject = it.next();
-				if (eObject instanceof Element) {
-					Element element = (Element) eObject;
-					if(UML2ModelHelper.isBolt(element)){
-						//vars.add(element.getClass().getSimpleName());
-						for (Stereotype stereotype : element.getAppliedStereotypes()) {
-							vars.add(stereotype.getName());
-							DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), stereotype.getName());
-						}
-						
-								
+				if(eObject instanceof org.eclipse.uml2.uml.Class){
+					if (UML2ModelHelper.isSpout((Element)eObject)) {
+						SpoutClass sc = new SpoutClass((org.eclipse.uml2.uml.Class)eObject);
+						spouts.add(sc);
 					}
-					
+					else if (UML2ModelHelper.isBolt((Element)eObject)) {
+						BoltClass bc = new BoltClass((org.eclipse.uml2.uml.Class)eObject);
+						vars.add(bc.getId());
+						bolts.add(bc);
+						DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), gson.toJson(bc));
+				}
+				topology.setBolts(bolts);
+				topology.setSpouts(spouts);
+				DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), gson.toJson(topology));
 				}
 			}
 			

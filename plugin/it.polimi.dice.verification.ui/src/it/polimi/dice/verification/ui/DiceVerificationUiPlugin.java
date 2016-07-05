@@ -14,7 +14,9 @@ public class DiceVerificationUiPlugin extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "it.polimi.dice.verification.ui"; //$NON-NLS-1$
 
 	public static final String IMG_VERIF_MAIN_TAB = "IMG_VERIF_MAIN_TAB";
-
+	public static final String IMG_CHECKED = "IMG_CHECKED";
+	public static final String IMG_UNCHECKED = "IMG_UNCHECKED";
+	
 	// The shared instance
 	private static DiceVerificationUiPlugin plugin;
 	
@@ -68,6 +70,8 @@ public class DiceVerificationUiPlugin extends AbstractUIPlugin {
 		// TODO Auto-generated method stub
 		super.initializeImageRegistry(reg);
 		reg.put(IMG_VERIF_MAIN_TAB, getImageDescriptor("icons/verify_icon.png").createImage()); //$NON-NLS-1$
+		reg.put(IMG_CHECKED, getImageDescriptor("icons/checked.gif").createImage());
+		reg.put(IMG_UNCHECKED, getImageDescriptor("icons/unchecked.gif").createImage());
 	}
 
 

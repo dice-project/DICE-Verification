@@ -30,7 +30,7 @@ public class UML2ModelHelper {
 		this.model = model;
 	}
 
-	/** Save the Decorated UML2 model to a file */
+	/** Save the Decorated UML2 model to a file */	
 	public void saveModel(String file){
         ResourceSet resourceSet = new ResourceSetImpl();
         Resource resource = resourceSet.createResource(URI.createFileURI(file));
@@ -103,6 +103,17 @@ public class UML2ModelHelper {
 		return false;
 	}
 	
+	public static boolean isStreamSubscription(Element e){
+		if(hasStereotype(e, "StreamSubscription")) 
+			return true;
+		return false;
+	}
+
+	public static boolean isStream(Element e){
+		if(hasStereotype(e, "Stream")) 
+			return true;
+		return false;
+	}
 	
 	
 	public static boolean isSpout(Element e){

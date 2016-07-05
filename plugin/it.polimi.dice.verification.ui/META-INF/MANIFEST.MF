@@ -20,7 +20,8 @@ Require-Bundle: org.eclipse.ui,
  it.polimi.dice.vtconfig,
  it.polimi.dice.core.ui;bundle-version="1.0.0",
  it.polimi.dice.verification.uml2json,
- org.eclipse.emf.ecore.xmi
+ org.eclipse.emf.ecore.xmi,
+ com.google.gson
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: it.polimi.dice.verification.adapters,

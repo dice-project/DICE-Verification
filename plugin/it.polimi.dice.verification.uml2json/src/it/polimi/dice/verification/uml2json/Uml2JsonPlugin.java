@@ -1,5 +1,6 @@
 package it.polimi.dice.verification.uml2json;
 
+import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -26,5 +27,7 @@ public class Uml2JsonPlugin implements BundleActivator {
 	public void stop(BundleContext bundleContext) throws Exception {
 		Uml2JsonPlugin.context = null;
 	}
+
+	
 
 }

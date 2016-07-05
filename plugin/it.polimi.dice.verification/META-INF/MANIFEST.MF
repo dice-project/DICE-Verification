@@ -13,7 +13,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.ui.workbench,
  org.eclipse.swt,
  org.eclipse.jface,
- org.eclipse.uml2.uml
+ org.eclipse.uml2.uml,
+ it.polimi.dice.verification.uml2json,
+ com.google.gson
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: it.polimi.dice.verification,

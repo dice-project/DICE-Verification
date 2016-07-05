@@ -197,6 +197,9 @@ public class VerificationToolConfigImpl extends MinimalEObjectImpl.Container imp
 			case VtConfigPackage.PETRI_NET_CONFIG__VARIABLE_ASSIGNMENTS:
 				if (coreType) return getVariableAssignments();
 				else return getVariableAssignments().map();
+			case VtConfigPackage.VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS:
+				if (coreType) return getMonitoredBolts();
+				else return getMonitoredBolts().map();
 			case VtConfigPackage.PETRI_NET_CONFIG__INITIAL_MARKING:
 				if (resolve) return getInitialMarking();
 				return basicGetInitialMarking();

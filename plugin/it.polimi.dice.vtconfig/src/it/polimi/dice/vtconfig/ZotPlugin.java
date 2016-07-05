@@ -17,15 +17,15 @@ public enum ZotPlugin implements Enumerator {
 	
 	AE2ZOT(0, "ae2zot", "ae2zot"),
 	
-	AE2BVZOT(0, "ae2bvzot", "ae2bvzot"),
+	AE2BVZOT(1, "ae2bvzot", "ae2bvzot"),
 	
-	AE2SBVZOT(0, "ae2sbvzot", "ae2sbvzot");
+	AE2SBVZOT(2, "ae2sbvzot", "ae2sbvzot");
 	
 	public static final int AE2ZOT_VALUE = 0;
 	
-	public static final int AE2BVZOT_VALUE = 0;
+	public static final int AE2BVZOT_VALUE = 1;
 	
-	public static final int AE2SBVZOT_VALUE = 0;
+	public static final int AE2SBVZOT_VALUE = 2;
 
 	
 	private static final ZotPlugin[] VALUES_ARRAY =
@@ -61,6 +61,8 @@ public enum ZotPlugin implements Enumerator {
 	public static ZotPlugin get(int value) {
 		switch (value) {
 			case AE2SBVZOT_VALUE: return ZotPlugin.AE2SBVZOT;
+			case AE2BVZOT_VALUE: return ZotPlugin.AE2BVZOT;
+			case AE2ZOT_VALUE: return ZotPlugin.AE2ZOT;
 		}
 		return null;
 	}
@@ -87,20 +89,17 @@ public enum ZotPlugin implements Enumerator {
 
 	@Override
 	public String getLiteral() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.literal;
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.name;
 	}
 
 	@Override
 	public int getValue() {
-		// TODO Auto-generated method stub
-		return 0;
+		return this.value;
 	}
 
 }

@@ -69,8 +69,8 @@ public class VtconfigSwitch<T> extends Switch<T> {
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
 			case VtConfigPackage.PETRI_NET_CONFIG: {
-				VerificationToolConfig petriNetConfig = (VerificationToolConfig)theEObject;
-				T result = casePetriNetConfig(petriNetConfig);
+				VerificationToolConfig verificationToolConfig = (VerificationToolConfig)theEObject;
+				T result = caseVerificationToolConfig(verificationToolConfig);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
@@ -80,6 +80,13 @@ public class VtconfigSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case VtConfigPackage.ESTRING_TO_EBOOLEAN_OBJECTS_MAP: {
+				@SuppressWarnings("unchecked") Map.Entry<String, Boolean> eStringToEBooleanObjectsMap = (Map.Entry<String, Boolean>)theEObject;
+				T result = caseEStringToEBooleanObjectsMap(eStringToEBooleanObjectsMap);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -95,7 +102,7 @@ public class VtconfigSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T casePetriNetConfig(VerificationToolConfig object) {
+	public T caseVerificationToolConfig(VerificationToolConfig object) {
 		return null;
 	}
 
@@ -111,6 +118,10 @@ public class VtconfigSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseEStringToEFloatObjectsMap(Map.Entry<String, Float> object) {
+		return null;
+	}
+
+	public T caseEStringToEBooleanObjectsMap(Map.Entry<String, Boolean> object) {
 		return null;
 	}
 

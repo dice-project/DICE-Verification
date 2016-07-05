@@ -39,7 +39,7 @@ public interface VtConfigPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_URI = "http://es.unizar.disco/pnconfig/1.0";
+	String eNS_URI = "http://it.polimi.dice/vtconfig/1.0";
 
 	/**
 	 * The package namespace name.
@@ -47,7 +47,7 @@ public interface VtConfigPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNS_PREFIX = "pnconfig";
+	String eNS_PREFIX = "vtconfig";
 
 	/**
 	 * The singleton instance of the package.

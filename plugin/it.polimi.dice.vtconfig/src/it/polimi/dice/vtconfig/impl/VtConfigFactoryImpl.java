@@ -160,7 +160,7 @@ public class VtConfigFactoryImpl extends EFactoryImpl implements VtConfigFactory
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VtConfigPackage getPnconfigPackage() {
+	public VtConfigPackage getVtConfigPackage() {
 		return (VtConfigPackage)getEPackage();
 	}
 

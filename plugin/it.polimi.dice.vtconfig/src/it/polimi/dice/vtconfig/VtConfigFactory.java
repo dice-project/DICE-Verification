@@ -37,6 +37,6 @@ public interface VtConfigFactory extends EFactory {
 	 * @return the package supported by this factory.
 	 * @generated
 	 */
-	VtConfigPackage getPnconfigPackage();
+	VtConfigPackage getVtConfigPackage();
 
-} //PnconfigFactory
+} //VtConfigFactory

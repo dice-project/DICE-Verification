@@ -92,23 +92,23 @@ public class VtConfigPackageImpl extends EPackageImpl implements VtConfigPackage
 		if (isInited) return (VtConfigPackage)EPackage.Registry.INSTANCE.getEPackage(VtConfigPackage.eNS_URI);
 
 		// Obtain or create and register package
-		VtConfigPackageImpl thePnconfigPackage = (VtConfigPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof VtConfigPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new VtConfigPackageImpl());
+		VtConfigPackageImpl theVtConfigPackage = (VtConfigPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof VtConfigPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new VtConfigPackageImpl());
 
 		isInited = true;
 
 		// Create package meta-data objects
-		thePnconfigPackage.createPackageContents();
+		theVtConfigPackage.createPackageContents();
 
 		// Initialize created meta-data
-		thePnconfigPackage.initializePackageContents();
+		theVtConfigPackage.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
-		thePnconfigPackage.freeze();
+		theVtConfigPackage.freeze();
 
   
 		// Update the registry and return the package
-		EPackage.Registry.INSTANCE.put(VtConfigPackage.eNS_URI, thePnconfigPackage);
-		return thePnconfigPackage;
+		EPackage.Registry.INSTANCE.put(VtConfigPackage.eNS_URI, theVtConfigPackage);
+		return theVtConfigPackage;
 	}
 
 	/**

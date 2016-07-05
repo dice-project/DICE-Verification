@@ -1,10 +1,13 @@
 package it.polimi.dice.verification.launcher;
 
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
@@ -14,6 +17,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -42,6 +47,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.uml2.uml.Element;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import it.polimi.dice.core.logger.DiceLogger;
 /*import org.eclipse.emf.common.util.BasicDiagnostic;
@@ -60,6 +69,14 @@ import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 */
 import it.polimi.dice.verification.DiceVerificationPlugin;
+import it.polimi.dice.verification.httpclient.HttpClient;
+import it.polimi.dice.verification.json.JsonVerificationContext;
+import it.polimi.dice.verification.json.JsonVerificationTaskRequest;
+import it.polimi.dice.verification.json.StormTopology;
+import it.polimi.dice.verification.json.VerificationParameters;
+import it.polimi.dice.verification.uml.diagrams.classdiagram.BoltClass;
+import it.polimi.dice.verification.uml.diagrams.classdiagram.SpoutClass;
+import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
 import it.polimi.dice.verification.verifiers.IVerifier;
 import it.polimi.dice.verification.verifiers.VerificationException;
 import it.polimi.dice.verification.verifiers.VerifierConstants;
@@ -69,15 +86,7 @@ import it.polimi.dice.vtconfig.util.VerificationToolConfigSerializer;
 
 public class VerificationLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
 
-/*	public static final String INPUT_FILE = "INPUT_MODEL"; //$NON-NLS-1$
 
-	public static final String KEEP_INTERMEDIATE_FILES= "KEEP_INTERMEDIATE_FILES"; //$NON-NLS-1$
-	
-	public static final String INTERMEDIATE_FILES_DIR = "INTERMEDIATE_FILES_FOLDER"; //$NON-NLS-1$
-
-	public static final String VERIFICATION_CONFIGURATION = "VERIFICATION_CONFIGURATION"; //$NON-NLS-1$
-*/
-	
 	@Override
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor)
 			throws CoreException {
@@ -93,20 +102,19 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			
 			final boolean keepIntermediateFiles = configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false);
 			final File intermediateFilesDir = getIntermediateFilesDir(configuration);
-	
+			
+			String templateFilePath = "/Users/francesco/Projects/DICE-Verification/json2mc/templating/templates/storm_topology_template.lisp";
 			final File umlFile = getInputFile(configuration);
 			final File configFile = Paths.get(intermediateFilesDir.toURI()).resolve("dump.pnconfig").toFile(); //$NON-NLS-1$
 			final File jsonFile = Paths.get(intermediateFilesDir.toURI()).resolve("context.json").toFile(); //$NON-NLS-1$
-//			final File gspnNetFile = Paths.get(intermediateFilesDir.toURI()).resolve("net.gspn.net").toFile(); //$NON-NLS-1$
-//			final File gspnDefFile = Paths.get(intermediateFilesDir.toURI()).resolve("net.gspn.def").toFile(); //$NON-NLS-1$
 			final File resultFile = Paths.get(intermediateFilesDir.toURI()).resolve("result.txt").toFile(); //$NON-NLS-1$
-
-/*			
+			final File templateFile = new File(templateFilePath);
+			final String json2mcPath = "/Users/francesco/Projects/DICE-Verification/json2mc/json2mc.py"; 
+			
 			try {
 				try {
 					dumpConfig(vtConfig, configFile, new SubProgressMonitor(monitor, 1));
 					transformUmlToJson(umlFile, vtConfig, jsonFile, new SubProgressMonitor(monitor, 1));
-//					transformPnmlToGspn(jsonFile, intermediateFilesDir, new SubProgressMonitor(monitor, 1));
 				} finally {
 					// Refresh workspace if intermediate files were stored in it
 					if (keepIntermediateFiles) {
@@ -115,14 +123,49 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 						}
 					}
 				}
-				String id = "es.unizar.disco.verification.greatspn.ssh.gspnSshSimulator"; //$NON-NLS-1$
+			/*	String id = "it.polimi.dice.verification.zot"; //$NON-NLS-1$
 				final IVerifier verifier = getVerifier(id);
 				if (verifier == null) {
 					throw new VerificationException(MessageFormat.format(Messages.VerificationLaunchConfigurationDelegate_verifierNotFoundError, id));
+				}*/
+				//String command = "python " + json2mcPath + " -t " + templateFilePath + " -c " + jsonFile.getAbsolutePath() + " -o /tmp";
+				//String[] command = {"/bin/bash", "-c", json2mcPath /*+ " -t " + templateFilePath + " -c " + jsonFile.getAbsolutePath() + " -o /tmp"*/};
+				//String[] command = {"python ", json2mcPath + " -t " + templateFilePath + " -c " + jsonFile.getAbsolutePath() + " -o /tmp"};
+				//String[] command = {"/bin/bash", "-c", "ls -l"};
+				String[] command = {"/bin/bash","zot /tmp/TEST/ae2sbvzot/zot_in.lisp"};
+				DiceLogger.logError(DiceVerificationPlugin.getDefault(), "Launching " + command);
+				//final Process p = Runtime.getRuntime().exec(command, null, resultFile);
+				final Process p = Runtime.getRuntime().exec(command);
+				new Thread(new Runnable() {
+				    public void run() {
+				     BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+				     String line = null; 
+
+				     try {
+				        while ((line = input.readLine()) != null){
+				        	DiceLogger.logError(DiceVerificationPlugin.getDefault(),"line ->" + line);
+				        }
+				        DiceLogger.logError(DiceVerificationPlugin.getDefault(), "outside the loop,  line is " + line);
+				     } catch (IOException e) {
+				            e.printStackTrace();
+				     }
+				    }
+				}).start();
+				DiceLogger.logError(DiceVerificationPlugin.getDefault(), "STARTED, WAIT");
+				try {
+					p.waitFor();
+					DiceLogger.logError(DiceVerificationPlugin.getDefault(), "FINISHED");
+				} catch (InterruptedException e) {
+					e.printStackTrace();
 				}
+				
+				
+				
+				
 //				String netName = new Path(gspnNetFile.getName()).removeFileExtension().toString();
 				
-				// TODO: change this quick & dirty way to show the raw results
+/*	
+  				// TODO: change this quick & dirty way to show the raw results
 				final Process verificationProcess = verifier.verify("name", jsonFile);
 				final RuntimeProcess runtimeProcess = new RuntimeProcess(launch, verificationProcess, getVerificationName(verifier.getId()), verificationAttrs);
 
@@ -156,11 +199,11 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 						}
 					}
 				}).start();
-				
-			} catch (IOException | VerificationException e) {
+*/				
+			} catch (IOException /*| VerificationException*/ e) {
 				throw new CoreException(new Status(IStatus.ERROR, DiceVerificationPlugin.PLUGIN_ID, e.getLocalizedMessage(), e));
 			}
-*/		} finally {
+		} finally {
 			monitor.done();
 		}
 	}
@@ -180,7 +223,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 	private File getIntermediateFilesDir(ILaunchConfiguration configuration) throws CoreException {
 		File intermediateFilesDir;
 		if (configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false)) {
-			String intermediateFilesDirUriString = configuration.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, StringUtils.EMPTY);
+			String intermediateFilesDirUriString = configuration.getAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, StringUtils.EMPTY);
 			java.net.URI intermediateFilesDirUri;
 			intermediateFilesDirUri = java.net.URI.create(intermediateFilesDirUriString);
 			intermediateFilesDir = new File(intermediateFilesDirUri);
@@ -226,8 +269,30 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			monitor.done();
 		}
 	}
+	
+	
+	
+	/*public void verifyZOTFile() throws IOException, InterruptedException{
+		//TODO Can we do better?
+		Process proc=null;
+		File wd=new File(this.TMP_DIR);
+		String[] cmd = {"/bin/bash", "-c", "zot "+this.ZOT_MODEL_FILE+" > "+this.ZOT_OUTPUT_FILE};
+		proc = Runtime.getRuntime().exec(cmd, null, wd);
+		LOGGER.info("Waiting for ZOT to finish");
+		proc.waitFor();
+		DiceLogger.logError(DiceVerificationPlugin.getDefault(), "WRITING FILE TO:\n" + jsonFile.getAbsolutePath());
+		LOGGER.info("ZOT to finished");
+	}*/
 
 	private void transformUmlToJson(File umlFile, VerificationToolConfig vtConfig, File jsonFile, IProgressMonitor monitor) throws IOException {
+		
+		JsonVerificationContext jsonContext;
+		VerificationParameters vp = new VerificationParameters(); 
+		List<SpoutClass> spouts = new ArrayList<>();
+		List<BoltClass> bolts = new ArrayList<>();
+		StormTopology topology = new StormTopology();
+		Gson gson = new Gson();
+		
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
@@ -240,7 +305,55 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 //			ExecutionContextImpl context = new ExecutionContextImpl();
 			
 			Resource umlResource = resourceSet.getResource(URI.createFileURI(umlFile.getAbsolutePath()), true);
-			EList<EObject> inObjects = umlResource.getContents();
+			//EList<EObject> inObjects = umlResource.getContents();
+			for (Iterator<EObject> it = umlResource.getAllContents(); it.hasNext();) {
+				EObject eObject = it.next();
+				if(eObject instanceof org.eclipse.uml2.uml.Class){
+					if (UML2ModelHelper.isSpout((Element)eObject)) {
+						SpoutClass sc = new SpoutClass((org.eclipse.uml2.uml.Class)eObject);
+						spouts.add(sc);
+					}
+					else if (UML2ModelHelper.isBolt((Element)eObject)) {
+						BoltClass bc = new BoltClass((org.eclipse.uml2.uml.Class)eObject);
+						bolts.add(bc);
+					}
+				}
+			}
+			
+			topology.setSpouts(spouts);
+			topology.setBolts(bolts);
+			vp.setPeriodicQueuesFromBolts(bolts);
+			vp.setStrictlyMonotonicQueues(vp.getPeriodicQueues());
+			jsonContext = new JsonVerificationContext(topology, vp);
+			jsonContext.setApplicationName("TEST");
+			
+			DiceLogger.logError(DiceVerificationPlugin.getDefault(), "JSON CONTEXT CREATED:\n" + gson.toJson(jsonContext));
+			///Resource jsonResource = resourceSet.createResource(URI.createFileURI(jsonFile.getAbsolutePath()));
+			//jsonResource.getContents().add(t);
+			//jsonResource.save(Collections.emptyMap());
+			String myUrl = "http://localhost:5000/longtasks";
+			//String jsonRequest = "{\"title\":\"pinellaxJAVA\",\"json_context\":{\"verification_params\": {\"base_quantity\": 10, \"periodic_queues\": [\"expander\"], \"num_steps\": 20, \"max_time\": 20000, \"plugin\": [\"ae2bvzot\", \"ae2sbvzot\"]}, \"version\": \"0.1\", \"app_name\": \"SIMPLIFIED FOCUSED CRAWLER\", \"topology\": {\"bolts\": [{\"d\": 0.0, \"parallelism\": 4, \"min_ttf\": 1000, \"alpha\": 0.5, \"sigma\": 2.0, \"id\": \"WpDeserializer\", \"subs\": [\"wpSpout\"]}, {\"d\": 0.0, \"parallelism\": 8, \"min_ttf\": 1000, \"alpha\": 3.0, \"sigma\": 0.75, \"id\": \"expander\", \"subs\": [\"WpDeserializer\"]}, {\"d\": 0.0, \"parallelism\": 1, \"min_ttf\": 1000, \"alpha\": 1.0, \"sigma\": 1.0, \"id\": \"articleExtraction\", \"subs\": [\"expander\"]}, {\"d\": 0.0, \"parallelism\": 1, \"min_ttf\": 1000, \"alpha\": 1.0, \"sigma\": 1.0, \"id\": \"mediaExtraction\", \"subs\": [\"expander\"]}], \"init_queues\": 4, \"max_reboot_time\": 100, \"max_idle_time\": 1.0, \"min_reboot_time\": 10, \"spouts\": [{\"avg_emit_rate\": 4.0, \"id\": \"wpSpout\"}], \"queue_threshold\": 0}, \"description\": \"\"}}";
+			JsonVerificationTaskRequest vtr = new JsonVerificationTaskRequest("TI PUZZA L'ANO", jsonContext);
+			
+			Gson gsonBuilder = new GsonBuilder().create();
+			DiceLogger.logError(DiceVerificationPlugin.getDefault(), "WRITING FILE TO:\n" + jsonFile.getAbsolutePath());
+			try (Writer writer = new FileWriter(jsonFile)) {    
+			    gsonBuilder.toJson(jsonContext, writer);
+			}
+			
+			HttpClient nc = new HttpClient();
+			nc.postJSONRequest(myUrl, gsonBuilder.toJson(vtr));
+			
+			try {
+			    Thread.sleep(5000);                 
+			} catch(InterruptedException ex) {
+			    Thread.currentThread().interrupt();
+			}
+			nc.getTaskStatusUpdatesFromServer();
+
+	        
+			
+			
 			
 		}finally{
 			monitor.done();
