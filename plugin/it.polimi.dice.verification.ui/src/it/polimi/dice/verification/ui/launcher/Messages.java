@@ -4,6 +4,8 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 	private static final String BUNDLE_NAME = "it.polimi.dice.verification.ui.launcher.messages"; //$NON-NLS-1$
+	public static String MainLaunchConfigurationTab_monitoredBoltsLabel;
+	public static String MainLaunchConfigurationTab_boltLabel;
 	public static String MainLaunchConfigurationTab_ae2bvzotLabel;
 	public static String MainLaunchConfigurationTab_ae2sbvzotLabel;
 	public static String MainLaunchConfigurationTab_ae2zotLabel;
@@ -29,6 +31,7 @@ public class Messages extends NLS {
 	public static String MainLaunchConfigurationTab_transientLabel;
 	public static String MainLaunchConfigurationTab_unableParserError;
 	public static String MainLaunchConfigurationTab_valueLabel;
+	public static String MainLaunchConfigurationTab_monitoredLabel;
 	public static String MainLaunchConfigurationTab_variableLabel;
 	public static String MainLaunchConfigurationTab_variablesLabel;
 	public static String VerificationLaunchShortcut_unexpectedArgError;

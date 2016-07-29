@@ -6,7 +6,7 @@ import org.eclipse.uml2.uml.Class;
 
 import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
 
-public class NodeClass {
+public abstract class NodeClass {
 
 	protected transient org.eclipse.uml2.uml.Class umlClass;
 	
@@ -36,12 +36,7 @@ public class NodeClass {
 		this.parallelism = parallelism;
 	}
 	
-	public int extractParallelism() {
-		//Classifier umlBoltType=umlBolt.getClassifiers().get(0);
-		int parallelism= (Integer)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "TopologyElement"), "parallelism");
-				//(UML2ModelHelper.getStereotype(umlBoltType, "Bolt"), "parallelism");
-		return parallelism;
-	}
+	protected abstract int extractParallelism();
 
 	
 

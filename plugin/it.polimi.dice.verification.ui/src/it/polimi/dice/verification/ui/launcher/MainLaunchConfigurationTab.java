@@ -213,7 +213,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			for (Map.Entry<String, Boolean> entry : config.getMonitoredBolts().entrySet()) {
 				DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
 			}
-			viewer.refresh();
+			viewerBoolean.refresh();
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
@@ -229,7 +229,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			for (Map.Entry<String, Float> entry : config.getVariableAssignments().entrySet()) {
 				DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
 			}
-			viewer.refresh();
+			viewerFloat.refresh();
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
@@ -283,9 +283,13 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 					updateLaunchConfigurationDialog();
 				}
 			});
-			if (viewer != null) {
-				viewer.setInput(data);
+			if (viewerBoolean != null) {
+				viewerBoolean.setInput(data);
 			}
+			if (viewerFloat != null) {
+				viewerFloat.setInput(data);
+			}
+
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
@@ -380,19 +384,19 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	private class ValueEditingSupportBoolean extends EditingSupport {
 
 		private final TableViewer viewer;
-		// private final CellEditor editor;
+		private final CellEditor editor;
 
 		public ValueEditingSupportBoolean(TableViewer viewer) {
 			super(viewer);
 			this.viewer = viewer;
 			//this.editor = new TextCellEditor(viewer.getTable());
-			//this.editor = new CheckboxCellEditor(viewer.getTable(), SWT.CHECK);
+			this.editor = new CheckboxCellEditor(viewer.getTable(), SWT.CHECK);
 		}
 
 		@Override
 		protected CellEditor getCellEditor(Object element) {
-			//return editor;
-			return new CheckboxCellEditor(null, SWT.CHECK);
+			return editor;
+			//return new CheckboxCellEditor(null, SWT.CHECK);
 		}
 
 		@Override
@@ -426,9 +430,9 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	protected Text timeBoundText;
 	protected Text intermediateFilesDirText;
 	protected Button browseIntermediateFilesDirButton;
-	protected TableViewer viewer;
-	protected TableViewerColumn varViewerColumn;
-	protected TableViewerColumn valueViewerColumn;
+	protected TableViewer viewerBoolean, viewerFloat;
+	protected TableViewerColumn varViewerColumnFloat, varViewerColumnBoolean;
+	protected TableViewerColumn valueViewerColumnFloat, valueViewerColumnBoolean;
 	
 	protected FormData data = new FormData();
 	
@@ -480,7 +484,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 						dialog.setInitialSelection(files);
 					}
 					if (dialog.open() == Dialog.OK) {
-						data.setInputFileFloat(dialog.getFile().getLocationURI().toString());
+						//data.setInputFileFloat(dialog.getFile().getLocationURI().toString());
 						data.setInputFileBoolean(dialog.getFile().getLocationURI().toString());
 					}
 				}
@@ -579,34 +583,34 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 
 		}
 		
-		{ // Configuration Group 1 boolean
+		{ // Configuration Group - Set Monitored Bolts
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			
 			group.setLayout(new GridLayout(1,  false));
-			group.setText(Messages.MainLaunchConfigurationTab_variablesLabel);
+			group.setText(Messages.MainLaunchConfigurationTab_monitoredBoltsLabel);
 			
 			Composite tableComposite = new Composite(group, SWT.NONE);
 			tableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			
-			viewer = new TableViewer(tableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
-			viewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			viewer.getTable().setLinesVisible(true);
-			viewer.getTable().setHeaderVisible(true);
+			viewerBoolean = new TableViewer(tableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
+			viewerBoolean.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			viewerBoolean.getTable().setLinesVisible(true);
+			viewerBoolean.getTable().setHeaderVisible(true);
 
-			DataContentProviderBoolean dcpb = new DataContentProviderBoolean();
-			//viewer.setContentProvider(new DataContentProviderBoolean());
-			viewer.setContentProvider(dcpb);
 			
-			viewer.setInput(data);
+			viewerBoolean.setContentProvider(new DataContentProviderBoolean());
+			
+			
+			viewerBoolean.setInput(data);
 			
 			MapEntryViewerBooleanComparator comparator = new MapEntryViewerBooleanComparator();
-			viewer.setComparator(comparator);
+			viewerBoolean.setComparator(comparator);
 
-			varViewerColumn = new TableViewerColumn(viewer, SWT.NONE);
-		    varViewerColumn.getColumn().setText(Messages.MainLaunchConfigurationTab_variableLabel);
-		    varViewerColumn.getColumn().setResizable(true);
-			varViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+			varViewerColumnBoolean = new TableViewerColumn(viewerBoolean, SWT.NONE);
+		    varViewerColumnBoolean.getColumn().setText(Messages.MainLaunchConfigurationTab_boltLabel);
+		    varViewerColumnBoolean.getColumn().setResizable(true);
+			varViewerColumnBoolean.setLabelProvider(new ColumnLabelProvider() {
 				@Override
 				public String getText(Object element) {
 					@SuppressWarnings("unchecked")
@@ -615,28 +619,27 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 					return entry.getKey();
 				}
 			});
-			varViewerColumn.getColumn().addSelectionListener(new SelectionAdapter() {
+			varViewerColumnBoolean.getColumn().addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerBooleanComparator comparator = (MapEntryViewerBooleanComparator) viewer.getComparator();
+					MapEntryViewerBooleanComparator comparator = (MapEntryViewerBooleanComparator) viewerBoolean.getComparator();
 					comparator.setColumn(0);
 			        int dir = comparator.getDirection();
-			        viewer.getTable().setSortDirection(dir);
-			        viewer.getTable().setSortColumn(varViewerColumn.getColumn());
-			        viewer.refresh();
+			        viewerBoolean.getTable().setSortDirection(dir);
+			        viewerBoolean.getTable().setSortColumn(varViewerColumnBoolean.getColumn());
+			        viewerBoolean.refresh();
 				}
 			});
 
 			
-			valueViewerColumn = new TableViewerColumn(viewer, SWT.NONE);
-			valueViewerColumn.getColumn().setText(Messages.MainLaunchConfigurationTab_valueLabel);
-			valueViewerColumn.getColumn().setResizable(true);
-			valueViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+			valueViewerColumnBoolean = new TableViewerColumn(viewerBoolean, SWT.NONE);
+			valueViewerColumnBoolean.getColumn().setText(Messages.MainLaunchConfigurationTab_monitoredLabel);
+			valueViewerColumnBoolean.getColumn().setResizable(true);
+			valueViewerColumnBoolean.setLabelProvider(new ColumnLabelProvider() {
 				
-			      @SuppressWarnings("unchecked")
 				@Override
 			      public String getText(Object element) {
-			    	  
+			    	 // return null;
 			    	  Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
 			    	  if (entry.getValue()) {
 				          return "Check";
@@ -658,32 +661,26 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			        }
 			      }
 			    });
-			/*valueViewerColumn.setLabelProvider(new ColumnLabelProvider() {
-				@Override
-				public String getText(Object element) {
-					@SuppressWarnings("unchecked")
-					Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
-					return entry.getValue().toString();
-				}
-			});*/
-			valueViewerColumn.setEditingSupport(new ValueEditingSupportBoolean(viewer));
-			valueViewerColumn.getColumn().addSelectionListener(new SelectionAdapter() {
+			
+
+			valueViewerColumnBoolean.setEditingSupport(new ValueEditingSupportBoolean(viewerBoolean));
+			valueViewerColumnBoolean.getColumn().addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerBooleanComparator comparator = (MapEntryViewerBooleanComparator) viewer.getComparator();
+					MapEntryViewerBooleanComparator comparator = (MapEntryViewerBooleanComparator) viewerBoolean.getComparator();
 					comparator.setColumn(1);
 			        int dir = comparator.getDirection();
-			        viewer.getTable().setSortDirection(dir);
-			        viewer.getTable().setSortColumn(valueViewerColumn.getColumn());
-			        viewer.refresh();
+			        viewerBoolean.getTable().setSortDirection(dir);
+			        viewerBoolean.getTable().setSortColumn(valueViewerColumnBoolean.getColumn());
+			        viewerBoolean.refresh();
 				}
 			});
 			TableColumnLayout tableLayout = new TableColumnLayout();
-			tableLayout.setColumnData(varViewerColumn.getColumn(), new ColumnWeightData(1));
-			tableLayout.setColumnData(valueViewerColumn.getColumn(), new ColumnWeightData(3));
+			tableLayout.setColumnData(varViewerColumnBoolean.getColumn(), new ColumnWeightData(1));
+			tableLayout.setColumnData(valueViewerColumnBoolean.getColumn(), new ColumnWeightData(2));
 			tableComposite.setLayout(tableLayout);
-			viewer.getTable().setSortColumn(varViewerColumn.getColumn());
-			viewer.getTable().setSortDirection(SWT.UP);
+			viewerBoolean.getTable().setSortColumn(varViewerColumnBoolean.getColumn());
+			viewerBoolean.getTable().setSortDirection(SWT.UP);
 		}
 		
 		
@@ -697,22 +694,22 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			Composite tableComposite = new Composite(group, SWT.NONE);
 			tableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			
-			viewer = new TableViewer(tableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
-			viewer.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			viewer.getTable().setLinesVisible(true);
-			viewer.getTable().setHeaderVisible(true);
+			viewerFloat = new TableViewer(tableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
+			viewerFloat.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			viewerFloat.getTable().setLinesVisible(true);
+			viewerFloat.getTable().setHeaderVisible(true);
 
-			viewer.setContentProvider(new DataContentProvider());
+			viewerFloat.setContentProvider(new DataContentProvider());
 			
-			viewer.setInput(data);
+			viewerFloat.setInput(data);
 			
 			MapEntryViewerFloatComparator comparator = new MapEntryViewerFloatComparator();
-			viewer.setComparator(comparator);
+			viewerFloat.setComparator(comparator);
 
-			varViewerColumn = new TableViewerColumn(viewer, SWT.NONE);
-		    varViewerColumn.getColumn().setText(Messages.MainLaunchConfigurationTab_variableLabel);
-		    varViewerColumn.getColumn().setResizable(true);
-			varViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+			varViewerColumnFloat = new TableViewerColumn(viewerFloat, SWT.NONE);
+		    varViewerColumnFloat.getColumn().setText(Messages.MainLaunchConfigurationTab_variableLabel);
+		    varViewerColumnFloat.getColumn().setResizable(true);
+			varViewerColumnFloat.setLabelProvider(new ColumnLabelProvider() {
 				@Override
 				public String getText(Object element) {
 					@SuppressWarnings("unchecked")
@@ -720,23 +717,23 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 					return entry.getKey();
 				}
 			});
-			varViewerColumn.getColumn().addSelectionListener(new SelectionAdapter() {
+			varViewerColumnFloat.getColumn().addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerFloatComparator comparator = (MapEntryViewerFloatComparator) viewer.getComparator();
+					MapEntryViewerFloatComparator comparator = (MapEntryViewerFloatComparator) viewerFloat.getComparator();
 					comparator.setColumn(0);
 			        int dir = comparator.getDirection();
-			        viewer.getTable().setSortDirection(dir);
-			        viewer.getTable().setSortColumn(varViewerColumn.getColumn());
-			        viewer.refresh();
+			        viewerFloat.getTable().setSortDirection(dir);
+			        viewerFloat.getTable().setSortColumn(varViewerColumnFloat.getColumn());
+			        viewerFloat.refresh();
 				}
 			});
 
 			
-			valueViewerColumn = new TableViewerColumn(viewer, SWT.NONE);
-			valueViewerColumn.getColumn().setText(Messages.MainLaunchConfigurationTab_valueLabel);
-			valueViewerColumn.getColumn().setResizable(true);
-			valueViewerColumn.setLabelProvider(new ColumnLabelProvider() {
+			valueViewerColumnFloat = new TableViewerColumn(viewerFloat, SWT.NONE);
+			valueViewerColumnFloat.getColumn().setText(Messages.MainLaunchConfigurationTab_valueLabel);
+			valueViewerColumnFloat.getColumn().setResizable(true);
+			valueViewerColumnFloat.setLabelProvider(new ColumnLabelProvider() {
 				@Override
 				public String getText(Object element) {
 					@SuppressWarnings("unchecked")
@@ -744,24 +741,24 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 					return entry.getValue().toString();
 				}
 			});
-			valueViewerColumn.setEditingSupport(new ValueEditingSupportFloat(viewer));
-			valueViewerColumn.getColumn().addSelectionListener(new SelectionAdapter() {
+			valueViewerColumnFloat.setEditingSupport(new ValueEditingSupportFloat(viewerFloat));
+			valueViewerColumnFloat.getColumn().addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerFloatComparator comparator = (MapEntryViewerFloatComparator) viewer.getComparator();
+					MapEntryViewerFloatComparator comparator = (MapEntryViewerFloatComparator) viewerFloat.getComparator();
 					comparator.setColumn(1);
 			        int dir = comparator.getDirection();
-			        viewer.getTable().setSortDirection(dir);
-			        viewer.getTable().setSortColumn(valueViewerColumn.getColumn());
-			        viewer.refresh();
+			        viewerFloat.getTable().setSortDirection(dir);
+			        viewerFloat.getTable().setSortColumn(valueViewerColumnFloat.getColumn());
+			        viewerFloat.refresh();
 				}
 			});
 			TableColumnLayout tableLayout = new TableColumnLayout();
-			tableLayout.setColumnData(varViewerColumn.getColumn(), new ColumnWeightData(1));
-			tableLayout.setColumnData(valueViewerColumn.getColumn(), new ColumnWeightData(3));
+			tableLayout.setColumnData(varViewerColumnFloat.getColumn(), new ColumnWeightData(1));
+			tableLayout.setColumnData(valueViewerColumnFloat.getColumn(), new ColumnWeightData(3));
 			tableComposite.setLayout(tableLayout);
-			viewer.getTable().setSortColumn(varViewerColumn.getColumn());
-			viewer.getTable().setSortDirection(SWT.UP);
+			viewerFloat.getTable().setSortColumn(varViewerColumnFloat.getColumn());
+			viewerFloat.getTable().setSortDirection(SWT.UP);
 		}
 
 		
@@ -775,15 +772,15 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE);
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false);
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR);
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION);
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
 	}
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE)) {
-				data.setInputFileFloat(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
+				//data.setInputFileFloat(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
 				data.setInputFileBoolean(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
 			}
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES)) {
@@ -802,6 +799,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 				try {
 					serializedConfig = configuration.getAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, StringUtils.EMPTY);
 					data.setConfig(VerificationToolConfigSerializer.deserialize(serializedConfig));
+					DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Ciao");
 				} catch (IOException e) {
 					DiceLogger.logException(DiceVerificationUiPlugin.getDefault(),
 							MessageFormat.format(Messages.MainLaunchConfigurationTab_unableParserError, serializedConfig), e);
@@ -817,8 +815,8 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, data.getInputFile());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, data.keepIntermediateFiles());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, data.intermediateFilesDir);
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, data.getTimeBound());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, VerificationToolConfigSerializer.serialize(data.getConfig()));
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, data.getTimeBound());
 	}
 
 	@Override
@@ -915,11 +913,12 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			for (Iterator<EObject> it = resource.getAllContents(); it.hasNext();) {
 				EObject eObject = it.next();
 				if(eObject instanceof org.eclipse.uml2.uml.Class){
-					if (UML2ModelHelper.isSpout((Element)eObject)) {
+					Element element = (Element)eObject;
+					if (UML2ModelHelper.isSpout(element)) {
 						SpoutClass sc = new SpoutClass((org.eclipse.uml2.uml.Class)eObject);
 						spouts.add(sc);
 					}
-					else if (UML2ModelHelper.isBolt((Element)eObject)) {
+					else if (UML2ModelHelper.isBolt(element)) {
 						BoltClass bc = new BoltClass((org.eclipse.uml2.uml.Class)eObject);
 						vars.add(bc.getId());
 						bolts.add(bc);

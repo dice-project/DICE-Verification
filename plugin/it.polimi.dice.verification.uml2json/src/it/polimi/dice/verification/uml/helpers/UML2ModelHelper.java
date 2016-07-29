@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -16,6 +17,9 @@ import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLPackage;
 import org.eclipse.uml2.uml.resource.UMLResource;
+
+import it.polimi.dice.core.logger.DiceLogger;
+
 
 public class UML2ModelHelper {
 
@@ -71,6 +75,8 @@ public class UML2ModelHelper {
 	}
 	
 	public static boolean hasStereotype(Element e, String name){
+		EList<Stereotype> stereotypes = e.getAppliedStereotypes(); 
+		LOGGER.error(stereotypes.toString());
 		for(Stereotype st: e.getAppliedStereotypes()){
 			if(st.getName().equals(name)) return true;
 		}
@@ -98,7 +104,7 @@ public class UML2ModelHelper {
 	}
 
 	public static boolean isBolt(Element e){
-		if(hasStereotype(e, "Bolt")) 
+		if(hasStereotype(e, "StormBolt")) 
 			return true;
 		return false;
 	}
@@ -110,14 +116,14 @@ public class UML2ModelHelper {
 	}
 
 	public static boolean isStream(Element e){
-		if(hasStereotype(e, "Stream")) 
+		if(hasStereotype(e, "StormStreamStep")) 
 			return true;
 		return false;
 	}
 	
 	
 	public static boolean isSpout(Element e){
-		if(hasStereotype(e, "Spout")) 
+		if(hasStereotype(e, "StormSpout")) 
 			return true;
 		return false;
 	}

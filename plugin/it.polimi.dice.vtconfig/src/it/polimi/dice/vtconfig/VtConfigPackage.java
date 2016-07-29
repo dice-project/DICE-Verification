@@ -66,7 +66,7 @@ public interface VtConfigPackage extends EPackage {
 	 * @generated
 	 */
 	int PETRI_NET_CONFIG = 0;
-	int VERIFICATION_TOOL_CONFIG = 0;
+	int VERIFICATION_TOOL_CONFIG = 200;
 
 	/**
 	 * The feature id for the '<em><b>Analysis Type</b></em>' attribute.

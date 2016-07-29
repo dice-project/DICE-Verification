@@ -80,31 +80,28 @@ public class BoltClass extends NodeClass{
 		return super.getUmlClass();
 	}
 
-/*	public int getParallelism() {
-		Classifier umlBoltType=umlBolt.getClassifiers().get(0);
-		int parallelism= (Integer)umlBolt.getClassifiers().get(0).getValue(UML2ModelHelper.getStereotype(umlBoltType, "Bolt"), "parallelism");
-		return parallelism;
-	}
-*/	
+
 	@Override
-	public int extractParallelism() {
+	protected int extractParallelism() {
 		//Classifier umlBoltType=umlBolt.getClassifiers().get(0);
-		int parallelism= (Integer)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "Bolt"), "parallelism");
-				//(UML2ModelHelper.getStereotype(umlBoltType, "Bolt"), "parallelism");
+		String parallelism_s = (String)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "StormBolt"), "parallelism");
+		int parallelism= Integer.parseInt(parallelism_s);
 		return parallelism;
 	}
 
-	public Double extractAlpha() {
-		Double alpha= (Double)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "Bolt"), "alfa");
+	protected Double extractAlpha() {
+		String alpha_s = (String)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "StormBolt"), "alpha");
+		Double alpha = Double.parseDouble(alpha_s);
 		return alpha;
 	}
 
-	public Double extractSigma() {
-		Double sigma= (Double)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "Bolt"), "sigma");
+	protected Double extractSigma() {
+		String sigma_s = (String)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "StormBolt"), "sigma");
+		Double sigma = Double.parseDouble(sigma_s);
 		return sigma;
 	}
 	
-	public List<String> extractSubsciptionList(){
+	protected List<String> extractSubsciptionList(){
 		List<String> subsList = new ArrayList<String>();
 		for (Association association : this.umlClass.getAssociations()) {
 			for(Property property : association.getMemberEnds()){

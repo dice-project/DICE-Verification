@@ -32,15 +32,17 @@ public class SpoutClass extends NodeClass{
 
 
 	@Override
-	public int extractParallelism() {
+	protected int extractParallelism() {
 		//Classifier umlBoltType=umlBolt.getClassifiers().get(0);
-		int parallelism= (Integer)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "Spout"), "parallelism");
+		String parallelism_s = (String)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "StormSpout"), "parallelism");
+		int parallelism= Integer.parseInt(parallelism_s);
 				//(UML2ModelHelper.getStereotype(umlBoltType, "Bolt"), "parallelism");
 		return parallelism;
 	}
 
-	public Double extractAverageEmitRate() {
-		Double avgEmitRate = (Double)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "Spout"), "AverageEmitRate");
+	protected Double extractAverageEmitRate() {
+		String avgEmitRate_s = (String) umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "StormSpout"), "avgEmitRate");
+		Double avgEmitRate = Double.parseDouble(avgEmitRate_s);
 		return avgEmitRate;
 	}
 
