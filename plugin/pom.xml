@@ -13,7 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<tycho-version>0.25.0</tycho-version>
-		<eclipse> http://download.eclipse.org/releases/mars </eclipse>
+		<eclipse> http://download.eclipse.org/releases/neon </eclipse>
 	</properties>
 
 	<repositories>
@@ -33,8 +33,6 @@
 		<module>it.polimi.dice.verification.ui.feature</module>
 		<module>it.polimi.dice.vtconfig</module>
 		<module>it.polimi.dice.core</module>
-		<module>it.polimi.dice.profiles.feature</module>
-		<module>it.polimi.dice.profiles</module>
 		<module>it.polimi.dice.verification.uml2json</module>
 		<module>it.polimi.dice.verification.uml2json.feature</module>
 		<module>it.polimi.dice.core.ui</module>

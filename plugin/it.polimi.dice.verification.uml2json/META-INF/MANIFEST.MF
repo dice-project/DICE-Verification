@@ -7,7 +7,6 @@ Bundle-Activator: it.polimi.dice.verification.uml2json.Uml2JsonPlugin
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf;bundle-version="2.6.0",
  org.eclipse.uml2.uml;bundle-version="5.1.2",
- it.polimi.dice.profiles;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.2.15",
  com.google.gson;bundle-version="2.2.4",
  it.polimi.dice.core,
