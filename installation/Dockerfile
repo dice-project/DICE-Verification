@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     make \
     git \
     python python-dev python-distribute python-pip python-tk \
-    python-matplotlib \
+#    python-matplotlib \
     sbcl \
     zlib1g-dev \
     curl && \
@@ -46,7 +46,7 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     RUN git clone https://github.com/dice-project/DICE-Verification /opt/DICE-Verification
     WORKDIR /opt/DICE-Verification
 #load all needed packages from pip
-    pip install -r installation/requirements.txt
+    RUN pip install -r installation/requirements.txt
 #apply modifications to zot
     RUN cp zot_changes/*.lisp /usr/local/zot/asdfs
 #run verification
@@ -58,6 +58,4 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
 #    curl -L https://bootstrap.pypa.io/get-pip.py -o /opt/get-pip
 #    python /opt/get-pip
 
-#    pip install jinja2
-#    pip install matplotlib
 
