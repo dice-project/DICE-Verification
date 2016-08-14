@@ -44,10 +44,10 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
         cp /usr/local/zot/bin/zot /usr/local/bin/
 #get D-VerT from github
     RUN git clone https://github.com/dice-project/DICE-Verification /opt/DICE-Verification
-    WORKDIR /opt/DICE-Verification
 #load all needed packages from pip
-    RUN pip install -r installation/requirements.txt
+    RUN pip install -r /opt/DICE-Verification/installation/requirements.txt
 #apply modifications to zot
+    WORKDIR /opt/DICE-Verification
     RUN cp zot_changes/*.lisp /usr/local/zot/asdfs
 #run verification
     WORKDIR json2mc
