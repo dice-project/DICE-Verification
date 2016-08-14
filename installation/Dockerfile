@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     make \
     git \
     python python-dev python-distribute python-pip python-tk \
-#    python-matplotlib \
+    python-matplotlib \
     sbcl \
     zlib1g-dev \
     curl && \
