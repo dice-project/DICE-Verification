@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     make \
     git \
     python python-dev python-distribute python-pip python-tk \
-    python-matplotlib \
+#    python-matplotlib \
     sbcl \
     zlib1g-dev \
     curl && \
@@ -42,10 +42,10 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     RUN git clone https://github.com/fm-polimi/zot /usr/local/zot/ && \
         ln -s /usr/local/zot/asdfs/*.asd /usr/lib/sbcl/site-systems/ && \
         cp /usr/local/zot/bin/zot /usr/local/bin/
-#install jinja2 library
-    RUN pip install jinja2
-#get json2mc from github
+#get D-VerT from github
     RUN git clone https://github.com/dice-project/DICE-Verification /opt/DICE-Verification
+#load all needed packages from pip
+    RUN pip install -r /opt/DICE-Verification/installation/requirements.txt
 #apply modifications to zot
     WORKDIR /opt/DICE-Verification
     RUN cp zot_changes/*.lisp /usr/local/zot/asdfs
@@ -58,6 +58,4 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
 #    curl -L https://bootstrap.pypa.io/get-pip.py -o /opt/get-pip
 #    python /opt/get-pip
 
-#    pip install jinja2
-#    pip install matplotlib
 
