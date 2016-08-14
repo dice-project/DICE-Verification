@@ -42,12 +42,12 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     RUN git clone https://github.com/fm-polimi/zot /usr/local/zot/ && \
         ln -s /usr/local/zot/asdfs/*.asd /usr/lib/sbcl/site-systems/ && \
         cp /usr/local/zot/bin/zot /usr/local/bin/
-#install jinja2 library
-    RUN pip install jinja2
-#get json2mc from github
+#get D-VerT from github
     RUN git clone https://github.com/dice-project/DICE-Verification /opt/DICE-Verification
-#apply modifications to zot
     WORKDIR /opt/DICE-Verification
+#load all needed packages from pip
+    pip install -r installation/requirements.txt
+#apply modifications to zot
     RUN cp zot_changes/*.lisp /usr/local/zot/asdfs
 #run verification
     WORKDIR json2mc
