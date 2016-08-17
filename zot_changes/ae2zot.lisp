@@ -30,7 +30,7 @@
 ;     default = nil
 ;     if true, it generates the constraints that are necessary to guarantee the existence of
 ;     arithmetic models when the logic is IPC*
-;   :periodic-terms <list>
+;   :l-monotonic <list>
 ;     default = empty list
 ;     it defines the list of arithmetic terms whose *values* must be periodic
 ;
@@ -1493,11 +1493,13 @@
 
 
 
-(defun gen-periodic-arith-terms (periodic-arith-terms)
-  (if periodic-arith-terms
-					;(format t "define arithmetic periodic terms~%")(force-output)
-      (loop for term in periodic-arith-terms collect
-	    `(= ,(call *PROPS* term (the-iloop)) ,(call *PROPS* term (1+ (kripke-k *PROPS*)))))));##MODIFICATO
+(defun gen-periodic-arith-terms (periodic-arith-terms strictly-monotonic)
+   (if periodic-arith-terms
+       (nconc 				;(format t "define arithmetic periodic terms~%")(force-output)
+       (loop for term in periodic-arith-terms collect
+           `(<= ,(call *PROPS* term `i-loop) ,(call *PROPS* term (1+ (kripke-k *PROPS*)))))
+       (loop for term in strictly-monotonic collect
+           `(< ,(call *PROPS* term `i-loop) ,(call *PROPS* term (1+ (kripke-k *PROPS*))))))));##MODIFICATO
 
 
 
@@ -1700,7 +1702,7 @@
 
 
 
-(defun the-big-formula (fma loop-free no-loop periodic-arith-terms gen-symbolic-val ipc-constraints bound discrete-regions parametric-regions discrete-counters)
+(defun the-big-formula (fma loop-free no-loop periodic-arith-terms strictly-monotonic gen-symbolic-val ipc-constraints bound discrete-regions parametric-regions discrete-counters)
   (cons
    (if (temp-fmlap fma)
        (call *PROPS* (cadr fma) 1)
@@ -1755,7 +1757,7 @@
 	(gen-i-atomic-formulae)
 	(gen-arith-constraints)
 	(gen-existence-condition ipc-constraints)
-	(gen-periodic-arith-terms periodic-arith-terms)
+	(gen-periodic-arith-terms periodic-arith-terms strictly-monotonic)
 	(stabilize-constants)
 	(gen-regions bound discrete-regions parametric-regions discrete-counters)
 	)))))
@@ -1798,7 +1800,8 @@
 		     (smt-assumptions nil)
 		     (no-loop nil)
 		     (with-time t)
-		     (periodic-terms nil)
+		     (l-monotonic nil)
+             (l-strictly-monotonic nil)
 		     (gen-symbolic-val t)
 		     (ipc-constraints nil)
 		     (smt-lib :smt)
@@ -1863,7 +1866,8 @@
 							       formula)
 							 loop-free
 							 no-loop
-							 periodic-terms
+							 l-monotonic
+                             l-strictly-monotonic
 							 gen-symbolic-val
 							 ipc-constraints
 							 over-clocks
