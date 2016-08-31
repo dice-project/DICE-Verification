@@ -52,6 +52,8 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -60,6 +62,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.uml2.uml.Association;
@@ -253,8 +256,9 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		
 		protected void setTimeBound(int timeBound) {
 			this.timeBound = timeBound;
-			String timeBoundString = String.valueOf(timeBound);
-			timeBoundText.setText(timeBoundString != null ? timeBoundString : StringUtils.EMPTY);
+//			String timeBoundString = String.valueOf(timeBound);
+//			timeBoundText.setText(timeBoundString != null ? timeBoundString : StringUtils.EMPTY);
+			timeBoundSpinner.setSelection(timeBound);
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
@@ -428,6 +432,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	protected Text inputFileText;
 	protected Button keepIntermediateFilesButton;
 	protected Text timeBoundText;
+	protected Spinner timeBoundSpinner;
 	protected Text intermediateFilesDirText;
 	protected Button browseIntermediateFilesDirButton;
 	protected TableViewer viewerBoolean, viewerFloat;
@@ -532,9 +537,8 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			
 		}
 		
-		
-		{//Time Bound group
-		
+		//Time Bound group
+/*		{
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 			
@@ -545,8 +549,49 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			timeBoundText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			timeBoundText.setEnabled(true);
 			timeBoundText.setEditable(true);
+			timeBoundText.addVerifyListener(new VerifyListener() {
+
+		        @Override
+		        public void verifyText(VerifyEvent e) {
+
+		            Text text = (Text)e.getSource();
+
+		            // get old text and create new text by using the VerifyEvent.text
+		            final String oldS = text.getText();
+		            String newS = oldS.substring(0, e.start) + e.text + oldS.substring(e.end);
+
+		            boolean isFloat = true;
+		            try
+		            {
+		                Float.parseFloat(newS);
+		            }
+		            catch(NumberFormatException ex)
+		            {
+		                isFloat = false;
+		            }
+
+		            System.out.println(newS);
+
+		            if(!isFloat)
+		                e.doit = false;
+		        }
+		    });
 			
 		}
+*/		
+		{
+			Group group = new Group(topComposite, SWT.NONE);
+			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+			
+			group.setLayout(new GridLayout(2,  false));
+			group.setText(Messages.MainLaunchConfigurationTab_timeBoundLabel);
+			timeBoundSpinner = new Spinner(group, SWT.BORDER);
+			timeBoundSpinner.setMaximum(100);
+			timeBoundSpinner.setMinimum(10);
+			//timeBoundSpinner.setIncrement(1);
+			
+		}
+			
 		
 		{ // Zot Plugin group
 			Group group = new Group(topComposite, SWT.NONE);
@@ -555,7 +600,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			group.setLayout(new RowLayout(SWT.VERTICAL));
 			group.setText(Messages.MainLaunchConfigurationTab_zotPluginLabel);
 			
-			Button ae2sbvzotButton = new Button(group, SWT.CHECK);
+			Button ae2sbvzotButton = new Button(group, SWT.RADIO);
 			ae2sbvzotButton.setText(Messages.MainLaunchConfigurationTab_ae2sbvzotLabel);
 			ae2sbvzotButton.setSelection(true);
 			data.getConfig().setZotPlugin(ZotPlugin.AE2SBVZOT);
@@ -565,7 +610,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 				};
 			});
 			
-			Button ae2bvzot = new Button(group, SWT.CHECK);
+			Button ae2bvzot = new Button(group, SWT.RADIO);
 			ae2bvzot.setText(Messages.MainLaunchConfigurationTab_ae2bvzotLabel);
 			ae2bvzot.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
@@ -573,7 +618,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 				};
 			});
 			
-			Button ae2zot = new Button(group, SWT.CHECK);
+			Button ae2zot = new Button(group, SWT.RADIO);
 			ae2zot.setText(Messages.MainLaunchConfigurationTab_ae2zotLabel);
 			ae2zot.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
@@ -684,7 +729,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		}
 		
 		
-		{ // Configuration Group 2 - float
+/*		{ // Configuration Group 2 - float
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			
@@ -760,7 +805,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			viewerFloat.getTable().setSortColumn(varViewerColumnFloat.getColumn());
 			viewerFloat.getTable().setSortDirection(SWT.UP);
 		}
-
+*/
 		
 		setControl(topComposite);
 	}
@@ -799,7 +844,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 				try {
 					serializedConfig = configuration.getAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, StringUtils.EMPTY);
 					data.setConfig(VerificationToolConfigSerializer.deserialize(serializedConfig));
-					DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Ciao");
+//					DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Ciao");
 				} catch (IOException e) {
 					DiceLogger.logException(DiceVerificationUiPlugin.getDefault(),
 							MessageFormat.format(Messages.MainLaunchConfigurationTab_unableParserError, serializedConfig), e);
@@ -816,7 +861,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, data.keepIntermediateFiles());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, data.intermediateFilesDir);
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, VerificationToolConfigSerializer.serialize(data.getConfig()));
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, data.getTimeBound());
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, timeBoundSpinner.getSelection());
 	}
 
 	@Override

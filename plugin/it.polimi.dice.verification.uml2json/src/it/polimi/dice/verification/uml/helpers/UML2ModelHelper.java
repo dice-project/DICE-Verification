@@ -51,21 +51,7 @@ public class UML2ModelHelper {
 		//A collection of related persistent documents.
 		ResourceSet set = new ResourceSetImpl();
 		
-/*		//Register the UML Package
-		set.getPackageRegistry().put(UMLPackage.eNS_URI, UMLPackage.eINSTANCE);
-		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.FILE_EXTENSION, UMLResource.Factory.INSTANCE);
-		set.getResourceFactoryRegistry().getExtensionToFactoryMap().put(UMLResource.PROFILE_FILE_EXTENSION, UMLResource.Factory.INSTANCE );
-		
-		Map<URI,URI> uriMap = set.getURIConverter().getURIMap();
-		URI uml_resource_uri = URI.createPlatformPluginURI("it.polimi.dice.profiles", true);
-		uriMap.put(URI.createURI("pathmap://resources/"), uml_resource_uri.appendSegment("resources").appendSegment(""));
-		
-		uml_resource_uri = URI.createPlatformPluginURI("org.eclipse.uml2.uml.resources", true);
-		uriMap.put(URI.createURI(UMLResource.LIBRARIES_PATHMAP), uml_resource_uri.appendSegment("libraries").appendSegment(""));
-		uriMap.put(URI.createURI(UMLResource.METAMODELS_PATHMAP), uml_resource_uri.appendSegment("metamodels").appendSegment(""));
-		uriMap.put(URI.createURI(UMLResource.PROFILES_PATHMAP), uml_resource_uri.appendSegment("profiles").appendSegment(""));
-		
-*/		//Add the model file to the resource set
+		//Add the model file to the resource set
 		URI uri = URI.createFileURI(pathToModel);
 		set.createResource(uri);
 		Resource r = set.getResource(uri, true);
@@ -75,8 +61,6 @@ public class UML2ModelHelper {
 	}
 	
 	public static boolean hasStereotype(Element e, String name){
-		EList<Stereotype> stereotypes = e.getAppliedStereotypes(); 
-		LOGGER.error(stereotypes.toString());
 		for(Stereotype st: e.getAppliedStereotypes()){
 			if(st.getName().equals(name)) return true;
 		}
@@ -87,7 +71,7 @@ public class UML2ModelHelper {
 		if(e instanceof InstanceSpecification){
 			InstanceSpecification is=(InstanceSpecification) e;
 			for(Classifier c: is.getClassifiers()){
-				if(isSpoutType(c)) return true;
+				if(isSpout(c)) return true;
 			}
 		}
 		return false;
@@ -97,7 +81,7 @@ public class UML2ModelHelper {
 		if(e instanceof InstanceSpecification){
 			InstanceSpecification is=(InstanceSpecification) e;
 			for(Classifier c: is.getClassifiers()){
-				if(isBoltType(c)) return true;
+				if(isBolt(c)) return true;
 			}
 		}
 		return false;
@@ -129,16 +113,6 @@ public class UML2ModelHelper {
 	}
 	
 	
-	
-	
-	private static boolean isSpoutType(Classifier c) {
-		return hasStereotype(c, "SpoutType");
-	}
-	
-	private static boolean isBoltType(Classifier c) {
-		return hasStereotype(c, "BoltType");
-	}
-
 
 	public static Stereotype getStereotype(Element e, String name){
 		for(Stereotype st: e.getAppliedStereotypes()){

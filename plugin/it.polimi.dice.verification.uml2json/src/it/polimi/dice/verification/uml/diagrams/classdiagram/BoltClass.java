@@ -106,7 +106,7 @@ public class BoltClass extends NodeClass{
 		for (Association association : this.umlClass.getAssociations()) {
 			for(Property property : association.getMemberEnds()){
 				if (property.getOwner() != association && !property.getName().toLowerCase().equals(this.umlClass.getName().toLowerCase())) {
-					subsList.add(property.getName());
+					subsList.add(property.getName().toUpperCase());
 					//DiceLogger.logError(Uml2JsonPlugin.getDefault(), "Adding " + property.getName() + " to subsList of: " + this.umlClass.getName());
 				}
 			}	

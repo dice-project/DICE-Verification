@@ -8,14 +8,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.attribute.FileAttribute;
+import java.text.DateFormat;
 import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,6 +54,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.browser.IWebBrowser;
+import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.uml2.uml.Element;
 
 import com.google.gson.Gson;
@@ -97,24 +109,30 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			monitor.beginTask(Messages.VerificationLaunchConfigurationDelegate_verificationTaskTitle, IProgressMonitor.UNKNOWN);
 			
 			Map<String, String> verificationAttrs = new HashMap<>();
-			verificationAttrs.put(DebugPlugin.ATTR_LAUNCH_TIMESTAMP, Calendar.getInstance().getTime().toString()); 	
+			DateFormat df = new SimpleDateFormat("yyyy-MM-dd__HH:mm:ss");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd__HH:mm:ss");
+			//Date now = Calendar.getInstance().getTime();
+			LocalDateTime now = LocalDateTime.now();
+			verificationAttrs.put(DebugPlugin.ATTR_LAUNCH_TIMESTAMP, now.format(formatter)); 	
 			VerificationToolConfig vtConfig = getVerificationToolConfig(configuration);
+			int timeBound = configuration.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
+			DiceLogger.logError(DiceVerificationPlugin.getDefault(), "TIME BOUND: " + timeBound);
 			
 			final boolean keepIntermediateFiles = configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false);
 			final File intermediateFilesDir = getIntermediateFilesDir(configuration);
 			
-			String templateFilePath = "/Users/francesco/Projects/DICE-Verification/json2mc/templating/templates/storm_topology_template.lisp";
+//			String templateFilePath = "/Users/francesco/Projects/DICE-Verification/json2mc/templating/templates/storm_topology_template.lisp";
 			final File umlFile = getInputFile(configuration);
-			final File configFile = Paths.get(intermediateFilesDir.toURI()).resolve("dump.pnconfig").toFile(); //$NON-NLS-1$
+			final File configFile = Paths.get(intermediateFilesDir.toURI()).resolve("dump.vtconfig").toFile(); //$NON-NLS-1$
 			final File jsonFile = Paths.get(intermediateFilesDir.toURI()).resolve("context.json").toFile(); //$NON-NLS-1$
-			final File resultFile = Paths.get(intermediateFilesDir.toURI()).resolve("result.txt").toFile(); //$NON-NLS-1$
-			final File templateFile = new File(templateFilePath);
-			final String json2mcPath = "/Users/francesco/Projects/DICE-Verification/json2mc/json2mc.py"; 
+//			final File resultFile = Paths.get(intermediateFilesDir.toURI()).resolve("result.txt").toFile(); //$NON-NLS-1$
+//			final File templateFile = new File(templateFilePath);
+//			final String json2mcPath = "/Users/francesco/Projects/DICE-Verification/json2mc/json2mc.py"; 
 			
 			try {
 				try {
 					dumpConfig(vtConfig, configFile, new SubProgressMonitor(monitor, 1));
-					transformUmlToJson(umlFile, vtConfig, jsonFile, new SubProgressMonitor(monitor, 1));
+					transformUmlToJson(umlFile, vtConfig, jsonFile, new SubProgressMonitor(monitor, 1), verificationAttrs, configuration);
 				} finally {
 					// Refresh workspace if intermediate files were stored in it
 					if (keepIntermediateFiles) {
@@ -208,6 +226,29 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 		}
 	}
 	
+	private static void openUrl(URL url, String browserId) {
+	    IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport();
+	    IWebBrowser browser;
+	    try {
+	        browser = support.createBrowser(DiceVerificationPlugin.PLUGIN_ID + "_" + browserId);
+	        browser.openURL(url);
+	    } catch (PartInitException e) {
+	        DiceLogger.logException(DiceVerificationPlugin.getDefault(), e);
+	    }
+	}
+	 
+	
+	public static void openNewBrowserTab(URL url, String browserId){
+		Display.getDefault().syncExec(new Runnable() { 
+			public void run() { 
+					openUrl(url, browserId);
+				} 
+			}); 
+	}
+	
+	
+	
+	
 	private File getInputFile(ILaunchConfiguration configuration) throws CoreException {
 		String inputFileUriString = configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY);
 		java.net.URI inputFileUri;
@@ -246,6 +287,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 
 	private VerificationToolConfig getVerificationToolConfig(ILaunchConfiguration configuration) throws CoreException {
 		String serializedConfig = configuration.getAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, StringUtils.EMPTY);
+		DiceLogger.logError(DiceVerificationPlugin.getDefault(), "SERIALIZED-CONFIG:\n" + serializedConfig);
 		try {
 			return VerificationToolConfigSerializer.deserialize(serializedConfig);
 		} catch (IOException e) {
@@ -284,7 +326,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 		LOGGER.info("ZOT to finished");
 	}*/
 
-	private void transformUmlToJson(File umlFile, VerificationToolConfig vtConfig, File jsonFile, IProgressMonitor monitor) throws IOException {
+	private void transformUmlToJson(File umlFile, VerificationToolConfig vtConfig, File jsonFile, IProgressMonitor monitor, Map<String, String> attributes, ILaunchConfiguration launchConfig) throws IOException {
 		
 		JsonVerificationContext jsonContext;
 		VerificationParameters vp = new VerificationParameters(); 
@@ -292,6 +334,12 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 		List<BoltClass> bolts = new ArrayList<>();
 		StormTopology topology = new StormTopology();
 		Gson gson = new Gson();
+		
+		String filename = umlFile.getName();
+		int pos = filename.lastIndexOf(".");
+		String justName = pos > 0 ? filename.substring(0, pos) : filename;			
+		String timestamp = attributes.get(DebugPlugin.ATTR_LAUNCH_TIMESTAMP);
+		String verificationIdentifier = justName + "_" + timestamp;
 		
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
@@ -323,17 +371,27 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			topology.setSpouts(spouts);
 			topology.setBolts(bolts);
 			vp.setPeriodicQueuesFromBolts(bolts);
-			vp.setStrictlyMonotonicQueues(vp.getPeriodicQueues());
+			try {
+				vp.setTimeBound(launchConfig.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15));
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+			ArrayList<String> plugins = new ArrayList<String>();
+			plugins.add(vtConfig.getZotPlugin().getName());
+			vp.setPlugins(plugins);
+			//vp.setStrictlyMonotonicQueues(vp.getPeriodicQueues());
 			jsonContext = new JsonVerificationContext(topology, vp);
-			jsonContext.setApplicationName("TEST");
+			jsonContext.setApplicationName(verificationIdentifier);
 			
 			DiceLogger.logError(DiceVerificationPlugin.getDefault(), "JSON CONTEXT CREATED:\n" + gson.toJson(jsonContext));
 			///Resource jsonResource = resourceSet.createResource(URI.createFileURI(jsonFile.getAbsolutePath()));
 			//jsonResource.getContents().add(t);
 			//jsonResource.save(Collections.emptyMap());
-			String myUrl = "http://localhost:5000/longtasks";
+			String launchVerificationUrl = "http://localhost:5000/longtasks";
+			String taskListURL = "http://localhost:5000/";
 			//String jsonRequest = "{\"title\":\"pinellaxJAVA\",\"json_context\":{\"verification_params\": {\"base_quantity\": 10, \"periodic_queues\": [\"expander\"], \"num_steps\": 20, \"max_time\": 20000, \"plugin\": [\"ae2bvzot\", \"ae2sbvzot\"]}, \"version\": \"0.1\", \"app_name\": \"SIMPLIFIED FOCUSED CRAWLER\", \"topology\": {\"bolts\": [{\"d\": 0.0, \"parallelism\": 4, \"min_ttf\": 1000, \"alpha\": 0.5, \"sigma\": 2.0, \"id\": \"WpDeserializer\", \"subs\": [\"wpSpout\"]}, {\"d\": 0.0, \"parallelism\": 8, \"min_ttf\": 1000, \"alpha\": 3.0, \"sigma\": 0.75, \"id\": \"expander\", \"subs\": [\"WpDeserializer\"]}, {\"d\": 0.0, \"parallelism\": 1, \"min_ttf\": 1000, \"alpha\": 1.0, \"sigma\": 1.0, \"id\": \"articleExtraction\", \"subs\": [\"expander\"]}, {\"d\": 0.0, \"parallelism\": 1, \"min_ttf\": 1000, \"alpha\": 1.0, \"sigma\": 1.0, \"id\": \"mediaExtraction\", \"subs\": [\"expander\"]}], \"init_queues\": 4, \"max_reboot_time\": 100, \"max_idle_time\": 1.0, \"min_reboot_time\": 10, \"spouts\": [{\"avg_emit_rate\": 4.0, \"id\": \"wpSpout\"}], \"queue_threshold\": 0}, \"description\": \"\"}}";
-			JsonVerificationTaskRequest vtr = new JsonVerificationTaskRequest("TI PUZZA L'ANO", jsonContext);
+
+			JsonVerificationTaskRequest vtr = new JsonVerificationTaskRequest(verificationIdentifier, jsonContext);
 			
 			Gson gsonBuilder = new GsonBuilder().create();
 			DiceLogger.logError(DiceVerificationPlugin.getDefault(), "WRITING FILE TO:\n" + jsonFile.getAbsolutePath());
@@ -342,7 +400,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			}
 			
 			HttpClient nc = new HttpClient();
-			nc.postJSONRequest(myUrl, gsonBuilder.toJson(vtr));
+			nc.postJSONRequest(launchVerificationUrl, gsonBuilder.toJson(vtr));
 			
 			try {
 			    Thread.sleep(5000);                 
@@ -351,8 +409,9 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			}
 			nc.getTaskStatusUpdatesFromServer();
 
-	        
+		
 			
+			openNewBrowserTab(new URL(taskListURL), "task-list");
 			
 			
 		}finally{
