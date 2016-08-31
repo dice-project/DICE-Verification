@@ -15,7 +15,11 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     g++ \
     make \
     git \
-    python python-dev python-distribute python-pip python-tk \
+    python \
+    python-dev \
+    python-distribute \
+#    python-pip \ 
+    python-tk \
 #    python-matplotlib \
     sbcl \
     zlib1g-dev \
@@ -45,13 +49,19 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
         ln -s /usr/local/zot/asdfs/*.asd /usr/lib/sbcl/site-systems/ && \
         cp /usr/local/zot/bin/zot /usr/local/bin/
 
+#installing pip 
+    WORKDIR /tmp
+    RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
+        python get-pip.py && \ 
+        rm get-pip.py
+
 #environment variables for D-VerT
     ENV PROJECT_FOLDER /opt/DICE-Verification/
     ENV SERVER_CODE_FOLDER ${PROJECT_FOLDER}d-vert-server/
     ENV FORMAL_DICE ${SERVER_CODE_FOLDER}json2mc/
 
 #get D-VerT from github
-    RUN git clone https://github.com/dice-project/DICE-Verification  $PROJECT_FOLDER
+    RUN git clone https://github.com/franco-maroni/DICE-Verification  $PROJECT_FOLDER
 
 # Install and setup virtualenv 
     RUN pip install virtualenv
@@ -73,5 +83,4 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     WORKDIR $SERVER_CODE_FOLDER 
 
     CMD ["bash"]
-
 

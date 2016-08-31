@@ -10,6 +10,7 @@ import getopt
 import errno
 import shutil
 import psutil
+import itertools
 
 from Queue import Empty
 from subprocess import Popen, PIPE
@@ -45,6 +46,11 @@ def make_sure_path_exists(path):
         if exception.errno != errno.EEXIST:
             raise
 
+def get_absolute_path(path):
+    if path.startswith('/'):
+        return path
+    else:
+        return os.getcwd()+'/'+path
 
 def parse_hist(file_path):
     """Parse history trace and save variable values in a dictionary."""
@@ -83,10 +89,8 @@ def parse_hist(file_path):
 def plot_hist(app_name, step, records, bool_set,
               timestamp, conf_path, plot_saving_dir, ver_time, display):
     """Plot the trace provided in the records dictionary."""
-    print "DELETE inside plot_hist, open conf_path: " + conf_path
     with open(conf_path) as param_file:
         conf = json.load(param_file)
-    print "DELETE file opened (app_name:" + conf["app_name"] + ")"
     file_name = app_name if app_name is not None else conf["app_name"]
     steplist = np.arange(step+1)
     num_rows = min(3, len(conf["plots"]))
@@ -146,12 +150,121 @@ def plot_hist(app_name, step, records, bool_set,
         i += 1  # end for
 #    plt.tight_layout()
     make_sure_path_exists(plot_saving_dir + 'imgs')
-    plt.savefig(plot_saving_dir+'imgs/'+file_name+'_'+timestamp+'.png',
+    figure_path = plot_saving_dir+'imgs/'+file_name+'_'+timestamp+'.png'
+    plt.savefig(figure_path,
                 facecolor='w', edgecolor='k')
-    plt.savefig(plot_saving_dir+'imgs/'+file_name+'_'+timestamp+'.eps',
-                format='eps')
     if display:
         plt.show()
+    return get_absolute_path(figure_path)
+
+def get_plot_styles_list(settings):
+    # ONELINER  return [''.join(t) for t in list(itertools.product(settings["markers"], setting["line_styles"],setting["colors"]))]
+    markers = settings["markers"]
+    line_styles = settings["line_styles"]
+    colors = settings["colors"]
+    tuples_list = list(itertools.product(markers, line_styles, colors))
+    strings_list = [''.join(t) for t in tuples_list]
+    print strings_list
+    return strings_list
+
+def get_y_max(cur_y_max, var_list, component_id, records):
+    y_max = cur_y_max
+    for var in var_list:
+        var_id = string.upper(var["var_prefix"])+component_id
+        y_max = max([int(r) for r in records[var_id]] + [y_max])
+    return y_max
+
+def plot_vars_from_list(step_list, var_list, component_id, records, bool_set, var_styles_dict={}):
+#    if styles_list is not None and len(var_list)<=len(styles_list):
+#        var_styles_list = zip(var_list, styles_list)
+#    else:
+#        var_styles_list = zip(var_list, [v["style"] for v in var_list])
+    for var in var_list:
+        var_id = string.upper(var["var_prefix"])+component_id
+        var_style = var_styles_dict.get(var_id, var["linestyle"])
+        var_lw = var["linewidth"]
+        var_msize = var["markersize"]
+        # print var_id, '\t\t', records[var_id]
+        if var_id not in bool_set:
+            print 'Plotting: ',var_id, "style:", var_style
+            plt.plot(step_list, records[var_id], var_style, label=var_id,
+                        linewidth=var_lw, markersize=var_msize)
+        else:  # works only for TAKE_BX
+            bool_series = \
+                [records['R_PROCESS_' + var_id.split('_')[-1]][j] if j
+                    in records[var_id]else 0 for j in range(step + 1)]
+            plt.plot(step_list, bool_series, var_style, label=var_id,
+                        linewidth=var_lw, markersize=var_msize)
+
+
+
+def plot_hist2(app_name, step, records, bool_set,
+              timestamp, topology, settings_path, plot_saving_dir, ver_time, display):
+    """Plot the trace provided in the records dictionary."""
+    with open(settings_path) as settings_file:
+        settings = json.load(settings_file)
+    file_name = app_name if app_name is not None else topology["app_name"]
+    steplist = np.arange(step+1)
+    num_rows = min(3, len(topology["bolts"]))
+    if len(topology["bolts"]) % 3:
+        columns = len(topology["bolts"])/3 + 1
+    else:
+        columns = len(topology["bolts"])/3
+    #  first round to get the maximum y value
+    my_dpi = 96
+    plt.figure(figsize=(1460/my_dpi, 900/my_dpi), dpi=my_dpi)
+    styles_list = get_plot_styles_list(settings)
+    i = 1
+    y_max = 1
+    # get the maximum "Y" value to be displayed across all plots
+    for b in topology["bolts"]:
+        y_max = get_y_max(y_max, settings["bolt_vars"], b["id"], records)
+        for s in b["subs"]:
+            y_max = get_y_max(y_max, settings["subs_vars"], s, records)
+    #plot variables' values
+    for b in topology["bolts"]:# TODO COMPLETARE
+        plt.subplot(num_rows, columns, i)
+        plot_vars_from_list(steplist, settings["bolt_vars"], b["id"], records, bool_set)
+        # get list of all varables to plot to couple them with style
+        subs_vars_list = [x[0]["var_prefix"]+x[1] for x in itertools.product(settings["subs_vars"], b["subs"])]
+        vars_styles_dict = {}
+        if styles_list is not None and len(subs_vars_list)<=len(styles_list):
+            vars_styles_dict = dict(zip(subs_vars_list, styles_list))
+        for s in b["subs"]:
+            plot_vars_from_list(steplist, settings["subs_vars"], s, records, bool_set, vars_styles_dict)
+        if i == 1:
+            plt.title("verification time: " + str(ver_time) + "\n\n" +
+                      b["id"] + ' profile', fontsize=18)
+        else:
+            plt.title(b["id"] + ' profile', fontsize=18)
+#        plt.suptitle(file_name)
+        # limit the y axis to the maximum value present across the plots
+        plt.ylim([0, y_max + 1])
+        # print records['TOTALTIME']
+        rounded_totaltime = \
+            map(lambda t: round(float(t.strip('?')), 2), records['TOTALTIME'])
+        plt.ylabel('#tuples')
+        if i == num_rows:
+            plt.xticks(steplist, rounded_totaltime, rotation=45)
+            plt.xlabel('TOTALTIME', fontsize=22)
+        else:
+            plt.xticks(steplist, ['' for s in steplist])
+        fontP = FontProperties()
+        fontP.set_size('x-small')
+        plt.legend(prop=fontP, loc='upper left')
+#        plt.legend(loc='upper left')
+        plt.grid()
+        plt.axvspan(records['LOOP'], step, color='red', alpha=0.3)
+        i += 1  # end for
+#    plt.tight_layout()
+    make_sure_path_exists(plot_saving_dir + 'imgs')
+    figure_path = plot_saving_dir+'imgs/'+file_name+'_'+timestamp+'.png'
+    plt.savefig(figure_path,
+                facecolor='w', edgecolor='k')
+    if display:
+        plt.show()
+    return get_absolute_path(figure_path)
+
 
 
 def queue_get_all(q):
@@ -185,13 +298,23 @@ def parallel_launch(app_dir, template, context, template_path,
             with open(app_dir+"/zot_in.lisp", "w+") as out_file:
                 out_file.write(template.render(context))
             template_filename = template_path.split('/')[-1]
-            context_filename = context_path.split('/')[-1]
-            print prefix, "Copying ", template_path, ', ', context_path, \
-                'to ', app_dir
+            if context_path == None:
+                context_filename = context['app_name'] + '.json'
+            else:
+                context_filename = context_path.split('/')[-1]
+                
+            print prefix, "Copying ", template_path, 'to ', app_dir
             shutil.copy(template_path, app_dir+'/' +
                         'conf/copy_of_' + template_filename)
-            shutil.copy(context_path, app_dir+'/' +
-                        'conf/copy_of_' + context_filename)
+            json_model_saving_path = app_dir+'/' + \
+                        'conf/copy_of_' + context_filename
+            if context_path == None:
+                print 'Dumping JSON context to: ' + json_model_saving_path
+                with open(json_model_saving_path, 'w+') as outfile:
+                    json.dump(context, outfile, indent=4)
+            else:
+                print prefix, "Copying ", context_path, 'to ', app_dir
+                shutil.copy(context_path, json_model_saving_path)
         # print os.getcwd()
             os.chdir(app_dir)
             command_list = ["zot", "zot_in.lisp"]
@@ -207,7 +330,8 @@ def parallel_launch(app_dir, template, context, template_path,
             print prefix, str(child_pid) + "Terminated -> output:", output
     #        bashCommand = "zot zot_in.lisp"
     #        os.system(bashCommand)
-            print "DONE putting!", solver
+            print "Verication complete with solver:", solver
+            return json_model_saving_path
 
 
 def main(argv):  # noqa
@@ -221,7 +345,7 @@ def main(argv):  # noqa
     context_path = base_dir + \
         "templating/contexts/zot_storm_context.json"
     output_dir = base_dir + "output-dir"
-    plot_conf_path = base_dir + "visual/plot_conf_simple.json"
+    plot_conf_path = base_dir + "visual/plot_settings.json" # "visual/plot_conf_simple.json"
     plot_only = False
     app_name = None
     display = False
@@ -265,6 +389,7 @@ def main(argv):  # noqa
     print 'Plot configuration file is'.format(plot_conf_path)
     print 'BASE_DIRECTORY set to {}'.format(base_dir)
     print 'JSON context: ', json_conf
+    json_model_saving_path = None
     if not plot_only:
         # with open("templates/zot_template.lisp", "r") as tmp:
         with open(template_path, "r") as tmp:
@@ -275,30 +400,33 @@ def main(argv):  # noqa
             with open(context_path, "r") as param_file:
                 context = json.load(param_file)
         else:
+            context_path = None
             context = json_conf
         # print template.render(context)
         make_sure_path_exists(output_dir)
         tmp = ''
-        for b in context["topology"]["bolts"]:
-            tmp += '_'+b["id"] + '_p_' + str(b["parallelism"]) + \
-                   '_a_' + str(b["alpha"]) + '_s_' + str(b["sigma"])
         # SIMPLE_TOP_B2_p_15_a_5_b_0.5_B1_5_B3_3_THR_20
         app_name = context["app_name"]
-    #    app_name = context["app_name"] + tmp + \
-    #        '_THR_' + str(context["topology"]["queue_threshold"]) + \
-    #        '_STEPS_' + str(context["verification_params"]["num_steps"])
-        app_dir = output_dir+'/'+app_name
+        print "setting appname: app_name = context['app_name'] --> "+app_name 
+        app_dir = get_absolute_path(output_dir)+'/'+app_name
+        print "setting appdir: get_absolute_path(output_dir)+'/'+app_name --> "+app_dir
         solver = context["verification_params"]["plugin"][0]
         print 'launching process for', solver
-        parallel_launch(app_dir, template,
-                        context, template_path, context_path, solver)
-        print "Fuori da parallel_launch"
+        json_model_saving_path = parallel_launch(app_dir, template,
+                                                context, template_path, 
+                                                context_path, solver)
         app_dir = app_dir + '/' + solver
+        print "setting app_dir: app_dir = app_dir + '/' + solver --> "+app_dir
+        print "parallel_launch terminated, moving to: " + app_dir
         os.chdir(app_dir)
     else:
         os.chdir(app_dir)
     res_f = open(result_file)
     lines = res_f.readlines()
+    outcome = 'Undefined'
+    figure_path = None
+    verification_time = 'N/A'
+    hist_file_abs_path = ''
     if lines:
         outcome = lines[0].strip()
     #    verification_time = " ".join(lines[-1].strip().strip(':').strip(')').split()).split(" ")
@@ -316,9 +444,13 @@ def main(argv):  # noqa
             timestamp_str = timestamp.strftime(format)
         #       print timestamp_str
             my_step, my_records, my_bool_set = parse_hist(my_file_path)
-            plot_hist(app_name, my_step, my_records,
-                      my_bool_set, timestamp_str, plot_conf_path, './',
-                      verification_time, display)
+        #    figure_path = plot_hist(app_name, my_step, my_records,
+        #              my_bool_set, timestamp_str, plot_conf_path, './',
+        #              verification_time, display)
+            figure_path = plot_hist2(app_name, my_step, my_records,
+                        my_bool_set, timestamp_str, context['topology'], 
+                        plot_conf_path, './', verification_time, display)
+            hist_file_abs_path = app_dir+'/'+hist_file
         elif(outcome == 'unsat'):
             print 'UNSAT!!!'
         else:
@@ -327,6 +459,12 @@ def main(argv):  # noqa
         print 'Result saved to ', app_dir, ' directory.'
     else:
         print "Empty output.1.txt file!"
+    generated_lisp_model_path = app_dir+"/zot_in.lisp"
+    result_file_abs_path = app_dir+'/'+result_file
+    # return all the info needed for display
+    if not plot_only:
+        return outcome, verification_time, hist_file_abs_path, figure_path, \
+            json_model_saving_path, generated_lisp_model_path, result_file_abs_path
 
 
 if __name__ == "__main__":
