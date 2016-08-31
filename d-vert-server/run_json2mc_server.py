@@ -30,7 +30,7 @@ app.config['CELERY_RESULT_BACKEND'] = 'redis://redis:6379/0'
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'], backend=app.config['CELERY_RESULT_BACKEND'])
 celery.conf.update(app.config)
 
-redis = Redis('localhost')
+redis = Redis('redis')
 
 def get_static_url(path):
     return os.path.relpath(path, app.static_folder)
