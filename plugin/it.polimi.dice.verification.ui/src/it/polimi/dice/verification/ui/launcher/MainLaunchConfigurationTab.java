@@ -209,14 +209,17 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			String readableInputFile = toReadableString(inputFile);
 			inputFileText.setText(readableInputFile != null ? readableInputFile : StringUtils.EMPTY);
 			config.getMonitoredBolts().clear();
-			Set<String> vars = getVariablesFromUmlModelDummy(new File(URI.create(inputFile)));
+			Set<String> vars = getVariablesFromUmlModel(new File(URI.create(inputFile)));
 			for (String var : vars) {
-				config.getMonitoredBolts().put(var, false);
+				if (!config.getMonitoredBolts().containsKey(var))
+					config.getMonitoredBolts().put(var, false);
+				
 			}
 			for (Map.Entry<String, Boolean> entry : config.getMonitoredBolts().entrySet()) {
 				DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
 			}
 			viewerBoolean.refresh();
+//			config.setZotPlugin(ZotPlugin.AE2BVZOT);
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
@@ -225,7 +228,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			String readableInputFile = toReadableString(inputFile);
 			inputFileText.setText(readableInputFile != null ? readableInputFile : StringUtils.EMPTY);
 			config.getVariableAssignments().clear();
-			Set<String> vars = getVariablesFromUmlModelDummy(new File(URI.create(inputFile)));
+			Set<String> vars = getVariablesFromUmlModel(new File(URI.create(inputFile)));
 			for (String var : vars) {
 				config.getVariableAssignments().put(var, 1.0f);
 			}
@@ -290,10 +293,10 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			if (viewerBoolean != null) {
 				viewerBoolean.setInput(data);
 			}
-			if (viewerFloat != null) {
+/*			if (viewerFloat != null) {
 				viewerFloat.setInput(data);
 			}
-
+*/
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
@@ -489,7 +492,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 						dialog.setInitialSelection(files);
 					}
 					if (dialog.open() == Dialog.OK) {
-						//data.setInputFileFloat(dialog.getFile().getLocationURI().toString());
+//						data.setInputFileFloat(dialog.getFile().getLocationURI().toString());
 						data.setInputFileBoolean(dialog.getFile().getLocationURI().toString());
 					}
 				}
@@ -589,6 +592,12 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			timeBoundSpinner.setMaximum(100);
 			timeBoundSpinner.setMinimum(10);
 			//timeBoundSpinner.setIncrement(1);
+			timeBoundSpinner.addSelectionListener(new SelectionAdapter() {
+				public void widgetSelected(SelectionEvent e) {
+					data.setTimeBound(timeBoundSpinner.getSelection());
+					setDirty(true);
+				};
+			});
 			
 		}
 			
@@ -602,30 +611,55 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			
 			Button ae2sbvzotButton = new Button(group, SWT.RADIO);
 			ae2sbvzotButton.setText(Messages.MainLaunchConfigurationTab_ae2sbvzotLabel);
-			ae2sbvzotButton.setSelection(true);
-			data.getConfig().setZotPlugin(ZotPlugin.AE2SBVZOT);
+			
+			//data.getConfig().setZotPlugin(ZotPlugin.AE2SBVZOT);
 			ae2sbvzotButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					data.getConfig().setZotPlugin(ZotPlugin.AE2SBVZOT);
+					setDirty(true);
 				};
 			});
 			
-			Button ae2bvzot = new Button(group, SWT.RADIO);
-			ae2bvzot.setText(Messages.MainLaunchConfigurationTab_ae2bvzotLabel);
-			ae2bvzot.addSelectionListener(new SelectionAdapter() {
+			Button ae2bvzotButton = new Button(group, SWT.RADIO);
+			ae2bvzotButton.setText(Messages.MainLaunchConfigurationTab_ae2bvzotLabel);
+			ae2bvzotButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					data.getConfig().setZotPlugin(ZotPlugin.AE2BVZOT);
+					setDirty(true);
 				};
 			});
 			
-			Button ae2zot = new Button(group, SWT.RADIO);
-			ae2zot.setText(Messages.MainLaunchConfigurationTab_ae2zotLabel);
-			ae2zot.addSelectionListener(new SelectionAdapter() {
+			Button ae2zotButton = new Button(group, SWT.RADIO);
+			ae2zotButton.setText(Messages.MainLaunchConfigurationTab_ae2zotLabel);
+			ae2zotButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					data.getConfig().setZotPlugin(ZotPlugin.AE2ZOT);
+					setDirty(true);
 				};
 			});
 
+			if(data.getConfig().getZotPlugin()!=null){
+				switch (data.getConfig().getZotPlugin().getValue()) {
+				case ZotPlugin.AE2SBVZOT_VALUE:
+					ae2sbvzotButton.setSelection(true);
+					break;
+					
+				case ZotPlugin.AE2BVZOT_VALUE:
+					ae2bvzotButton.setSelection(true);
+					break;
+					
+				case ZotPlugin.AE2ZOT_VALUE:
+					ae2zotButton.setSelection(true);
+					break;
+					
+				default:
+					ae2sbvzotButton.setSelection(true);
+					break;
+				}
+	
+			}
+
+			
 		}
 		
 		{ // Configuration Group - Set Monitored Bolts
@@ -687,9 +721,9 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			    	 // return null;
 			    	  Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
 			    	  if (entry.getValue()) {
-				          return "Check";
+				          return "Yes";
 				        } else {
-				          return "Uncheck";
+				          return "No";
 				        }
 			      }
 
@@ -718,6 +752,8 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			        viewerBoolean.getTable().setSortDirection(dir);
 			        viewerBoolean.getTable().setSortColumn(valueViewerColumnBoolean.getColumn());
 			        viewerBoolean.refresh();
+			        setDirty(true);
+					updateLaunchConfigurationDialog();
 				}
 			});
 			TableColumnLayout tableLayout = new TableColumnLayout();
@@ -728,8 +764,8 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			viewerBoolean.getTable().setSortDirection(SWT.UP);
 		}
 		
-		
-/*		{ // Configuration Group 2 - float
+/*		
+		{ // Configuration Group 2 - float
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			
@@ -825,7 +861,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE)) {
-				//data.setInputFileFloat(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
+//				data.setInputFileFloat(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
 				data.setInputFileBoolean(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
 			}
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES)) {
@@ -860,8 +896,12 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, data.getInputFile());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, data.keepIntermediateFiles());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, data.intermediateFilesDir);
+//		VerificationToolConfig myVtConfig = data.getConfig();
+//		String serializedVtConfig = VerificationToolConfigSerializer.serialize(myVtConfig);
+//		configuration.setAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, serializedVtConfig);
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, VerificationToolConfigSerializer.serialize(data.getConfig()));
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, timeBoundSpinner.getSelection());
+		
 	}
 
 	@Override
@@ -943,7 +983,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	}
 	
 	
-	protected Set<String> getVariablesFromUmlModelDummy(File file) {
+	protected Set<String> getVariablesFromUmlModel(File file) {
 		Set<String> vars = new HashSet<>();
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resource = null;
@@ -981,130 +1021,4 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		return vars;
 	}
   
-
-	protected Set<String> getVariablesFromUmlModel(File file) {
-		Set<String> vars = new HashSet<>();
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = null;
-		try { 
-			resource = resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()), true);
-			for (Iterator<EObject> it = resource.getAllContents(); it.hasNext();) {
-				EObject eObject = it.next();
-				if (eObject instanceof Element) {
-					Element element = (Element) eObject;
-					for (Stereotype stereotype : element.getAppliedStereotypes()) {
-						for (Property property : stereotype.getAllAttributes()) {
-							if (property.getType() instanceof DataType) {
-								DataType dataType = (DataType) property.getType();
-								boolean isMarteType = isDefinedInMarteLibrary(dataType);
-								if (!isMarteType) {
-								    for (Classifier classifier : dataType.getGenerals()) {
-								        if (isDefinedInMarteLibrary(classifier)) {
-								        	isMarteType = true;
-								        	break;
-								        }
-								    }
-							    }
-								if (isMarteType) {
-						            List<String> collectedValues = new ArrayList<>();
-						            if (!property.isMultivalued()) {
-						            	Object value = element.getValue(stereotype, property.getName());
-						            	if (value instanceof String) {
-						            		collectedValues.add((String) value);
-						            	}
-						            } else {
-						            	for (Object value : (List<?>) element.getValue(stereotype, property.getName())) {
-						            		if (value instanceof String) {
-							            		collectedValues.add((String) value);
-							            	}	
-						            	}
-						            }
-						            for (String string : collectedValues) {
-						            	Pattern pattern = Pattern.compile("[^\\W]\\w+=(\\$\\w+)[$\\W]"); //$NON-NLS-1$
-						            	Matcher matcher = pattern.matcher(string);
-					            		while (matcher.find()) {
-					            			vars.add(matcher.group(1));
-					            		}
-						            }
-								}
-							}
-						}
-					}
-				}
-			}
-			
-		} catch (Throwable t) {
-			DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), t);
-		}
-		return vars;
-	}
-
-	
-	protected Set<String> getVariablesFromUmlModelOld(File file) {
-		Set<String> vars = new HashSet<>();
-		ResourceSet resourceSet = new ResourceSetImpl();
-		Resource resource = null;
-		try { 
-			resource = resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()), true);
-			for (Iterator<EObject> it = resource.getAllContents(); it.hasNext();) {
-				EObject eObject = it.next();
-				if (eObject instanceof Element) {
-					Element element = (Element) eObject;
-					for (Stereotype stereotype : element.getAppliedStereotypes()) {
-						for (Property property : stereotype.getAllAttributes()) {
-							if (property.getType() instanceof DataType) {
-								DataType dataType = (DataType) property.getType();
-								boolean isMarteType = isDefinedInMarteLibrary(dataType);
-								if (!isMarteType) {
-								    for (Classifier classifier : dataType.getGenerals()) {
-								        if (isDefinedInMarteLibrary(classifier)) {
-								        	isMarteType = true;
-								        	break;
-								        }
-								    }
-							    }
-								if (isMarteType) {
-						            List<String> collectedValues = new ArrayList<>();
-						            if (!property.isMultivalued()) {
-						            	Object value = element.getValue(stereotype, property.getName());
-						            	if (value instanceof String) {
-						            		collectedValues.add((String) value);
-						            	}
-						            } else {
-						            	for (Object value : (List<?>) element.getValue(stereotype, property.getName())) {
-						            		if (value instanceof String) {
-							            		collectedValues.add((String) value);
-							            	}	
-						            	}
-						            }
-						            for (String string : collectedValues) {
-						            	Pattern pattern = Pattern.compile("[^\\W]\\w+=(\\$\\w+)[$\\W]"); //$NON-NLS-1$
-						            	Matcher matcher = pattern.matcher(string);
-					            		while (matcher.find()) {
-					            			vars.add(matcher.group(1));
-					            		}
-						            }
-								}
-							}
-						}
-					}
-				}
-			}
-			
-		} catch (Throwable t) {
-			DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), t);
-		}
-		return vars;
-	}
-	
-	private boolean isDefinedInMarteLibrary(Classifier classifier) {
-	    Package pkg = classifier.getNearestPackage();
-	    while (pkg != null) {
-	        if ("MARTE_Library".equals(pkg.getQualifiedName())) { //$NON-NLS-1$
-	            return true;
-	        }
-	        pkg = pkg.getNestingPackage();
-	    }
-	    return false;
-	}
 }

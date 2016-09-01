@@ -27,20 +27,20 @@ import it.polimi.dice.vtconfig.ZotPlugin;
 
 public class VerificationToolConfigImpl extends MinimalEObjectImpl.Container implements VerificationToolConfig {
 	/**
-	 * The default value of the '{@link #getAnalysisType() <em>Analysis Type</em>}' attribute.
+	 * The default value of the '{@link #getZotPlugin() <em>Analysis Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAnalysisType()
+	 * @see #getZotPlugin()
 	 * @generated
 	 * @ordered
 	 */
 	protected static final ZotPlugin ZOT_PLUGIN_EDEFAULT = ZotPlugin.AE2SBVZOT;
 
 	/**
-	 * The cached value of the '{@link #getAnalysisType() <em>Analysis Type</em>}' attribute.
+	 * The cached value of the '{@link #getZotPlugin() <em>Analysis Type</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getAnalysisType()
+	 * @see #getZotPlugin()
 	 * @generated
 	 * @ordered
 	 */
@@ -136,7 +136,7 @@ public class VerificationToolConfigImpl extends MinimalEObjectImpl.Container imp
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	@SuppressWarnings("unchecked")
+/*	@SuppressWarnings("unchecked")
 	public Map.Entry<String, Float> getInitialMarking() {
 		if (initialMarking != null && ((EObject)initialMarking).eIsProxy()) {
 			InternalEObject oldInitialMarking = (InternalEObject)initialMarking;
@@ -148,28 +148,31 @@ public class VerificationToolConfigImpl extends MinimalEObjectImpl.Container imp
 		}
 		return initialMarking;
 	}
-
+	###DELETE
+*/ 
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Map.Entry<String, Float> basicGetInitialMarking() {
+/*	public Map.Entry<String, Float> basicGetInitialMarking() {
 		return initialMarking;
 	}
-
+	###DELETE
+*/
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setInitialMarking(Map.Entry<String, Float> newInitialMarking) {
+/*	public void setInitialMarking(Map.Entry<String, Float> newInitialMarking) {
 		Map.Entry<String, Float> oldInitialMarking = initialMarking;
 		initialMarking = newInitialMarking;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, VtConfigPackage.PETRI_NET_CONFIG__INITIAL_MARKING, oldInitialMarking, initialMarking));
 	}
-
+	###DELETE
+*/
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -200,10 +203,11 @@ public class VerificationToolConfigImpl extends MinimalEObjectImpl.Container imp
 			case VtConfigPackage.VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS:
 				if (coreType) return getMonitoredBolts();
 				else return getMonitoredBolts().map();
-			case VtConfigPackage.PETRI_NET_CONFIG__INITIAL_MARKING:
+/*			case VtConfigPackage.PETRI_NET_CONFIG__INITIAL_MARKING:
 				if (resolve) return getInitialMarking();
 				return basicGetInitialMarking();
-		}
+				###DELETE
+*/		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
@@ -225,10 +229,11 @@ public class VerificationToolConfigImpl extends MinimalEObjectImpl.Container imp
 			case VtConfigPackage.VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS:
 				((EStructuralFeature.Setting)getMonitoredBolts()).set(newValue);
 				return;
-			case VtConfigPackage.PETRI_NET_CONFIG__INITIAL_MARKING:
+/*			case VtConfigPackage.PETRI_NET_CONFIG__INITIAL_MARKING:
 				setInitialMarking((Map.Entry<String, Float>)newValue);
 				return;
-		}
+				###DELETE
+*/		}
 		super.eSet(featureID, newValue);
 	}
 
@@ -249,10 +254,11 @@ public class VerificationToolConfigImpl extends MinimalEObjectImpl.Container imp
 			case VtConfigPackage.VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS:
 				getMonitoredBolts().clear();
 				return;
-			case VtConfigPackage.PETRI_NET_CONFIG__INITIAL_MARKING:
+/*			case VtConfigPackage.PETRI_NET_CONFIG__INITIAL_MARKING:
 				setInitialMarking((Map.Entry<String, Float>)null);
 				return;
-		}
+				###DELETE
+*/		}
 		super.eUnset(featureID);
 	}
 
@@ -270,8 +276,8 @@ public class VerificationToolConfigImpl extends MinimalEObjectImpl.Container imp
 				return variableAssignments != null && !variableAssignments.isEmpty();
 			case VtConfigPackage.VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS:
 				return monitoredBolts != null && !monitoredBolts.isEmpty();
-			case VtConfigPackage.PETRI_NET_CONFIG__INITIAL_MARKING:
-				return initialMarking != null;
+//			case VtConfigPackage.PETRI_NET_CONFIG__INITIAL_MARKING:
+//				return initialMarking != null;
 		}
 		return super.eIsSet(featureID);
 	}

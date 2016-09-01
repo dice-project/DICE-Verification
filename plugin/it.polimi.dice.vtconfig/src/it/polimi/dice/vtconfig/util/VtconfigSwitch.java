@@ -68,7 +68,7 @@ public class VtconfigSwitch<T> extends Switch<T> {
 	@Override
 	protected T doSwitch(int classifierID, EObject theEObject) {
 		switch (classifierID) {
-			case VtConfigPackage.PETRI_NET_CONFIG: {
+			case VtConfigPackage.VERIFICATION_TOOL_CONFIG: {
 				VerificationToolConfig verificationToolConfig = (VerificationToolConfig)theEObject;
 				T result = caseVerificationToolConfig(verificationToolConfig);
 				if (result == null) result = defaultCase(theEObject);

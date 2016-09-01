@@ -8,11 +8,17 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 import java.util.Map;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -54,7 +60,7 @@ public class HttpClient {
 		this.taskStatus = taskStatus;
 	}
 
-	public void postJSONRequest(String urlString, String request) {
+	public boolean postJSONRequest(String urlString, String request) {
 
 		try {
 
@@ -89,15 +95,24 @@ public class HttpClient {
 
 			conn.disconnect();
 
+
 		} catch (MalformedURLException e) {
 
 			e.printStackTrace();
+			return false;
 
 		} catch (IOException e) {
 
-			e.printStackTrace();
-
+			System.out.println(e.getMessage()+"!!\n Pleasee verify that the url is reachable ("+ urlString +")"); 
+/*			Display display = Display.getDefault();
+			Shell shell = display.getActiveShell();
+			//shell.open();
+			MessageBox dialog = new MessageBox(shell, SWT.ICON_QUESTION | SWT.OK| SWT.CANCEL);
+					dialog.setText("My info");
+					dialog.setMessage("Do you really want to do this?");
+*/			return false;
 		}
+		return true; 
 
 	}
 
@@ -141,7 +156,9 @@ public class HttpClient {
 
 			e.printStackTrace();
 
-		}
+		} catch (NullPointerException e){
+			e.printStackTrace();
+		};
 
 	}
 

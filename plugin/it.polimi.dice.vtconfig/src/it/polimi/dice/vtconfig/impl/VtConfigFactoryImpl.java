@@ -30,9 +30,9 @@ public class VtConfigFactoryImpl extends EFactoryImpl implements VtConfigFactory
 	 */
 	public static VtConfigFactory init() {
 		try {
-			VtConfigFactory thePnconfigFactory = (VtConfigFactory)EPackage.Registry.INSTANCE.getEFactory(VtConfigPackage.eNS_URI);
-			if (thePnconfigFactory != null) {
-				return thePnconfigFactory;
+			VtConfigFactory theVtconfigFactory = (VtConfigFactory)EPackage.Registry.INSTANCE.getEFactory(VtConfigPackage.eNS_URI);
+			if (theVtconfigFactory != null) {
+				return theVtconfigFactory;
 			}
 		}
 		catch (Exception exception) {

@@ -19,8 +19,9 @@ public interface VerificationToolConfig extends EObject {
 	
 	EMap<String, Boolean> getMonitoredBolts();
 
-	Map.Entry<String, Float> getInitialMarking();
+//	Map.Entry<String, Float> getInitialMarking(); ###DELETE
 
-	void setInitialMarking(Map.Entry<String, Float> value);
+	//void setInitialMarking(Map.Entry<String, Float> value);
+	//###DELETE
 
 } 

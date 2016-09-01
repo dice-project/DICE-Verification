@@ -12,7 +12,7 @@ public class VerificationLaunchConfigurationTabGroup extends AbstractLaunchConfi
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
-		setTabs(new ILaunchConfigurationTab[] {new CommonTab() });
+		setTabs(new ILaunchConfigurationTab[] {/*new CommonTab()*/ });
 	}
 
 }

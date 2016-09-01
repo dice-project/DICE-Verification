@@ -31,7 +31,7 @@ public interface VtConfigPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	String eNAME = "pnconfig";
+	String eNAME = "vtconfig";
 
 	/**
 	 * The package namespace URI.
@@ -69,7 +69,7 @@ public interface VtConfigPackage extends EPackage {
 	int VERIFICATION_TOOL_CONFIG = 200;
 
 	/**
-	 * The feature id for the '<em><b>Analysis Type</b></em>' attribute.
+	 * The feature id for the '<em><b>Zot Plugin</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -84,9 +84,9 @@ public interface VtConfigPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PETRI_NET_CONFIG__VARIABLE_ASSIGNMENTS = 1;
+	int PETRI_NET_CONFIG__VARIABLE_ASSIGNMENTS = 2; //previously 1
 	
-	int VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS = 21;
+	int VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS = 1;
 
 	/**
 	 * The feature id for the '<em><b>Initial Marking</b></em>' reference.
@@ -95,7 +95,7 @@ public interface VtConfigPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int PETRI_NET_CONFIG__INITIAL_MARKING = 2;
+//	int PETRI_NET_CONFIG__INITIAL_MARKING = 3;
 
 	/**
 	 * The number of structural features of the '<em>Petri Net Config</em>' class.
@@ -105,6 +105,8 @@ public interface VtConfigPackage extends EPackage {
 	 * @ordered
 	 */
 	int PETRI_NET_CONFIG_FEATURE_COUNT = 3;
+	
+	int VERIFICATION_TOOL_CONFIG_FEATURE_COUNT = 3;
 
 	/**
 	 * The number of operations of the '<em>Petri Net Config</em>' class.
@@ -115,6 +117,7 @@ public interface VtConfigPackage extends EPackage {
 	 */
 	int PETRI_NET_CONFIG_OPERATION_COUNT = 0;
 
+	int VERIFICATION_TOOL_CONFIG_OPERATION_COUNT = 0;
 	/**
 	 * The meta object id for the '{@link it.polimi.dice.vtconfig.impl.EStringToEFloatObjectsMapImpl <em>EString To EFloat Objects Map</em>}' class.
 	 * <!-- begin-user-doc -->
@@ -138,7 +141,7 @@ public interface VtConfigPackage extends EPackage {
 	 */
 	int ESTRING_TO_EFLOAT_OBJECTS_MAP__KEY = 0;
 
-	int ESTRING_TO_EBOOLEAN_OBJECTS_MAP__KEY = 20;
+	int ESTRING_TO_EBOOLEAN_OBJECTS_MAP__KEY = 0; //20;
 	
 	/**
 	 * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -149,7 +152,7 @@ public interface VtConfigPackage extends EPackage {
 	 */
 	int ESTRING_TO_EFLOAT_OBJECTS_MAP__VALUE = 1;
 	
-	int ESTRING_TO_EBOOLEAN_OBJECTS_MAP__VALUE = 21;
+	int ESTRING_TO_EBOOLEAN_OBJECTS_MAP__VALUE = 1; //21;
 
 	/**
 	 * The number of structural features of the '<em>EString To EFloat Objects Map</em>' class.
@@ -160,7 +163,7 @@ public interface VtConfigPackage extends EPackage {
 	 */
 	int ESTRING_TO_EFLOAT_OBJECTS_MAP_FEATURE_COUNT = 2;
 	
-	int ESTRING_TO_EBOOLEAN_OBJECTS_MAP_FEATURE_COUNT = 22;
+	int ESTRING_TO_EBOOLEAN_OBJECTS_MAP_FEATURE_COUNT = 2;
 
 	/**
 	 * The number of operations of the '<em>EString To EFloat Objects Map</em>' class.
@@ -171,14 +174,14 @@ public interface VtConfigPackage extends EPackage {
 	 */
 	int ESTRING_TO_EFLOAT_OBJECTS_MAP_OPERATION_COUNT = 0;
 
-	int ESTRING_TO_EBOOLEAN_OBJECTS_MAP_OPERATION_COUNT = 20;
+	int ESTRING_TO_EBOOLEAN_OBJECTS_MAP_OPERATION_COUNT = 0;
 	
 	/**
 	 * The meta object id for the '{@link it.polimi.dice.vtconfig.AnalysisType <em>Analysis Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see it.polimi.dice.vtconfig.AnalysisType
-	 * @see it.polimi.dice.vtconfig.impl.VtConfigPackageImpl#getAnalysisType()
+	 * @see it.polimi.dice.vtconfig.impl.VtConfigPackageImpl#getZotPlugin()
 	 * @generated
 	 */
 	int ZOT_PLUGIN = 2;
@@ -201,7 +204,7 @@ public interface VtConfigPackage extends EPackage {
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Analysis Type</em>'.
-	 * @see it.polimi.dice.vtconfig.VerificationToolConfig#getAnalysisType()
+	 * @see it.polimi.dice.vtconfig.VerificationToolConfig#getZotPlugin()
 	 * @see #getPetriNetConfig()
 	 * @generated
 	 */
@@ -281,7 +284,7 @@ public interface VtConfigPackage extends EPackage {
 	 * @see it.polimi.dice.vtconfig.AnalysisType
 	 * @generated
 	 */
-	EEnum getAnalysisType();
+	EEnum getZotPlugin();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -290,7 +293,7 @@ public interface VtConfigPackage extends EPackage {
 	 * @return the factory that creates the instances of the model.
 	 * @generated
 	 */
-	VtConfigFactory getPnconfigFactory();
+	VtConfigFactory getVtconfigFactory();
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -325,7 +328,7 @@ public interface VtConfigPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute PETRI_NET_CONFIG__ANALYSIS_TYPE = eINSTANCE.getPetriNetConfig_AnalysisType();
-
+		EAttribute VERIFICATION_TOOL_CONFIG__ZOT_PLUGIN = eINSTANCE.getVerificationToolConfig_ZotPlugin(); 
 		/**
 		 * The meta object literal for the '<em><b>Variable Assignments</b></em>' map feature.
 		 * <!-- begin-user-doc -->
@@ -334,7 +337,7 @@ public interface VtConfigPackage extends EPackage {
 		 */
 		EReference PETRI_NET_CONFIG__VARIABLE_ASSIGNMENTS = eINSTANCE.getPetriNetConfig_VariableAssignments();
 		
-		EReference VERIFICATION_TOOL__MONITORED_BOLTS = eINSTANCE.getVerificationToolConfig_MonitoredBolts();
+		EReference VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS = eINSTANCE.getVerificationToolConfig_MonitoredBolts();
 		
 		/**
 		 * The meta object literal for the '<em><b>Initial Marking</b></em>' reference feature.
@@ -342,8 +345,8 @@ public interface VtConfigPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference PETRI_NET_CONFIG__INITIAL_MARKING = eINSTANCE.getPetriNetConfig_InitialMarking();
-
+//		EReference PETRI_NET_CONFIG__INITIAL_MARKING = eINSTANCE.getPetriNetConfig_InitialMarking();
+//###DELETE
 		/**
 		 * The meta object literal for the '{@link it.polimi.dice.vtconfig.impl.EStringToEFloatObjectsMapImpl <em>EString To EFloat Objects Map</em>}' class.
 		 * <!-- begin-user-doc -->
@@ -381,10 +384,10 @@ public interface VtConfigPackage extends EPackage {
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see it.polimi.dice.vtconfig.AnalysisType
-		 * @see it.polimi.dice.vtconfig.impl.VtConfigPackageImpl#getAnalysisType()
+		 * @see it.polimi.dice.vtconfig.impl.VtConfigPackageImpl#getZotPlugin()
 		 * @generated
 		 */
-		EEnum ANALYSIS_TYPE = eINSTANCE.getAnalysisType();
+		EEnum ZOT_PLUGIN = eINSTANCE.getZotPlugin();
 
 	}
 

@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +50,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.LaunchConfigurationDelegate;
 import org.eclipse.debug.core.model.RuntimeProcess;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -379,7 +381,13 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			ArrayList<String> plugins = new ArrayList<String>();
 			plugins.add(vtConfig.getZotPlugin().getName());
 			vp.setPlugins(plugins);
-			//vp.setStrictlyMonotonicQueues(vp.getPeriodicQueues());
+			List<String> monitoredBoltsList = new ArrayList<String>();//(vtConfig.getMonitoredBolts().keySet());
+			EMap<String, Boolean> monitoredBoltsMap = vtConfig.getMonitoredBolts();
+			for (String key : monitoredBoltsMap.keySet()) {
+				if(monitoredBoltsMap.get(key))
+					monitoredBoltsList.add(key);
+			}
+			vp.setStrictlyMonotonicQueues(monitoredBoltsList);
 			jsonContext = new JsonVerificationContext(topology, vp);
 			jsonContext.setApplicationName(verificationIdentifier);
 			
@@ -400,19 +408,18 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			}
 			
 			HttpClient nc = new HttpClient();
-			nc.postJSONRequest(launchVerificationUrl, gsonBuilder.toJson(vtr));
+			boolean connectionSuccessful;
+			connectionSuccessful = nc.postJSONRequest(launchVerificationUrl, gsonBuilder.toJson(vtr));
 			
-			try {
-			    Thread.sleep(5000);                 
-			} catch(InterruptedException ex) {
-			    Thread.currentThread().interrupt();
+			if (connectionSuccessful){
+				try {
+				    Thread.sleep(5000);                 
+				} catch(InterruptedException ex) {
+				    Thread.currentThread().interrupt();
+				}
+				nc.getTaskStatusUpdatesFromServer();
+				openNewBrowserTab(new URL(taskListURL), "task-list");
 			}
-			nc.getTaskStatusUpdatesFromServer();
-
-		
-			
-			openNewBrowserTab(new URL(taskListURL), "task-list");
-			
 			
 		}finally{
 			monitor.done();
