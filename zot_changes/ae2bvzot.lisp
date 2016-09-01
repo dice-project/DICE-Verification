@@ -982,14 +982,16 @@
 		((trigger)
 			(list 'trigger (first (call *PROPS* (second fma) 0)) (first (call *PROPS* (third fma) 0))))))))
 
-(defun gen-periodic-arith-terms (periodic-arith-terms)
-  (if periodic-arith-terms
-					;(format t "define arithmetic periodic terms~%")(force-output)
-      (loop for term in periodic-arith-terms collect
-	    `(<= ,(call *PROPS* term `i-loop) ,(call *PROPS* term (1+ (kripke-k *PROPS*)))))));##MODIFICATO
+        (defun gen-periodic-arith-terms (periodic-arith-terms strictly-monotonic)
+        (if periodic-arith-terms
+        	(nconc 				;(format t "define arithmetic periodic terms~%")(force-output)
+            (loop for term in periodic-arith-terms collect
+                `(<= ,(call *PROPS* term `i-loop) ,(call *PROPS* term (1+ (kripke-k *PROPS*)))))
+            (loop for term in strictly-monotonic collect
+        	    `(< ,(call *PROPS* term `i-loop) ,(call *PROPS* term (1+ (kripke-k *PROPS*))))))));##MODIFICATO
 
 
-(defun the-big-formula (fma periodic-arith-terms gen-symbolic-val ipc-constraints bound freshAP GSMT discrete-regions parametric-regions discrete-counters)
+(defun the-big-formula (fma periodic-arith-terms strictly-monotonic gen-symbolic-val ipc-constraints bound freshAP GSMT discrete-regions parametric-regions discrete-counters)
   (append
    (nconc
 	(gen-arith-futr) ;e.g. [X(i1)]0 <-> [i1]1
@@ -1007,7 +1009,7 @@
 	))
 	;[implemented] (LastStateFormula) ;l ~ k+1 for all p (AP + arithmetics represented as AP)
 	(LoopConstraints gen-symbolic-val)
-    (gen-periodic-arith-terms periodic-arith-terms)
+    (gen-periodic-arith-terms periodic-arith-terms strictly-monotonic)
 	(gen-regions bound discrete-regions parametric-regions discrete-counters)
 	)))
 
@@ -1094,7 +1096,8 @@
 		     (smt-assumptions nil)
 		     (smt-declarations nil)
 		     (with-time t)
-		     (periodic-terms nil)
+		     (l-monotonic nil)
+             (l-strictly-monotonic nil)
 		     (gen-symbolic-val t)
 		     (ipc-constraints nil)
 		     (smt-lib :smt2)
@@ -1169,7 +1172,8 @@
 							 (if (eq with-time t)
 							       (with-time formula)
 							       formula)
-							 periodic-terms
+							 l-monotonic
+                             l-strictly-monotonic
 							 gen-symbolic-val
 							 ipc-constraints
 							 over-clocks
