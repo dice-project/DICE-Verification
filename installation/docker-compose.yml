@@ -16,7 +16,7 @@ services:
     ports:
       - '5000:5000'
     volumes:
-      - './exchange-files-web:/exchange-files'
+      - './containers-tasks:/opt/DICE-Verification/d-vert-server/static/tasks'
     environment:
       PYTHONUNBUFFERED: 'true'
 
@@ -27,7 +27,7 @@ services:
     links:
       - redis
     volumes:
-      - './exchange-files-celery:/exchange-files'
+      - './containers-tasks:/opt/DICE-Verification/d-vert-server/static/tasks'
     environment:
       PYTHONUNBUFFERED: 'true'
  
