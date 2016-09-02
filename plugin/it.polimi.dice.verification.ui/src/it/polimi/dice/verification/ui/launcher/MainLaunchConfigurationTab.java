@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -26,17 +23,13 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.common.util.EMap;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.CheckboxCellEditor;
@@ -52,8 +45,6 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.VerifyEvent;
-import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -61,18 +52,9 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.uml2.uml.Association;
-import org.eclipse.uml2.uml.Class;
-import org.eclipse.uml2.uml.Classifier;
-import org.eclipse.uml2.uml.DataType;
 import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.Package;
-import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLPackage;
 
 import com.google.gson.Gson;
@@ -80,7 +62,6 @@ import com.google.gson.Gson;
 import it.polimi.dice.verification.DiceVerificationPlugin;
 import it.polimi.dice.verification.json.StormTopology;
 import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationAttributes;
-import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationDelegate;
 import it.polimi.dice.verification.ui.DiceVerificationUiPlugin;
 import it.polimi.dice.verification.uml.diagrams.classdiagram.BoltClass;
 import it.polimi.dice.verification.uml.diagrams.classdiagram.SpoutClass;
@@ -211,13 +192,14 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			config.getMonitoredBolts().clear();
 			Set<String> vars = getVariablesFromUmlModel(new File(URI.create(inputFile)));
 			for (String var : vars) {
-				if (!config.getMonitoredBolts().containsKey(var))
+				//if (!config.getMonitoredBolts().containsKey(var))
 					config.getMonitoredBolts().put(var, false);
 				
 			}
-			for (Map.Entry<String, Boolean> entry : config.getMonitoredBolts().entrySet()) {
+/*			for (Map.Entry<String, Boolean> entry : config.getMonitoredBolts().entrySet()) {
 				DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
 			}
+*/
 			viewerBoolean.refresh();
 //			config.setZotPlugin(ZotPlugin.AE2BVZOT);
 			setDirty(true);
@@ -232,9 +214,10 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			for (String var : vars) {
 				config.getVariableAssignments().put(var, 1.0f);
 			}
-			for (Map.Entry<String, Float> entry : config.getVariableAssignments().entrySet()) {
+/*			for (Map.Entry<String, Float> entry : config.getVariableAssignments().entrySet()) {
 				DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
 			}
+*/
 			viewerFloat.refresh();
 			setDirty(true);
 			updateLaunchConfigurationDialog();
@@ -541,47 +524,6 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		}
 		
 		//Time Bound group
-/*		{
-			Group group = new Group(topComposite, SWT.NONE);
-			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-			
-			group.setLayout(new GridLayout(2,  false));
-			group.setText(Messages.MainLaunchConfigurationTab_timeBoundLabel);
-			
-			timeBoundText = new Text(group, SWT.BORDER);
-			timeBoundText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-			timeBoundText.setEnabled(true);
-			timeBoundText.setEditable(true);
-			timeBoundText.addVerifyListener(new VerifyListener() {
-
-		        @Override
-		        public void verifyText(VerifyEvent e) {
-
-		            Text text = (Text)e.getSource();
-
-		            // get old text and create new text by using the VerifyEvent.text
-		            final String oldS = text.getText();
-		            String newS = oldS.substring(0, e.start) + e.text + oldS.substring(e.end);
-
-		            boolean isFloat = true;
-		            try
-		            {
-		                Float.parseFloat(newS);
-		            }
-		            catch(NumberFormatException ex)
-		            {
-		                isFloat = false;
-		            }
-
-		            System.out.println(newS);
-
-		            if(!isFloat)
-		                e.doit = false;
-		        }
-		    });
-			
-		}
-*/		
 		{
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
@@ -612,7 +554,6 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			Button ae2sbvzotButton = new Button(group, SWT.RADIO);
 			ae2sbvzotButton.setText(Messages.MainLaunchConfigurationTab_ae2sbvzotLabel);
 			
-			//data.getConfig().setZotPlugin(ZotPlugin.AE2SBVZOT);
 			ae2sbvzotButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					data.getConfig().setZotPlugin(ZotPlugin.AE2SBVZOT);
@@ -694,7 +635,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 				public String getText(Object element) {
 					@SuppressWarnings("unchecked")
 					Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
-					DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
+//					DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
 					return entry.getKey();
 				}
 			});
@@ -880,7 +821,6 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 				try {
 					serializedConfig = configuration.getAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, StringUtils.EMPTY);
 					data.setConfig(VerificationToolConfigSerializer.deserialize(serializedConfig));
-//					DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Ciao");
 				} catch (IOException e) {
 					DiceLogger.logException(DiceVerificationUiPlugin.getDefault(),
 							MessageFormat.format(Messages.MainLaunchConfigurationTab_unableParserError, serializedConfig), e);
@@ -896,9 +836,6 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, data.getInputFile());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, data.keepIntermediateFiles());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, data.intermediateFilesDir);
-//		VerificationToolConfig myVtConfig = data.getConfig();
-//		String serializedVtConfig = VerificationToolConfigSerializer.serialize(myVtConfig);
-//		configuration.setAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, serializedVtConfig);
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, VerificationToolConfigSerializer.serialize(data.getConfig()));
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, timeBoundSpinner.getSelection());
 		
@@ -1007,11 +944,11 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 						BoltClass bc = new BoltClass((org.eclipse.uml2.uml.Class)eObject);
 						vars.add(bc.getId());
 						bolts.add(bc);
-						DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), gson.toJson(bc));
+					//	DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), gson.toJson(bc));
 				}
 				topology.setBolts(bolts);
 				topology.setSpouts(spouts);
-				DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), gson.toJson(topology));
+			//	DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), gson.toJson(topology));
 				}
 			}
 			

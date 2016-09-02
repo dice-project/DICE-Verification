@@ -21,8 +21,8 @@ public class VerificationToolConfigSerializer {
 		} catch (IOException e) {
 			// Should not happen on a ByteArrayOutputStream
 		}
-		String result = stream.toString();
-		return result;
+		
+		return stream.toString();
 	}
 
 	public static VerificationToolConfig deserialize(String serializedConfig) throws IOException {

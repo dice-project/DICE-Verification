@@ -1,24 +1,16 @@
 package it.polimi.dice.verification.httpclient;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.PrintWriter;
-import java.io.Writer;
-import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -103,14 +95,22 @@ public class HttpClient {
 
 		} catch (IOException e) {
 
-			System.out.println(e.getMessage()+"!!\n Pleasee verify that the url is reachable ("+ urlString +")"); 
-/*			Display display = Display.getDefault();
-			Shell shell = display.getActiveShell();
-			//shell.open();
-			MessageBox dialog = new MessageBox(shell, SWT.ICON_QUESTION | SWT.OK| SWT.CANCEL);
-					dialog.setText("My info");
-					dialog.setMessage("Do you really want to do this?");
-*/			return false;
+			//System.out.println(e.getMessage()+"!!\n Pleasee verify that the url is reachable ("+ urlString +")");
+
+			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			    public void run() {
+			        Shell activeShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+			        MessageBox dialog = new MessageBox(activeShell, SWT.ICON_WARNING | SWT.OK);
+	        		dialog.setText(e.getMessage());
+	        		dialog.setMessage(e.getMessage()+"!!\n Please verify that the url is reachable ("+ urlString +")");
+
+	        		// open dialog and await user selection
+	        		dialog.open(); 
+
+			    }
+			});
+			
+			return false;
 		}
 		return true; 
 
