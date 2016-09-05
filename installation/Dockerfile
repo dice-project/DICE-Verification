@@ -15,16 +15,22 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     g++ \
     make \
     git \
-    python python-dev python-distribute python-pip python-tk \
+    python \
+    python-dev \
+    python-distribute \
+#    python-pip \ 
+    python-tk \
 #    python-matplotlib \
     sbcl \
     zlib1g-dev \
     curl && \
+# dependencies needed for matplotlib
+    apt-get build-dep -y --force-yes python-matplotlib && \
     apt-get autoclean && \
     apt-get autoremove && \
     rm -rf /var/lib/apt/lists/*
 
-#installing minisat
+# installing minisat
     RUN curl -L http://minisat.se/downloads/minisat-2.2.0.tar.gz -o /tmp/minisat-2.2.0.tar.gz
     WORKDIR /tmp
     RUN tar -xvzf minisat-2.2.0.tar.gz && \
@@ -42,20 +48,39 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     RUN git clone https://github.com/fm-polimi/zot /usr/local/zot/ && \
         ln -s /usr/local/zot/asdfs/*.asd /usr/lib/sbcl/site-systems/ && \
         cp /usr/local/zot/bin/zot /usr/local/bin/
+
+#installing pip 
+    WORKDIR /tmp
+    RUN curl -O https://bootstrap.pypa.io/get-pip.py && \
+        python get-pip.py && \ 
+        rm get-pip.py
+
+#environment variables for D-VerT
+    ENV PROJECT_FOLDER /opt/DICE-Verification/
+    ENV SERVER_CODE_FOLDER ${PROJECT_FOLDER}d-vert-server/
+    ENV FORMAL_DICE ${SERVER_CODE_FOLDER}json2mc/
+
 #get D-VerT from github
-    RUN git clone https://github.com/dice-project/DICE-Verification /opt/DICE-Verification
+    RUN  git clone https://github.com/dice-project/DICE-Verification  $PROJECT_FOLDER
+
+# Install and setup virtualenv 
+    RUN pip install virtualenv
+    WORKDIR $PROJECT_FOLDER
+    RUN virtualenv -p /usr/bin/python2.7 venv
+    RUN ["/bin/bash", "-c", "source venv/bin/activate"]
 #load all needed packages from pip
-    RUN pip install -r /opt/DICE-Verification/installation/requirements.txt
+    RUN pip install -r ${PROJECT_FOLDER}installation/requirements.txt
+
 #apply modifications to zot
-    WORKDIR /opt/DICE-Verification
-    RUN cp zot_changes/*.lisp /usr/local/zot/asdfs
-#run verification
-    WORKDIR json2mc
-    ENTRYPOINT ["./json2mc.py"]
-#    CMD ["-h"]
+    WORKDIR $PROJECT_FOLDER
+    RUN cp zot_changes/* /usr/local/zot/asdfs
+    RUN ln -s /usr/local/zot/asdfs/ae2sbvzot.asd /usr/lib/sbcl/site-systems/
 
+# add user to run celery worker as non-root user
+    RUN adduser --disabled-password --gecos '' celery-user && adduser celery-user sudo && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers	
+    RUN chown -R celery-user ${SERVER_CODE_FOLDER}static/
+# move to the server code folder
+    WORKDIR $SERVER_CODE_FOLDER 
 
-#    curl -L https://bootstrap.pypa.io/get-pip.py -o /opt/get-pip
-#    python /opt/get-pip
-
+    CMD ["bash"]
 
