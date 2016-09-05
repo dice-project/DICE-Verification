@@ -61,7 +61,7 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     ENV FORMAL_DICE ${SERVER_CODE_FOLDER}json2mc/
 
 #get D-VerT from github
-    RUN  git clone https://github.com/franco-maroni/DICE-Verification  $PROJECT_FOLDER
+    RUN  git clone https://github.com/dice-project/DICE-Verification  $PROJECT_FOLDER
 
 # Install and setup virtualenv 
     RUN pip install virtualenv
