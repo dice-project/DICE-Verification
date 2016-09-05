@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by TEMPLATED
+http://templated.co
+Released for free under the Creative Commons Attribution License
+
+Name       : Angled Theme 
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20131104
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>D-VerT Tasks Dasboard</title>
+<style>
+  @import url("style/style.css");
+  @import url("style/dynatable/jquery.dynatable.css");
+  </style>
+
+<script src="style/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="style/dynatable/jquery.dynatable.js"></script>
+<link href='style/fonts/Oswald-400-300.css' rel='stylesheet' type='text/css' />
+<link href='style/fonts/Abel-Satisfy.css' rel='stylesheet' type='text/css' />
+<link href="style/default.css" rel="stylesheet" type="text/css" media="all" />
+<!-- Magnific Popup core CSS file -->
+<link rel="stylesheet" href="style/magnific-popup/magnific-popup.css">
+
+<!-- Magnific Popup core JS file -->
+<script src="style/magnific-popup/jquery.magnific-popup.js"></script>
+
+
+
+<script>
+$( document ).ready(function() {
+  console.log( 'ready!' );
+
+(function(){
+ var serverUrl = "http://localhost:5000/task_list";
+ $.getJSON(serverUrl, function( data ) {
+    $('#my-final-table').dynatable({
+      dataset: {
+        records: data
+      }});
+});
+})();
+
+
+
+$('.popup-img').magnificPopup({
+  type: 'image'
+});
+
+$('body').on('mouseover', 'a.popup-img', function() {
+    console.log('ciao');
+    $(this).magnificPopup({
+      type: 'image'
+    });
+  });
+});
+</script>
+<!--[if IE 6]>
+<link href="default_ie6.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+</head>
+<body>
+<div id="header-wrapper">
+	<div id="header">
+		<div id="logo">
+			<h1><a href="#">D-VerT Tasks Dasboard</a></h1>
+		</div>
+		<div id="menu">
+			<ul>
+				<li class="current_page_item"><a href="#" title="">Home</a></li>
+				<li><a href="https://github.com/dice-project/DICE-Verification" target="_blank" accesskey="2" title="Our Github Repository">Code</a></li>
+				<li><a href="http://www.dice-h2020.eu/" target="_blank" title="DICE H2020 European project">DICE H2020</a></li>
+				<li><a href="http://localhost:5555/tasks" target="_blank" title="">Flower</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div id="wrapper">
+	<div id="page-wrapper">
+		<div id="page">
+			<div id="wide-content">
+       <!-- <a class="popup-img" href="/tasks/Dooku.jpg"> Open popup</a> -->
+				<table id="my-final-table">
+          <thead>
+            <tr>
+              <th data-dynatable-column="id">id</th>
+              <th data-dynatable-column="name">Name</th>
+              <th data-dynatable-column="state">Task Status</th>
+              <th data-dynatable-column="result">Result </th>
+              <th data-dynatable-column="verification_time">Duration </th>
+              <th data-dynatable-column="result_file">Result File </th>
+              <th data-dynatable-column="out_trace">Output Trace</th>
+              <th data-dynatable-column="json_path">JSON File</th>
+              <th data-dynatable-column="lisp_path">Lisp File</th>
+            </tr>
+          </thead>
+        </table>
+        <!-- <p class="button-style"><a href="http://localhost:5555/tasks" target="_blank">Go to Flower Task manager</a></p> --> 
+        </div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<div id="footer" class="container">
+	<p>&copy; Untitled. All rights reserved. Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>. </p>
+	<p>Icons made by <a href="http://www.flaticon.com/authors/madebyoliver" title="Madebyoliver">Madebyoliver</a> from <a href="http://www.flaticon.com" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>.</p>
+</div>
+</body>
+</html>

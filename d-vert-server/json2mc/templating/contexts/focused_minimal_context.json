@@ -1,5 +1,5 @@
 {
-    "app_name": "SIMPLIFIED FOCUSED CRAWLER",
+    "app_name": "SMT-INSTRUCTION-TEST",
     "description": "",
     "version": "0.1",
     "topology": {
@@ -10,41 +10,19 @@
                 "subs": [
                     "wpSpout"
                 ],
-                "alpha":    0.5,
-                "sigma":    2.0,
+                "alpha":    0.3,
+                "sigma":    1.0,
                 "d":        0.0,
                 "min_ttf":  1000
             },
             {
                 "id": "expander",
-                "parallelism": 8,
+                "parallelism": 12,
                 "subs": [
                     "WpDeserializer"
                 ],
-                "alpha":    3.0,
+                "alpha":    0.1,
                 "sigma":    0.75,
-                "d":        0.0,
-                "min_ttf":  1000
-            },
-            {
-                "id": "articleExtraction",
-                "parallelism": 1,
-                "subs": [
-                    "expander"
-                ],
-                "alpha":    1.0,
-                "sigma":    1.0,
-                "d":        0.0,
-                "min_ttf":  1000
-            },
-            {
-                "id": "mediaExtraction",
-                "parallelism": 1,
-                "subs": [
-                    "expander"
-                ],
-                "alpha":    1.0,
-                "sigma":    1.0,
                 "d":        0.0,
                 "min_ttf":  1000
             }
@@ -52,7 +30,7 @@
         "spouts": [
             {
                 "id": "wpSpout",
-                "avg_emit_rate":4.0
+                "avg_emit_rate":1
             }
         ],
         "min_reboot_time":10,
@@ -65,8 +43,9 @@
     {
       "plugin" : ["ae2bvzot", "ae2sbvzot"],
       "max_time" :  20000,
-      "base_quantity":10,
+      "base_quantity":4,
       "num_steps":20,
-      "periodic_queues":["expander"]
+      "periodic_queues":["WpDeserializer", "expander"],
+      "strictly_monotonic_queues": ["WpDeserializer", "expander"]
     }
 }

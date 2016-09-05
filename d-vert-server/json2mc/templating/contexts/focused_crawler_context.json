@@ -63,10 +63,10 @@
     },
     "verification_params":
     {
-      "plugin" : ["ae2bvzot", "ae2sbvzot"],
+      "plugin" : "ae2bvzot",
       "max_time" :  20000,
       "base_quantity":10,
       "num_steps":20,
-      "periodic_queues":["expander"]
+      "periodic_queues":["WpDeserializer", "expander", "articleExtraction","mediaExtraction"]
     }
 }

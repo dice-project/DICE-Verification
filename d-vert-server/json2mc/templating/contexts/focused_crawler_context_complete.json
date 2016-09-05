@@ -1,5 +1,5 @@
 {
-    "app_name": "SIMPLIFIED FOCUSED CRAWLER",
+    "app_name": "FOCUSED-CRAWLER-COMPLETE-ALL",
     "description": "",
     "version": "0.1",
     "topology": {
@@ -47,6 +47,53 @@
                 "sigma":    1.0,
                 "d":        0.0,
                 "min_ttf":  1000
+            },
+            {
+                "id": "webPageUpdater",
+                "parallelism": 4,
+                "subs": [
+                    "articleExtraction",
+                    "mediaExtraction"
+                ],
+                "alpha":    1.0,
+                "sigma":    1.0,
+                "d":        0.0,
+                "min_ttf":  1000
+            },
+            {
+                "id": "textIndexer",
+                "parallelism": 1,
+                "subs": [
+                    "articleExtraction"
+                ],
+                "alpha":    1.0,
+                "sigma":    1.0,
+                "d":        0.0,
+                "min_ttf":  1000
+            },
+            {
+                "id": "mediaupdater",
+                "parallelism": 1,
+                "subs": [
+                    "articleExtraction",
+                    "mediaExtraction"
+                ],
+                "alpha":    1.0,
+                "sigma":    1.0,
+                "d":        0.0,
+                "min_ttf":  1000
+            },
+            {
+                "id": "mediatextindexer",
+                "parallelism": 1,
+                "subs": [
+                    "articleExtraction",
+                    "mediaExtraction"
+                ],
+                "alpha":    1.0,
+                "sigma":    1.0,
+                "d":        0.0,
+                "min_ttf":  1000
             }
         ],
         "spouts": [
@@ -67,6 +114,6 @@
       "max_time" :  20000,
       "base_quantity":10,
       "num_steps":20,
-      "periodic_queues":["expander"]
+      "periodic_queues":["WpDeserializer", "expander", "articleExtraction","mediaExtraction", "webPageUpdater","textIndexer", "mediaupdater", "mediatextindexer"]
     }
 }

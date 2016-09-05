@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DICE Profiles Polimi
+Bundle-SymbolicName: it.polimi.dice.profiles;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: it.polimi.dice.profiles.ProfilesPlugin
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.emf;bundle-version="2.6.0",
+ org.eclipse.uml2.uml;bundle-version="5.1.2",
+ org.eclipse.papyrus.uml.extensionpoints;bundle-version="1.1.4"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-ActivationPolicy: lazy

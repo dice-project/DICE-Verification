@@ -1,0 +1,66 @@
+
+{
+    "app_name": "SIMPLE-DIA-TOPOLOGY",
+    "description": "",
+    "version": "0.1",
+    "topology":
+    {
+      "spouts":
+      [
+        {
+            "id":"S1",
+            "avg_emit_rate":1.0
+        },
+        {
+            "id":"S2",
+            "avg_emit_rate":1.0
+         }
+      ],
+    	"bolts":
+      [
+        {
+            "id":       "B1",
+            "subs":     ["S1"],
+            "alpha":    5.0,
+            "sigma":    2.0,
+            "d":        0.0,
+            "min_ttf":  1000,
+            "parallelism": 5
+        },
+        {
+            "id":       "B2",
+            "subs":     ["S1","S2"],
+            "alpha":    5.0,
+            "sigma":    0.5,
+            "d":        0.0,
+            "min_ttf":  1000,
+            "parallelism": 10
+        },
+        {
+            "id":       "B3",
+            "subs":     ["B1", "B2"],
+            "alpha":    1.0,
+            "sigma":    1.0,
+            "d":        0.0,
+            "min_ttf":  1000,
+            "parallelism": 1
+        }
+      ],
+      "min_reboot_time":10,
+      "max_reboot_time":100,
+      "max_idle_time":  0.01,
+      "init_queues":0,
+      "queue_threshold": 20
+    },
+    "verification_params":
+    {
+      "plugin" : ["ae2sbvzot"],
+      "max_time" :  20000,
+      "base_quantity":5,
+      "num_steps":15,
+      "periodic_queues":["B1","B2","B3"],
+      "strictly_monotonic_queues":["B1","B2","B3"]
+
+    }
+
+}
