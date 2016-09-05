@@ -926,7 +926,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		StormTopology topology = new StormTopology();
 		List<SpoutClass> spouts = new ArrayList<>();
 		List<BoltClass> bolts = new ArrayList<>();
-		Gson gson = new Gson();
+//		Gson gson = new Gson();
 		//XMLResource r2 = null;
 		try { 
 			resource = resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()), true);

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="it.polimi.dice.verification.uml2json.feature"
-      label="Uml2Json"
-      version="1.0.0.qualifier">
+      label="DICE Uml2Json"
+      version="0.1.0">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]

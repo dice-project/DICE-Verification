@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="it.polimi.dice.verification.ui.feature"
-      label="Verification UI Feature"
-      version="1.0.0.qualifier">
+      label="DICE Verification UI"
+      version="0.1.0">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -20,7 +20,7 @@
          id="it.polimi.dice.verification.ui"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="0.1.0"
          unpack="false"/>
 
    <plugin

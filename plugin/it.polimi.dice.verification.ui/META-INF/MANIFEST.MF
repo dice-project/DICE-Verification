@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: DICE Verification UI
 Bundle-SymbolicName: it.polimi.dice.verification.ui;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 0.1.0
 Bundle-Activator: it.polimi.dice.verification.ui.DiceVerificationUiPlugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
@@ -13,11 +13,11 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.papyrus.uml.tools,
  org.eclipse.papyrus.infra.services.resourceloading,
  org.eclipse.core.resources,
- it.polimi.dice.verification;bundle-version="1.0.0",
- it.polimi.dice.core;bundle-version="1.0.0",
+ it.polimi.dice.verification;bundle-version="0.1.0",
+ it.polimi.dice.core;bundle-version="0.1.0",
  org.eclipse.swt,
  org.eclipse.jface,
- it.polimi.dice.core.ui;bundle-version="1.0.0",
+ it.polimi.dice.core.ui;bundle-version="0.1.0",
  it.polimi.dice.verification.uml2json,
  org.eclipse.emf.ecore.xmi,
  com.google.gson,
