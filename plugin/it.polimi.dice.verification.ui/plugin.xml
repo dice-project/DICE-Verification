@@ -6,7 +6,7 @@
       <launchConfigurationTabGroup
             class="it.polimi.dice.verification.ui.launcher.VerificationLaunchConfigurationTabGroup"
             id="it.polimi.dice.verification.ui.launchConfigurationTabGroup"
-            type="it.polimi.dice.verification.launchConfigurationType1">
+            type="it.polimi.dice.verification.launchConfigurationType">
       </launchConfigurationTabGroup>
    </extension>
    <extension
@@ -21,7 +21,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
-            configTypeID="it.polimi.dice.verification.launchConfigurationType1"
+            configTypeID="it.polimi.dice.verification.launchConfigurationType"
             icon="icons/verify_icon.png"
             id="it.polimi.dice.verification.ui.launchConfigurationTypeImage">
       </launchConfigurationTypeImage>
@@ -90,11 +90,38 @@
          <enablement>
            <with variable="selection">
              <count value="1"/>
+              <iterate>
+               <or>
+                  <adapt
+                        type="org.eclipse.papyrus.infra.onefile.model.IPapyrusElement">
+                  </adapt>
+                  <and>
+                     <adapt
+                           type="org.eclipse.core.resources.IFile">
+                     </adapt>
+                     <or>
+                        <test
+                              forcePluginActivation="true"
+                              property="org.eclipse.core.resources.extension"
+                              value="notation">
+                        </test>
+                        <test
+                              forcePluginActivation="true"
+                              property="org.eclipse.core.resources.extension"
+                              value="di">
+                        </test>
+                        <test
+                              forcePluginActivation="true"
+                              property="org.eclipse.core.resources.extension"
+                              value="uml">
+                        </test></or></and>
+               </or>
+              </iterate>
              </with>
          </enablement>
  		</contextualLaunch>
        <configurationType
-              id="it.polimi.dice.verification.launchConfigurationType1">
+              id="it.polimi.dice.verification.launchConfigurationType">
        </configurationType>
        <description
               description="Launches a verification task on the specified UML model"

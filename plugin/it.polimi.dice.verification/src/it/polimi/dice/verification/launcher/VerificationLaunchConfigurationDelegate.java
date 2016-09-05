@@ -95,7 +95,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			LocalDateTime now = LocalDateTime.now();
 			verificationAttrs.put(DebugPlugin.ATTR_LAUNCH_TIMESTAMP, now.format(formatter)); 	
 			VerificationToolConfig vtConfig = getVerificationToolConfig(configuration);
-			int timeBound = configuration.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
+			//int timeBound = configuration.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
 			//DiceLogger.logError(DiceVerificationPlugin.getDefault(), "TIME BOUND: " + timeBound);
 			
 			final boolean keepIntermediateFiles = configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false);

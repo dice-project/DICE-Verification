@@ -102,7 +102,7 @@ public class VtconfigAdapterFactory extends AdapterFactoryImpl {
 
 
 	/**
-	 * Creates a new adapter for an object of class '{@link it.polimi.dice.vtconfig.VerificationToolConfig <em>Petri Net Config</em>}'.
+	 * Creates a new adapter for an object of class '{@link it.polimi.dice.vtconfig.VerificationToolConfig <em>Verification Tool Config</em>}'.
 	 * <!-- begin-user-doc -->
 	 * This default implementation returns null so that we can easily ignore cases;
 	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
@@ -146,4 +146,4 @@ public class VtconfigAdapterFactory extends AdapterFactoryImpl {
 		return null;
 	}
 
-} //PnconfigAdapterFactory
+} //VtconfigAdapterFactory

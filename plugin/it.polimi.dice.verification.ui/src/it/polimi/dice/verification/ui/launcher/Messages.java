@@ -27,8 +27,6 @@ public class Messages extends NLS {
 	public static String MainLaunchConfigurationTab_noInpuntError;
 	public static String MainLaunchConfigurationTab_notUml2InputError;
 	public static String MainLaunchConfigurationTab_saveIntermediateLabel;
-	public static String MainLaunchConfigurationTab_steadyLabel;
-	public static String MainLaunchConfigurationTab_transientLabel;
 	public static String MainLaunchConfigurationTab_unableParserError;
 	public static String MainLaunchConfigurationTab_valueLabel;
 	public static String MainLaunchConfigurationTab_monitoredLabel;

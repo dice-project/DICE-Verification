@@ -1,15 +1,6 @@
 package it.polimi.dice.verification.ui.launcher;
 
-import java.io.File;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
@@ -22,11 +13,6 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.ILaunchShortcut;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -35,46 +21,17 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.uml2.uml.Classifier;
-import org.eclipse.uml2.uml.DataType;
-import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.Stereotype;
-
 import it.polimi.dice.core.logger.DiceLogger;
 
 import it.polimi.dice.verification.DiceVerificationPlugin;
 import it.polimi.dice.verification.ui.launcher.Messages;
-import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationDelegate;
+import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationAttributes;
 import it.polimi.dice.verification.ui.DiceVerificationUiPlugin;
 
 
 public class VerificationLaunchShortcut implements ILaunchShortcut {
 
 	
-	 @Override
-	  public void launch(ISelection selection, String mode) {
-	    System.out.println("Selection: " + mode);
-	    PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-		    public void run() {
-			    Shell activeShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-			    MessageDialog.openConfirm(activeShell, "Confirm", "Selection: " + mode);
-			}
-		});
-	  }
-	 
-	  @Override
-	  public void launch(IEditorPart editor, String mode) {
-	    System.out.println("Editor: " + mode);
-	    PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-		    public void run() {
-			    Shell activeShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-			    MessageDialog.openConfirm(activeShell, "Confirm", "Editor: " + mode);
-			}
-		});
-	  }
-
-	/*
 	@Override
 	public void launch(ISelection selection, String mode) {
 		if (selection instanceof IStructuredSelection) {
@@ -125,13 +82,13 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 		
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		
-		ILaunchConfigurationType simLaunchConfigurationType = launchManager.getLaunchConfigurationType(DiceVerificationPlugin.VERIFICATION_LAUNCH_CONFIGURATION_TYPE);
+		ILaunchConfigurationType verLaunchConfigurationType = launchManager.getLaunchConfigurationType(DiceVerificationPlugin.VERIFICATION_LAUNCH_CONFIGURATION_TYPE);
 		
-		ILaunchConfiguration[] existingConfigs = launchManager.getLaunchConfigurations(simLaunchConfigurationType);
+		ILaunchConfiguration[] existingConfigs = launchManager.getLaunchConfigurations(verLaunchConfigurationType);
 		
 		// We search through the existing configurations if the actual configuration has been previously defined
 		for (ILaunchConfiguration previousConfiguration : existingConfigs) {
-			String previousFile = previousConfiguration.getAttribute(VerificationLaunchConfigurationDelegate.INPUT_FILE, StringUtils.EMPTY); 
+			String previousFile = previousConfiguration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY); 
 			if (previousFile.equals(model.getURI().toString())) {
 				return previousConfiguration;
 			}
@@ -139,13 +96,13 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 		
 		String name = model.getURI().trimFileExtension().lastSegment();
 		String casedName = Character.toUpperCase(name.charAt(0)) + name.substring(1);
-		ILaunchConfigurationWorkingCopy launchConf = simLaunchConfigurationType.newInstance(null, casedName);
-		launchConf.setAttribute(VerificationLaunchConfigurationDelegate.INPUT_FILE, model.getURI().toString());
+		ILaunchConfigurationWorkingCopy launchConf = verLaunchConfigurationType.newInstance(null, casedName);
+		launchConf.setAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, model.getURI().toString());
 		ILaunchConfiguration result = launchConf.doSave();
 		
 		return result;
 	}
-*/
+
 	  
 
 

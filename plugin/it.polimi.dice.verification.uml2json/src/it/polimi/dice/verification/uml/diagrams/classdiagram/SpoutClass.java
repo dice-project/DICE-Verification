@@ -17,6 +17,7 @@ public class SpoutClass extends NodeClass{
 
 	public SpoutClass(org.eclipse.uml2.uml.Class c) {
 			super(c);
+			this.parallelism = extractParallelism();
 			this.averageEmitRate = extractAverageEmitRate();
 	}
 

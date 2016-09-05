@@ -51,22 +51,7 @@ public class VtConfigFactoryImpl extends EFactoryImpl implements VtConfigFactory
 		super();
 	}
 
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	/*@Override
-	public EObject create(EClass eClass) {
-		switch (eClass.getClassifierID()) {
-			case VtConfigPackage.PETRI_NET_CONFIG: return createPetriNetConfig();
-			case VtConfigPackage.ESTRING_TO_EFLOAT_OBJECTS_MAP: return (EObject)createEStringToEFloatObjectsMap();
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
-		}
-	}*/
 
-	//###
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {

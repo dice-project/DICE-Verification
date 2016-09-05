@@ -30,7 +30,6 @@ public class VtConfigPackageImpl extends EPackageImpl implements VtConfigPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	private EClass petriNetConfigEClass = null;
 	
 	private EClass verificationToolConfigEClass = null;
 
@@ -116,48 +115,24 @@ public class VtConfigPackageImpl extends EPackageImpl implements VtConfigPackage
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EClass getPetriNetConfig() {
-		return petriNetConfigEClass;
-	}
 
 	public EClass verificationToolConfig() {
 		return verificationToolConfigEClass;
 	}
 
 	
+	
+	
+	
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getPetriNetConfig_AnalysisType() {
-		return (EAttribute)petriNetConfigEClass.getEStructuralFeatures().get(0);
+	public EReference getVerificationToolConfig_VariableAssignments() {
+		return (EReference)verificationToolConfigEClass.getEStructuralFeatures().get(1);
 	}
 
-	
-//	public EAttribute getVerificationToolConfig_ZotPlugin() {
-//		return (EAttribute)verificationToolConfigEClass.getEStructuralFeatures().get(0);
-//	}
-	
-	
-	
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getPetriNetConfig_VariableAssignments() {
-		return (EReference)petriNetConfigEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public EReference getPetriNetConfig_InitialMarking() {
-		return (EReference)petriNetConfigEClass.getEStructuralFeatures().get(3);
-	}
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -222,22 +197,11 @@ public class VtConfigPackageImpl extends EPackageImpl implements VtConfigPackage
 		if (isCreated) return;
 		isCreated = true;
 
-		// Create classes and their features
-		petriNetConfigEClass = createEClass(PETRI_NET_CONFIG);
-		createEAttribute(petriNetConfigEClass, VERIFICATION_TOOL_CONFIG__ZOT_PLUGIN);
-		createEReference(petriNetConfigEClass, PETRI_NET_CONFIG__VARIABLE_ASSIGNMENTS);
-		/*createEReference(petriNetConfigEClass, PETRI_NET_CONFIG__INITIAL_MARKING);
-		 * ###DELETE
-		 * */
-
 		
 		verificationToolConfigEClass = createEClass(VERIFICATION_TOOL_CONFIG);
 		createEAttribute(verificationToolConfigEClass, VERIFICATION_TOOL_CONFIG__ZOT_PLUGIN);
-		createEReference(verificationToolConfigEClass, PETRI_NET_CONFIG__VARIABLE_ASSIGNMENTS);
-		createEReference(verificationToolConfigEClass, VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS);
-		//createEReference(verificationToolConfigEClass, PETRI_NET_CONFIG__INITIAL_MARKING);
-
-		
+		createEReference(verificationToolConfigEClass, VERIFICATION_TOOL_CONFIG__VARIABLE_ASSIGNMENTS);
+		createEReference(verificationToolConfigEClass, VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS);		
 		
 		eStringToEFloatObjectsMapEClass = createEClass(ESTRING_TO_EFLOAT_OBJECTS_MAP);
 		createEAttribute(eStringToEFloatObjectsMapEClass, ESTRING_TO_EFLOAT_OBJECTS_MAP__KEY);
@@ -280,18 +244,12 @@ public class VtConfigPackageImpl extends EPackageImpl implements VtConfigPackage
 
 		// Add supertypes to classes
 
-		// Initialize classes, features, and operations; add parameters
-		initEClass(petriNetConfigEClass, VerificationToolConfig.class, "PetriNetConfig", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getPetriNetConfig_AnalysisType(), this.getZotPlugin(), "analysisType", null, 1, 1, VerificationToolConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-//		initEReference(getPetriNetConfig_VariableAssignments(), this.getEStringToEFloatObjectsMap(), null, "variableAssignments", null, 0, -1, VerificationToolConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-//		initEReference(getPetriNetConfig_InitialMarking(), this.getEStringToEFloatObjectsMap(), null, "initialMarking", null, 1, 1, VerificationToolConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize classes, features, and operations; add parameters
-				initEClass(verificationToolConfigEClass, VerificationToolConfig.class, "VerificationToolConfig", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-				initEAttribute(getVerificationToolConfig_ZotPlugin(), this.getZotPlugin(), "zotPlugin", null, 1, 1, VerificationToolConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-				initEReference(getVerificationToolConfig_MonitoredBolts(), this.getEStringToEBooleanObjectsMap(), null, "monitoredBolts", null, 0, -1, VerificationToolConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-//				initEReference(getPetriNetConfig_VariableAssignments(), this.getEStringToEFloatObjectsMap(), null, "variableAssignments", null, 0, -1, VerificationToolConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		//		initEReference(getPetriNetConfig_InitialMarking(), this.getEStringToEFloatObjectsMap(), null, "initialMarking", null, 1, 1, VerificationToolConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(verificationToolConfigEClass, VerificationToolConfig.class, "VerificationToolConfig", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getVerificationToolConfig_ZotPlugin(), this.getZotPlugin(), "zotPlugin", null, 1, 1, VerificationToolConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVerificationToolConfig_MonitoredBolts(), this.getEStringToEBooleanObjectsMap(), null, "monitoredBolts", null, 0, -1, VerificationToolConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVerificationToolConfig_VariableAssignments(), this.getEStringToEFloatObjectsMap(), null, "variableAssignments", null, 0, -1, VerificationToolConfig.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		
 		
 		initEClass(eStringToEFloatObjectsMapEClass, Map.Entry.class, "EStringToEFloatObjectsMap", !IS_ABSTRACT, !IS_INTERFACE, !IS_GENERATED_INSTANCE_CLASS);

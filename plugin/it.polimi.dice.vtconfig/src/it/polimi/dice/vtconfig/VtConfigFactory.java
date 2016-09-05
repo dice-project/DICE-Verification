@@ -22,10 +22,10 @@ public interface VtConfigFactory extends EFactory {
 	VtConfigFactory eINSTANCE = it.polimi.dice.vtconfig.impl.VtConfigFactoryImpl.init();
 
 	/**
-	 * Returns a new object of class '<em>Petri Net Config</em>'.
+	 * Returns a new object of class '<em>Verification Tool Config</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Petri Net Config</em>'.
+	 * @return a new object of class '<em>Verification Tool Config</em>'.
 	 * @generated
 	 */
 	VerificationToolConfig createVerificationToolConfig();

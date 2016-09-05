@@ -58,14 +58,13 @@ public interface VtConfigPackage extends EPackage {
 	VtConfigPackage eINSTANCE = it.polimi.dice.vtconfig.impl.VtConfigPackageImpl.init();
 
 	/**
-	 * The meta object id for the '{@link it.polimi.dice.vtconfig.impl.VerificationToolConfigImpl <em>Petri Net Config</em>}' class.
+	 * The meta object id for the '{@link it.polimi.dice.vtconfig.impl.VerificationToolConfigImpl <em>Verification Tool Config</em>}' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see it.polimi.dice.vtconfig.impl.VerificationToolConfigImpl
-	 * @see it.polimi.dice.vtconfig.impl.VtConfigPackageImpl#getPetriNetConfig()
+	 * @see it.polimi.dice.vtconfig.impl.VtConfigPackageImpl#getVerificationToolConfigConfig()
 	 * @generated
 	 */
-	int PETRI_NET_CONFIG = 0;
 	int VERIFICATION_TOOL_CONFIG = 200;
 
 	/**
@@ -78,44 +77,43 @@ public interface VtConfigPackage extends EPackage {
 	int VERIFICATION_TOOL_CONFIG__ZOT_PLUGIN = 0;
 
 	/**
+	 * The feature id for the '<em><b>Monitored Bolts</b></em>' map.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+
+	
+	int VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS = 1;
+	/**
 	 * The feature id for the '<em><b>Variable Assignments</b></em>' map.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PETRI_NET_CONFIG__VARIABLE_ASSIGNMENTS = 2; //previously 1
+	int VERIFICATION_TOOL_CONFIG__VARIABLE_ASSIGNMENTS = 2; //previously 1
 	
-	int VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS = 1;
+	
 
 	/**
-	 * The feature id for the '<em><b>Initial Marking</b></em>' reference.
+	 * The number of structural features of the '<em>Verification Tool Config</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-//	int PETRI_NET_CONFIG__INITIAL_MARKING = 3;
-
-	/**
-	 * The number of structural features of the '<em>Petri Net Config</em>' class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int PETRI_NET_CONFIG_FEATURE_COUNT = 3;
 	
 	int VERIFICATION_TOOL_CONFIG_FEATURE_COUNT = 3;
 
 	/**
-	 * The number of operations of the '<em>Petri Net Config</em>' class.
+	 * The number of operations of the '<em>Verification Tool Config</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int PETRI_NET_CONFIG_OPERATION_COUNT = 0;
 
 	int VERIFICATION_TOOL_CONFIG_OPERATION_COUNT = 0;
 	/**
@@ -177,10 +175,10 @@ public interface VtConfigPackage extends EPackage {
 	int ESTRING_TO_EBOOLEAN_OBJECTS_MAP_OPERATION_COUNT = 0;
 	
 	/**
-	 * The meta object id for the '{@link it.polimi.dice.vtconfig.AnalysisType <em>Analysis Type</em>}' enum.
+	 * The meta object id for the '{@link it.polimi.dice.vtconfig.ZotPlugin <em>Zot Plugin</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see it.polimi.dice.vtconfig.AnalysisType
+	 * @see it.polimi.dice.vtconfig.ZotPlugin
 	 * @see it.polimi.dice.vtconfig.impl.VtConfigPackageImpl#getZotPlugin()
 	 * @generated
 	 */
@@ -188,27 +186,25 @@ public interface VtConfigPackage extends EPackage {
 
 
 	/**
-	 * Returns the meta object for class '{@link it.polimi.dice.vtconfig.VerificationToolConfig <em>Petri Net Config</em>}'.
+	 * Returns the meta object for class '{@link it.polimi.dice.vtconfig.VerificationToolConfig <em>Verification Tool Config</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for class '<em>Petri Net Config</em>'.
+	 * @return the meta object for class '<em>Verification Tool Config</em>'.
 	 * @see it.polimi.dice.vtconfig.VerificationToolConfig
 	 * @generated
 	 */
-	EClass getPetriNetConfig();
 	
 	EClass getVerificationToolConfig();
 
 	/**
-	 * Returns the meta object for the attribute '{@link it.polimi.dice.vtconfig.VerificationToolConfig#getAnalysisType <em>Analysis Type</em>}'.
+	 * Returns the meta object for the attribute '{@link it.polimi.dice.vtconfig.VerificationToolConfig#getZotPlugin <em>Zot Plugin</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Analysis Type</em>'.
+	 * @return the meta object for the attribute '<em>Zot Plugin</em>'.
 	 * @see it.polimi.dice.vtconfig.VerificationToolConfig#getZotPlugin()
-	 * @see #getPetriNetConfig()
+	 * @see #getVerificationToolConfig()
 	 * @generated
 	 */
-	EAttribute getPetriNetConfig_AnalysisType();
 	
 	EAttribute getVerificationToolConfig_ZotPlugin();
 
@@ -218,24 +214,14 @@ public interface VtConfigPackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @return the meta object for the map '<em>Variable Assignments</em>'.
 	 * @see it.polimi.dice.vtconfig.VerificationToolConfig#getVariableAssignments()
-	 * @see #getPetriNetConfig()
+	 * @see #getVerificationToolConfig()
 	 * @generated
 	 */
-	EReference getPetriNetConfig_VariableAssignments();
+	EReference getVerificationToolConfig_VariableAssignments();
 	
 	
 	EReference getVerificationToolConfig_MonitoredBolts();
 
-	/**
-	 * Returns the meta object for the reference '{@link it.polimi.dice.vtconfig.VerificationToolConfig#getInitialMarking <em>Initial Marking</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Initial Marking</em>'.
-	 * @see it.polimi.dice.vtconfig.VerificationToolConfig#getInitialMarking()
-	 * @see #getPetriNetConfig()
-	 * @generated
-	 */
-	EReference getPetriNetConfig_InitialMarking();
 
 	/**
 	 * Returns the meta object for class '{@link java.util.Map.Entry <em>EString To EFloat Objects Map</em>}'.
@@ -277,11 +263,11 @@ public interface VtConfigPackage extends EPackage {
 	
 	EAttribute getEStringToEBooleanObjectsMap_Value();
 	/**
-	 * Returns the meta object for enum '{@link it.polimi.dice.vtconfig.AnalysisType <em>Analysis Type</em>}'.
+	 * Returns the meta object for enum '{@link it.polimi.dice.vtconfig.ZotPlugin <em>Zot Plugin</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for enum '<em>Analysis Type</em>'.
-	 * @see it.polimi.dice.vtconfig.AnalysisType
+	 * @return the meta object for enum '<em>Zot Plugin</em>'.
+	 * @see it.polimi.dice.vtconfig.ZotPlugin
 	 * @generated
 	 */
 	EEnum getZotPlugin();
@@ -310,24 +296,22 @@ public interface VtConfigPackage extends EPackage {
 	 */
 	interface Literals {
 		/**
-		 * The meta object literal for the '{@link it.polimi.dice.vtconfig.impl.VerificationToolConfigImpl <em>Petri Net Config</em>}' class.
+		 * The meta object literal for the '{@link it.polimi.dice.vtconfig.impl.VerificationToolConfigImpl <em>Verification Tool Config</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @see it.polimi.dice.vtconfig.impl.VerificationToolConfigImpl
-		 * @see it.polimi.dice.vtconfig.impl.VtConfigPackageImpl#getPetriNetConfig()
+		 * @see it.polimi.dice.vtconfig.impl.VtConfigPackageImpl#getVerificationToolConfig()
 		 * @generated
-		 */
-		EClass PETRI_NET_CONFIG = eINSTANCE.getPetriNetConfig();
+		 */		
 		
 		EClass VERIFICATION_TOOL_CONFIG = eINSTANCE.getVerificationToolConfig();
 
 		/**
-		 * The meta object literal for the '<em><b>Analysis Type</b></em>' attribute feature.
+		 * The meta object literal for the '<em><b>Zot Plugin</b></em>' attribute feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
-		 */
-		EAttribute PETRI_NET_CONFIG__ANALYSIS_TYPE = eINSTANCE.getPetriNetConfig_AnalysisType();
+		 */ 
 		EAttribute VERIFICATION_TOOL_CONFIG__ZOT_PLUGIN = eINSTANCE.getVerificationToolConfig_ZotPlugin(); 
 		/**
 		 * The meta object literal for the '<em><b>Variable Assignments</b></em>' map feature.
@@ -335,18 +319,11 @@ public interface VtConfigPackage extends EPackage {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference PETRI_NET_CONFIG__VARIABLE_ASSIGNMENTS = eINSTANCE.getPetriNetConfig_VariableAssignments();
+		EReference VERIFICATION_TOOL_CONFIG__VARIABLE_ASSIGNMENTS = eINSTANCE.getVerificationToolConfig_VariableAssignments();
 		
 		EReference VERIFICATION_TOOL_CONFIG__MONITORED_BOLTS = eINSTANCE.getVerificationToolConfig_MonitoredBolts();
 		
-		/**
-		 * The meta object literal for the '<em><b>Initial Marking</b></em>' reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-//		EReference PETRI_NET_CONFIG__INITIAL_MARKING = eINSTANCE.getPetriNetConfig_InitialMarking();
-//###DELETE
+
 		/**
 		 * The meta object literal for the '{@link it.polimi.dice.vtconfig.impl.EStringToEFloatObjectsMapImpl <em>EString To EFloat Objects Map</em>}' class.
 		 * <!-- begin-user-doc -->
@@ -380,10 +357,10 @@ public interface VtConfigPackage extends EPackage {
 		EAttribute ESTRING_TO_EBOOLEAN_OBJECTS_MAP__VALUE = eINSTANCE.getEStringToEBooleanObjectsMap_Value();
 		
 		/**
-		 * The meta object literal for the '{@link it.polimi.dice.vtconfig.AnalysisType <em>Analysis Type</em>}' enum.
+		 * The meta object literal for the '{@link it.polimi.dice.vtconfig.ZotPlugin <em>Zot Plugin</em>}' enum.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
-		 * @see it.polimi.dice.vtconfig.AnalysisType
+		 * @see it.polimi.dice.vtconfig.ZotPlugin
 		 * @see it.polimi.dice.vtconfig.impl.VtConfigPackageImpl#getZotPlugin()
 		 * @generated
 		 */

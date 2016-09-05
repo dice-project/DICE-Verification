@@ -1,10 +1,7 @@
 package it.polimi.dice.verification.uml.helpers;
 
 import java.io.IOException;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -16,9 +13,6 @@ import org.eclipse.uml2.uml.InstanceSpecification;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLPackage;
-import org.eclipse.uml2.uml.resource.UMLResource;
-
-import it.polimi.dice.core.logger.DiceLogger;
 
 
 public class UML2ModelHelper {
