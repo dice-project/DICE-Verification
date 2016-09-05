@@ -45,8 +45,8 @@ def verification_task(self, task_name, context):
         self.update_state(state='PROGRESS', meta={'name': task_name})
 
         outcome, ver_time, hist_file, fig_path, \
-            json_path, lisp_path, result_file = json2mc.main(["-v", "json2mc/visual/plot_settings.json", "-j", 
-                                                            context, "-o", "static/tasks/"])
+            json_path, lisp_path, result_file = json2mc.main(["-v", "visual/plot_settings.json", "-j", 
+                                                            context, "-o", os.path.abspath("static/tasks/")])
         return {'name': task_name, 'result': outcome.upper(), 'verification_time':ver_time, 'hist_file': hist_file, 
                 'fig_path':fig_path, 'json_path': json_path, 'lisp_path':lisp_path, 'result_file':result_file}
     except SoftTimeLimitExceeded:
@@ -105,9 +105,6 @@ def create_task():
                                                   task_id=task.id)}
 
 
-@app.route('/pinellas')
-def pinellas():
-    return '<a href="'+url_for('static', filename='tasks/Dooku.jpg')+'"> CIAO</a>'
 
 @app.route('/status/<task_id>')
 def taskstatus(task_id):
@@ -120,25 +117,30 @@ def get_static_img_popup_link(fig_path, link_text):
     elif fig_path == '':
         return 'N/A'
     else:
-        return '<a class="popup-img" href="'+url_for('static', filename=get_static_url(fig_path))+'"> '+ link_text + '</a>'
+        # return '<a class="popup-img" href="'+url_for('static', filename=get_static_url(fig_path))+'"> '+ link_text + '</a>'
+        return '<a class="popup-img" href="{}">{}</a>'.format(url_for('static', filename=get_static_url(fig_path)),
+                                                                 link_text)
 
 def get_static_new_tab_link(file_path, link_text):
-    print 'file_path:',file_path, "link_text:",link_text
+#    print 'file_path:',file_path, "link_text:",link_text
     if file_path is None:
         return 'N/A'
     elif file_path == '':
         return 'N/A'
     else:
-        return '<a href="'+url_for('static', filename=get_static_url(file_path))+'" target=_blank> '+link_text+' <img src="imgs/new_tab.png" alt="![new window icon]"></a>',
+        return '<a href="{}" target="_blank"> {} <img src="imgs/new_tab.png"></a>'.format(url_for('static', filename=get_static_url(file_path)),
+                                                                                          link_text)
+                                                                    
 
 def get_static_current_tab_link(file_path, link_text):
-    print 'file_path:',file_path, "link_text:",link_text
+#    print 'file_path:',file_path, "link_text:",link_text
     if file_path is None:
         return 'N/A'
     elif file_path == '':
         return 'N/A'
     else:
-        return '<a href="'+url_for('static', filename=get_static_url(file_path))+'"> '+link_text+' </a>',
+        return '<a href="{}"> {} </a>'.format(url_for('static', filename=get_static_url(file_path)),
+                                              link_text)
 
 def get_outcome_render(outcome):
     if outcome == 'SAT':
@@ -180,6 +182,10 @@ def taskstatus2(task_id):
                 'verification_time': str(task.info.get('verification_time', ''))+' s',
                 'fig_path': get_static_img_popup_link(task.info.get('fig_path', ''), 'view'),
                 'hist_file': get_static_new_tab_link(task.info.get('hist_file', ''), 'view'),
+                'out_trace': '<ul style="list-style-type: none;"> \
+                                <li>'+ get_static_new_tab_link(task.info.get('hist_file', ''), 'text') +'</li> \
+                                <li>'+ get_static_img_popup_link(task.info.get('fig_path', ''), 'figure') +'</li> \
+                            </ul>',
                 'json_path': get_static_new_tab_link(task.info.get('json_path', ''), 'view'),
                 'lisp_path': get_static_current_tab_link(task.info.get('lisp_path', ''), 'download'),
                 'result_file': get_static_new_tab_link(task.info.get('result_file', ''), 'view')

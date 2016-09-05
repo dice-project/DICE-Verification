@@ -53,7 +53,7 @@
 ;	(defconstant MIN_WAIT_FOR_EMIT_S1 100)
 ;	(defconstant MIN_WAIT_FOR_EMIT_S2 100)
   {% for s in topology.spouts %}
-  	(defconstant C_EMIT_{{s.id}} BASE_QUANTITY)
+  	(defconstant C_EMIT_{{s.id}} {{s.parallelism}})
   	(defconstant MIN_WAIT_FOR_EMIT_{{s.id}} (/ BASE_QUANTITY AVG_EMIT_RATE_{{s.id}}))
     (defconstant ALPHA_{{s.id}} (getReciprocalGZ AVG_EMIT_RATE_{{s.id}}))
   {%endfor%}

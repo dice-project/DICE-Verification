@@ -17,19 +17,20 @@ Released   : 20131104
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>D-VerT Tasks Dasboard</title>
 <style>
-  @import url(style.css);
-  @import url("https://cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.css");
+  @import url("style/style.css");
+  @import url("style/dynatable/jquery.dynatable.css");
   </style>
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Dynatable/0.3.1/jquery.dynatable.min.js"></script>
-<link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css' />
-<link href='http://fonts.googleapis.com/css?family=Abel|Satisfy' rel='stylesheet' type='text/css' />
-<link href="default.css" rel="stylesheet" type="text/css" media="all" />
+
+<script src="style/jquery-3.1.0.min.js"></script>
+<script type="text/javascript" src="style/dynatable/jquery.dynatable.js"></script>
+<link href='style/fonts/Oswald-400-300.css' rel='stylesheet' type='text/css' />
+<link href='style/fonts/Abel-Satisfy.css' rel='stylesheet' type='text/css' />
+<link href="style/default.css" rel="stylesheet" type="text/css" media="all" />
 <!-- Magnific Popup core CSS file -->
-<link rel="stylesheet" href="magnific-popup/magnific-popup.css">
+<link rel="stylesheet" href="style/magnific-popup/magnific-popup.css">
 
 <!-- Magnific Popup core JS file -->
-<script src="magnific-popup/jquery.magnific-popup.js"></script>
+<script src="style/magnific-popup/jquery.magnific-popup.js"></script>
 
 
 
@@ -59,14 +60,6 @@ $('body').on('mouseover', 'a.popup-img', function() {
       type: 'image'
     });
   });
-/*
-$('body').on('mouseover', 'a.popup-txt', function() {
-    console.log('ciao');
-    $(this).magnificPopup({
-     type: 'ajax'
-    });
-  });  
-*/
 });
 </script>
 <!--[if IE 6]>
@@ -103,8 +96,8 @@ $('body').on('mouseover', 'a.popup-txt', function() {
               <th data-dynatable-column="result">Result </th>
               <th data-dynatable-column="verification_time">Duration </th>
               <th data-dynatable-column="result_file">Result File </th>
-              <th data-dynatable-column="hist_file">Output Trace</th>
-              <th data-dynatable-column="fig_path">Figure</th>
+              <th data-dynatable-column="out_trace">Output Trace</th>
+              <th data-dynatable-column="json_path">JSON File</th>
               <th data-dynatable-column="lisp_path">Lisp File</th>
             </tr>
           </thead>
