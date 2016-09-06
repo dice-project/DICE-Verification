@@ -7,6 +7,7 @@ public interface VerificationLaunchConfigurationAttributes {
 		public static final String INTERMEDIATE_FILES_DIR = "it.polimi.dice.verification.launcher.console.intermediateFilesFolder"; 
 		public static final String TIME_BOUND = "it.polimi.dice.verification.launcher.console.timeBound"; //"TIME BOUND"; //$NON-NLS-1$
 		public static final String VERIFICATION_CONFIGURATION = "it.polimi.dice.verification.launcher.console.verificationConfiguration"; //"VERIFICATION_CONFIGURATION"; //$NON-NLS-1$
-
+		public static final String HOST_ADDRESS = "it.polimi.dice.verification.launcher.console.hostAddress";
+		public static final String PORT_NUMBER = "it.polimi.dice.verification.launcher.console.portNumber";
 	 
 	} 

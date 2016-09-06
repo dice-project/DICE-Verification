@@ -25,6 +25,7 @@ import it.polimi.dice.core.logger.DiceLogger;
 
 import it.polimi.dice.verification.DiceVerificationPlugin;
 import it.polimi.dice.verification.ui.launcher.Messages;
+import it.polimi.dice.verification.ui.preferences.PreferenceConstants;
 import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationAttributes;
 import it.polimi.dice.verification.ui.DiceVerificationUiPlugin;
 
@@ -98,6 +99,11 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 		String casedName = Character.toUpperCase(name.charAt(0)) + name.substring(1);
 		ILaunchConfigurationWorkingCopy launchConf = verLaunchConfigurationType.newInstance(null, casedName);
 		launchConf.setAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, model.getURI().toString());
+		launchConf.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
+		launchConf.setAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS, 
+									DiceVerificationUiPlugin.getDefault().getPreferenceStore().getString(PreferenceConstants.HOST.getName()));
+		launchConf.setAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, 
+									DiceVerificationUiPlugin.getDefault().getPreferenceStore().getString(PreferenceConstants.PORT.getName()));
 		ILaunchConfiguration result = launchConf.doSave();
 		
 		return result;

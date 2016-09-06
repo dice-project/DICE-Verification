@@ -32,8 +32,12 @@ public class Messages extends NLS {
 	public static String MainLaunchConfigurationTab_monitoredLabel;
 	public static String MainLaunchConfigurationTab_variableLabel;
 	public static String MainLaunchConfigurationTab_variablesLabel;
+	public static String MainLaunchConfigurationTab_connectionLabel;
+	public static String MainLaunchConfigurationTab_hostAddressLabel;
+	public static String MainLaunchConfigurationTab_portNumberLabel;
 	public static String VerificationLaunchShortcut_unexpectedArgError;
 	public static String VerificationLaunchShortcut_unknownModeError;
+	
 
 	static {
 		// initialize resource bundle

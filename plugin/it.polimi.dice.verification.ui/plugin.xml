@@ -154,5 +154,35 @@
          </adapter>
       </factory>
    </extension>
-
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="it.polimi.dice.verification.ui.preferences.DiceVerificationPreferencePage"
+            id="it.polimi.dice.verification.ui.prefPage1"
+            name="DICE Verification Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="it.polimi.dice.verification.ui.preferences.DiceVerificationPreferencesInitializer">
+      </initializer>
+   </extension>
+<!-- 
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="it.polimi.dice.verification.ui.views"
+            class="it.polimi.dice.verification.ui.preferences.DiceVerificationPreferencesView"
+            icon="icons/verify_icon.png"
+            id="it.polimi.dice.verification.ui.view1"
+            name="D-VerT Preferences"
+            restorable="true">
+      </view>
+      <category
+            id="it.polimi.dice.verification.ui.views"
+            name="DICE Verification">
+      </category>
+   </extension>
+   -->
 </plugin>

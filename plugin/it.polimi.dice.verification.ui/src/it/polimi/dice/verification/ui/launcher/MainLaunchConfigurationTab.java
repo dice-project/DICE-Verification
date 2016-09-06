@@ -1,5 +1,6 @@
 package it.polimi.dice.verification.ui.launcher;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -42,6 +43,8 @@ import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
@@ -51,17 +54,17 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.UMLPackage;
 
-import com.google.gson.Gson;
-
 import it.polimi.dice.verification.DiceVerificationPlugin;
 import it.polimi.dice.verification.json.StormTopology;
 import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationAttributes;
 import it.polimi.dice.verification.ui.DiceVerificationUiPlugin;
+import it.polimi.dice.verification.ui.preferences.PreferenceConstants;
 import it.polimi.dice.verification.uml.diagrams.classdiagram.BoltClass;
 import it.polimi.dice.verification.uml.diagrams.classdiagram.SpoutClass;
 import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
@@ -176,6 +179,8 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		private int timeBound;
 		private boolean keepIntermediateFiles;
 		private VerificationToolConfig config;
+		private String hostAddress;
+		private String portNumber;
 		
 		{
 			setConfig(VtConfigFactory.eINSTANCE.createVerificationToolConfig());
@@ -247,6 +252,32 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
+		
+		public void setHostAddress(String hostAddress, boolean refresh) {
+			this.hostAddress = hostAddress;
+			if (refresh)
+				hostText.setText(hostAddress);
+			setDirty(true);
+			updateLaunchConfigurationDialog();
+		}
+		
+		public String getHostAddress(){
+			return hostAddress;
+		}
+		
+		public void setPortNumber(String portNumber, boolean refresh) {
+			this.portNumber = portNumber;
+			if(refresh)
+				portText.setText(portNumber);
+			setDirty(true);
+			updateLaunchConfigurationDialog();
+		}
+		
+		public String getPortNumber(){
+			return portNumber;
+		}
+		
+				
 		protected boolean keepIntermediateFiles() {
 			return keepIntermediateFiles;
 		}
@@ -301,6 +332,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			}
 			return null;
 		}
+
 	}
 	
 
@@ -423,6 +455,8 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	protected TableViewer viewerBoolean, viewerFloat;
 	protected TableViewerColumn varViewerColumnFloat, varViewerColumnBoolean;
 	protected TableViewerColumn valueViewerColumnFloat, valueViewerColumnBoolean;
+	protected Text hostText;
+	protected Text portText;
 	
 	protected FormData data = new FormData();
 	
@@ -783,6 +817,53 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		}
 */
 		
+		{ // Connection group
+			Group group = new Group(topComposite, SWT.NONE);
+			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+			
+			group.setLayout(new GridLayout(4,  false));
+			group.setText(Messages.MainLaunchConfigurationTab_connectionLabel);
+			
+			
+			Label hostLabel = new Label(group, SWT.BORDER);
+			hostLabel.setText(Messages.MainLaunchConfigurationTab_hostAddressLabel);
+			hostLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+			hostText = new Text(group, SWT.BORDER);
+			hostText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			hostText.setEditable(true);
+			hostText.addModifyListener(new ModifyListener(){
+			      public void modifyText(ModifyEvent event) {
+				        // Get the widget whose text was modified
+				        Text text = (Text) event.widget;
+				        data.setHostAddress(text.getText(), false);
+				        setDirty(true);
+				        updateLaunchConfigurationDialog();
+				      }
+				    });
+			
+			
+			
+			
+			
+			Label portLabel = new Label(group, SWT.BORDER);
+			portLabel.setText(Messages.MainLaunchConfigurationTab_portNumberLabel);
+			portLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+			portText = new Text(group, SWT.BORDER);
+			portText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			portText.setEditable(true);
+			portText.addModifyListener(new ModifyListener(){
+			      public void modifyText(ModifyEvent event) {
+			        // Get the widget whose text was modified
+			        Text text = (Text) event.widget;
+			        data.setPortNumber(text.getText(), false);
+			        setDirty(true);
+			        updateLaunchConfigurationDialog();
+			      }
+			    });
+		
+			
+		}
+		
 		setControl(topComposite);
 	}
 
@@ -795,6 +876,10 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR);
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION);
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS, 
+									DiceVerificationUiPlugin.getDefault().getPreferenceStore().getString(PreferenceConstants.HOST.getName()));
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, 
+									DiceVerificationUiPlugin.getDefault().getPreferenceStore().getString(PreferenceConstants.PORT.getName()));
 	}
 
 	@Override
@@ -825,6 +910,13 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 							MessageFormat.format(Messages.MainLaunchConfigurationTab_unableParserError, serializedConfig), e);
 				}
 			}
+			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS)) {
+				data.setHostAddress(configuration.getAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS, "http://localhost"), true);
+			}
+			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER)) {
+				data.setPortNumber(configuration.getAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, "5000"), true);
+			}
+
 		} catch (CoreException e) {
 			DiceLogger.logException(DiceVerificationUiPlugin.getDefault(), e);
 		}
@@ -837,7 +929,8 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, data.intermediateFilesDir);
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, VerificationToolConfigSerializer.serialize(data.getConfig()));
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, timeBoundSpinner.getSelection());
-		
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS, hostText.getText());
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, portText.getText());
 	}
 
 	@Override

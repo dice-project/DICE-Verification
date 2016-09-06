@@ -275,13 +275,23 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 		String timestamp = attributes.get(DebugPlugin.ATTR_LAUNCH_TIMESTAMP);
 		String verificationIdentifier = justName + "_" + timestamp;
 		
+		
+
+		
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
 		try {
 			monitor.beginTask(Messages.VerificationLaunchConfigurationDelegate_generatingJsonTaskTitle, 1);
-			ResourceSet resourceSet = new ResourceSetImpl();
 			
+			
+			// get connection parameters from launchConfiguration
+			
+			String serverAddress = launchConfig.getAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS, "http://localhost");
+			String serverPort = launchConfig.getAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, "5000");
+			int timeBound = launchConfig.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
+			
+			ResourceSet resourceSet = new ResourceSetImpl();
 			
 			Resource umlResource = resourceSet.getResource(URI.createFileURI(umlFile.getAbsolutePath()), true);
 			//EList<EObject> inObjects = umlResource.getContents();
@@ -302,11 +312,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			topology.setSpouts(spouts);
 			topology.setBolts(bolts);
 			vp.setPeriodicQueuesFromBolts(bolts);
-			try {
-				vp.setTimeBound(launchConfig.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15));
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
+			vp.setTimeBound(timeBound);
 			ArrayList<String> plugins = new ArrayList<String>();
 			plugins.add(vtConfig.getZotPlugin().getName());
 			vp.setPlugins(plugins);
@@ -321,8 +327,17 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			jsonContext.setApplicationName(verificationIdentifier);
 			
 			DiceLogger.logError(DiceVerificationPlugin.getDefault(), "JSON CONTEXT CREATED:\n" + gson.toJson(jsonContext));
-			String launchVerificationUrl = "http://localhost:5000/longtasks";
-			String taskListURL = "http://localhost:5000/";
+			
+/*			String serverAddress = DiceVerificationUiPlugin.getDefault().getPreferenceStore()
+			        .getString(PreferenceConstants.HOST.getName());
+			String serverPort = DiceVerificationUiPlugin.getDefault().getPreferenceStore()
+			        .getString(PreferenceConstants.PORT.getName());
+*/			
+			String dashboardUrl = serverAddress + ":" + serverPort;
+			String launchVerificationUrl =  dashboardUrl + "/longtasks";
+			DiceLogger.logError(DiceVerificationPlugin.getDefault(), "Building url:\n" + launchVerificationUrl);
+					
+			
 
 			JsonVerificationTaskRequest vtr = new JsonVerificationTaskRequest(verificationIdentifier, jsonContext);
 			
@@ -343,9 +358,12 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 				    Thread.currentThread().interrupt();
 				}
 				nc.getTaskStatusUpdatesFromServer();
-				openNewBrowserTab(new URL(taskListURL), "task-list");
+				openNewBrowserTab(new URL(dashboardUrl), "task-list");
 			}
 			
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}finally{
 			monitor.done();
 		}
