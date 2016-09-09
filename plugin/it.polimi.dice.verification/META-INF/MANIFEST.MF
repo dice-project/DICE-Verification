@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Verification
 Bundle-SymbolicName: it.polimi.dice.verification;singleton:=true
-Bundle-Version: 0.1.0
+Bundle-Version: 0.1.0.qualifier
 Bundle-Activator: it.polimi.dice.verification.DiceVerificationPlugin
 Require-Bundle: org.eclipse.core.runtime,
  it.polimi.dice.vtconfig,

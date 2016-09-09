@@ -28,7 +28,7 @@
    </extension>
    <extension
          point="org.eclipse.ui.menus">
-      <menuContribution
+      <!-- <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <menu
                id="it.polimi.dice.verification.ui.menus.diceVerificationMenu"
@@ -44,16 +44,21 @@
                	  </visibleWhen>
             </command>
          </menu>
-      </menuContribution>
+      </menuContribution>-->
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
                id="it.polimi.dice.verification.ui.toolbars.sampleToolbar">
             <command
                   commandId="it.polimi.dice.verification.ui.commands.launchVerificationCommand"
-                  icon="icons/sample.gif"
+                  icon="icons/verify_icon.png"
                   id="it.polimi.dice.verification.ui.toolbars.LaunchVerificationCommand"
-                  tooltip="Say hello world">
+                  tooltip="Launch verification on current Papyrus Model">
+                  <visibleWhen>
+                       <with variable="activeEditorId">
+					       <equals value="org.eclipse.papyrus.infra.core.papyrusEditor"/>
+					    </with>
+                  </visibleWhen>
             </command>
          </toolbar>
       </menuContribution>

@@ -31,6 +31,8 @@ public class StormTopology {
 		this.maxIdleTime = 0.1;
 		this.minRebootTime = 10;
 		this.maxRebootTime = 100;
+		this.initQueues = 5;
+		this.queueThreshold = 0;
 	}
 	/*
 	 "min_reboot_time":10,

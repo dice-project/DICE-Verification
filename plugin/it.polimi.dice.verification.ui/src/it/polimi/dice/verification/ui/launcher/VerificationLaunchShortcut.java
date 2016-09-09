@@ -46,9 +46,11 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 	@Override
 	public void launch(IEditorPart editor, String mode) {
 		IEditorInput input = editor.getEditorInput();
-		IFile file = (IFile) input.getAdapter(IFile.class);
-		if (file != null) {
-			launch(file, mode);
+		if (input != null){
+			IFile file = (IFile) input.getAdapter(IFile.class);
+			if (file != null) {
+				launch(file, mode);
+			}	
 		}
 	}
 
