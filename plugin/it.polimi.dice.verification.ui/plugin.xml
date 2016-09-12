@@ -162,9 +162,10 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
+            category="it.polimi.dice.verification.ui"
             class="it.polimi.dice.verification.ui.preferences.DiceVerificationPreferencePage"
             id="it.polimi.dice.verification.ui.prefPage1"
-            name="DICE Verification Preferences">
+            name="Verification Tools">
       </page>
    </extension>
    <extension
