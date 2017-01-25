@@ -11,7 +11,7 @@ services:
 
  
   web:
-    build: .
+    image: 'deibpolimi/d-vert-server'
     command: python run_json2mc_server.py
     ports:
       - '5000:5000'
@@ -21,7 +21,7 @@ services:
       PYTHONUNBUFFERED: 'true'
 
   celery:
-    build: .
+    image: 'deibpolimi/d-vert-server'
     user: celery-user
     command: celery worker -l info -A run_json2mc_server.celery
     links:
@@ -32,7 +32,7 @@ services:
       PYTHONUNBUFFERED: 'true'
  
   flower:
-    build: .
+    image: 'deibpolimi/d-vert-server'
     command: celery flower -A run_json2mc_server.celery --port=5555
     ports:
     - '5555:5555'

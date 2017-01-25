@@ -106,7 +106,7 @@
 {% for s in topology.spouts %} ;TODO risistemare
 	(setf (gethash '{{s.id}} the-rate-threshold-table) (getRateIntervals {{verification_params.base_quantity}}))
 	;(setf (gethash '{{s.id}} the-proc-time-table) (getTimeIntervals {{verification_params.base_quantity}} ALPHA_{{s.id}}))
-    (setf (gethash '{{s.id}} the-proc-time-table) (getIntervals {{verification_params.base_quantity}} ALPHA_{{s.id}} (/ ALPHA_{{s.id}} 10.0)))
+    (setf (gethash '{{s.id}} the-proc-time-table) (getIntervals C_EMIT_{{s.id}} ALPHA_{{s.id}} (/ ALPHA_{{s.id}} 10.0)))
 {%endfor%}
 
 ;TOPOLOGY-INDEPENDENT PARAMETERS: TODO DEFINE BOLT-SPECIFIC VALUES

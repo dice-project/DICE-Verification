@@ -126,27 +126,27 @@ def plot_hist(app_name, step, records, bool_set,
                          linewidth=var_lw, markersize=var_msize)
         if i == 1:
             plt.title("verification time: " + str(ver_time) + "\n\n" +
-                      p["title"], fontsize=20)
+                      p["title"], fontsize=30)
         else:
-            plt.title(p["title"], fontsize=20)
+            plt.title(p["title"], fontsize=35)
 #        plt.suptitle(file_name)
         # limit the y axis to the maximum value present among the plots
         plt.ylim([0, y_max + 1])
         # print records['TOTALTIME']
         rounded_totaltime = \
             map(lambda t: round(float(t.strip('?')), 2), records['TOTALTIME'])
-        plt.ylabel('#tuples')
+        plt.ylabel('#tuples', fontsize=30)
         if i == num_rows:
             plt.xticks(steplist, rounded_totaltime, rotation=45)
-            plt.xlabel('TOTALTIME', fontsize=22)
+            plt.xlabel('TOTALTIME', fontsize=30)
         else:
             plt.xticks(steplist, ['' for s in steplist])
         fontP = FontProperties()
-        fontP.set_size('x-small')
+        fontP.set_size('x-large')
         plt.legend(prop=fontP, loc='upper left')
 #        plt.legend(loc='upper left')
         plt.grid()
-        plt.axvspan(records['LOOP'], step, color='red', alpha=0.3)
+        plt.axvspan(records['LOOP'], step, color='0.75', alpha=1)
         i += 1  # end for
 #    plt.tight_layout()
     make_sure_path_exists(plot_saving_dir + 'imgs')
@@ -210,6 +210,7 @@ def plot_hist2(app_name, step, records, bool_set,
     my_dpi = 96
     plt.figure(figsize=(1460/my_dpi, 900/my_dpi), dpi=my_dpi)
     styles_list = get_plot_styles_list(settings)
+    timestamp_indexes = range((num_rows-1)*columns, num_rows*columns)+[len(topology["bolts"])]
     i = 1
     y_max = 1
     # get the maximum "Y" value to be displayed across all plots
@@ -240,7 +241,7 @@ def plot_hist2(app_name, step, records, bool_set,
         rounded_totaltime = \
             map(lambda t: round(float(t.strip('?')), 2), records['TOTALTIME'])
         plt.ylabel('#tuples')
-        if i == num_rows:
+        if i in timestamp_indexes:
             plt.xticks(steplist, rounded_totaltime, rotation=45)
             plt.xlabel('TOTALTIME', fontsize=22)
         else:
@@ -452,12 +453,12 @@ def main(argv):  # noqa
             timestamp_str = timestamp.strftime(format)
         #       print timestamp_str
             my_step, my_records, my_bool_set = parse_hist(my_file_path)
-        #    figure_path = plot_hist(app_name, my_step, my_records,
-        #              my_bool_set, timestamp_str, plot_conf_path, './',
-        #              verification_time, display)
-            figure_path = plot_hist2(app_name, my_step, my_records,
-                        my_bool_set, timestamp_str, context['topology'], 
-                        plot_conf_path, './', verification_time, display)
+            figure_path = plot_hist(app_name, my_step, my_records,
+                      my_bool_set, timestamp_str, plot_conf_path, './',
+                      verification_time, display)
+        #    figure_path = plot_hist2(app_name, my_step, my_records,
+        #                my_bool_set, timestamp_str, context['topology'], 
+        #                plot_conf_path, './', verification_time, display)
             hist_file_abs_path = app_dir+'/'+hist_file
         elif(outcome == 'unsat'):
             print 'UNSAT!!!'
