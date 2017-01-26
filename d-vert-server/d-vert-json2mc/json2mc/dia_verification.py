@@ -88,7 +88,6 @@ class VerificationTask(object):
 #        os.system(bashCommand)
         print "{}Verication complete with plugin: {}".format(prefix,
                                                              self.plugin)
-        return json_model_save_path
 
     def parse_zot_trace(self, file_path=None):
         raise NotImplementedError()

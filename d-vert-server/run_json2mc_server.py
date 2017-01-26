@@ -123,6 +123,7 @@ def create_task():
     params = {
         'title': request.json['title'],
         'description': request.json.get('description', ""),
+        'technology':request.json.get('technology', ''),
         'done': False,
         'json_context': request.json["json_context"],
         'timeout': request.json.get('timeout', 300000)

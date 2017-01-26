@@ -18,8 +18,8 @@ import os
 import itertools
 import string
 
-# import matplotlib
-# matplotlib.use('Agg')
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 from __builtin__ import staticmethod
