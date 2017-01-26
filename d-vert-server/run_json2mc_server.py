@@ -7,7 +7,9 @@ from flask import Flask, request, render_template, session, flash, redirect, \
 from celery import Celery, states
 from celery.exceptions import SoftTimeLimitExceeded
 
-from json2mc import json2mc
+from json2mc.spark_verification import SparkVerificationTask
+from json2mc.storm_verification import StormVerificationTask
+
 from redis import Redis
 
 from flask_cors import CORS, cross_origin
@@ -37,22 +39,50 @@ def get_static_url(path):
 
 
 @celery.task(bind=True)
-def verification_task(self, task_name, context):
+def verification_task(self, task_name, technology, context):
     import matplotlib
     print('Executing task id {0.id}, args: {0.args!r} kwargs: {0.kwargs!r}'
           .format(self.request))
     try:
         self.update_state(state='PROGRESS', meta={'name': task_name})
 
-        outcome, ver_time, hist_file, fig_path, \
-            json_path, lisp_path, result_file = json2mc.main(["-v", "visual/plot_settings.json", "-j", 
-                                                            context, "-o", os.path.abspath("static/tasks/")])
-        return {'name': task_name, 'result': outcome.upper(), 'verification_time':ver_time, 'hist_file': hist_file, 
-                'fig_path':fig_path, 'json_path': json_path, 'lisp_path':lisp_path, 'result_file':result_file}
+        output_dir = os.path.abspath("static/tasks/")
+        if technology == 'spark':
+            v_task = SparkVerificationTask(context=context,
+                                           output_dir=output_dir)
+        elif technology == 'storm':
+            v_task = StormVerificationTask(context=context,
+                                           output_dir=output_dir)
+        else:
+            raise NotImplementedError()
+
+        v_task.launch_verification()
+        if v_task.result_dir:
+            v_task.process_zot_results()
+            if v_task.verification_result.outcome == 'sat':
+                v_task.plot_trace()
+            print 'DONE'
+        else:
+            print 'FINISHED WITH ERRORS'
+
+#        outcome, ver_time, hist_file, fig_path, \
+#            json_path, lisp_path, result_file = json2mc.main(["-v", "visual/plot_settings.json", "-j", 
+#                                                            context, "-o", os.path.abspath("static/tasks/")])
+        outcome = v_task.verification_result.outcome
+        ver_time = v_task.verification_result.verification_time
+        hist_file = os.path.join(v_task.result_dir, v_task.hist_file)
+        fig_path = v_task.figure_path
+        lisp_path = os.path.join(v_task.result_dir, "zot_in.lisp")
+        result_file = os.path.join(v_task.result_dir, v_task.result_file)
+        json_path = v_task.json_context_path
+        return {'name': task_name, 'result': outcome.upper(),
+                'verification_time':ver_time, 'hist_file': hist_file,
+                'fig_path':fig_path, 'json_path': json_path,
+                'lisp_path':lisp_path, 'result_file':result_file}
     except SoftTimeLimitExceeded:
         print 'SoftTimeLimitExceeded!!'
         self.update_state(state='FAILURE', meta={'status': 'Task TIMEOUT!',
-            'result': 'FAIL', 'name': task_name})
+                                                 'result': 'FAIL', 'name': task_name})
         time.sleep(5)
         return {'name': task_name, 'status':'TIMEOUT'}
 
@@ -99,7 +129,9 @@ def create_task():
 
     }
     task = verification_task.apply_async(args=[params["title"],
-                                         params["json_context"]], soft_time_limit=params["timeout"])
+                                               params['technology'],
+                                               params["json_context"]],
+                                               soft_time_limit=params["timeout"])
 #    verification_task(params["title"])
     return jsonify({}), 202, {'Location': url_for('taskstatus',
                                                   task_id=task.id)}

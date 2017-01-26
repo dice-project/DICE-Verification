@@ -58,10 +58,13 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
 #environment variables for D-VerT
     ENV PROJECT_FOLDER /opt/DICE-Verification/
     ENV SERVER_CODE_FOLDER ${PROJECT_FOLDER}d-vert-server/
-    ENV FORMAL_DICE ${SERVER_CODE_FOLDER}json2mc/
+#    ENV FORMAL_DICE ${SERVER_CODE_FOLDER}json2mc/
+    ENV FORMAL_DICE ${PROJECT_FOLDER}json2mc/
 
 #get D-VerT from github
-    RUN  git clone https://github.com/dice-project/DICE-Verification  $PROJECT_FOLDER
+   # RUN  git clone https://github.com/dice-project/DICE-Verification  $PROJECT_FOLDER
+    RUN git clone -b spark-features --single-branch https://github.com/dice-project/DICE-Verification
+#    ADD . $PROJECT_FOLDER
 
 # Install and setup virtualenv 
     RUN pip install virtualenv
@@ -70,6 +73,11 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     RUN ["/bin/bash", "-c", "source venv/bin/activate"]
 #load all needed packages from pip
     RUN pip install -r ${PROJECT_FOLDER}installation/requirements.txt
+
+# install json2mc via pip
+    WORKDIR $FORMAL_DICE
+    RUN ls -l
+    RUN pip install .
 
 #apply modifications to zot
     WORKDIR $PROJECT_FOLDER
