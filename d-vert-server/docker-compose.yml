@@ -1,0 +1,42 @@
+version: '2'
+
+services:
+
+  redis:
+    image: redis
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'redis:/var/lib/redis/data'
+
+ 
+  web:
+    build: .
+    command: python run_json2mc_server.py
+    ports:
+      - '5000:5000'
+    volumes:
+      - './containers-tasks:/opt/DICE-Verification/d-vert-server/static/tasks'
+    environment:
+      PYTHONUNBUFFERED: 'true'
+
+  celery:
+    build: .
+    user: celery-user
+    command: celery worker -l info -A run_json2mc_server.celery
+    links:
+      - redis
+    volumes:
+      - './containers-tasks:/opt/DICE-Verification/d-vert-server/static/tasks'
+    environment:
+      PYTHONUNBUFFERED: 'true'
+ 
+  flower:
+    build: .
+    command: celery flower -A run_json2mc_server.celery --port=5555
+    ports:
+    - '5555:5555'
+
+
+volumes:
+  redis: 

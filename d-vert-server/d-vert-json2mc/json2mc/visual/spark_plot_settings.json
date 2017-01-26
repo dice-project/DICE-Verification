@@ -1,0 +1,28 @@
+
+  {
+  "global_vars":
+      [
+        {
+          "var_prefix":"AVA_CC",
+          "linewidth": 2,
+          "linestyle":"--sk",
+          "markersize":1
+        }
+      ],
+   "stage_vars":
+     [
+        {
+          "var_prefix":"RUN_TC_",
+          "linewidth": 2,
+          "linestyle":"sc--",
+          "markersize":1
+        }
+      ],
+    "colors":
+        ["m", "b", "r", "c", "y", "g", "k", "w"],
+    "line_styles":
+        ["-","--","-.",":"],
+    "markers":
+        ["o", "+", "^", "x", "D", "s", "*", ">", "<", "v", "h"]
+
+  }
