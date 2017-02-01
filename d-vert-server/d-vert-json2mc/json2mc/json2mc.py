@@ -206,7 +206,7 @@ USAGE
                     if v_task.result_dir:
                         v_task.process_zot_results()
                         if v_task.verification_result.outcome == 'sat':
-                            v_task.verification_result.
+#                            v_task.verification_result
                             v_task.plot_trace()
                         print 'DONE'
                     else:

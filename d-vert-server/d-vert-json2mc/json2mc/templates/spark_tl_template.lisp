@@ -39,13 +39,15 @@
 {% endfor %}
 
 
+(defconstant the-labels '(S{{ labels|join(' S') }}))
 
 (defvar the-labels-table)
 (setq the-labels-table (make-hash-table :test 'equalp))
 {% for k,v in stages.iteritems() -%}
 (setf (gethash 'S{{k}} the-labels-table) '(S{{ v.label }}))
 {% endfor %}
-
+;extract values by invoking:
+;(gethash i the-labels-table)
 
 ;(defconstant TOT_CORES 600)
 (defconstant TOT_CORES {{ tot_cores }})
@@ -115,6 +117,20 @@
    ;             ,(<P1> "ENABLED_S" i)
     ;            (!!(somp ,(<P1> "START_S" i))))
   ;          (somf_e ,(<P1> "START_S" i))))
+  					; (START_T && Y(REM_TC = TOT_TASKS)) <-> START_S
+     (loop for j in stages collect
+       `(&&
+		(<->
+			(&&
+				,(<P1> "START_T" j)
+				(yesterday ([=] ,(<V1> "REM_TC" j) ,(<C1> "TOT_TASKS" j))))
+			,(<P1> "START_S" j))
+	; (END_T && (REM_TC = 0)) <-> END_S
+		(<->
+			(&&
+				,(<P1> "END_T" j)
+				([=] ,(<V1> "REM_TC" j) 0))
+	 		,(<P1> "END_S" j))))
     )
   )
 )
@@ -233,19 +249,6 @@
 						(->
 							(!! ,(<P1> "RUN_T" i))
 							([=] ,(<V1> "RUN_TC" i) 0))		
-
-					; (START_T && Y(REM_TC = TOT_TASKS)) <-> START_S
-						(<->
-							(&&
-								,(<P1> "START_T" i)
-								(yesterday ([=] ,(<V1> "REM_TC" i) ,(<C1> "TOT_TASKS" i))))
-							,(<P1> "START_S" i))
-					; (END_T && (REM_TC = 0)) <-> END_S
-						(<->
-							(&&
-								,(<P1> "END_T" i)
-								([=] ,(<V1> "REM_TC" i) 0))
-							,(<P1> "END_S" i))								
 ); end &&
 ); end loop
 ); end nconc
