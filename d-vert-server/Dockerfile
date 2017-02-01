@@ -77,7 +77,6 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
 
 # install json2mc via pip
     WORKDIR $JSON2MC_FOLDER
-    RUN ls -l
     RUN pip install .
 
 #apply modifications to zot

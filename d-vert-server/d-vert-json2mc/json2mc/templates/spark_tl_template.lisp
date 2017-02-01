@@ -149,7 +149,7 @@
          `(->
            ,(<P1> "RUN_T" i)
            (&&
-;			 ,(<P1> "RUN_S" i) ; UNSAT!!!?
+;			 ,(<P1> "RUN_S" i) 
              (since
                ,(<P1> "RUN_T" i)
                ,(<P1> "START_T" i))
@@ -179,7 +179,7 @@
  )
 )
 
-(defmacro newResourceFormulae(stages)
+(defmacro resourcesFormulae(stages)
 	`(&&
 		; sum(RUN_TC) + AVA_CC = TOT_CORES 
 		([=]
@@ -194,7 +194,7 @@
 
 
 
-(defmacro newCountersFormulae(stages)
+(defmacro countersFormulae(stages)
 	`(&&
 		,@(nconc
 		;;; RUN_TC != XRUN_TC -> Y(START_T) || END_T
@@ -271,176 +271,8 @@
     (loop for i in stages collect
        `(&&
 					([>=] ,(<V1> "RUN_TC" i) 0)			 
-					([>=] ,(<V1> "REM_TC" i) 0)					 
-;					([>=] ,(<V1> "RUNNABLE_TC" i) 0)
-;					([>=] ,(<V1> "RELEASE_CC" i) 0)
-;					([>=] ,(<V1> "LOCK_CC" i) 0)			 																 
+					([>=] ,(<V1> "REM_TC" i) 0)					 	 																 
 )))))
-
-
-(defmacro countersFormulae(stages)
-	`(&&
-		,@(nconc
-		;;;ENABLED_S && (!Y(ENABLED_S)||ORIG) -> REM_TC = TOT_TASKS
-			(loop for i in stages collect
-				`(&&
-						(->
-							(&&
-								,(<P1> "ENABLED_S" i)
-								(||
-									(!!(yesterday ,(<P1> "ENABLED_S" i)))
-									orig))
-							([=] ,(<V1> "REM_TC" i) ,(<C1> "TOT_TASKS" i)))
-		;;;RUN_T -> RUN_C>0 && RUNNABLE_TC=0 until END_T
-						(->
-							,(<P1> "RUN_T" i)
-							(&&
-								([>] ,(<V1> "RUN_TC" i) 0)
-								(until 
-									(&&
-										([=] ,(<V1> "RUN_TC" i) (next ,(<V1> "RUN_TC" i))) ;UNSAT!!
-										([=] ,(<V1> "RUNNABLE_TC" i) 0))
-									 ,(<P1> "END_T" i))))
-		;;;!RUN_T -> RUN_TC=0 && RUNNABLE_TC=REM_TC
-						(->
-							(!! ,(<P1> "RUN_T" i))
-							(&&
-								([=] ,(<V1> "RUN_TC" i) 0) 
-								([=] ,(<V1> "RUNNABLE_TC" i) ,(<V1> "REM_TC" i))))		
-		;;;RUN_TC>0 -> RUN_TC>0 snc START_T && XRUN_TC=RUN_TC until END_T 
-		;SERVE?!
-						(->
-							([>] ,(<V1> "RUN_TC" i) 0)
-							(&&
-								,(<P1> "RUN_T" i)
-								(since 
-									([>] ,(<V1> "RUN_TC" i) 0)
-									,(<P1> "START_T" i))
-								(until 
-									([=] (next ,(<V1> "RUN_TC" i)) ,(<V1> "RUN_TC" i))
-									,(<P1> "END_T" i))
-								))								
-					;;;XREM_TC = REM_TC - XLOCK_CC
-;VERSIONE "NEXT"
-;						(->
-;							,	(<P1> "ENABLED_S" i)
-;							([=]
-;								([+] 
-;									(next ,(<V1> "REM_TC" i))
-;									(next ,(<V1> "LOCK_CC" i))) 
-;								,(<V1> "REM_TC" i)))
-;versione "YESTERDAY"
-						(->
-							(yesterday ,(<P1> "ENABLED_S" i))
-							([=]
-								([+] 
-									,(<V1> "REM_TC" i)
-									,(<V1> "LOCK_CC" i)) 
-								(yesterday ,(<V1> "REM_TC" i))))
-					;START_T -> LOCK_CC > 0 && RUN_TC = LOCK_CC
-						(->
-							,(<P1> "START_T" i)
-							(&&
-								([>] ,(<V1> "LOCK_CC" i) 0)
-								([=] ,(<V1> "RUN_TC" i) ,(<V1> "LOCK_CC" i))))
-			;;;!START_T -> LOCK_CC=0
-						(-> 
-							(!! ,(<P1> "START_T" i))
-							([=] ,(<V1> "LOCK_CC" i) 0))
-			;;;!END_T -> RELEASE_CC=0
-						(->
-							(!! ,(<P1> "END_T" i))
-							([=] ,(<V1> "RELEASE_CC" i) 0))
-			;;; END -> RELEASE_CC=RUN_TC && RUNNABLE_TC=REM_TC 
-						(->
-							,(<P1> "END_T" i)
-							(&&						
-								([=] ,(<V1> "RELEASE_CC" i) ,(<V1> "RUN_TC" i))
-								([=] ,(<V1> "RUNNABLE_TC" i) ,(<V1> "REM_TC" i))
-								))
-					; (START_T && Y(REM_TC = TOT_TASKS)) <-> START_S
-						(<->
-							(&&
-								,(<P1> "START_T" i)
-								(yesterday ([=] ,(<V1> "REM_TC" i) ,(<C1> "TOT_TASKS" i))))
-							,(<P1> "START_S" i))
-					; (END_T && (REM_TC = 0)) <-> END_S
-						(<->
-							(&&
-								,(<P1> "END_T" i)
-								([=] ,(<V1> "REM_TC" i) 0))
-							,(<P1> "END_S" i))
-						
-				));END LOOP 	
-		)
-	)
-); END countersFormulae
-
-
-
-
-(defmacro resourcesFormulae(stages)
-	`(&&
-				;IDLE_CORES <-> (AVA_CC + sum(RELEASE_CC)) > 0 && sum(RUNNABLE_TC) > 0
-				;(FORMULA 21)
-						(<->
-								(-P- IDLE_CORES)
-								(&&
-									([>]
-										([+] 
-											(-V- AVA_CC)
-											,(plus (loop for j in stages collect
-													(<V1> "RELEASE_CC" j))))
-										 0)
-										([>]
-											,(plus (loop for j in stages collect
-													(<V1> "RUNNABLE_TC" j)))
-													0)))
-					;FORMULA 22
-						(->
-							([<]
-								,(plus (loop for j in stages collect
-										(<V1> "RUNNABLE_TC" j)))
-								([+] 
-										(-V- AVA_CC)
-										,(plus (loop for j in stages collect
-												(<V1> "RELEASE_CC" j)))))
-							(&&
-								([=]
-									(next (-V- AVA_CC))
-									([-]
-										([+] 
-											(-V- AVA_CC)
-											,(plus (loop for j in stages collect
-													(<V1> "RELEASE_CC" j))))
-										,(plus (loop for j in stages collect
-											(<V1> "RUNNABLE_TC" j)))))
-								([=]
-									,(plus (loop for j in stages collect
-											(next (<V1> "LOCK_CC" j))))
-									,(plus (loop for j in stages collect
-											(<V1> "RUNNABLE_TC" j))))))
-					;FORMULA 23
-						(->
-							([>=]
-								,(plus (loop for j in stages collect
-										(<V1> "RUNNABLE_TC" j)))
-								([+] 
-										(-V- AVA_CC)
-										,(plus (loop for j in stages collect
-												(<V1> "RELEASE_CC" j)))))
-							(&&
-								([=] (next (-V- AVA_CC)) 0)
-								([=]
-									,(plus (loop for j in stages collect
-											(next (<V1> "LOCK_CC" j))))
-									([+] 
-										(-V- AVA_CC)
-										,(plus (loop for j in stages collect
-												(<V1> "RELEASE_CC" j)))))))
-														 
-
-)); END resourcesFormulae
 
 
 
@@ -518,14 +350,14 @@
 
 		;IDLE_CORES DURATION
 			(->
-			(-P- IDLE_CORES)
-						(until
-								(-P- IDLE_CORES)
-							(&&
-								([<] (-V- CLOCK_IDC) MAX_IDLE_TIME)
-								(||
-									,@(loop for k in stages collect
-											(<P1> "START_T" k))))))							
+				(-P- IDLE_CORES)
+							(until
+									(-P- IDLE_CORES)
+								(&&
+									([<] (-V- CLOCK_IDC) MAX_IDLE_TIME)
+									(||
+										,@(loop for k in stages collect
+												(<P1> "START_T" k))))))							
 
 		,@(loop for j in stages collect
 				;STAGE CLOCK RESET CONDITIONS
@@ -566,9 +398,6 @@
       (loop for j in stages do
         	(eval `(define-tvar ,(intern (format nil "REM_TC_~S" j)) *int*))
 					(eval `(define-tvar ,(<C1> "RUN_TC" j) *int*))
-;					(eval `(define-tvar ,(<C1> "RUNNABLE_TC" j) *int*))
-;					(eval `(define-tvar ,(<C1> "RELEASE_CC" j) *int*))
-;					(eval `(define-tvar ,(<C1> "LOCK_CC" j) *int*))
         ))
 
 
@@ -616,9 +445,6 @@
        `(&&
 					([=] ,(<V1> "RUN_TC" i) 0)			 					 
 					([=] ,(<V1> "REM_TC" i) ,(<C1> "TOT_TASKS" i))
-;					([=] ,(<V1> "RUNNABLE_TC" i) ,(<V1> "REM_TC" i))
-;					([=] ,(<V1> "RELEASE_CC" i) 0)
-;					([=] ,(<V1> "LOCK_CC" i) 0)			 																 
 )))))
 
 
@@ -653,9 +479,6 @@
 
 
 
-;(pprint (queueConstraint '(B1 B2 B3) 10))
-
-
 ;;; WRAPPERS FOR EVALUATING MACRO PARAMETERS
 (defun f-stagesStateEvolution (stages dependency-table)
 	(eval `(stagesStateEvolution ,stages ,dependency-table)))
@@ -669,20 +492,14 @@
 (defun f-initCounters (stages)
 	(eval `(initCounters ,stages)))
 
-(defun f-countersFormulae (stages)
-	(eval `(countersFormulae ,stages)))
-
 (defun f-countersGEqZero (stages)
 	(eval `(countersGEqZero ,stages)))
 
+(defun f-countersFormulae (stages)
+	(eval `(countersFormulae ,stages)))	
+
 (defun f-resourcesFormulae (stages)
 	(eval `(resourcesFormulae ,stages)))
-
-(defun f-newCountersFormulae (stages)
-	(eval `(newCountersFormulae ,stages)))	
-
-(defun f-newResourceFormulae (stages)
-	(eval `(newResourceFormulae ,stages)))
 
 (defun f-clocksBehaviour (stages times)
 	(eval `(clocksBehaviour ,stages ,times)))	
@@ -704,7 +521,7 @@
 
 ;(pprint (f-tasksStateEvolution the-stages))
 ;(pprint (f-countersFormulae the-stages))
-;(pprint (f-newResourceFormulae the-stages))
+;(pprint (f-resourcesFormulae the-stages))
 ;(print (genClocks the-stages))
 ;(pprint (f-initClocks the-stages))
 
@@ -742,21 +559,13 @@
 					(f-stagesStateEvolution the-stages the-dependency-table)
 					(f-tasksStateEvolution the-stages)
 					(f-countersGEqZero the-stages)
-;					(f-countersFormulae the-stages)
-;					(f-resourcesFormulae the-stages)
- 					(f-newCountersFormulae the-stages)
-					(f-newResourceFormulae the-stages)
+ 					(f-countersFormulae the-stages)
+					(f-resourcesFormulae the-stages)
 					(f-clocksConstraints the-stages)
                     (f-clocksBehaviour the-stages the-proc-time-table)
-;                    (f-spoutClocksBehaviour the-spouts the-proc-time-table)
-;		            (f-noFailures '(S1 URLEXPANSIONBOLT URLCRAWLDECIDERBOLT WEBPAGEFETCHERBOLT ARTICLEEXTRACTIONBOLT MEDIAEXTRACTIONBOLT SOLRBOLT))
 				)
 			)
-
         
-;        (somf (alwf(f-growingConstraint '(WEBPAGEFETCHERBOLT))))
-        
-
 			)
 
 			(&& (yesterday orig) (alwf (!! orig)))
