@@ -31,9 +31,8 @@ from collections import OrderedDict
 
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
-from spark_verification import SparkVerificationTask
-from storm_verification import StormVerificationTask
 import config as cfg
+from factory_methods import DiaVerificationFactory
 
 __all__ = []
 __version__ = "0.2"
@@ -107,18 +106,17 @@ USAGE
                                 formatter_class=RawDescriptionHelpFormatter)
         group1 = parser.add_mutually_exclusive_group()
         parser.add_argument("-T", "--technology", dest="technology",
-                            default="spark",
+                            default=cfg.TECH_KEYS[1],
                             help="reference technology (supported: {})"
-                            .format(", ".join(cfg.SUPPORTED_TECHS)))
+                            .format(", ".join(cfg.TECH_KEYS)))
         parser.add_argument("-t", "--template", dest="template_path",
                             help="path to template file")
         group1.add_argument("-c", "--context", dest="context_path",
-                            default=os.path.join(base_dir,
-                                                 "context_examples",
-                                                 "spark",
-                                                 "Simple_Example.json"),
                             help="path to JSON context file"
-                            " [default: %(default)s]")
+                            " [default: {}s]".format(os.path.join(base_dir,
+                                                 "context_examples",
+                                                 "[{}]".format(", ".join(cfg.TECH_KEYS)),
+                                                 "[{}]_example.json".format(", ".join(cfg.TECH_KEYS)))))
         parser.add_argument("-l", "--label", dest="label",
                             action="store_true",
                             help="apply graph labeling to reduce the size of "
@@ -147,17 +145,20 @@ USAGE
 
         # Process arguments
         args = parser.parse_args()
-
-        context_path = args.context_path
+        technology = args.technology
+        print args.context_path
+        context_path = args.context_path if args.context_path else os.path.join(base_dir,
+                                                                                "context_examples",
+                                                                                technology,
+                                                                                technology+"_example.json")
         verbose = args.verbose
         display = args.display
         results_dir = args.results_dir
         output_dir = args.output_dir
-        context_path = args.context_path
         template_path = args.template_path
         graphical_conf_path = args.graphical_conf_path
         label = args.label
-        technology = args.technology
+        
 
         print("Context_path: {}".format(context_path))
 
@@ -173,34 +174,12 @@ USAGE
                 with open(context_path, "r") as param_file:
                     context = json.load(param_file,
                                         object_pairs_hook=OrderedDict)
-                    '''
-                    print type(context)
-                    print "(defconstant the-stages {})".format(create_lisp_list(context.keys()))
-                    for k in context["stages"].keys():     
-                        print "(setf (gethash 'S{} the-dependency-table) {})".format(k, create_lisp_list(context["stages"][k]["parentsIds"]))  
-                    for k in context["stages"].keys():
-                        print "(defconstant TOT_TASKS_S{} {})".format(k, context["stages"][k]["numtask"])
-                    print ""    
-                    for k in context["stages"].keys():
-                        print "(defconstant ALPHA_S{} {})".format(k, context["stages"][k]["duration"]/context["stages"][k]["numtask"])
-                    print "" 
-                    for k in context["stages"].keys():
-                        print "(setf (gethash 'S{0} the-proc-time-table) (list (- ALPHA_S{0} (/ ALPHA_S{0} 10.0)) (+ ALPHA_S{0} (/ ALPHA_S{0} 10.0))))".format(k)
-                        '''
-    #                gr = dagrenderer(context)
-    #                gr.render()
-                    if technology == 'spark':
-                        v_task = SparkVerificationTask(context=context,
-                                                       output_dir=output_dir,
-                                                       display=display,
-                                                       template_path=template_path)
-                    elif technology == 'storm':
-                        v_task = StormVerificationTask(template_path=template_path,
-                                                       context=context,
-                                                       output_dir=output_dir,
-                                                       display=display)
-                    else:
-                        raise NotImplementedError()
+
+                    v_task = DiaVerificationFactory.get_verif_task(tech=technology,
+                                                                   template_path=template_path,
+                                                                   context=context,
+                                                                   output_dir=output_dir,
+                                                                   display=display)                        
                     print v_task
                     v_task.launch_verification()
                     if v_task.result_dir:
@@ -215,16 +194,10 @@ USAGE
                 # Does not exist OR no read permissions
                 print "Unable to open file"
         else:
-            if technology == 'spark':
-                v_task = SparkVerificationTask(plotonly_folder=results_dir,
-                                               display=display,
-                                               graphical_conf_path=graphical_conf_path)
-            elif technology == 'storm':
-                v_task = StormVerificationTask(plotonly_folder=results_dir,
-                                               display=display,
-                                               graphical_conf_path=graphical_conf_path)
-            else:
-                raise NotImplementedError()
+            v_task = DiaVerificationFactory.get_verif_task(tech=technology,
+                                                           plotonly_folder=results_dir,
+                                                           display=display,
+                                                           graphical_conf_path=graphical_conf_path)
             v_task.plot_trace()
         return 0
     except KeyboardInterrupt:
