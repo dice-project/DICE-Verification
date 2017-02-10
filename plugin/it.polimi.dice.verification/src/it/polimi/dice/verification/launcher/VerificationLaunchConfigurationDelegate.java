@@ -326,7 +326,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			jsonContext = new JsonVerificationContext(topology, vp);
 			jsonContext.setApplicationName(verificationIdentifier);
 			
-			DiceLogger.logError(DiceVerificationPlugin.getDefault(), "JSON CONTEXT CREATED:\n" + gson.toJson(jsonContext));
+			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "JSON CONTEXT CREATED:\n" + gson.toJson(jsonContext));
 			
 /*			String serverAddress = DiceVerificationUiPlugin.getDefault().getPreferenceStore()
 			        .getString(PreferenceConstants.HOST.getName());
@@ -335,14 +335,13 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 */			
 			String dashboardUrl = serverAddress + ":" + serverPort;
 			String launchVerificationUrl =  dashboardUrl + "/longtasks";
-			DiceLogger.logError(DiceVerificationPlugin.getDefault(), "Building url:\n" + launchVerificationUrl);
-					
+			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "Building url:\n" + launchVerificationUrl);
 			
 
 			JsonVerificationTaskRequest vtr = new JsonVerificationTaskRequest(verificationIdentifier, jsonContext);
 			
 			Gson gsonBuilder = new GsonBuilder().create();
-			DiceLogger.logError(DiceVerificationPlugin.getDefault(), "WRITING FILE TO:\n" + jsonFile.getAbsolutePath());
+			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "WRITING FILE TO:\n" + jsonFile.getAbsolutePath());
 			try (Writer writer = new FileWriter(jsonFile)) {    
 			    gsonBuilder.toJson(jsonContext, writer);
 			}

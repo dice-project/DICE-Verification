@@ -3,13 +3,10 @@ package it.polimi.dice.verification.uml.diagrams.classdiagram;
 import java.util.HashSet;
 import java.util.Set;
 
-
 /*import org.correttouml.uml.diagrams.statediagram.StateDiagram;*/
 
 import org.eclipse.uml2.uml.Association;
-import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Property;
-import org.eclipse.uml2.uml.StateMachine;
 
 import it.polimi.dice.verification.uml.DiceModel;
 
