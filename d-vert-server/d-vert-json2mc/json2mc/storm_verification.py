@@ -103,8 +103,10 @@ class StormVerificationTask(VerificationTask):
             self.output_dir = os.path.abspath(output_dir)
             self.app_name = context["app_name"]
             self.app_dir = os.path.join(self.output_dir, self.app_name)
-            self.plugin = context["verification_params"]["plugin"]
-            print template_path
+            tmp_plugin = context["verification_params"]["plugin"]
+            # temporary assignment to cope with plugins list defined in eclipse client
+            self.plugin = tmp_plugin[0] if isinstance(tmp_plugin, list) else tmp_plugin
+            context["verification_params"]["plugin"] = self.plugin
             self.template_path = os.path.abspath(template_path)
             print "opening", self.template_path
             with open(self.template_path, "r") as tmp:

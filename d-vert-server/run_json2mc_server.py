@@ -7,8 +7,8 @@ from flask import Flask, request, render_template, session, flash, redirect, \
 from celery import Celery, states
 from celery.exceptions import SoftTimeLimitExceeded
 
-from json2mc.spark_verification import SparkVerificationTask
-from json2mc.storm_verification import StormVerificationTask
+from json2mc.factory_methods import DiaVerificationFactory
+import json2mc.config as cfg
 
 from redis import Redis
 
@@ -47,15 +47,9 @@ def verification_task(self, task_name, technology, context):
         self.update_state(state='PROGRESS', meta={'name': task_name})
 
         output_dir = os.path.abspath("static/tasks/")
-        if technology == 'spark':
-            v_task = SparkVerificationTask(context=context,
-                                           output_dir=output_dir)
-        elif technology == 'storm':
-            v_task = StormVerificationTask(context=context,
-                                           output_dir=output_dir)
-        else:
-            raise NotImplementedError()
-
+        v_task = DiaVerificationFactory.get_verif_task(tech=technology,
+                                                       context=context,
+                                                       output_dir=output_dir)
         v_task.launch_verification()
         if v_task.result_dir:
             v_task.process_zot_results()
@@ -123,7 +117,7 @@ def create_task():
     params = {
         'title': request.json['title'],
         'description': request.json.get('description', ""),
-        'technology':request.json.get('technology', ''),
+        'technology':request.json.get('technology', cfg.TECH_KEYS[0]),
         'done': False,
         'json_context': request.json["json_context"],
         'timeout': request.json.get('timeout', 300000)

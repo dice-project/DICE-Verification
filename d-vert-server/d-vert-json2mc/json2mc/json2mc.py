@@ -106,7 +106,7 @@ USAGE
                                 formatter_class=RawDescriptionHelpFormatter)
         group1 = parser.add_mutually_exclusive_group()
         parser.add_argument("-T", "--technology", dest="technology",
-                            default=cfg.TECH_KEYS[1],
+                            default=cfg.TECH_KEYS[0],
                             help="reference technology (supported: {})"
                             .format(", ".join(cfg.TECH_KEYS)))
         parser.add_argument("-t", "--template", dest="template_path",
