@@ -8,7 +8,7 @@ Released for free under the Creative Commons Attribution License
 body {
 	margin: 0px 0px 0px 0px;
 	padding: 0;
-	background: #1f31bb url(imgs/bg01.png) repeat;
+	background: #1f31bb url(../imgs/bg01.png) repeat;
 	font-family: Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	color: #4b4b4b;

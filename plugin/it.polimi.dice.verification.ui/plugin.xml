@@ -119,7 +119,9 @@
                               forcePluginActivation="true"
                               property="org.eclipse.core.resources.extension"
                               value="uml">
-                        </test></or></and>
+                        </test>
+                      </or>
+                  </and>
                </or>
               </iterate>
              </with>

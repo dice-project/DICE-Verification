@@ -1,11 +1,5 @@
 package it.polimi.dice.verification.uml.diagrams.classdiagram;
 
-import javax.print.attribute.standard.RequestingUserName;
-
-import org.eclipse.uml2.uml.Class;
-
-import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
-
 public abstract class NodeClass {
 
 	protected transient org.eclipse.uml2.uml.Class umlClass;
