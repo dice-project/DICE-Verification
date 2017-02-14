@@ -1,0 +1,5 @@
+recursive-include json2mc/templates *
+recursive-include json2mc/context_examples *
+recursive-include json2mc/visual *
+recursive-exclude json2mc *.pyc
+recursive-exclude json2mc *.pyo

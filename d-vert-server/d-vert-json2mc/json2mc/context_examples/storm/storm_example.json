@@ -1,0 +1,105 @@
+{
+    "app_name": "DigitalPebbleTopology_Example", 
+    "verification_params": {
+        "base_quantity": 5, 
+        "plugin": "ae2sbvzot", 
+        "num_steps": 20, 
+        "periodic_queues": [
+            "PARTITIONER", 
+            "FETCH", 
+            "SITEMAP", 
+            "PARSE", 
+            "INDEX", 
+            "STATUS"
+        ], 
+        "max_time": 2000, 
+        "strictly_monotonic_queues": [
+            "STATUS"
+        ]
+    }, 
+    "topology": {
+        "bolts": [
+            {
+                "subs": [
+                    "SPOUT"
+                ], 
+                "parallelism": 2, 
+                "min_ttf": 0, 
+                "alpha": 0.8, 
+                "sigma": 1.0, 
+                "id": "PARTITIONER", 
+                "d": 0.0
+            }, 
+            {
+                "subs": [
+                    "PARTITIONER"
+                ], 
+                "parallelism": 2, 
+                "min_ttf": 0, 
+                "alpha": 1.0, 
+                "sigma": 1.0, 
+                "id": "FETCH", 
+                "d": 0.0
+            }, 
+            {
+                "subs": [
+                    "FETCH"
+                ], 
+                "parallelism": 2, 
+                "min_ttf": 0, 
+                "alpha": 1.0, 
+                "sigma": 1.0, 
+                "id": "SITEMAP", 
+                "d": 0.0
+            }, 
+            {
+                "subs": [
+                    "SITEMAP"
+                ], 
+                "parallelism": 2, 
+                "min_ttf": 0, 
+                "alpha": 1.0, 
+                "sigma": 1.0, 
+                "id": "PARSE", 
+                "d": 0.0
+            }, 
+            {
+                "subs": [
+                    "PARSE"
+                ], 
+                "parallelism": 2, 
+                "min_ttf": 0, 
+                "alpha": 0.5, 
+                "sigma": 1.0, 
+                "id": "INDEX", 
+                "d": 0.0
+            }, 
+            {
+                "subs": [
+                    "INDEX", 
+                    "PARSE", 
+                    "SITEMAP", 
+                    "FETCH"
+                ], 
+                "parallelism": 2, 
+                "min_ttf": 0, 
+                "alpha": 1.0, 
+                "sigma": 0.0, 
+                "id": "STATUS", 
+                "d": 0.0
+            }
+        ], 
+        "init_queues": 5, 
+        "max_reboot_time": 100, 
+        "max_idle_time": 0.1, 
+        "min_reboot_time": 10, 
+        "spouts": [
+            {
+                "avg_emit_rate": 2.0, 
+                "id": "SPOUT", 
+                "parallelism": 5
+            }
+        ], 
+        "queue_threshold": 0
+    }
+}

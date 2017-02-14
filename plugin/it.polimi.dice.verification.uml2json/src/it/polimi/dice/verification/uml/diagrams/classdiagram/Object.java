@@ -4,14 +4,12 @@ package it.polimi.dice.verification.uml.diagrams.classdiagram;
 import java.util.HashSet;
 import java.util.Set;
 
-
 //import org.correttouml.uml.diagrams.sequencediagram.ExecutionOccurrence;
 //import org.correttouml.uml.diagrams.sequencediagram.SequenceDiagram;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Element;
-import org.eclipse.uml2.uml.ExecutionSpecification;
 import org.eclipse.uml2.uml.InstanceSpecification;
 
 public class Object {

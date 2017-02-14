@@ -7,17 +7,16 @@ import org.eclipse.uml2.uml.Association;
 import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Property;
 
-import it.polimi.dice.core.logger.DiceLogger;
-import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
-import it.polimi.dice.verification.uml2json.Uml2JsonPlugin;
-
 import com.google.gson.annotations.SerializedName;
+
+import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
 
 public class BoltClass extends NodeClass{
 
-//	private org.eclipse.uml2.uml.Class umlClass;
-//	private String id;
-//	private int parallelism;
+	private transient static final double DEFAULT_SIGMA = 1;
+	private transient static final double DEFAULT_ALPHA = 1;
+	private transient static final int DEFAULT_PARALLELISM = 1;
+
 	private double alpha;
 	private double sigma;
 	private transient List<NodeClass> nodeSubscriptionList;
@@ -28,17 +27,15 @@ public class BoltClass extends NodeClass{
 	@SerializedName(value="d")
 	private double aggregateCoefficient;
 	
-/*	public BoltClass(String id, double alpha, double sigma, int parallelism, int minimumTimeToFailure) {
-		//super(id, parallelism);
-//		this.id = id;
-//		this.parallelism = parallelism;
-		this.alpha = alpha;
-		this.sigma = sigma;
-		this.minimumTimeToFailure = minimumTimeToFailure;
-		this.nodeSubscriptionList = new ArrayList<NodeClass>();
-		this.stringSubscriptionList = new ArrayList<String>();
-	}
-*/
+	public BoltClass(org.eclipse.uml2.uml.Class c) {
+		super(c);
+		this.alpha = extractAlpha();
+		this.sigma = extractSigma();
+		this.parallelism = extractParallelism();
+		this.stringSubscriptionList = extractSubsciptionList();
+		this.aggregateCoefficient = 0;
+}
+	
 	public List<NodeClass> getNodeSubscriptionList() {
 		return nodeSubscriptionList;
 	}
@@ -61,15 +58,6 @@ public class BoltClass extends NodeClass{
 		this.stringSubscriptionList = stringSubscriptionSet;
 	}
 
-	public BoltClass(org.eclipse.uml2.uml.Class c) {
-			super(c);
-			this.alpha = extractAlpha();
-			this.sigma = extractSigma();
-			this.parallelism = extractParallelism();
-			this.stringSubscriptionList = extractSubsciptionList();
-			this.aggregateCoefficient = 0;
-	}
-
 	public String getName() {
 		return super.getUmlClass().getName();
 	}
@@ -85,19 +73,19 @@ public class BoltClass extends NodeClass{
 	protected int extractParallelism() {
 		//Classifier umlBoltType=umlBolt.getClassifiers().get(0);
 		String parallelism_s = (String)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "StormBolt"), "parallelism");
-		int parallelism= Integer.parseInt(parallelism_s);
+		int parallelism = parallelism_s != null ? Integer.parseInt(parallelism_s) : DEFAULT_PARALLELISM;
 		return parallelism;
 	}
 
 	protected Double extractAlpha() {
 		String alpha_s = (String)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "StormBolt"), "alpha");
-		Double alpha = Double.parseDouble(alpha_s);
+		Double alpha = alpha_s != null ? Double.parseDouble(alpha_s) : DEFAULT_ALPHA;
 		return alpha;
 	}
 
 	protected Double extractSigma() {
 		String sigma_s = (String)umlClass.getValue(UML2ModelHelper.getStereotype(umlClass, "StormBolt"), "sigma");
-		Double sigma = Double.parseDouble(sigma_s);
+		Double sigma = sigma_s != null ? Double.parseDouble(sigma_s) : DEFAULT_SIGMA ;
 		return sigma;
 	}
 	
