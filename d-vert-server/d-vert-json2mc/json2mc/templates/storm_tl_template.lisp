@@ -537,12 +537,13 @@
 (defmacro singleQueueBehaviour(bolts topology-table)
 `(&&
   ,@(nconc
-    (loop for j in bolts collect
-       `(<->
-         (-P- ,(format nil "ADD_~S" j))
-         (||
-         ,@(loop for i in (gethash j topology-table) collect
-             `(-P- ,(format nil "EMIT_~S" i))))))
+; CONFLICTING WITH BUFFER UPDATES
+;    (loop for j in bolts collect
+;       `(<->
+;         (-P- ,(format nil "ADD_~S" j))
+;         (||
+;         ,@(loop for i in (gethash j topology-table) collect
+;             `(-P- ,(format nil "EMIT_~S" i))))))
     (loop for j in bolts collect
       `(->
         (&&
@@ -720,17 +721,19 @@
          				(!!(-P- ,(format nil "EMIT_~S" j)))
 								(&&
          						([=] (-V-,(intern (format nil "R_EMIT_~S" j))) 0)
-										;BUFFER STABILITY
-;			 							 (since
-;			 								 ([=] (yesterday (-V- ,(intern (format nil "BUFFER_~S" j))))
-;			 														(-V- ,(intern (format nil "BUFFER_~S" j))))
-;			 								 (||
-;			 										 orig
-;			 										 (-P- ,(format nil "EMIT_~S" j))))
-			 								 (until
-			 									 ([=] (next (-V- ,(intern (format nil "BUFFER_~S" j))))
+										 ; BUFFER MAINTAINS ITS VALUE
+;			 								 (until
+;			 									 ([=] (next (-V- ,(intern (format nil "BUFFER_~S" j))))
+;			 															(-V- ,(intern (format nil "BUFFER_~S" j))))
+;			 									 (next	(-P- ,(format nil "EMIT_~S" j))))
+			 							(next
+										 (|| 
+										 	(release
+										 		 (next	(-P- ,(format nil "EMIT_~S" j)))
+			 									 ([=] (yesterday (-V- ,(intern (format nil "BUFFER_~S" j))))
 			 															(-V- ,(intern (format nil "BUFFER_~S" j))))
-			 									 (next	(-P- ,(format nil "EMIT_~S" j))))
+			 									 )
+											 (-P- ,(format nil "EMIT_~S" j))))
                ))
 
        ))
@@ -1174,13 +1177,11 @@
 					(f-singleBoltsBehaviour the-bolts)
 					(f-singleQueueBehaviour the-bolts the-topology-table)
 					(f-ratesBehaviour the-spouts the-bolts the-topology-table)
-					(f-failureRatesBehaviour the-spouts the-bolts the-impacts-table)
-					;(f-clocks-behaviour the-spouts the-bolts the-rate-threshold-table the-proc-time-table)
-                    (f-clocks-behaviour the-spouts the-bolts the-proc-time-table)
-;OLD                    (f-spoutClocksBehaviour the-spouts the-rate-threshold-table the-proc-time-table)
-                    (f-spoutClocksBehaviour the-spouts the-proc-time-table)
-		            (f-noFailures '({{ topology.bolts|join(' ', attribute='id') }}))
-;          (f-queueConstraint the-bolts QUEUE_THRESHOLD);trova run che non satura
+;					(f-failureRatesBehaviour the-spouts the-bolts the-impacts-table)
+					(f-clocks-behaviour the-spouts the-bolts the-proc-time-table)
+					(f-spoutClocksBehaviour the-spouts the-proc-time-table)
+					(f-noFailures '({{ topology.bolts|join(' ', attribute='id') }}))
+;          (f-queueConstraint the-bolts QUEUE_THRESHOLD)
 				)
 			))
 
