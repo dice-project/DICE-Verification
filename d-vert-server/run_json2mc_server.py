@@ -59,9 +59,6 @@ def verification_task(self, task_name, technology, context):
         else:
             print 'FINISHED WITH ERRORS'
 
-#        outcome, ver_time, hist_file, fig_path, \
-#            json_path, lisp_path, result_file = json2mc.main(["-v", "visual/plot_settings.json", "-j", 
-#                                                            context, "-o", os.path.abspath("static/tasks/")])
         outcome = v_task.verification_result.outcome
         ver_time = v_task.verification_result.verification_time
         hist_file = os.path.join(v_task.result_dir, v_task.hist_file)

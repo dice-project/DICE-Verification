@@ -4,9 +4,12 @@
 ;; Special Config1: ae2sbvzot switches to this configuration when there is no Boolean AP and real tvar in the main model.
 ;; until with bvugt, instead of redor
 ;; t, nil, zot-false are not allowed as AP name. true= t and false=nil (or (!! t))
+;; This version uses inloop bit-vector, without LoopConV for APs.
+;; 2017-03-01, proper castings were added for arithmetic representative variable definitions, call comparisons, and gen-regions.
+
 (in-package :cl-user)
 (defpackage :ae2sbvzot
-  (:use :common-lisp
+  (:use :common-lisp 
 	:trio-utils
 	:smt-interface
 	:kripke)
@@ -16,73 +19,64 @@
 	   :cvc3
 	   :mathsat
 	   :z3
-	   ))
-(in-package :ae2sbvzot)
+	   )) 
+(in-package :ae2sbvzot) 
 (defvar *real-constants* nil)
 
 (defmacro in (x set)
   (let* ((insym (gensym))
-         (the-set (loop for i in (eval set)
+         (the-set (loop for i in (eval set) 
                      collect (list 'eq insym `(quote ,i)))))
     `(let ((,insym ,x))
-       (or ,@the-set))))
+       (or ,@the-set)))) 
 
-(defun predicatep (f)
-  (and (consp f)
-       (not
+(defun predicatep (f) 
+  (and (consp f) 
+       (not 
 	     (in (car f) '(tempus not and or iff next until release since trigger zeta yesterday alw alwf alwp som somf somp < > = <= >=))))) ; alw alwf alwp som somf somp are added
-
+		
 (declaim (inline predicatep))
 
-(defun CLTL-formulap (f)
-	  (and (consp f)
-	   (in (car f) '(next zeta yesterday futr past Zpast))))
-
+(defun CLTL-formulap (f)		
+	  (and (consp f)		
+	   (in (car f) '(next zeta yesterday futr past Zpast))))		
+			
 	(declaim (inline CLTL-formulap))
 
-(defun LTL-formulap (f)
-  (and (consp f)
+(defun LTL-formulap (f) 
+  (and (consp f)        
 	(in (car f) '(not and or iff next until release since trigger zeta yesterday futr lasts withinf past Zpast lasted Zlasted withinp Zwithinp alw alwf alwp som somf somp))))
 
 (declaim (inline LTL-formulap))
 
-(defun arith-cop (f)
-  (and (consp f)
+(defun arith-cop (f) 
+  (and (consp f) 
        (in (car f) '(< > = <= >= ))))
 
 (declaim (inline arith-cop))
 
-(defun arith-opp (f)
-  (and (consp f)
+(defun arith-opp (f) 
+  (and (consp f) 
        (in (car f) '(+ - * / mod))))
 
 (declaim (inline arith-opp))
 
-(defun arith-itemp (f)
-  (if (consp f)
+(defun arith-itemp (f) 
+  (if (consp f) 
       (gethash (car f) *arith-items*)
       (gethash f *arith-items*)))
 
-(defun gen-periodic-arith-terms (periodic-arith-terms strictly-monotonic)
-(if periodic-arith-terms
-	(nconc 				;(format t "define arithmetic periodic terms~%")(force-output)
-    (loop for term in periodic-arith-terms collect
-        `(<= ,(call *PROPS* term `i-loop) ,(call *PROPS* term (1+ (kripke-k *PROPS*)))))
-    (loop for term in strictly-monotonic collect
-	    `(< ,(call *PROPS* term `i-loop) ,(call *PROPS* term (1+ (kripke-k *PROPS*))))))));##MODIFICATO
-
-
 (declaim (inline arith-itemp))
 
-(defun bool-fmlap (f)
+(defun bool-fmlap (f) 
   (and (consp f) (in (car f) '(not and or))))
 
 (declaim (inline bool-itemp))
 
-(defun temp-fmlap (f)
-  (and (consp f)
+(defun temp-fmlap (f) 
+  (and (consp f) 
        (eq (car f) 'tempus)))
-
+ 
 (declaim (inline temp-fmlap))
 
 (defun get-item-codom (sig)
@@ -99,17 +93,26 @@
 		(if (member (first f) '(next yesterday zeta futr past Zpast))
 			(int-or-real (second f))
 			(if (member (first f) '(+ - * mod))
-				; (if (and (not (eq (int-or-real (second f)) '(real))) (not (eq (int-or-real (third f)) '(real)))) '(int) '(real))
-				(if (and (eq (int-or-real (second f)) '(int)) (eq (int-or-real (third f)) '(int))) '(int) '(real))
+				(if (and 
+						(eq '(int) (int-or-real (second f)))
+						(eq '(int) (int-or-real (third f))))
+					'(int)
+					'(real))
 				(when (eq (first f) '/) '(real))))
-		(get-item-sig (arith-itemp f))))
+		(if (eq (get-item-sig (arith-itemp f)) nil) (int-or-real-constant f) (int-or-real-sig f))))
+
+(defun int-or-real-constant (f)
+	 (if (eq (position-if #'integerp (list f)) nil) '(real) '(int)))
+
+(defun int-or-real-sig (f)
+	 (if (string= (string (first (get-item-sig (arith-itemp f)))) "Real") '(real) '(int)))
 
 (defun arity (i f)
   (eq (1- (length f)) i))
 
 (defun to-smt-dialect (f smt bvSize)
   (declare (optimize (debug 0)(safety 0)(speed 3)))
-      (cond
+      (cond     
 	    ((null f) (bvFalse bvSize))
 	    ((eq f t) (bvTrue bvSize))
 	    ((or (symbolp f) (numberp f)) f)
@@ -133,7 +136,7 @@
 					  `(iff ,(to-smt-dialect (second f) smt bvSize) ,(to-smt-dialect (third f) smt bvSize))
 					  )
 				     (t
-					  `(and
+					  `(and 
 						 (or ,(to-smt-dialect `(not ,(second f)) smt bvSize) ,(to-smt-dialect (third f) smt bvSize))
 						 (or ,(to-smt-dialect (second f) smt bvSize) ,(to-smt-dialect `(not ,(third f)) smt bvSize))))))
 			(t
@@ -142,7 +145,7 @@
 
 (defvar *PROPS* nil) ; this will contain a Kripke
 
-(defclass ae2sbvzot-kripke (kripke)
+(defclass ae2sbvzot-kripke (kripke) 
       ((the-arith :accessor kripke-arith :type list) ;all arithmetic formulae
 	    (the-timed-arith :accessor kripke-timed-arith :type hash-table) ;just arithmetic formulae inside with-time
 	    (the-atomic-formulaeHT :accessor kripke-atomic-formulaeHT :type hash-table)
@@ -156,8 +159,8 @@
 	    (the-arith-arith-ops :accessor kripke-timed-terms :type list)
 	    (the-atomic-formulae :accessor kripke-atomic-formulae :type list)
 	    (the-arith-constants :accessor kripke-constants :type list)
-	    (the-arith-IPC-vars :accessor kripke-IPC-vars :type list)
-	    (the-arith-IPC-constraints :accessor kripke-IPC-constraints :type list)
+	    (the-arith-IPC-vars :accessor kripke-IPC-vars :type list)    
+	    (the-arith-IPC-constraints :accessor kripke-IPC-constraints :type list)	
 	    (the-arith-related-IPC-terms :accessor kripke-related-IPC-terms :type list)
 	    (the-arith-related-IPC-vars :accessor kripke-related-IPC-vars :type list)
 	    (the-max-X :accessor kripke-max-X :type number)
@@ -168,7 +171,7 @@
 
 (defun make-kripke (k fma)
       (let ((a-kripke (make-instance 'ae2sbvzot-kripke)))
-	    (setf
+	    (setf 
 		  (kripke-k a-kripke)      k
 		  (kripke-numvar a-kripke) 0
 					; formula -> integer
@@ -188,18 +191,18 @@
 		  (kripke-untimed-arith a-kripke)  (make-hash-table :test #'equal)
 		  (kripke-atomic-formulaeHT a-kripke)  (make-hash-table :test #'equal)
 		  (AP-arithComp a-kripke)   nil
-		  (kripke-untimed-arith-terms a-kripke) nil
+		  (kripke-untimed-arith-terms a-kripke) nil 
 		  (kripke-arith-futr a-kripke)   nil
 		  (kripke-arith-past a-kripke)   nil
 		  (kripke-constants a-kripke)  nil
-		  (kripke-related-IPC-terms a-kripke) nil
-		  (kripke-related-IPC-vars a-kripke) nil
+		  (kripke-related-IPC-terms a-kripke) nil 
+		  (kripke-related-IPC-vars a-kripke) nil 
 		  (kripke-IPC-vars a-kripke) nil
 		  (kripke-IPC-constraints a-kripke) nil
 		  (kripke-max-X a-kripke) 0
 		  (kripke-max-Y a-kripke) 0
 		  (kripke-additional-timed-arith-terms a-kripke) nil
-		  )
+		  )   
       (setf (gethash '**I_LOOP** (kripke-list a-kripke))
  		    (intern (format nil "I_LOOP" )))
 
@@ -208,46 +211,46 @@
 
       ; This puts subformulae into the hash table
 	(labels (
-					; *** processing LTL atomic formulae ***
-		      (manage-atomic-LTL-subfmla (fm)
+					; *** processing LTL atomic formulae *** 
+		      (manage-atomic-LTL-subfmla (fm) 
 
 					; put in kripke-IPC-vars (timed and untimed) all the arithmetical variables involved
 			    (when (eq (get-item-sort (arith-itemp fm)) 'uf)
 			     	   (setf (gethash fm (kripke-untimed-arith a-kripke)) fm))
 
-			    (when (and
+			    (when (and 
 					(not (member fm '(true false)))
 					(not (gethash fm (kripke-timed-arith a-kripke)))
 					(not (gethash fm (kripke-list a-kripke)))
 					;if fm is a timed item, so manage it!
 					(or (not (arith-itemp fm)) (eq (get-item-sort (arith-itemp fm)) 'timed)))
-
+				  
 					;** processing terms **
 					; if fm is a CONSTANT put fm in kripke-constants
 				  (if (numberp fm)
 					(remove-duplicates (push fm (kripke-constants a-kripke)))
 
-					; 2-ary (interpreted) FUNCTION of LIA {+, -, *, /}
-					(if (arith-opp fm)
-					      (setf (gethash fm (kripke-timed-arith a-kripke))
+					; 2-ary (interpreted) FUNCTION of LIA {+, -, *, /} 
+					(if (arith-opp fm) 
+					      (setf (gethash fm (kripke-timed-arith a-kripke)) 
 						    (intern (format nil "ZOT-A~s" (incf (kripke-numvar a-kripke)))))
 
 					; if fm is a n-ary FUNCTION over terms
 					      (let* ((sig (arith-itemp fm))
-							  (tp (get-item-codom sig)))
+							  (tp (get-item-codom sig))) 
 						    (if (not (null sig))
 							  (cond
-								((string= tp "Int") (setf (gethash fm (kripke-timed-arith a-kripke)) fm))
-
+								((string= tp "Int") (setf (gethash fm (kripke-timed-arith a-kripke)) fm)) 
+								
 								((string= tp "Real") (setf (gethash fm (kripke-timed-arith a-kripke)) fm))
 								(t (error "1. I'm parsing a terms but I found a type inconsistency of non arithmetical ~S: ~s inside an atomic LTL formula! ~%" fm tp)))
 					; if fm is a term Xt or Yt
-							  (if (and (consp fm) (null sig) (CLTL-formulap fm))
-								(setf (gethash fm (kripke-timed-arith a-kripke))
+							  (if (and (consp fm) (null sig) (CLTL-formulap fm))			       
+								(setf (gethash fm (kripke-timed-arith a-kripke)) 
 								      (intern (format nil "ZOT-A~s" (incf (kripke-numvar a-kripke)))))
 					; otherwise fm is a predicate defined by (-P-)
 								(error "2. I'm parsing a terms but I found a type inconsistency of non arithmetical ~S: BOOL instead of a term! ~%" fm))))))
-
+				  
 				  (if (consp fm)
 					(dolist (i (cdr fm))
 					      (manage-atomic-LTL-subfmla i)))))
@@ -255,177 +258,177 @@
 					; *** processing LTL formulae ***
 	       (manage-LTL-subfmla (fm)
 		 (when (and (not (member fm '(true false)))
-			    (not (gethash fm (kripke-list a-kripke)))
+			    (not (gethash fm (kripke-list a-kripke)))			    
 			    (not (numberp fm)))
 
 					;** processing LTL atomic formulae **
 
 					; fm is a (interpreted/uninterpreted) RELATION over terms
 					; 2-ary (interpreted) RELATION of LIA {<, >, <=, >=, =, mod}
-		       (if (arith-cop fm)
-			     (setf (gethash fm (kripke-list a-kripke))
+		       (if (arith-cop fm) 
+			     (setf (gethash fm (kripke-list a-kripke)) 
 				   (intern (format nil "ZOT-P~s" (incf (kripke-numvar a-kripke)))))
 
 					; else fm is a n-ary (uninterpreted) RELATION
 			     (let* ((sig (arith-itemp fm)) ;  get the signature of fm, if any
 					 (tp (get-item-codom sig))) ; get the codomain of fm, if any
-				   (if (not (null sig))
-					 (cond
+				   (if (not (null sig)) 
+					 (cond 
 					       ((string= tp "Bool") (setf (gethash fm (kripke-list a-kripke)) fm))
 					       (t (error "I'm parsing a LTL formula: type inconsistency of non boolean ~S: ~s inside a LTL formula! ~%" fm tp)))
 
 					; if fm is an AP, put fm in kripke-list
 					 (if (symbolp fm)
-					       (setf (gethash fm (kripke-list a-kripke))
+					       (setf (gethash fm (kripke-list a-kripke)) 
 						     (intern (format nil "~s" fm)))
 
 					; else if fm is a LTL-formula
-					       (if (LTL-formulap fm)
-						     (setf (gethash fm (kripke-list a-kripke))
+					       (if (LTL-formulap fm)	     
+						     (setf (gethash fm (kripke-list a-kripke)) 
 							   (intern (format nil "ZOT-P~s" (incf (kripke-numvar a-kripke)))))
 
-					;otherwise rise an error!!
+					;otherwise rise an error!!						 
 						     (error "I'm parsing a LTL formula: type inconsistency of non boolean ~S: ~s inside a LTL formula! ~%" fm tp))))))
-
-					; ** recursively process LTL formula **
+		   
+					; ** recursively process LTL formula ** 
 		     (if (not (or (arith-opp fm) (arith-cop fm) (arith-itemp fm)))
 			   (if (consp fm) ; if fm is a LTL formula, call again 'manage-LTL-subfmla'
 				 (dolist (i (cdr fm)) ; on a complex LTL formula like (until A B)
-				       (manage-LTL-subfmla i))
+				       (manage-LTL-subfmla i))		     			 
 				 (manage-LTL-subfmla fm)) ; otherwise on an AP or a 0-ary RELATION
 			   (if (consp fm) ; if fm is an atomic LTL formula, call 'manage-atomic-LTL-subfmla'
 				 (dolist (i (cdr fm))
 				       (manage-atomic-LTL-subfmla i)) ; a n-ary RELATION of terms
 ;				 (manage-atomic-LTL-subfmla fm) ; a 0-ary RELATION
-				 ))))
+				 )))) 
 
 	       (manage-subfmla (fm)
 		 (when (and (not (member fm '(true false)))
-			    ;(not (gethash fm (kripke-list a-kripke)))
+			    ;(not (gethash fm (kripke-list a-kripke)))			    
 			    (not (numberp fm)))
-
+		   
 		   ;(format t "~s~%" fm)
-		   (if (temp-fmlap fm)
+		   (if (temp-fmlap fm)		       
 		       (manage-LTL-subfmla (cadr fm))
-
+						
 		       (if (consp fm)
 			   (dolist (i (cdr fm))
 			     (manage-subfmla i))
 			   (manage-LTL-subfmla fm))))))
-
+		    
 		    (manage-subfmla fma))
 					;(incf (kripke-numvar a-kripke))
-
+	    
 					; *** fill temporal data structures - LTL layer ***
-	    (maphash
+	    (maphash  
 		  (lambda (fm val)
 			(declare (ignore val)) ; just to avoid warnings...
-
-			(if (or
+			
+			(if (or 
 				  (symbolp fm) ; if fm is an AP
 				  (arith-itemp fm)) ; if fm is an uninterpreted RELATION
 			      (unless (member fm '(true false **I_LOOP** **LOOPEX**))
 				    (push fm (kripke-atomic-formulae a-kripke)))
 			      (case (car fm)
-				    ((and or not iff)
+				    ((and or not iff) 
 					  (push fm (kripke-bool a-kripke)))
-				    ((< = > >= <=) ; if fm is a interpreted RELATION
+				    ((< = > >= <=) ; if fm is a interpreted RELATION 
 					  (progn
 						(push fm (kripke-atomic-formulae a-kripke))
 						(push fm (kripke-IPC-constraints a-kripke))))
-				    ((next until release futr lasts withinf alw alwf som somf)
+				    ((next until release futr lasts withinf alw alwf som somf) 
 					  (push fm (kripke-futr a-kripke)))
 				    ((yesterday zeta since trigger past Zpast lasted Zlasted withinp Zwithinp alw alwp som somp)
 					  (push fm (kripke-past a-kripke)))
 				    (t
-					  (error "subformulae: unknown op ~S~%" fm)))))
+					  (error "subformulae: unknown op ~S~%" fm))))) 
 		  (kripke-list a-kripke))
 
 					; *** fill arithmetical data structures - FO layer ***
-	    (maphash
+	    (maphash  
 		  (lambda (fm val)
 			(declare (ignore val)) ; just to avoid warnings...
-
+	 
 			(if (or (symbolp fm) ; if fm is a 0-ary function
 				  (arith-itemp fm)) ; if fm is a n-ary function
-
-			      (push fm (kripke-timed-arith-terms a-kripke))
+			      
+			      (push fm (kripke-timed-arith-terms a-kripke))				
 					;(push (car fm) (kripke-timed-arith-terms a-kripke)))
 
 					; otherwise fm is a term Xy/Xy or ({+,-,*,/,mod} A B)
 			      (case (car fm)
-				    ((next futr lasts withinf)
+				    ((next futr lasts withinf) 
 					  (push fm (kripke-arith-futr a-kripke)))
 				    ((yesterday past Zpast lasted Zlasted withinp Zwithinp)
 					  (push fm (kripke-arith-past a-kripke)))
 				    ((+ - * / mod)
 					  (push fm (kripke-timed-arith-terms a-kripke)))
 				    (t
-					  (error "arithmetic subformulae: unknown op ~S~%" fm)))))
+					  (error "arithmetic subformulae: unknown op ~S~%" fm))))) 
 		  (kripke-timed-arith a-kripke))
 
 
-	(maphash
+	(maphash  
 		  (lambda (fm val)
 			(declare (ignore val)) ; just to avoid warnings...
-
+	 
 			(if (or (symbolp fm) ; if fm is a 0-ary function
 				  (arith-itemp fm)) ; if fm is a n-ary function
-
+			 
 			      (push fm (kripke-untimed-arith-terms a-kripke))
 
 					; otherwise fm is a term Xy/Xy or ({+,-,*,/,mod} A B)
 			      (case (car fm)
-				    ;; ((next futr lasts withinf)
+				    ;; ((next futr lasts withinf) 
 				    ;; 	  (push fm (kripke-arith-futr a-kripke)))
 				    ;; ((yesterday past Zpast lasted Zlasted withinp Zwithinp)
 				    ;; 	  (push fm (kripke-arith-past a-kripke)))
 				    ((+ - * / mod)
 					  (push fm (kripke-untimed-arith-terms a-kripke)))
 				    (t
-					  (error "arithmetic subformulae: unknown op ~S~%" fm)))))
+					  (error "arithmetic subformulae: unknown op ~S~%" fm))))) 
 	      (kripke-untimed-arith a-kripke))
-
+	    
 					; *** obtain the partition of terms induced by IPC relations in the formula ***
-
+					
 	    (labels (
-		      (is-within (var term)
+		      (is-within (var term) 
 			    (if (consp term)
 				  (is-within var (cadr term))
 				  (eq var term)))
-
-		      (var-of-term (term)
+		      
+		      (var-of-term (term) 
 			    (if (consp term)
 				  (var-of-term (cadr term))
 				  term))
-
+		      
 		      (is-within-IPC-constr (tm term)
 			    (or (equal tm (second term)) (equal tm (third term))))
 
 		      (set-intersection (a b)
-			    (remove nil (mapcan #'(lambda(x)
+			    (remove nil (mapcan #'(lambda(x) 
 							(remove nil (loop for el in b collect
 									   (if (equal x el) x))))
 					      a)))
 		      )
-
+	
 					; now set some useful sets
-	      (let* ( (IPC-terms
-			    (remove-duplicates (loop for el in (kripke-IPC-constraints a-kripke) append (cdr el))
-			    :test #'equal))
+	      (let* ( (IPC-terms 
+			    (remove-duplicates (loop for el in (kripke-IPC-constraints a-kripke) append (cdr el))				      
+			    :test #'equal))		      				
 				 ; IPC-terms does not contain the starting variable
 			 (IPC-constraints (kripke-IPC-constraints a-kripke))
 			 (cur-partition nil)
 			 (cur-term nil))
-
+	
 		    (format t "IPC-terms: ~s~%" IPC-terms)
 		    (format t "IPC-constraints: ~s~%" IPC-constraints)
-		    (loop
+		    (loop 
 			  while IPC-terms do
 					; chose a new variable from IPC-terms to start a new partition
-			  (push (first IPC-terms) cur-partition)
+			  (push (first IPC-terms) cur-partition)			  
 			  (setf cur-term (first IPC-terms))
-			  (loop
+			  (loop 
 					; chose a new variable from the current partition
 				while cur-term do
 					; update IPC-constraints (visited constr are removed)
@@ -434,13 +437,13 @@
 					    (mapc #'(lambda(x)
 							  (let ( (A (second x))
 								   (B (third x)))
-								(cond
+								(cond 
 								      ((equal cur-term A) (push B cur-partition))
 								      ((equal cur-term B) (push A cur-partition)))))
 						  IPC-constraints)))
 
 					; remove the current variable from set IPC-terms
-				(setf IPC-terms (remove cur-term IPC-terms))
+				(setf IPC-terms (remove cur-term IPC-terms))			       
 				(setf cur-term (first (set-intersection IPC-terms cur-partition))))
 
 					; put the partition into the set of partitions
@@ -458,11 +461,11 @@
 				      (kripke-related-IPC-terms a-kripke)))
 			  )
 	      ; *** complete arithmetical data structures by adding all terms (Xy/Yx) which are not defined in the formula. This is done to define correctly LoopConstraints.
-	      (labels(
+	      (labels(       
 			  (max-term-deep (term)
 				      (if (consp term)
 					    (+ 1 (max-term-deep (cadr term)))
-					    0))
+					    0))  
 			   (get-X-term (term i)
 				 (if (> i 0)
 				       (list 'next (get-X-term term (1- i)))
@@ -490,54 +493,54 @@
 			  (loop for term in (kripke-timed-arith-terms a-kripke) do
 				(loop for i from 1 to (kripke-max-X a-kripke)
 				      do
-				      (let ((tm (get-X-term term i)))
+				      (let ((tm (get-X-term term i))) 
 					; if the new term has not been already included, then put it!
 					    (if (null (gethash tm (kripke-timed-arith a-kripke)))
-						  (progn
-							(setf (gethash tm (kripke-timed-arith a-kripke))
+						  (progn 
+							(setf (gethash tm (kripke-timed-arith a-kripke)) 
 							      (intern (format nil "ZOT-A~s" (incf (kripke-numvar a-kripke)))))
 					; store the term fm in the list of additional terms
 							(push tm (kripke-additional-timed-arith-terms a-kripke))
 							(push tm (kripke-arith-futr a-kripke))))))
-
-
+					    
+				
 				(loop for i from 1 to (kripke-max-Y a-kripke)
 				      do
 				      (let ((tm (get-Y-term term i)))
 					; if the new term has not been already included, then put it!
 					    (if (null (gethash tm (kripke-timed-arith a-kripke)))
 						  (progn
-							(setf (gethash tm (kripke-timed-arith a-kripke))
+							(setf (gethash tm (kripke-timed-arith a-kripke)) 
 							      (intern (format nil "ZOT-A~s" (incf (kripke-numvar a-kripke)))))
 						  ; store the term fm in the list of additional terms
 							(push tm (kripke-additional-timed-arith-terms a-kripke))
 							(push tm (kripke-arith-past a-kripke)))))))))
-
+			   
 	    )a-kripke))
 
 (defmethod call ((kk ae2sbvzot-kripke) obj the-time &rest other)
-      (cond
+      (cond 
 	    ((eq 'false obj) 'false)
 	    ((eq 'true obj) 'true)
 	    ((numberp obj) obj)
-	    ((and (consp obj)
-		   (or (arith-cop (car obj)) (arith-opp (car obj))))
-		  (list (gethash obj (kripke-timed-arith kk))))
-	    (t
-		  (let ((p (gethash obj (kripke-list kk)))
-			     (q (gethash obj (kripke-timed-arith kk))))
-			(cond
+	    ((and (consp obj) 
+		   (or (arith-cop (car obj)) (arith-opp (car obj)))) 
+		  (list (gethash obj (kripke-timed-arith kk)))) 
+	    (t 
+		  (let ((p (gethash obj (kripke-list kk))) 
+			     (q (gethash obj (kripke-timed-arith kk))))      
+			(cond 
 					; the object has not been recognized...rise error!
-			      ((and (null p) (null q))
-				    (if (eq (get-item-sort (arith-itemp obj)) 'timed)
+			      ((and (null p) (null q)) 
+				    (if (eq (get-item-sort (arith-itemp obj)) 'timed) 
 					;if the item is a timed arithmetic term, so rise up an error!
 					  (error "During Call process, item ~s not found in formula~%~%HINT: maybe you are using some predicates in the 'transitions:' which is not used in the 'formula' section. To fix this problem let initialize these predicates with a fake value (maybe in the instant 0...)~%" obj))
 					;otherwise it is a non-timed term, so give it back!
 				    obj)
 					; if the object is a term
-			      ((null p)
+			      ((null p) 	   
 				    (if (consp q)
-					  (if other
+					  (if other					
 						(cons (car q) (append (mapcar #'(lambda (x)
 					; if other is specified then call is evaluating a nested term. Therefore, inner terms should be marked with the time instant defined by other
 										      (call *PROPS* x (car other)))
@@ -553,21 +556,21 @@
 					  (list q the-time)))
 					;if the object is an atomic formula
 			      ((null q)
-				    (if (consp p)
-					  (progn
+				    (if (consp p)	
+					  (progn 
 					;(format t "cons ~s~%" p)
 						(cons (car p) (append (mapcar #'(lambda (x)
 										      (call *PROPS* x))
 									    (cdr p))
 								    (list the-time))))
-					  (progn
+					  (progn 
 					;(format t "non-cons ~s~%" p)
 						(list p)))))))))
 
 (defgeneric call-fmla-id (kk obj))
 
-(defmethod call-fmla-id ((kk ae2sbvzot-kripke) obj)
-  (cond
+(defmethod call-fmla-id ((kk ae2sbvzot-kripke) obj) 
+  (cond 
     ((eq 'false obj) 'false)
     ((eq 'true obj) 'true)
     (t (gethash obj (kripke-list kk)))))
@@ -581,7 +584,7 @@
 (defun LoopConstraints (gen-symbolic-val)
       (format t "define loop constraints~%")(force-output)
       ; (list
-		  (append
+		  (append 
 			; (list 'and )
 			(nconc
 			      (labels (
@@ -591,37 +594,41 @@
 					    (get-Y-term (term)
 						  (list 'yesterday term))
 
-					    (get-symbolic-valuation-points (part)
-						  (mapcan #'(lambda(var)
+					    (get-symbolic-valuation-points (part) 
+						  (mapcan #'(lambda(var) 
 								  (let ((tm var))
-									(if (and
+									(if (and 
 										  (not (numberp var))
 										  (not (member var (kripke-untimed-arith-terms *PROPS*))))
-									      (append
+									      (append 
 										    (list tm)
 										    (loop for i from 1 to (kripke-max-X *PROPS*) collect
 											  (setf tm (get-X-term tm)))
-										    (loop for i from 1 to (kripke-max-Y *PROPS*)
+										    (loop for i from 1 to (kripke-max-Y *PROPS*) 
 											  initially (setf tm var) collect
 											  (setf tm (get-Y-term tm))))
 									      (list var))))
 							part))
-					    (make-IPC-constraint (sim p1 p2)
-						  (list sim p1 p2))
+					    (make-IPC-constraint (sim p1 p2) 
+						  (list sim p1 p2)) 
 					    )
-					; enforce IPC-periodicity over interpreted RELATIONs in {<,>,<=,>=,=} w.r.t. the set of VARIABLES
-		   (loop for partition in (kripke-related-IPC-vars *PROPS*)
+					; enforce IPC-periodicity over interpreted RELATIONs in {<,>,<=,>=,=} w.r.t. the set of VARIABLES	     
+		   (loop for partition in (kripke-related-IPC-vars *PROPS*) 
 			 when gen-symbolic-val ; when generate-symbolic-valuation is true then build periodicity over symbolic valuation at position k and (i-loop)-1
 			 append
-			 (let* ( (symbolic-valuation-XY-points (get-symbolic-valuation-points partition))
+				(let* ( (symbolic-valuation-XY-points (get-symbolic-valuation-points partition)) 
 				     (symbolic-valuation-points (remove-duplicates symbolic-valuation-XY-points)) )
-
+			       
 			       (loop for point1 in symbolic-valuation-points append
 				     (loop for point2 in (remove point1 symbolic-valuation-points) append
-					   `( (iff ,(make-IPC-constraint '< (call *PROPS* point1 `(- i-loop 1)) (call *PROPS* point2 `(- i-loop 1)))
-						    ,(make-IPC-constraint '< (call *PROPS* point1 (kripke-k *PROPS*)) (call *PROPS* point2 (kripke-k *PROPS*))))
-					       (iff ,(make-IPC-constraint '= (call *PROPS* point1 `(- i-loop 1)) (call *PROPS* point2 `(- i-loop 1)))
-						     ,(make-IPC-constraint '= (call *PROPS* point1 (kripke-k *PROPS*)) (call *PROPS* point2 (kripke-k *PROPS*)))))))))))))
+					   `( (iff ,(make-IPC-constraint '< (if (and (eq '(int) (int-or-real point1)) (eq '(real) (int-or-real point2))) (list 'to_real (call *PROPS* point1 `(- i-loop 1))) (call *PROPS* point1 `(- i-loop 1)))
+					   		(if (and (eq '(int) (int-or-real point2)) (eq '(real) (int-or-real point1))) (list 'to_real (call *PROPS* point2 `(- i-loop 1))) (call *PROPS* point2 `(- i-loop 1)))) 
+						    ,(make-IPC-constraint '< (if (and (eq '(int) (int-or-real point1)) (eq '(real) (int-or-real point2))) (list 'to_real (call *PROPS* point1 (kripke-k *PROPS*))) (call *PROPS* point1 (kripke-k *PROPS*)))
+					   		(if (and (eq '(int) (int-or-real point2)) (eq '(real) (int-or-real point1))) (list 'to_real (call *PROPS* point2 (kripke-k *PROPS*))) (call *PROPS* point2 (kripke-k *PROPS*)))))
+					       (iff ,(make-IPC-constraint '= (if (and (eq '(int) (int-or-real point1)) (eq '(real) (int-or-real point2))) (list 'to_real (call *PROPS* point1 `(- i-loop 1))) (call *PROPS* point1 `(- i-loop 1)))
+					   		(if (and (eq '(int) (int-or-real point2)) (eq '(real) (int-or-real point1))) (list 'to_real (call *PROPS* point2 `(- i-loop 1))) (call *PROPS* point2 `(- i-loop 1)))) 
+						    ,(make-IPC-constraint '= (if (and (eq '(int) (int-or-real point1)) (eq '(real) (int-or-real point2))) (list 'to_real (call *PROPS* point1 (kripke-k *PROPS*))) (call *PROPS* point1 (kripke-k *PROPS*)))
+					   		(if (and (eq '(int) (int-or-real point2)) (eq '(real) (int-or-real point1))) (list 'to_real (call *PROPS* point2 (kripke-k *PROPS*))) (call *PROPS* point2 (kripke-k *PROPS*))))))))))))))
 
 (defun gen-arith-futr ()
       (format t "define FO future formulae Xt~%")(force-output)
@@ -643,23 +650,23 @@
 
 (defun gen-arith-past ()
   (format t "define FO future formulae Yt~%")(force-output)
-  (loop for i from 1 to (kripke-k *PROPS*) append
+  (loop for i from 1 to (kripke-k *PROPS*) append    
 	(loop for fma in (kripke-arith-past *PROPS*) collect
-	      (list '=
-		    (call *PROPS* fma i)
+	      (list '=  
+		    (call *PROPS* fma i)  
 		    (case (car fma)
 
-		      ((past Zpast)
-		       (call *PROPS* (second fma) (- i (third fma))))
+		      ((past Zpast)		
+		       (call *PROPS* (second fma) (- i (third fma))))		
 
-		      ((lasted Zlasted)
-		       (if (< i (third fma))
-			   `(and ,@(loop for j from 0 to i collect (call *PROPS* (second fma)  j)))
+		      ((lasted Zlasted)		
+		       (if (< i (third fma))		
+			   `(and ,@(loop for j from 0 to i collect (call *PROPS* (second fma)  j)))		
 			   `(and ,@(loop for j from 0 to (third fma) collect (call *PROPS* (second fma)  (- i j))))))
-
-		      ((withinp Zwithinp)
-		       (if (< i (third fma))
-			   `(or ,@(loop for j from 0 to i collect (call *PROPS* (second fma)  j)))
+	
+		      ((withinp Zwithinp)		
+		       (if (< i (third fma))		
+			   `(or ,@(loop for j from 0 to i collect (call *PROPS* (second fma)  j)))		
 			   `(or ,@(loop for j from 0 to (third fma) collect (call *PROPS* (second fma)  (- i j))))))
 
 		      ((zeta yesterday)
@@ -668,238 +675,292 @@
 (defun gen-i-atomic-formulae (GSMT)
   (format t "define for interpreted relations: <,>,=,<=,>= ~%")(force-output)
   (loop for i from 0 to (kripke-k *PROPS*) append
-	(loop for fma in (kripke-atomic-formulae *PROPS*)
+	(loop for fma in (kripke-atomic-formulae *PROPS*) 
 	      when (and (arith-cop fma) (not (and GSMT (member fma GSMT-reduction))))
 	      collect
 	      (list 'iff
 	    	(list '= (cons (list '_ 'extract i i) (call *PROPS* fma i)) (list '_ 'bv1 '1))
-		    (cons (car fma) (mapcar #'(lambda (x)
-						(call *PROPS* x i))
-					    (cdr fma)))))))
+		    (cons (car fma)	(list
+		    	(if (and (eq '(int) (int-or-real (second fma))) (eq '(real) (int-or-real (third fma)))) (list 'to_real (call *PROPS* (second fma) i)) (call *PROPS* (second fma) i))
+		    	(if (and (eq '(int) (int-or-real (third fma))) (eq '(real) (int-or-real (second fma)))) (list 'to_real (call *PROPS* (third fma) i)) (call *PROPS* (third fma) i))
+		    	))))))
 
 (defun gen-arith-constraints ()
   (format t "define FO terms for +,-,*,/,mod ~%")(force-output)
-  (loop for i from 0 to (kripke-k *PROPS*) append
-	(loop for fma in (kripke-timed-arith-terms *PROPS*)
+  (loop for i from 0 to (kripke-k *PROPS*) append    
+	(loop for fma in (kripke-timed-arith-terms *PROPS*) 
 	      when (arith-opp fma)
 	      collect
 	      (list '=
 		    (call *PROPS* fma i)
 		    (case (car fma)
 		      ((+)
-		       `(+ ,(call *PROPS* (second fma) i) ,(call *PROPS* (third fma) i)))
+		       (list "+" 
+		       	(if (and (eq '(real) (int-or-real fma)) (eq '(int) (int-or-real (second fma)))) (list 'to_real (call *PROPS* (second fma) i)) (call *PROPS* (second fma) i))
+		       	(if (and (eq '(real) (int-or-real fma)) (eq '(int) (int-or-real (third fma)))) (list 'to_real (call *PROPS* (third fma) i)) (call *PROPS* (third fma) i))))
 
 		      ((-)
-		       `(- ,(call *PROPS* (second fma) i) ,(call *PROPS* (third fma) i)))
+		       (list "-" 
+		       	(if (and (eq '(real) (int-or-real fma)) (eq '(int) (int-or-real (second fma)))) (list 'to_real (call *PROPS* (second fma) i)) (call *PROPS* (second fma) i))
+		       	(if (and (eq '(real) (int-or-real fma)) (eq '(int) (int-or-real (third fma)))) (list 'to_real (call *PROPS* (third fma) i)) (call *PROPS* (third fma) i))))
 
 		      ((*)
-		       `(* ,(call *PROPS* (second fma) i) ,(call *PROPS* (third fma) i)))
+		       (list "*" 
+		       	(if (and (eq '(real) (int-or-real fma)) (eq '(int) (int-or-real (second fma)))) (list 'to_real (call *PROPS* (second fma) i)) (call *PROPS* (second fma) i))
+		       	(if (and (eq '(real) (int-or-real fma)) (eq '(int) (int-or-real (third fma)))) (list 'to_real (call *PROPS* (third fma) i)) (call *PROPS* (third fma) i))))
 
 		      ((/)
-		       `(/ ,(call *PROPS* (second fma) i) ,(call *PROPS* (third fma) i)))
+		       (list "/" 
+		       	(if (and (eq '(real) (int-or-real fma)) (eq '(int) (int-or-real (second fma)))) (list 'to_real (call *PROPS* (second fma) i)) (call *PROPS* (second fma) i))
+		       	(if (and (eq '(real) (int-or-real fma)) (eq '(int) (int-or-real (third fma)))) (list 'to_real (call *PROPS* (third fma) i)) (call *PROPS* (third fma) i))))
 
 		      ((mod)
-		       `(mod ,(call *PROPS* (second fma) i) ,(call *PROPS* (third fma) i))))))))
+		       (list "mod" 
+		       	(if (and (eq '(real) (int-or-real fma)) (eq '(int) (int-or-real (second fma)))) (list 'to_real (call *PROPS* (second fma) i)) (call *PROPS* (second fma) i))
+		       	(if (and (eq '(real) (int-or-real fma)) (eq '(int) (int-or-real (third fma)))) (list 'to_real (call *PROPS* (third fma) i)) (call *PROPS* (third fma) i)))))))))
+
+(defun gen-regions (bound discrete-regions parametric-regions discrete-counters)
+    (format t "Define regions")(force-output)
+
+    (if (> bound 0)
+        (if discrete-regions
+            (append
+            (loop for clock-x being the hash-keys of *arith-items*
+                using (hash-value value)
+                append
+                (nconc
+
+                    ; Build tyhe periodicity of regions between (i_loop - 1) and K
+
+                    (list `(iff (= ,(call *PROPS* clock-x `(- i-loop 1)) 0) (= ,(call *PROPS* clock-x (kripke-k *PROPS*)) 0)))
+                    (list `(iff (< ,(call *PROPS* clock-x `(- i-loop 1)) 0) (< ,(call *PROPS* clock-x (kripke-k *PROPS*)) 0)))
+
+                    (loop for i from 1 to bound append
+                    `(
+                        (iff (= ,(call *PROPS* clock-x `(- i-loop 1)) ,i) (= ,(call *PROPS* clock-x (kripke-k *PROPS*)) ,i))
+                        (iff (< ,(call *PROPS* clock-x `(- i-loop 1)) ,i) (< ,(call *PROPS* clock-x (kripke-k *PROPS*)) ,i))
+                        (iff (< ,i ,(call *PROPS* clock-x `(- i-loop 1))) (< ,i ,(call *PROPS* clock-x (kripke-k *PROPS*))))))
+
+                    ; define clocks behaviour
+                    (loop for i from 1 to (kripke-k *PROPS*) collect
+                    `(or
+                            (= ,(call *PROPS* clock-x (1+ i)) 0)
+                            (= ,(call *PROPS* clock-x (1+ i)) (+ ,(call *PROPS* clock-x i) (delta ,i)))))))
+
+            ; zot-delta is always positive
+                (loop for i from 1 to (1+ (kripke-k *PROPS*)) collect
+                `(> (delta ,i) 0)))
+
+
+            (if parametric-regions
+                (append
+                    (loop for clock-x being the hash-keys of *arith-items*
+                    when (not (member clock-x discrete-counters))
+                    append
+                        (let ((v (intern (format nil "c_~S" clock-x)))
+                                (v1 (intern (format nil "(+ c_~S 1.0)" clock-x))))
+
+                        (list
+                            `(or
+                                (and
+                                    (or
+                                        (and (= ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,v) (= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,v))
+                                        (and
+                                                (< ,v ,(call *PROPS* clock-x `(- i-loop ,(float 1))))
+                                                (< ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,v1)
+
+                                                (< ,v ,(call *PROPS* clock-x (float (kripke-k *PROPS*))))
+                                                (< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,v1)))
+
+                                    (<= 0 ,v)
+                                    (< ,v ,bound))
+
+                                (and (= ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,bound) (= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,bound))
+                                (and
+                                    (< ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,bound)
+                                    (< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,bound))))
+
+                        ;define diagonal constraints
+                        (loop for clock-y being the hash-keys of *arith-items*
+                            when (not (eq clock-y clock-x))
+                            when (not (member clock-y discrete-counters))
+                            append
+                                (let ((h (intern (format nil "c_~S" clock-y))))
+
+                                    (list
+                                        `(implies
+                                            (and (< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,bound) (< ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,bound))
+                                            (or
+                                                (and
+                                                    (=
+                                                        (- ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,v)
+                                                        (- ,(call *PROPS* clock-y `(- i-loop ,(float 1))) ,h))
+                                                    (=
+                                                        (- ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,v)
+                                                        (= ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,h)))
+
+                                                (and
+                                                    (<
+                                                        (- ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,v)
+                                                        (- ,(call *PROPS* clock-y `(- i-loop ,(float 1))) ,h))
+                                                    (<
+                                                        (- ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,v)
+                                                        (= ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,h)))
+
+                                                (and
+                                                    (<
+                                                        (- ,(call *PROPS* clock-y `(- i-loop ,(float 1))) ,h)
+                                                        (- ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,v))
+                                                    (<
+                                                        (- ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,h)
+                                                        (= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,v))))))))
 
 
 
 
-       (defun gen-regions (bound discrete-regions parametric-regions discrete-counters)
-       	(format t "Define regions")(force-output)
+                        ;define clocks behaviour
+                        (loop for i from 1 to (kripke-k *PROPS*) collect
+                            `(or
+                                    (= ,(call *PROPS* clock-x (1+ i)) ,(float 0))
+                                    (= ,(call *PROPS* clock-x (1+ i)) (+ ,(call *PROPS* clock-x i) (delta ,i)))))))
 
-                 (if (> bound 0)
-               	(if discrete-regions
-               	  (append
-               		(loop for clock-x being the hash-keys of *arith-items*
-               		    using (hash-value value)
-               		    append
-               		    (nconc
-
-               			  ; Build tyhe periodicity of regions between (i_loop - 1) and K
-
-               				(list `(iff (= ,(call *PROPS* clock-x `(- i-loop 1)) 0) (= ,(call *PROPS* clock-x (kripke-k *PROPS*)) 0)))
-               				(list `(iff (< ,(call *PROPS* clock-x `(- i-loop 1)) 0) (< ,(call *PROPS* clock-x (kripke-k *PROPS*)) 0)))
-
-               			  (loop for i from 1 to bound append
-               				`(
-               					(iff (= ,(call *PROPS* clock-x `(- i-loop 1)) ,i) (= ,(call *PROPS* clock-x (kripke-k *PROPS*)) ,i))
-               				   	(iff (< ,(call *PROPS* clock-x `(- i-loop 1)) ,i) (< ,(call *PROPS* clock-x (kripke-k *PROPS*)) ,i))
-               					(iff (< ,i ,(call *PROPS* clock-x `(- i-loop 1))) (< ,i ,(call *PROPS* clock-x (kripke-k *PROPS*))))))
-
-               			 ; define clocks behaviour
-               			  (loop for i from 1 to (kripke-k *PROPS*) collect
-               				`(or
-               				       (= ,(call *PROPS* clock-x (1+ i)) 0)
-               				       (= ,(call *PROPS* clock-x (1+ i)) (+ ,(call *PROPS* clock-x i) (delta ,i)))))))
-
-               		; zot-delta is always positive
-               	      (loop for i from 1 to (1+ (kripke-k *PROPS*)) collect
-               		    `(> (delta ,i) 0)))
+                ; zot-delta is always positive
+                    (loop for i from 1 to (1+ (kripke-k *PROPS*)) collect
+                    `(> (delta ,i) ,(float 0))))
 
 
-               		(if parametric-regions
-               		  (append
-               			 (loop for clock-x being the hash-keys of *arith-items*
-               				when (not (member clock-x discrete-counters))
-               				append
-               					(let ((v (intern (format nil "c_~S" clock-x)))
-               						  (v1 (intern (format nil "(+ c_~S 1.0)" clock-x))))
+                (append
+                    (loop for clock-x being the hash-keys of *arith-items*
+                    using (hash-value value)
+                    append
+                    (nconc
 
-               					(list
-               						`(or
-               							(and
-               								(or
-               									(and (= ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,v) (= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,v))
-               									(and
-               											(< ,v ,(call *PROPS* clock-x `(- i-loop ,(float 1))))
-               											(< ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,v1)
+                        ; Build tyhe periodicity of regions between (i_loop - 1) and K
 
-               											(< ,v ,(call *PROPS* clock-x (float (kripke-k *PROPS*))))
-               											(< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,v1)))
+                        (list `(iff (= ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float 0)) (= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float 0))))
+                        (list `(iff (< ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float 0)) (< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float 0))))
 
-               								(<= 0 ,v)
-               								(< ,v ,bound))
+                        (loop for i from 1 to bound append
+                        `(
+                            (iff (= ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float i)) (= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float i)))
+                            (iff (< ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float i)) (< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float i)))
+                            (iff (< ,(float i) ,(call *PROPS* clock-x `(- i-loop ,(float 1)))) (< ,(float i) ,(call *PROPS* clock-x (float (kripke-k *PROPS*)))))))
 
-               							(and (= ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,bound) (= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,bound))
-               							(and
-               								(< ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,bound)
-               								(< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,bound))))
 
-               					;define diagonal constraints
-               					(loop for clock-y being the hash-keys of *arith-items*
-               						when (not (eq clock-y clock-x))
-               						when (not (member clock-y discrete-counters))
-               						append
-               							(let ((h (intern (format nil "c_~S" clock-y))))
-
-               								(list
-               									`(implies
-               										(and (< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,bound) (< ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,bound))
-               										(or
-               											(and
-               												(=
-               													(- ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,v)
-               													(- ,(call *PROPS* clock-y `(- i-loop ,(float 1))) ,h))
-               												(=
-               													(- ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,v)
-               													(= ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,h)))
-
-               											(and
-               												(<
-               													(- ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,v)
-               													(- ,(call *PROPS* clock-y `(- i-loop ,(float 1))) ,h))
-               												(<
-               													(- ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,v)
-               													(= ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,h)))
-
-               											(and
-               												(<
-               													(- ,(call *PROPS* clock-y `(- i-loop ,(float 1))) ,h)
-               													(- ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,v))
-               												(<
-               													(- ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,h)
-               													(= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,v))))))))
+                        (loop for clock-y being the hash-keys of *arith-items*
+                        using (hash-value value)
+                        append
+                            (loop for d from 0 to bound append
+                                `(
+                                (iff
+                                            (= ,(call *PROPS* clock-x `(- i-loop ,(float 1))) (+ ,(call *PROPS* clock-y `(- i-loop ,(float 1))) ,(float d)))
+                                            (= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) (+ ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,(float d))))
+                                (iff
+                                            (= ,(call *PROPS* clock-y `(- i-loop ,(float 1))) (+ ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float d)))
+                                            (= ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) (+ ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float d))))
+                                (iff
+                                            (< ,(call *PROPS* clock-x `(- i-loop ,(float 1))) (+ ,(call *PROPS* clock-y `(- i-loop ,(float 1))) ,(float d)))
+                                            (< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) (+ ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,(float d))))
+                                (iff
+                                            (< ,(call *PROPS* clock-y `(- i-loop ,(float 1))) (+ ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float d)))
+                                            (< ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) (+ ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float d)))))))
 
 
 
+                        ; Build tyhe periodicity of regions between i_loop and K+1
 
-               					;define clocks behaviour
-               					(loop for i from 1 to (kripke-k *PROPS*) collect
-               						`(or
-               							   (= ,(call *PROPS* clock-x (float (1+ i))) ,(float 0))
-               							   (= ,(call *PROPS* clock-x (float (1+ i))) (+ ,(call *PROPS* clock-x (float i)) (delta ,(float i))))))))
+                    #|	(list `(iff (= ,(call *PROPS* clock-x (the-iloop)) ,(float 0)) (= ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float 0))))
+                        (list `(iff (< ,(call *PROPS* clock-x (the-iloop)) ,(float 0)) (< ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float 0))))
 
-               			; zot-delta is always positive
-               			  (loop for i from 1 to (1+ (kripke-k *PROPS*)) collect
-               				`(> (delta ,(float i)) ,(float 0))))
+                        (loop for i from 1 to bound append
+                        `(
+                                (iff (= ,(call *PROPS* clock-x (the-iloop)) ,(float i)) (= ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float i)))
+                            (iff (< ,(call *PROPS* clock-x (the-iloop)) ,(float i)) (< ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float i)))
+                                (iff (< ,(float i) ,(call *PROPS* clock-x (the-iloop))) (< ,(float i) ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*))))))))
 
+                        (loop for clock-y being the hash-keys of *arith-items*
+                        using (hash-value value)
+                        append
+                            (loop for d from 0 to bound append
+                                `(
+                                (iff
+                                            (= ,(call *PROPS* clock-x (the-iloop)) (+ ,(call *PROPS* clock-y (the-iloop)) ,(float d)))
+                                            (= ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) (+ ,(call *PROPS* clock-y (float (1+ (kripke-k *PROPS*)))) ,(float d))))
+                                (iff
+                                            (= ,(call *PROPS* clock-y (the-iloop)) (+ ,(call *PROPS* clock-x (the-iloop)) ,(float d)))
+                                            (= ,(call *PROPS* clock-y (float (1+ (kripke-k *PROPS*)))) (+ ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float d))))
+                                (iff
+                                            (< ,(call *PROPS* clock-x (the-iloop)) (+ ,(call *PROPS* clock-y (the-iloop)) ,(float d)))
+                                            (< ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) (+ ,(call *PROPS* clock-y (float (1+ (kripke-k *PROPS*)))) ,(float d))))
+                                (iff
+                                            (< ,(call *PROPS* clock-y (the-iloop)) (+ ,(call *PROPS* clock-x (the-iloop)) ,(float d)))
+                                            (< ,(call *PROPS* clock-y (float (1+ (kripke-k *PROPS*)))) (+ ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float d)))))))
 
-
-
-
-
-               			(append
-               			  (loop for clock-x being the hash-keys of *arith-items*
-               				using (hash-value value)
-               				append
-               				(nconc
-
-               				  ; Build tyhe periodicity of regions between (i_loop - 1) and K
-
-               					(list `(iff (= ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float 0)) (= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float 0))))
-               					(list `(iff (< ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float 0)) (< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float 0))))
-
-               				  (loop for i from 1 to bound append
-               					`(
-               						(iff (= ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float i)) (= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float i)))
-               					   	(iff (< ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float i)) (< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float i)))
-               						(iff (< ,(float i) ,(call *PROPS* clock-x `(- i-loop ,(float 1)))) (< ,(float i) ,(call *PROPS* clock-x (float (kripke-k *PROPS*)))))))
-
-
-               					(loop for clock-y being the hash-keys of *arith-items*
-               					using (hash-value value)
-               					append
-               						(loop for d from 0 to bound append
-               							`(
-               						   (iff
-               										(= ,(call *PROPS* clock-x `(- i-loop ,(float 1))) (+ ,(call *PROPS* clock-y `(- i-loop ,(float 1))) ,(float d)))
-               										(= ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) (+ ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,(float d))))
-               						   (iff
-               										(= ,(call *PROPS* clock-y `(- i-loop ,(float 1))) (+ ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float d)))
-               										(= ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) (+ ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float d))))
-               						   (iff
-               										(< ,(call *PROPS* clock-x `(- i-loop ,(float 1))) (+ ,(call *PROPS* clock-y `(- i-loop ,(float 1))) ,(float d)))
-               										(< ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) (+ ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) ,(float d))))
-               						   (iff
-               										(< ,(call *PROPS* clock-y `(- i-loop ,(float 1))) (+ ,(call *PROPS* clock-x `(- i-loop ,(float 1))) ,(float d)))
-               										(< ,(call *PROPS* clock-y (float (kripke-k *PROPS*))) (+ ,(call *PROPS* clock-x (float (kripke-k *PROPS*))) ,(float d)))))))
+                        |#
 
 
 
-               				  ; Build tyhe periodicity of regions between i_loop and K+1
+                        ; define clocks behaviour
+                        (loop for i from 1 to (kripke-k *PROPS*) collect
+                        `(or
+                                (= ,(call *PROPS* clock-x (1+ i)) ,(float 0))
+                                (= ,(call *PROPS* clock-x (1+ i)) (+ ,(call *PROPS* clock-x i) (delta ,i)))))))
 
-               				#|	(list `(iff (= ,(call *PROPS* clock-x (the-iloop)) ,(float 0)) (= ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float 0))))
-               					(list `(iff (< ,(call *PROPS* clock-x (the-iloop)) ,(float 0)) (< ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float 0))))
-
-               				  (loop for i from 1 to bound append
-               					`(
-               							(iff (= ,(call *PROPS* clock-x (the-iloop)) ,(float i)) (= ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float i)))
-               					   	(iff (< ,(call *PROPS* clock-x (the-iloop)) ,(float i)) (< ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float i)))
-               							(iff (< ,(float i) ,(call *PROPS* clock-x (the-iloop))) (< ,(float i) ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*))))))))
-
-               					(loop for clock-y being the hash-keys of *arith-items*
-               					using (hash-value value)
-               					append
-               						(loop for d from 0 to bound append
-               							`(
-               						   (iff
-               										(= ,(call *PROPS* clock-x (the-iloop)) (+ ,(call *PROPS* clock-y (the-iloop)) ,(float d)))
-               										(= ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) (+ ,(call *PROPS* clock-y (float (1+ (kripke-k *PROPS*)))) ,(float d))))
-               						   (iff
-               										(= ,(call *PROPS* clock-y (the-iloop)) (+ ,(call *PROPS* clock-x (the-iloop)) ,(float d)))
-               										(= ,(call *PROPS* clock-y (float (1+ (kripke-k *PROPS*)))) (+ ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float d))))
-               						   (iff
-               										(< ,(call *PROPS* clock-x (the-iloop)) (+ ,(call *PROPS* clock-y (the-iloop)) ,(float d)))
-               										(< ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) (+ ,(call *PROPS* clock-y (float (1+ (kripke-k *PROPS*)))) ,(float d))))
-               						   (iff
-               										(< ,(call *PROPS* clock-y (the-iloop)) (+ ,(call *PROPS* clock-x (the-iloop)) ,(float d)))
-               										(< ,(call *PROPS* clock-y (float (1+ (kripke-k *PROPS*)))) (+ ,(call *PROPS* clock-x (float (1+ (kripke-k *PROPS*)))) ,(float d)))))))
-
-               					|#
+                    ; zot-delta is always positive
+                    (loop for i from 1 to (1+ (kripke-k *PROPS*)) collect
+                    `(> (delta ,i) ,(float 0))))))
+        '(true)))
 
 
+(defun gen-regions-Mehdi (bound)
+  (if (> bound 0)
+	(append
+	      (loop for key being the hash-keys of *arith-items*
+		    using (hash-value value)
+		    append
+		    (nconc 
+			  ;;Build the periodicity of regions between (i_loop - 1) and K
+			  (loop for i from 0 to (1- bound) append
+				`(
+				       (iff (= ,(call *PROPS* key `(- i-loop 1)) ,(list 'to_real i)) (= ,(call *PROPS* key (kripke-k *PROPS*)) ,(list 'to_real i)))
+				       (iff (and
+						  (< ,(list 'to_real i) ,(call *PROPS* key `(- i-loop 1))) 
+						  (< ,(call *PROPS* key `(- i-loop 1)) ,(list 'to_real (+ i 1))))
+					     (and
+						   (< ,(list 'to_real i) ,(call *PROPS* key (kripke-k *PROPS*))) 
+						   (< ,(call *PROPS* key (kripke-k *PROPS*)) ,(list 'to_real (+ i 1)))))))
+			  
+			  (list `(iff (= ,(call *PROPS* key `(- i-loop 1)) ,(list 'to_real bound)) (= ,(call *PROPS* key (kripke-k *PROPS*)) ,(list 'to_real bound))))
+			  (list `(iff (> ,(call *PROPS* key `(- i-loop 1)) ,(list 'to_real bound)) (> ,(call *PROPS* key (kripke-k *PROPS*)) ,(list 'to_real bound))))
 
-               				  ; define clocks behaviour
-               				  (loop for i from 1 to (kripke-k *PROPS*) collect
-               					`(or
-               						   (= ,(call *PROPS* clock-x (float (1+ i))) ,(float 0))
-               						   (= ,(call *PROPS* clock-x (float (1+ i))) (+ ,(call *PROPS* clock-x (float i)) (delta ,(float i))))))))
+			  ; Build the periodicity of regions between (i_loop) and K+1
+			  (loop for i from 0 to (1- bound) append
+			   	`(
+		  	       (iff (= ,(call *PROPS* key `i-loop) ,(list 'to_real i)) (= ,(call *PROPS* key (1+ (kripke-k *PROPS*))) ,(list 'to_real i)))
+		   	       (iff (and
+		   			  (< ,(list 'to_real i) ,(call *PROPS* key `i-loop)) 
+		   			  (< ,(call *PROPS* key `i-loop) ,(list 'to_real (+ i 1))))
+		   		     (and
+		   			   (< ,(list 'to_real i) ,(call *PROPS* key (1+ (kripke-k *PROPS*)))) 
+		   			   (< ,(call *PROPS* key (1+ (kripke-k *PROPS*))) ,(list 'to_real (+ i 1)))))))
 
-               			  ; zot-delta is always positive
-               			  (loop for i from 1 to (1+ (kripke-k *PROPS*)) collect
-               				`(> (delta ,(float i)) ,(float 0))))))
-               	'(true)))
+			  (list `(iff (= ,(call *PROPS* key `i-loop) ,(list 'to_real bound)) (= ,(call *PROPS* key (1+ (kripke-k *PROPS*))) ,(list 'to_real bound))))
+			  (list `(iff (> ,(call *PROPS* key `i-loop) ,(list 'to_real bound)) (> ,(call *PROPS* key (1+ (kripke-k *PROPS*))) ,(list 'to_real bound))))
 
+			  ; define clocks behavior
+			  (loop for i from 1 to (kripke-k *PROPS*) collect
+				`(or
+				       (= ,(call *PROPS* key (1+ i)) 0.0)
+				       ; (= ,(call *PROPS* key (1+ i)) (+ ,(call *PROPS* key i) (select delta ,(list 'to_real i))))))))
+				       (= ,(call *PROPS* key (1+ i)) (+ ,(call *PROPS* key i) (delta ,i)))))))
+
+	      
+	      ; zot-delta is always positive
+	      (loop for i from 1 to (1+ (kripke-k *PROPS*)) collect
+		    ; `(> (select delta ,(list 'to_real i)) 0)))
+		    `(> (delta ,i) 0.0)))
+
+	'(true)))
 
 (defun gen-bool ()
       (format t "define LTL boolean connectives~%")(force-output)
@@ -962,27 +1023,35 @@
 
 	    ((since)
 			(list 'since (first (call *PROPS* fma 0)) (first (call *PROPS* (second fma) 0)) (first (call *PROPS* (third fma) 0))))
-
+		
 	    ((trigger)
 			(list 'trigger (first (call *PROPS* fma 0)) (first (call *PROPS* (second fma) 0)) (first (call *PROPS* (third fma) 0)))))))
 
-(defun the-big-formula (fma periodic-arith-terms gen-symbolic-val ipc-constraints bound discrete-regions parametric-regions discrete-counters freshAP GSMT l1 l2)
+(defun gen-periodic-arith-terms (periodic-arith-terms strictly-monotonic)
+    (if periodic-arith-terms
+        (nconc 				;(format t "define arithmetic periodic terms~%")(force-output)
+        (loop for term in periodic-arith-terms collect
+            `(<= ,(call *PROPS* term `i-loop) ,(call *PROPS* term (1+ (kripke-k *PROPS*)))))
+        (loop for term in strictly-monotonic collect
+            `(< ,(call *PROPS* term `i-loop) ,(call *PROPS* term (1+ (kripke-k *PROPS*))))))));#NEW
+
+(defun the-big-formula (fma periodic-arith-terms gen-symbolic-val ipc-constraints bound discrete-regions parametric-regions discrete-counters freshAP GSMT l-monotonic l-strictly-monotonic)
   (append
    (nconc
 	(gen-arith-futr) ;e.g. [X(i1)]0 <-> [i1]1
 	(gen-arith-past)
 	(gen-i-atomic-formulae GSMT) ;defines behavior of AP assigned to arithmetic operators.
 	(gen-arith-constraints)
-    (gen-periodic-arith-terms l1 l2)
-	(LoopConstraints gen-symbolic-val)
-	(gen-regions bound discrete-regions parametric-regions discrete-counters)
+    (gen-periodic-arith-terms l-monotonic l-strictly-monotonic) ; ##NEW
+	(LoopConstraints gen-symbolic-val) ; ##NEW
+	(gen-regions bound discrete-regions parametric-regions discrete-counters) ; ##NEW
 	)))
 
 (defun manage-transitions (trans the-k)
   (labels ((call-recur (f i)
 		       (cond
 			((or (stringp f) (integerp f) (typep f 'boolean)) f)
-			((or (symbolp f) (arith-itemp f)) (call *PROPS* f i))
+			((or (symbolp f) (arith-itemp f)) (call *PROPS* f i))	       
 			((eq 'next (car f)) (call-recur (second f) (1+ i)))
 			(t
 			 (cons (car f) (mapcar (lambda (x)
@@ -999,7 +1068,7 @@
     (loop repeat n do (write-string string stream))))
 
 (defun bvTrue (size)
-	(if (= (mod size 4) 0)
+	(if (= (mod size 4) 0) 
 		(concatenate 'string "#xF" (repeat-string (- (/ size 4) 1) "F"))
 		(concatenate 'string "#b1" (repeat-string (- size 1) "1"))))
 
@@ -1010,8 +1079,8 @@
 	(substitute (bvTrue size) T
 	(substitute (bvTrue size) 'true
 	(substitute 'bvnot 'NOT
-	(substitute 'bvor 'OR
-	(substitute 'bvand 'AND
+	(substitute 'bvor 'OR 
+	(substitute 'bvand 'AND 
 	(substitute 'bviff 'IFF
 	(substitute (bvFalse size) nil f
 	))))))))
@@ -1027,12 +1096,12 @@
 	(values newf))
 
 (defun bvff (f size)
-	(cond
+	(cond 
 		((atom f) f)
 		(t (cons (bvff (car (substitutionsf f size)) size) (bvff (cdr (substitutionsf f size)) size)))))
 
 (defun collapse-atomic-formulae (f)
-	(cond
+	(cond 
 		((atom f) f)
 		((gethash f (kripke-atomic-formulaeHT *PROPS*)) (gethash f (kripke-list *PROPS*)))
 		(t (cons (collapse-atomic-formulae (car f)) (collapse-atomic-formulae (cdr f))))))
@@ -1076,11 +1145,11 @@
 		     (over-clocks 0)
 		     (smt-metric-futr nil)
 		     (smt-metric-past nil)
-             (parametric-regions nil)
-             (discrete-counters nil)
-             (discrete-regions nil)
-             (l-monotonic nil)
-             (l-strictly-monotonic nil)
+             (parametric-regions nil) ; ##NEW
+             (discrete-counters nil) ; ##NEW
+             (discrete-regions nil) ; ##NEW
+             (l-monotonic nil)  ; ##NEW
+             (l-strictly-monotonic nil) ; ##NEW
 		     )
 
   (setf *smt-metric-futr-operators* smt-metric-futr)
@@ -1092,9 +1161,13 @@
   (if (or (eq logic :QF_UFRDL)(eq logic :QF_UFLRA))
       (setf *real-constants* t))
   (setf *metric-operators* nil)
+  ;***************************************
+  ;set the global list of dicrete counters - use when over-clocks flag is active
+  ;***************************************
+  (setf *discrete-counters* discrete-counters) ; ##NEW
 
   (let ((formula (bvff (trio-to-ltl spec) (+ the-time 2) )))
-    (setf *PROPS* (make-kripke the-time
+    (setf *PROPS* (make-kripke the-time 
 			       (if (eq with-time t)
 				   (with-time formula)
 				 formula)))
@@ -1107,7 +1180,7 @@
       (if (and declarations undeclared)
 	  (format t "Error: undeclared propositions ~S~%" undeclared)
 					; Declarations are fine, so go on...
-	(progn
+	(progn 
 	  (format t "~%1. processing formula")
 	  (time (progn
 		  (format t "~%Used boolean propositions: ~%~S~%" (kripke-atomic-formulae *PROPS*))
@@ -1119,47 +1192,47 @@
 		  (format t "~%Number of Boolean variables: ~%~S~%"(- (length (kripke-atomic-formulae *PROPS*)) (length (kripke-IPC-constraints *PROPS*))))
 		(setf AP-arithComp nil)
 		(setf GSMT-reduction nil)
-		(when GSMT (progn
-		(loop for fma in (kripke-atomic-formulae *PROPS*) when (arith-cop fma) do
-			(setf AP-arithComp (append AP-arithComp (list (list fma (call *PROPS* fma 0))))))
-		(loop for i from 0 to (1- (length AP-arithComp)) do
-			(loop for j from (1+ i) to (1- (length AP-arithComp)) do
-				(let ((f1 (nth i AP-arithComp)) (f2 (nth j AP-arithComp)))
-					(when (and (list-eq (list (second (first f1))) (list (second (first f2)))) (list-eq (list (third (first f1))) (list (third (first f2)))) (eq (get-rel (first(first f1)) (first(first f2))) 'neg))
-						(setf GSMT-reduction (append GSMT-reduction (list (first f2))))))))))
+		; (when GSMT (progn
+		; (loop for fma in (kripke-atomic-formulae *PROPS*) when (arith-cop fma) do
+		; 	(setf AP-arithComp (append AP-arithComp (list (list fma (call *PROPS* fma 0))))))
+		; (loop for i from 0 to (1- (length AP-arithComp)) do
+		; 	(loop for j from (1+ i) to (1- (length AP-arithComp)) do
+		; 		(let ((f1 (nth i AP-arithComp)) (f2 (nth j AP-arithComp)))
+		; 			(when (and (list-eq (list (second (first f1))) (list (second (first f2)))) (list-eq (list (third (first f1))) (list (third (first f2)))) (eq (get-rel (first(first f1)) (first(first f2))) 'neg))
+		; 				(setf GSMT-reduction (append GSMT-reduction (list (first f2))))))))))
 
-		  (let ((trans (if transitions
-				   (manage-transitions transitions the-time)
+		  (let ((trans (if transitions 
+				   (manage-transitions transitions the-time) 
 				 '(true))))
 		    (setf (kripke-formula *PROPS*)
-			  (to-smt-dialect
-				(nconc (list 'and)
+			  (to-smt-dialect 
+				(nconc (list 'and)						 
 				      (when *zot-item-constraints*
-				      	    (manage-transitions (list *zot-item-constraints*)
+				      	    (manage-transitions (list *zot-item-constraints*) 
 				      		  (1+ the-time)))
-
+				      
 				      (trio-to-ltl (the-big-formula
 							 (if (eq with-time t)
 							       (with-time formula)
 							       formula)
 							 periodic-terms
-							 gen-symbolic-val
-							 ipc-constraints
+							 gen-symbolic-val 
+							 ipc-constraints 
 							 over-clocks
-                             discrete-regions
-                             parametric-regions
-                             discrete-counters
+                             discrete-regions ; ## NEW
+                             parametric-regions ; ## NEW
+                             discrete-counters ; ## NEW
 							 freshAP
 							 GSMT
-                             l-monotonic
-                             l-strictly-monotonic
+                             l-monotonic ; ## NEW
+                             l-strictly-monotonic ; ## NEW
 							 ))
 				      (if (and trans negate-transitions)
 					    (list (list 'not (cons 'and trans)))
 					    trans))
 				smt-lib (+ the-time 2))))
-
-		  (format t "~%done processing formula~%")
+		  
+		  (format t "~%done processing formula~%")		  
 		  (with-open-file (k "./output.smt.txt" :direction :output :if-exists :supersede)    ;write the smt file
 			(with-open-file (dict "./output.dict.txt" :direction :output :if-exists :supersede)
 				  (let (  (*print-case* :downcase)
@@ -1170,6 +1243,8 @@
 				  (setq bvSize (+ the-time 2))
 
 		(format k "(declare-fun i_loop () (_ BitVec ~A))" bvSize)
+		(format k "~%(declare-fun zot-in_loop () (_ BitVec ~A))" bvSize)
+		(format k "~%(assert (= zot-in_loop (bvshl (bvnot (_ bv0 ~A)) i_loop)))" bvSize)
 		(if (or gen-symbolic-val (> over-clocks 0))
 			(progn
 				(format k "
@@ -1184,14 +1259,14 @@
 		(format k "
 (define-fun getbit ((x (_ BitVec ~A)) (index (_ BitVec ~A))) (_ BitVec 1)
 	((_ extract 0 0) (bvlshr x index)))~%" bvSize bvSize)
-		(format k "
-(define-fun loopConV ((x (_ BitVec ~A))) Bool
-	(and" bvSize)
-		(format k "
-		(= (getbit x i_loop) ((_ extract ~A ~A) x)) ;; k+1 ~~ i_loop" (+ the-time 1) (+ the-time 1))
-		(format k "
-		(= (getbit (bvshl x (_ bv1 ~A)) i_loop) ((_ extract ~A ~A) x)))) ;; k ~~ i_loop-1
-" bvSize the-time the-time)
+; 		(format k "
+; (define-fun loopConV ((x (_ BitVec ~A))) Bool
+; 	(and" bvSize)
+; 		(format k "
+; 		(= (getbit x i_loop) ((_ extract ~A ~A) x)) ;; k+1 ~~ i_loop" (+ the-time 1) (+ the-time 1))
+; 		(format k "
+; 		(= (getbit (bvshl x (_ bv1 ~A)) i_loop) ((_ extract ~A ~A) x)))) ;; k ~~ i_loop-1
+; " bvSize the-time the-time)
 		(format k "
 (define-fun loopConF ((x (_ BitVec ~A))) Bool" bvSize)
 		(format k "
@@ -1210,7 +1285,7 @@
 		(format k "
 (define-fun zeta ((fap (_ BitVec ~A)) (A (_ BitVec ~A))) Bool
     (= fap (bvor (bvshl A (_ bv1 ~A)) (_ bv1 ~A))))~%" bvSize bvSize bvSize bvSize)
-
+		
 		(format k "
 (define-fun until ((fap (_ BitVec ~A)) (A (_ BitVec ~A)) (B (_ BitVec ~A))) Bool
 	(and" bvSize bvSize bvSize)
@@ -1221,12 +1296,12 @@
 		(= #b1 (bvor (bvnot ((_ extract ~A ~A) B)) ((_ extract ~A ~A) fap)))
 		(loopConF fap)
 		(or (= #b0 ((_ extract ~A ~A) fap))
-			(bvugt B (bvshl (_ bv1 ~A) i_loop)))))
-" (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time)  (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time) bvSize)
+			(= #b1 (bvredor (bvand ((_ extract ~A 1) B) ((_ extract ~A 1) zot-in_loop)))))))
+" (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time)  (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time) (1+ the-time) the-time the-time)
 		(format k "
 (define-fun release ((fap (_ BitVec ~A)) (A (_ BitVec ~A)) (B (_ BitVec ~A))) Bool
 	(until (bvnot fap) (bvnot A) (bvnot B)))~%" bvSize bvSize bvSize)
-
+		
 		(format k "
 (define-fun since ((fap (_ BitVec ~A)) (A (_ BitVec ~A)) (B (_ BitVec ~A))) Bool" bvSize bvSize bvSize)
 		(format k "
@@ -1261,7 +1336,7 @@
 					;write all the propositional items
 				    (maphash (lambda (key v)
 						   (format dict "~s -> ~s~%" v key)
-					       (if (consp key)
+					       (if (consp key) 
 						   (case (car key)
 							(t
 						      (if (and (not (arith-itemp key)) (or freshAP (arith-cop key)))
@@ -1276,12 +1351,12 @@
 					     (kripke-list *PROPS*))
 
 					;write all the arithmetic items
-				    (maphash (lambda (key v)
+				    (maphash (lambda (key v) 
 					       (declare (ignore v))
 					       (let* ((it (arith-itemp key))
 							(sig (get-item-sig it))
 							(sigindex (append (butlast (get-item-sig it) 1) (list *int*)))
-							(time-d
+							(time-d 
 							 (if (eq (get-item-sort it) 'timed)
 							     time-domain
 							   "")) )
@@ -1289,35 +1364,45 @@
 						     (format k "(declare-fun ~A ~A ~{~A ~})~%" key sigindex (last sig))
 						     (format k "(declare-fun ~A (~A) ~{~A ~})~%" key time-d sig))))
 					     *arith-items*)
-				    (maphash (lambda (key v)
+                    ;write all the parametric constants of clocks ; ## NEW
+                     (if parametric-regions ; ## NEW
+                         (maphash (lambda (key v) 
+                                (declare (ignore v))
+                                (let* (  (it (arith-itemp key))
+                                         (time-d (if (eq (get-item-sort it) 'timed)
+                                                     time-domain
+                                                     "")) )
+                                 (format k "(declare-fun c_~s () ~A) ~%" key time-d))) ; ## NEW
+                          *arith-items*)) ; ## NEW
+				      (maphash (lambda (key v)
 					       (declare (ignore v))
 					       (let* ((it (arith-itemp key))
 							(sig (get-item-sig it))
-							(time-d
+							(time-d 
 							 (if (eq (get-item-sort it) 'timed)
 							     time-domain
 							   "")) )
-					       (when (or (string= (format nil "~A" (first (int-or-real key))) "Real") (string= (format nil "~A" (first (int-or-real key))) "real")) (setf real-var t))
-
+					       (when (eq '(real) (int-or-real key)) (setf real-var t))
 						 ))
 					     *arith-items*)
-
+				    
 					;write all the temporal arithmetic subformulae
-				    (maphash (lambda (key v)
+				    (maphash (lambda (key v) 
 					       (if (consp key)
 							(let* (  (it (arith-itemp key))
-							(sig (get-item-sig it))
-							(time-d
+							(sig (get-item-sig it)) 
+							(time-d 
 							 (if (eq (get-item-sort it) 'timed)
 							     time-domain
 							   "")) )
+						   (format dict "~s -> ~s~%" v key)
 						   (case (car key)
 						     ((next yesterday zeta futr past Zpast)
-						     (progn (format k "(declare-fun ~A (Int) " v) (if (or (string= (format nil "~A" (first (int-or-real key))) "Real") (string= (format nil "~A" (first (int-or-real key))) "real")) (format k "Real)~%") (format k "Int)~%"))))
+						     (progn (format k "(declare-fun ~A (Int) " v) (if (eq '(real) (int-or-real key)) (format k "Real)~%") (format k "Int)~%"))))
 						     ((+ - * / mod)
-						     (progn (format k "(declare-fun ~A (Int) " v) (if (or (string= (format nil "~A" (first (int-or-real key))) "Real") (string= (format nil "~A" (first (int-or-real key))) "real")) (format k "Real)~%") (format k "Int)~%"))))
+						     (progn (format k "(declare-fun ~A (Int) " v) (if (eq '(real) (int-or-real key)) (format k "Real)~%") (format k "Int)~%"))))
 						     ))))
-
+					     
 					     (kripke-timed-arith *PROPS*))
 
 			    (if (> over-clocks 0)
@@ -1348,13 +1433,15 @@
 				    (format k ")~%"))
 			    ; </defines faps>
 
-
+			
 			(loop for f in (kripke-atomic-formulae *PROPS*) do
 				(setf (gethash f (kripke-atomic-formulaeHT *PROPS*)) (gethash f (kripke-list *PROPS*))))
-
+			
 			;Loop Constraints for all atomic formulae (k ~ i_loop-1) and (k+1 ~ i_loop)
+			; (loop for p in (kripke-atomic-formulae *PROPS*)
+			; 	do (format k "(assert (loopConV ~A))~%" (string-downcase (gethash p (kripke-list *PROPS*)))))
 			(loop for p in (kripke-atomic-formulae *PROPS*)
-				do (format k "(assert (loopConV ~A))~%" (string-downcase (gethash p (kripke-list *PROPS*)))))
+				do (format k "(assert (loopConF ~A))~%" (string-downcase (gethash p (kripke-list *PROPS*)))))
 
 
 
@@ -1384,15 +1471,15 @@
 			(format k ";;;;;;The main formula is asserted to be true at the time instant 1:~%")
 			(if freshAP
 				(format k "(assert (= ((_ extract 1 1) zot-p1) #b1))~%")
-
+				
 				(progn (format k "(assert (= (getbit ")
 				(format k (string-downcase (format nil "~A" (bvf (collapse-atomic-formulae formula) bvSize (collapse-atomic-formulae formula)))))
 				(format k " (_ bv1 ~A)) #b1))~%" bvSize)))
 			(if (and (= (- (length (kripke-atomic-formulae *PROPS*)) (length (kripke-IPC-constraints *PROPS*))) 0) (not real-var) (= over-clocks 0))
 				;;<Special Config1>
-				(format k "(check-sat-using (then (! simplify :blast_eq_value true :local_ctx true) solve-eqs (repeat bit-blast) (! qflia :bv.enable_int2bv true :arith.branch_cut_ratio 5 :case_split 0 :mbqi false :relevancy 0 :arith.propagate_eqs false :local_ctx true)) :print_model true)~%")
+				(format k "(check-sat-using (then elim-uncnstr (! simplify :bv_le_extra true :blast_eq_value true :local_ctx true) solve-eqs (repeat bit-blast) (! qfauflia :bv.enable_int2bv true :arith.branch_cut_ratio 5 :case_split 0 :mbqi false :relevancy 0 :arith.propagate_eqs false :local_ctx true)) :print_model true)~%")
 				;;<Special Config1>
-				(format k "(check-sat-using (then (! simplify :blast_eq_value true :local_ctx true) solve-eqs (repeat bit-blast) (! smt :bv.enable_int2bv true :arith.branch_cut_ratio 5 :case_split 0 :relevancy 0 :auto_config false :restart_strategy 2)) :print_model true)~%"))
+				(format k "(check-sat-using (then elim-uncnstr (! simplify :bv_le_extra true :blast_eq_value true :local_ctx true) solve-eqs (repeat bit-blast) (! smt :bv.enable_int2bv true :arith.branch_cut_ratio 5 :case_split 0 :relevancy 0 :auto_config false :restart_strategy 2)) :print_model true)~%"))
 			(format k "(exit)")
 			))
 		    (to-smt-and-back *PROPS* smt-solver :smt-lib :smt2 :arith-bitvector :t)
@@ -1400,5 +1487,13 @@
 
 (defun declare-assumptions (list)
 	(loop for fm in list do (if (not (gethash fm (kripke-list *PROPS*)))
-					(setf (gethash fm (kripke-list *PROPS*))
+					(setf (gethash fm (kripke-list *PROPS*)) 
 						(intern (format nil "~s" fm))))))
+
+(defun pht (h) (maphash 'print-hash-entry h))
+
+(defun print-hash-entry (key value)
+  (fresh-line)
+  (format t "Key: ~S " key)
+  (format t "Value: ~S" value)
+  (fresh-line))
