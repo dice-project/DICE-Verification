@@ -1409,7 +1409,7 @@
 				  (format k "(declare-fun delta (Int) Real)~%"))
 
 			    (if (not (null smt-assumptions))
-				(format k (concatenate 'string ":assumption " smt-assumptions "~%"))))
+				(format k (concatenate 'string "(assert " smt-assumptions ")~%"))))
 				(when (> (length (kripke-formula *PROPS*)) 3);to avoid inserting "(and true true)".
 					(format k "(assert ")
 				    (let ((*print-pretty* nil))
