@@ -96,17 +96,17 @@
       (setq the-proc-time-table-2 (make-hash-table :test 'equalp))
 
 
-
+(defconstant TOLERANCE (/ 1 25))
 {% for b in topology.bolts %}
 ;	(setf (gethash '{{b.id}} the-rate-threshold-table) (getRateIntervals C_TAKE_{{b.id}}))
 ;	(setf (gethash '{{b.id}} the-proc-time-table-2) (getTimeIntervals C_TAKE_{{b.id}} ALPHA_{{b.id}})) ;OLDversion
-    (setf (gethash '{{b.id}} the-proc-time-table) (list (- ALPHA_{{b.id}} (/ ALPHA_{{b.id}} 10.0)) (+ ALPHA_{{b.id}} (/ ALPHA_{{b.id}} 10.0))))
+    (setf (gethash '{{b.id}} the-proc-time-table) (list (- ALPHA_{{b.id}} (* ALPHA_{{b.id}} TOLERANCE)) (+ ALPHA_{{b.id}} (* ALPHA_{{b.id}} TOLERANCE))))
 {%endfor%}
 
 {% for s in topology.spouts %} ;TODO risistemare
 	(setf (gethash '{{s.id}} the-rate-threshold-table) (getRateIntervals {{verification_params.base_quantity}}))
 	;(setf (gethash '{{s.id}} the-proc-time-table) (getTimeIntervals {{verification_params.base_quantity}} ALPHA_{{s.id}}))
-    (setf (gethash '{{s.id}} the-proc-time-table) (getIntervals C_EMIT_{{s.id}} ALPHA_{{s.id}} (/ ALPHA_{{s.id}} 10.0)))
+    (setf (gethash '{{s.id}} the-proc-time-table) (getIntervals C_EMIT_{{s.id}} ALPHA_{{s.id}} (* ALPHA_{{s.id}} TOLERANCE)))
 {%endfor%}
 
 ;TOPOLOGY-INDEPENDENT PARAMETERS: TODO DEFINE BOLT-SPECIFIC VALUES
