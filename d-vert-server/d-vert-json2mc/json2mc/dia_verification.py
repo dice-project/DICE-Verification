@@ -62,10 +62,7 @@ class VerificationTask(object):
                                                      self.json_context_path)
         with open(self.json_context_path, 'w+') as outfile:
             json.dump(self.context, outfile, indent=4)
-    # print os.getcwd()
-#        os.chdir(app_dir)
         command_list = ["zot", "zot_in.lisp"]
-#        print prefix, 'moving to: ' + os.getcwd()
         proc = sp.Popen(command_list,
                         stdout=sp.PIPE,
                         stderr=sp.PIPE,
@@ -84,8 +81,6 @@ class VerificationTask(object):
         print "{}{}Terminated -> output:\n{}".format(prefix,
                                                      str(child_pid),
                                                      output)
-#        bashCommand = "zot zot_in.lisp"
-#        os.system(bashCommand)
         print "{}Verication complete with plugin: {}".format(prefix,
                                                              self.plugin)
 
