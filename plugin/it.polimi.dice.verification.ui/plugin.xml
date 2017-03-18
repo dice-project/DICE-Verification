@@ -6,7 +6,7 @@
       <launchConfigurationTabGroup
             class="it.polimi.dice.verification.ui.launcher.VerificationLaunchConfigurationTabGroup"
             id="it.polimi.dice.verification.ui.launchConfigurationTabGroup"
-            type="it.polimi.dice.verification.launchConfigurationType">
+            type="it.polimi.dice.verification.launchConfigurationType1">
       </launchConfigurationTabGroup>
    </extension>
    <extension
@@ -21,7 +21,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
-            configTypeID="it.polimi.dice.verification.launchConfigurationType"
+            configTypeID="it.polimi.dice.verification.launchConfigurationType1"
             icon="icons/verify_icon.png"
             id="it.polimi.dice.verification.ui.launchConfigurationTypeImage">
       </launchConfigurationTypeImage>
@@ -128,7 +128,7 @@
          </enablement>
  		</contextualLaunch>
        <configurationType
-              id="it.polimi.dice.verification.launchConfigurationType">
+              id="it.polimi.dice.verification.launchConfigurationType1">
        </configurationType>
        <description
               description="Launches a verification task on the specified UML model"

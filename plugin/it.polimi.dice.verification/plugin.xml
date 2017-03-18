@@ -7,7 +7,7 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             delegate="it.polimi.dice.verification.launcher.VerificationLaunchConfigurationDelegate"
-            id="it.polimi.dice.verification.launchConfigurationType"
+            id="it.polimi.dice.verification.launchConfigurationType1"
             modes="run"
             name="DICE Verification">
       </launchConfigurationType>
