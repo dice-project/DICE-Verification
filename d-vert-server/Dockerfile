@@ -64,9 +64,9 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
 #    ENV FORMAL_DICE ${SERVER_CODE_FOLDER}d-vert-json2mc/json2mc
     ENV JSON2MC_FOLDER ${SERVER_CODE_FOLDER}d-vert-json2mc/
 
-#get D-VerT from github
+# get D-VerT from github
    # RUN  git clone https://github.com/dice-project/DICE-Verification  $PROJECT_FOLDER
-   # RUN git clone -b spark-features --single-branch https://github.com/dice-project/DICE-Verification
+# load code from current directory
     ADD . $SERVER_CODE_FOLDER
 
 # Install and setup virtualenv 
