@@ -10,6 +10,8 @@ from dia_verification import VerificationTrace
 from dia_verification_zot import ZotResult
 from dia_verification_zot import ZotTrace
 
+import config as cfg
+
 import utils as utils
 
 import jinja2
@@ -217,13 +219,13 @@ class StormVerificationTask(VerificationTask):
                                     self.output_trace.bool_set,
                                     vars_styles_dict)
             if i == 1:
-                plt.title("verification time: {}\n\n{} profile"
+                plt.title("verification time: {}\n\n{}"
                           .format(str(self.verification_result
                                       .verification_time),
                                   b["id"]),
-                          fontsize=18)
+                          fontsize=cfg.PLOT_CFG["plot_titles"]["fontsize"])
             else:
-                plt.title(b["id"] + ' profile', fontsize=18)
+                plt.title(b["id"], fontsize=cfg.PLOT_CFG["plot_titles"]["fontsize"])
     #        plt.suptitle(file_name)
             # limit the y axis to the maximum value present across the plots
             plt.ylim([0, y_max + 1])

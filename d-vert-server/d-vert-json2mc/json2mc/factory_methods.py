@@ -23,8 +23,8 @@ class DiaVerificationFactory(object):
                               output_dir=output_dir,
                               display=display)
             else:
-                return  v_task(plotonly_folder=plotonly_folder,
-                          display=display,
-                          graphical_conf_path=graphical_conf_path)
+                return v_task(plotonly_folder=plotonly_folder,
+                              display=display,
+                              graphical_conf_path=graphical_conf_path)
         else:
             raise NotImplementedError("The requested technology ({}) is not supported.")
