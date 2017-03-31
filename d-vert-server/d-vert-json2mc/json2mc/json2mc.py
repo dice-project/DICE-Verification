@@ -14,7 +14,7 @@ the file containing the graphical configuration, etc.
 
 @author:     Francesco Marconi
 
-@copyright:  2016 Politecnico di Milano. All rights reserved.
+@copyright:  2015-2017 Politecnico di Milano. All rights reserved.
 
 @license:    Apache License 2.0
 
@@ -35,9 +35,9 @@ import config as cfg
 from factory_methods import DiaVerificationFactory
 
 __all__ = []
-__version__ = "0.2"
-__date__ = '2016-12-19'
-__updated__ = '2017-01-25'
+__version__ = "0.2.0"
+__date__ = '2015-11-10'
+__updated__ = '2017-03-18'
 
 DEBUG = 0
 TESTRUN = 0
@@ -85,7 +85,7 @@ def main(argv=None):  # IGNORE:C0111
     program_license = '''%s
 
   Created by Francesco Marconi on %s.
-  Copyright 2016 Politecnico di Milano. All rights reserved.
+  Copyright 2015-2017 Politecnico di Milano. All rights reserved.
 
   Licensed under the Apache License 2.0
   http://www.apache.org/licenses/LICENSE-2.0
@@ -113,10 +113,12 @@ USAGE
                             help="path to template file")
         group1.add_argument("-c", "--context", dest="context_path",
                             help="path to JSON context file"
-                            " [default: {}s]".format(os.path.join(base_dir,
+                            " [default: {}s]"
+                            .format(os.path.join(base_dir,
                                                  "context_examples",
                                                  "[{}]".format(", ".join(cfg.TECH_KEYS)),
-                                                 "[{}]_example.json".format(", ".join(cfg.TECH_KEYS)))))
+                                                 "[{}]_example.json"
+                                                 .format(", ".join(cfg.TECH_KEYS)))))
         parser.add_argument("-l", "--label", dest="label",
                             action="store_true",
                             help="apply graph labeling to reduce the size of "
@@ -179,7 +181,7 @@ USAGE
                                                                    template_path=template_path,
                                                                    context=context,
                                                                    output_dir=output_dir,
-                                                                   display=display)                        
+                                                                   display=display)
                     print v_task
                     v_task.launch_verification()
                     if v_task.result_dir:

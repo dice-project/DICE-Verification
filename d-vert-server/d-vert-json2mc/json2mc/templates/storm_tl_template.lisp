@@ -1177,10 +1177,10 @@
 					(f-singleBoltsBehaviour the-bolts)
 					(f-singleQueueBehaviour the-bolts the-topology-table)
 					(f-ratesBehaviour the-spouts the-bolts the-topology-table)
-;					(f-failureRatesBehaviour the-spouts the-bolts the-impacts-table)
+					(f-failureRatesBehaviour the-spouts the-bolts the-impacts-table)
 					(f-clocks-behaviour the-spouts the-bolts the-proc-time-table)
 					(f-spoutClocksBehaviour the-spouts the-proc-time-table)
-					(f-noFailures '({{ topology.bolts|join(' ', attribute='id') }}))
+					(f-noFailures the-bolts)
 ;          (f-queueConstraint the-bolts QUEUE_THRESHOLD)
 				)
 			))
@@ -1202,10 +1202,10 @@
 		:logic :QF_UFRDL
 		:over-clocks MAX_TIME
 		:parametric-regions 't
-        {% if verification_params.strictly_monotonic_queues | length %}
-        :smt-assumptions "(and {% for s in verification_params.strictly_monotonic_queues %}(= (r_add_{{s.lower()}} i-loop) (r_add_{{s.lower()}} {{verification_params.num_steps + 1}})){%endfor%})"
-        {% endif %}
-        ;:smt-assumptions "(= (r_add_EXPANDER i-loop) (r_add_EXPANDER (+ {{verification_params.num_steps}} 1)))"
+		{% if verification_params.strictly_monotonic_queues | length %}
+		:smt-assumptions "(and {% for s in verification_params.strictly_monotonic_queues %}(= (r_add_{{s.lower()}} i-loop) (r_add_{{s.lower()}} {{verification_params.num_steps + 1}})){%endfor%})"
+		{% endif %}
+		;:smt-assumptions "(= (r_add_EXPANDER i-loop) (r_add_EXPANDER (+ {{verification_params.num_steps}} 1)))"
 		:discrete-counters (gen-counters-list the-spouts the-bolts the-impacts-table)
     {%  if verification_params.periodic_queues | length %}
     :l-monotonic '(Q_{{ verification_params.periodic_queues | join(' Q_') }})
