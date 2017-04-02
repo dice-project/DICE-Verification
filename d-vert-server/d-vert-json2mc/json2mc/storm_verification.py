@@ -173,12 +173,15 @@ class StormVerificationTask(VerificationTask):
             settings = json.load(settings_file)
         file_name = self.app_name if self.app_name is not None else "plot"
         topology = self.context["topology"]
+        strictly_monotonic_ids = self.context["verification_params"]["strictly_monotonic_queues"]
+        plotted_bolts = topology["bolts"] if len(strictly_monotonic_ids) == 0 \
+            else [b for b in topology["bolts"] if b["id"] in strictly_monotonic_ids]
         steplist = range(self.output_trace.time_bound + 1)
-        num_rows = min(3, len(topology["bolts"]))
-        if len(topology["bolts"]) % 3:
-            columns = len(topology["bolts"])/3 + 1
+        num_rows = min(3, len(plotted_bolts))
+        if len(plotted_bolts) % 3:
+            columns = len(plotted_bolts)/3 + 1
         else:
-            columns = len(topology["bolts"])/3
+            columns = len(plotted_bolts)/3
         #  first round to get the maximum y value
         my_dpi = 96
         plt.figure(figsize=(1460/my_dpi, 900/my_dpi), dpi=my_dpi)
@@ -189,14 +192,14 @@ class StormVerificationTask(VerificationTask):
         i = 1
         y_max = 1
         # get the maximum "Y" value to be displayed across all plots
-        for b in topology["bolts"]:
+        for b in plotted_bolts:
             y_max = get_y_max(y_max, settings["bolt_vars"], b["id"],
                               self.output_trace.records)
             for s in b["subs"]:
                 y_max = get_y_max(y_max, settings["subs_vars"], s,
                                   self.output_trace.records)
         # plot variables' values
-        for b in topology["bolts"]:  # TODO COMPLETARE
+        for b in plotted_bolts:  # TODO checki if complete
             plt.subplot(num_rows, columns, i)
             plot_vars_from_list(self.output_trace.time_bound,
                                 settings["bolt_vars"],

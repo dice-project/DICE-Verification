@@ -185,7 +185,7 @@ def taskstatus2(task_id):
     elif task.state == 'PROGRESS':
         response = {
             'id':task_id,
-            'state': task.state,
+            'state': '  <img src="imgs/progress.gif">',
             'name': task.info.get('name', ''),
             'status': "PROGRESS"
         }
