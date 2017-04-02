@@ -37,7 +37,7 @@
 
 (defconstant INIT_QUEUES {{ topology.init_queues }})
 
-;NEW --> ACTUAL RATES DEFINITION	TODO:CHECK IF IT MAKES SENSE
+;NEW --> ACTUAL RATES DEFINITION	TODO: further checking needed
 ;	(defconstant BASE_QUANTITY 10	)
   (defconstant BASE_QUANTITY {{verification_params.base_quantity}})
 ;	(defconstant AVG_EMIT_RATE_S1 0.2)
@@ -103,13 +103,13 @@
     (setf (gethash '{{b.id}} the-proc-time-table) (list (- ALPHA_{{b.id}} (* ALPHA_{{b.id}} TOLERANCE)) (+ ALPHA_{{b.id}} (* ALPHA_{{b.id}} TOLERANCE))))
 {%endfor%}
 
-{% for s in topology.spouts %} ;TODO risistemare
+{% for s in topology.spouts %} ;TODO cleanup unused code
 	(setf (gethash '{{s.id}} the-rate-threshold-table) (getRateIntervals {{verification_params.base_quantity}}))
 	;(setf (gethash '{{s.id}} the-proc-time-table) (getTimeIntervals {{verification_params.base_quantity}} ALPHA_{{s.id}}))
     (setf (gethash '{{s.id}} the-proc-time-table) (getIntervals C_EMIT_{{s.id}} ALPHA_{{s.id}} (* ALPHA_{{s.id}} TOLERANCE)))
 {%endfor%}
 
-;TOPOLOGY-INDEPENDENT PARAMETERS: TODO DEFINE BOLT-SPECIFIC VALUES
+;TOPOLOGY-INDEPENDENT PARAMETERS: TODO define bolt-specific values
 
   (defconstant MIN_REBOOT_TIME {{topology.min_reboot_time}})
   (defconstant MAX_REBOOT_TIME {{topology.max_reboot_time}})
@@ -145,7 +145,7 @@
          (&&
            (-P- ,(format nil "PROCESS_~S" i))
            (!! (-P- ,(format nil "EMIT_~S" i)))
-;           (!! (-P- ,(format nil "IDLE_~S" i))) ; TODO: CHECK IF NEEDED
+;           (!! (-P- ,(format nil "IDLE_~S" i))) ; TODO: check if needed
            (next
              (until
                (!! (-P- ,(format nil "TAKE_~S" i)))
@@ -156,7 +156,7 @@
              (since
                (!!(-P- ,(format nil "PROCESS_~S" i)))
                (||
-                 (-P- ,(format nil "EMIT_~S" i)) ; TODO CHECK THIS
+                 (-P- ,(format nil "EMIT_~S" i)) ; TODO check this
                  (-P- ,(format nil "FAIL_~S" i))
                  orig))))))
       (loop for i in bolts collect
@@ -217,7 +217,7 @@
 					(&& (!!	(-P- ,(format nil "FAIL_~S" i)))
 							(!! (-P- ,(format nil "PROCESS_~S" i))))))
 
-(loop for i in bolts collect ;TODO: RIDONDANTE?
+(loop for i in bolts collect ;TODO: is it redundant?
     `(->
 			(-P- ,(format nil "STARTIDLE_~S" i))
 			(&&
@@ -336,9 +336,9 @@
 		          (&& (-P-,(intern (format nil "FAIL_~S" j))) (!! (yesterday (-P-,(intern (format nil "FAIL_~S" j))))))
        				(&& (-P-,(intern (format nil "IDLE_~S" j))) (!! (yesterday (-P-,(intern (format nil "IDLE_~S" j))))))
 		          ))
-					(<->
-							([=] (-V-,(intern (format nil "CLOCK_BF_~S" j))) 0)
-		          (&& (!! (-P-,(intern (format nil "FAIL_~S" j)))) (!! (yesterday (!! (-P-,(intern (format nil "FAIL_~S" j))))))))
+;					(<->
+;							([=] (-V-,(intern (format nil "CLOCK_BF_~S" j))) 0)
+;		          (&& (!! (-P-,(intern (format nil "FAIL_~S" j)))) (!! (yesterday (!! (-P-,(intern (format nil "FAIL_~S" j))))))))
 			;PROCESSING DURATION - SINGLE INTERVAL
 					(->
 							(-P- ,(intern (format nil "PROCESS_~S" j)))
@@ -367,24 +367,24 @@
 
 
 				;FAILURE DURATION
-		      (->
-		        (-P-,(intern (format nil "FAIL_~S" j)))
-		        (until
-		          (-P-,(intern (format nil "FAIL_~S" j)))
-		          (&&
-		            ,(t-process j ">" MIN_REBOOT_TIME)
-								,(t-process j "<" MAX_REBOOT_TIME)
-		            (!!(-P-,(intern (format nil "FAIL_~S" j)))))))
+;		      (->
+;		        (-P-,(intern (format nil "FAIL_~S" j)))
+;		        (until
+;		          (-P-,(intern (format nil "FAIL_~S" j)))
+;		          (&&
+;		            ,(t-process j ">" MIN_REBOOT_TIME)
+;								,(t-process j "<" MAX_REBOOT_TIME)
+;		            (!!(-P-,(intern (format nil "FAIL_~S" j)))))))
 
  				;TIME BETWEEN FAILURES
-		      (->
-		        (!! (-P-,(intern (format nil "FAIL_~S" j))))
-		        (until
-		          (!! (-P-,(intern (format nil "FAIL_~S" j))))
-		          (&&
-								([>] (-V-,(intern (format nil "CLOCK_BF_~S" j))) ,(intern (format nil "MIN_TTF_~S" j)))
-;		            (-P-,(intern (format nil "FAIL_~S" j)))
-        )))
+;		      (->
+;		        (!! (-P-,(intern (format nil "FAIL_~S" j))))
+;		        (until
+;		          (!! (-P-,(intern (format nil "FAIL_~S" j))))
+;		          (&&
+;								([>] (-V-,(intern (format nil "CLOCK_BF_~S" j))) ,(intern (format nil "MIN_TTF_~S" j)))
+;;		            (-P-,(intern (format nil "FAIL_~S" j)))
+;        )))
        ))
 ;		,@(loop for j in spouts collect
 ;			`(&&
@@ -637,7 +637,7 @@
                     orig))
               )))
 
-	(loop for j in bolts collect ;TODO: modifica pdf
+	(loop for j in bolts collect ;TODO: check pdf for consistency (and update it if needed)
          `(<->
            ([=] ( -V-,(intern (format nil "R_PROCESS_~S" j))) 0)
 					(||
@@ -770,7 +770,7 @@
 						(-P- ,(format nil "EMIT_~S" j))
 						(&&
             ([>] ( -V-,(intern (format nil "L_EMIT_~S" j))) 0)
-            ([=] ;TODO TESTARE
+            ([=]
 	            ( -V-,(intern (format nil "R_EMIT_~S" j)))
 	            ([+]
 	                ( -V-,(intern (format nil "L_EMIT_~S" j)))
@@ -875,8 +875,8 @@
     (eval `(define-tvar ,(intern (format nil "PT_~S_0" j)) *real*))
   	(eval `(define-tvar ,(intern (format nil "PT_~S_1" j)) *real*))
 		)
-	(loop for j in bolts do
-    (eval `(define-tvar ,(intern (format nil "CLOCK_BF_~S" j)) *real*)))
+;	(loop for j in bolts do
+;    (eval `(define-tvar ,(intern (format nil "CLOCK_BF_~S" j)) *real*)))
 ;	(loop for j in spouts do
 ;		(eval `(define-tvar ,(intern (format nil "CLOCK_EMIT_~S" j)) *real*)))
 	(eval `(define-tvar ,(intern (format nil "TOTALTIME")) *real*)))
@@ -946,8 +946,8 @@
 			  `(&&
 	    			([>=] (-V- ,(intern (format nil "PT_~S_0" j))) 0)
 	          ([>=] (-V- ,(intern (format nil "PT_~S_1" j))) 0)))
-			,@(loop for j in bolts collect
-	    			`([>=] (-V- ,(intern (format nil "CLOCK_BF_~S" j))) 0))
+;			,@(loop for j in bolts collect
+;	    			`([>=] (-V- ,(intern (format nil "CLOCK_BF_~S" j))) 0))
 
 ;			,@(loop for j in spouts collect
 ;			  `(&&
@@ -958,24 +958,11 @@
 
 (defmacro init-rates (spouts bolts impacts-table)
 	`(&&
-;			,@(loop for j in bolts collect
-;					`([>=] (-V- ,(intern (format nil "R_ADD_~S" j))) 0))
-;			,@(loop for j in (append spouts bolts) collect
-;					`([=] (-V- ,(intern (format nil "R_EMIT_~S" j))) 0))
-
-;			,@(loop for j in bolts collect
-;					`([<=] (-V- ,(intern (format nil "R_PROCESS_~S" j)))
-;								,(intern (format nil "C_TAKE_~S" j))))
-
 			,@(loop for j in bolts collect
 					`([=] (-V- ,(intern (format nil "R_PROCESS_~S" j)))
 								0))
-
-
-;			,@(loop for j in bolts collect
-;					`([>=] (-V- ,(intern (format nil "R_TAKE_~S" j))) 0))
 			,@(loop for j in bolts collect
-					`(!! (-P- ,(intern (format nil "PROCESS_~S" j))))) ;TODO COMMENT
+					`(!! (-P- ,(intern (format nil "PROCESS_~S" j))))) ;TODO should be not needed
 			,@(loop for j in bolts collect
 					`([=] (-V- ,(intern (format nil "Q_~S" j))) INIT_QUEUES))
 			,@(loop for j in bolts collect
@@ -992,7 +979,7 @@
 
 (defmacro init-clocks(spouts bolts)
 `(&&
-	([=] (-V- TOTALTIME) 0)
+	([>=] (-V- TOTALTIME) 0)
 	,@(loop for j in (append spouts bolts) collect
 		`(&&
 ;				([=] (-V- ,(intern (format nil "CLOCK_FAIL_~S" j))) 0)
@@ -1001,8 +988,8 @@
 ;          (alwf (somf ([=] (-V- ,(intern (format nil "PT_~S_0" j))) 0)))		; fairness for clocks - nonzeno models
 ;          (alwf (somf ([=] (-V- ,(intern (format nil "PT_~S_1" j))) 0)))
 		))
-	,@(loop for j in bolts collect
-				`([>=] (-V- ,(intern (format nil "CLOCK_BF_~S" j))) 0))
+;	,@(loop for j in bolts collect
+;				`([>=] (-V- ,(intern (format nil "CLOCK_BF_~S" j))) 0))
 
 ;	,@(loop for j in spouts collect
 ;		`(&&
@@ -1087,7 +1074,7 @@
   (if (boundp `,(intern (format nil "C_TAKE_~S" j ))) ;IF it is a BOLT
     (*  (EVAL `,(intern (format nil "C_TAKE_~S" j )))
         (EVAL `,(intern (format nil "SIGMA_~S" j ))))
-      (EVAL `,(intern (format nil "C_EMIT_~S" j ))))) ;ELSE IF it is a SPOUT ;TODO MOFIFICARE CON RATE
+      (EVAL `,(intern (format nil "C_EMIT_~S" j ))))) ;ELSE IF it is a SPOUT ;TODO try redesign with rate
 
 (defun sigma(j)
   (if (boundp `,(intern (format nil "C_TAKE_~S" j ))) ;IF it is a BOLT
