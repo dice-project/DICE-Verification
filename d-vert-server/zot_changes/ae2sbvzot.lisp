@@ -1409,29 +1409,29 @@
 				  (format k "(declare-fun delta (Int) Real)~%"))
 
 			    (if (not (null smt-assumptions))
-				(format k (concatenate 'string ":assumption " smt-assumptions "~%"))))
-				(when (> (length (kripke-formula *PROPS*)) 3);to avoid inserting "(and true true)".
-					(format k "(assert ")
-				    (let ((*print-pretty* nil))
-					  (write (kripke-formula *PROPS*) :stream k :escape nil :case :downcase))
-				    (format k ")~%"))
-			    ; <defines faps>
-			    (when (> (length (gen-futr)) 0)
-			    	(format k "(assert ")
-				    (let ((*print-pretty* nil))
-					  (write (append '(and) (gen-futr)) :stream k :escape nil :case :downcase))
-				    (format k ")~%"))
-			    (when (> (length (gen-past2)) 0)
-			    	(format k "(assert ")
-				    (let ((*print-pretty* nil))
-					  (write (append '(and) (gen-past2)) :stream k :escape nil :case :downcase))
-				    (format k ")~%"))
-			    (when (> (length (gen-bool)) 0)
-			    	(format k "(assert ")
-				    (let ((*print-pretty* nil))
-					  (write (append '(and) (gen-bool)) :stream k :escape nil :case :downcase))
-				    (format k ")~%"))
-			    ; </defines faps>
+            (format k (concatenate 'string "(assert " smt-assumptions ")~%"))))
+            (when (> (length (kripke-formula *PROPS*)) 3);to avoid inserting "(and true true)".
+              (format k "(assert ")
+                (let ((*print-pretty* nil))
+                (write (kripke-formula *PROPS*) :stream k :escape nil :case :downcase))
+                (format k ")~%"))
+              ; <defines faps>
+              (when (> (length (gen-futr)) 0)
+                (format k "(assert ")
+                (let ((*print-pretty* nil))
+                (write (append '(and) (gen-futr)) :stream k :escape nil :case :downcase))
+                (format k ")~%"))
+              (when (> (length (gen-past2)) 0)
+                (format k "(assert ")
+                (let ((*print-pretty* nil))
+                (write (append '(and) (gen-past2)) :stream k :escape nil :case :downcase))
+                (format k ")~%"))
+              (when (> (length (gen-bool)) 0)
+                (format k "(assert ")
+                (let ((*print-pretty* nil))
+                (write (append '(and) (gen-bool)) :stream k :escape nil :case :downcase))
+                (format k ")~%"))
+              ; </defines faps>
 
 			
 			(loop for f in (kripke-atomic-formulae *PROPS*) do

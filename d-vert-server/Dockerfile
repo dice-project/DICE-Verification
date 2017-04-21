@@ -5,6 +5,7 @@ MAINTAINER Francesco Marconi <francesco.marconi@polimi.it>
 ENV USERHOME  /root
 ENV DEBIAN_FRONTEND noninteractive
 ENV USER root
+ENV Z3_VERSION 4.5.0
 
 WORKDIR /tmp
 # Update the repos and install all the used packages
@@ -40,9 +41,10 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
         cp minisat /usr/local/bin/minisat
 
 # installing z3
-    RUN curl -L https://github.com/Z3Prover/z3/releases/download/z3-4.4.1/z3-4.4.1-x64-ubuntu-14.04.zip -o /tmp/z3.zip && \
-	unzip z3.zip -d /tmp && \
-	cp /tmp/z3-4.4.1-x64-ubuntu-14.04/bin/z3 /usr/local/bin/z3
+    RUN	curl -L https://github.com/Z3Prover/z3/releases/download/z3-${Z3_VERSION}/z3-${Z3_VERSION}-x64-ubuntu-14.04.zip -o /tmp/z3.zip \
+    	&& unzip /tmp/z3.zip -d /tmp \
+    	&& cp /tmp/z3-${Z3_VERSION}-x64-ubuntu-14.04/bin/z3 /usr/local/bin/z3 \
+    	&& chmod a+x /usr/local/bin/z3 
 
 # installing zot
     RUN git clone https://github.com/fm-polimi/zot /usr/local/zot/ && \
@@ -62,9 +64,9 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
 #    ENV FORMAL_DICE ${SERVER_CODE_FOLDER}d-vert-json2mc/json2mc
     ENV JSON2MC_FOLDER ${SERVER_CODE_FOLDER}d-vert-json2mc/
 
-#get D-VerT from github
+# get D-VerT from github
    # RUN  git clone https://github.com/dice-project/DICE-Verification  $PROJECT_FOLDER
-   # RUN git clone -b spark-features --single-branch https://github.com/dice-project/DICE-Verification
+# load code from current directory
     ADD . $SERVER_CODE_FOLDER
 
 # Install and setup virtualenv 
@@ -82,7 +84,6 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
 #apply modifications to zot
     WORKDIR $SERVER_CODE_FOLDER
     RUN cp zot_changes/* /usr/local/zot/asdfs
-    RUN ln -s /usr/local/zot/asdfs/ae2sbvzot.asd /usr/lib/sbcl/site-systems/
 
 # add user to run celery worker as non-root user
     RUN adduser --disabled-password --gecos '' celery-user && adduser celery-user sudo && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers	

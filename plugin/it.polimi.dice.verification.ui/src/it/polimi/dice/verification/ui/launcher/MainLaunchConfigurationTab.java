@@ -603,14 +603,6 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 				};
 			});
 			
-			Button ae2zotButton = new Button(group, SWT.RADIO);
-			ae2zotButton.setText(Messages.MainLaunchConfigurationTab_ae2zotLabel);
-			ae2zotButton.addSelectionListener(new SelectionAdapter() {
-				public void widgetSelected(SelectionEvent e) {
-					data.getConfig().setZotPlugin(ZotPlugin.AE2ZOT);
-					setDirty(true);
-				};
-			});
 
 			if(data.getConfig().getZotPlugin()!=null){
 				switch (data.getConfig().getZotPlugin().getValue()) {
@@ -621,11 +613,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 				case ZotPlugin.AE2BVZOT_VALUE:
 					ae2bvzotButton.setSelection(true);
 					break;
-					
-				case ZotPlugin.AE2ZOT_VALUE:
-					ae2zotButton.setSelection(true);
-					break;
-					
+										
 				default:
 					ae2sbvzotButton.setSelection(true);
 					break;
