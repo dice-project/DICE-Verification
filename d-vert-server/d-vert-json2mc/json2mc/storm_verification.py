@@ -71,6 +71,31 @@ def uppercase_ids(context):
     return context
 
 
+def normalize_temporal_values(context):
+    '''
+    modify the context so that all the temporal constants are integer, preserving the proportions between values.
+    :param context: JSON context containing the topology and all the tool configuration parameters
+    :return: the modified context
+    '''
+    values_list = []
+    for s in context["topology"]["spouts"]:
+        values_list.append(1.0/s["avg_emit_rate"])
+    for b in context["topology"]["bolts"]:
+        values_list.append(b["alpha"])
+    values_list.append(context["topology"]["max_idle_time"])
+    # obtain normalized_values_dictionary
+    normalization_dict = utils.get_normalization_dict(values_list, cfg.TOLERANCE)
+    # substitute normalized values
+    for s in context["topology"]["spouts"]:
+        #s["avg_emit_rate"] = 1/normalization_dict[1.0/s["avg_emit_rate"]]
+        s["alpha"] = normalization_dict[1.0/s["avg_emit_rate"]]
+    for b in context["topology"]["bolts"]:
+        b["alpha"] = normalization_dict[b["alpha"]]
+    context["topology"]["max_idle_time"] = normalization_dict[context["topology"]["max_idle_time"]]
+    context["verification_params"]["max_time"] = max(normalization_dict.values()) * (1+cfg.TOLERANCE)
+    return context
+
+
 class StormVerificationTask(VerificationTask):
     '''
     Class containing all the specific code needed to run verification
@@ -121,6 +146,7 @@ class StormVerificationTask(VerificationTask):
 #            gr.render(os.path.join(self.app_dir, self.app_name + ".gv"), True)
 #            self.context = self.dag.json_context
             self.context = uppercase_ids(context)
+            self.context = normalize_temporal_values(self.context)
         else:
             self.result_dir = self.app_dir = os.path.abspath(plotonly_folder)
             self.app_name = plotonly_folder.split(os.path.sep)[-3]
