@@ -1,0 +1,116 @@
+{
+    "app_name": "wikistats_2017-04-18__18:17:19",
+    "topology": {
+        "spouts": [
+            {
+                "avg_emit_rate": 1.0,
+                "id": "WikiArticleSpout",
+                "parallelism": 2
+            }
+        ],
+        "bolts": [
+            {
+                "alpha": 5.0,
+                "sigma": 1.0,
+                "subs": [
+                    "WIKIARTICLESPOUT"
+                ],
+                "min_ttf": 0,
+                "d": 0.0,
+                "id": "LinkCounterBolt",
+                "parallelism": 2
+            },
+            {
+                "alpha": 0.08,
+                "sigma": 1.0,
+                "subs": [
+                    "WIKIARTICLESPOUT"
+                ],
+                "min_ttf": 0,
+                "d": 0.0,
+                "id": "CategoryExtractBolt",
+                "parallelism": 2
+            },
+            {
+                "alpha": 0.05,
+                "sigma": 3.0,
+                "subs": [
+                    "CATEGORYEXTRACTBOLT"
+                ],
+                "min_ttf": 0,
+                "d": 0.0,
+                "id": "CategoriesSplitBolt",
+                "parallelism": 1
+            },
+            {
+                "alpha": 0.01,
+                "sigma": 1.0,
+                "subs": [
+                    "CATEGORIESSPLITBOLT"
+                ],
+                "min_ttf": 0,
+                "d": 0.0,
+                "id": "CategoryAggrBolt",
+                "parallelism": 5
+            },
+            {
+                "alpha": 0.83,
+                "sigma": 0.0,
+                "subs": [
+                    "CATEGORYEXTRACTBOLT"
+                ],
+                "min_ttf": 0,
+                "d": 0.0,
+                "id": "CategoriesPerPageCassandraWriter",
+                "parallelism": 1
+            },
+            {
+                "alpha": 0.79,
+                "sigma": 0.0,
+                "subs": [
+                    "LINKCOUNTERBOLT"
+                ],
+                "min_ttf": 0,
+                "d": 0.0,
+                "id": "LinksPerPageCassandraWriter",
+                "parallelism": 1
+            },
+            {
+                "alpha": 1.02,
+                "sigma": 0.0,
+                "subs": [
+                    "CATEGORYAGGRBOLT"
+                ],
+                "min_ttf": 0,
+                "d": 0.0,
+                "id": "PagesPerCategoryCassandraWriter",
+                "parallelism": 1
+            }
+        ],
+        "max_reboot_time": 100,
+        "min_reboot_time": 10,
+        "max_idle_time": 0.1,
+        "queue_threshold": 0,
+        "init_queues": 5
+    },
+    "verification_params": {
+        "plugin": [
+            "ae2sbvzot"
+        ],
+        "max_time": 2000,
+        "base_quantity": 5,
+        "num_steps": 20,
+        "periodic_queues": [
+            "LinkCounterBolt",
+            "CategoryExtractBolt",
+            "CategoriesSplitBolt",
+            "CategoryAggrBolt",
+            "CategoriesPerPageCassandraWriter",
+            "LinksPerPageCassandraWriter",
+            "PagesPerCategoryCassandraWriter"
+        ],
+        "strictly_monotonic_queues": [
+            "LinkCounterBolt"
+        ]
+    }
+}
