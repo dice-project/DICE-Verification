@@ -1186,7 +1186,7 @@
 
 		:gen-symbolic-val nil
 		:smt-lib :smt2
-		:logic :QF_UFRDL
+		:logic :QF_UFLRA
 		:over-clocks MAX_TIME
 		:parametric-regions 't
 		{% if verification_params.strictly_monotonic_queues | length %}
