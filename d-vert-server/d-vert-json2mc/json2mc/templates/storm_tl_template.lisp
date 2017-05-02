@@ -55,7 +55,8 @@
   {% for s in topology.spouts %}
   	(defconstant C_EMIT_{{s.id}} {{s.parallelism}})
   	(defconstant MIN_WAIT_FOR_EMIT_{{s.id}} (/ BASE_QUANTITY AVG_EMIT_RATE_{{s.id}}))
-    (defconstant ALPHA_{{s.id}} (getReciprocalGZ AVG_EMIT_RATE_{{s.id}}))
+    ;(defconstant ALPHA_{{s.id}} (getReciprocalGZ AVG_EMIT_RATE_{{s.id}}))
+    (defconstant ALPHA_{{s.id}} {{s.alpha}})
   {%endfor%}
 
 
@@ -913,6 +914,18 @@
 						))
 		)))
 
+;generates the list of paired-clocks for spouts and bolts
+; e.g. '((PT_B1_0 PT_B1_1) (PT_B2_0 PT_B2_1) (PT_S1_0 PT_S1_1))
+(defun gen-paired-clocks-list(spouts bolts)
+			`(
+			,@(loop for j in (append spouts bolts) collect
+				(list
+					(intern (format nil "PT_~S_0" j))
+					(intern (format nil "PT_~S_1" j))
+				))
+		))
+
+
 
 (defmacro rates-constraints (spouts bolts impacts-table)
 	`(&&
@@ -1194,6 +1207,7 @@
 		{% endif %}
 		;:smt-assumptions "(= (r_add_EXPANDER i-loop) (r_add_EXPANDER (+ {{verification_params.num_steps}} 1)))"
 		:discrete-counters (gen-counters-list the-spouts the-bolts the-impacts-table)
+		:paired-clocks (gen-paired-clocks-list the-spouts the-bolts)
     {%  if verification_params.periodic_queues | length %}
     :l-monotonic '(Q_{{ verification_params.periodic_queues | join(' Q_') }})
     {% endif %}
