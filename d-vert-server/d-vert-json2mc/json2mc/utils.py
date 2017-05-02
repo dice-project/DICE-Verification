@@ -14,3 +14,16 @@ def make_sure_path_exists(path):
     except OSError as exception:
         if exception.errno != errno.EEXIST:
             raise
+
+
+def get_grid_dimensions(num_elems):
+    """ Given the number of elements to display,
+        determines the number of  rows and columns"""
+    rows = cols = 1
+    while rows * cols < num_elems:
+        if rows == cols:
+            rows += 1
+        else:
+            cols += 1
+    return rows, cols
+
