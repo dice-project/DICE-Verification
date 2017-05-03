@@ -5,7 +5,7 @@
         {
           "var_prefix":"AVA_CC",
           "linewidth": 2,
-          "linestyle":"--sk",
+          "linestyle":":sk",
           "markersize":1
         }
       ],
@@ -15,11 +15,11 @@
           "var_prefix":"RUN_TC_",
           "linewidth": 2,
           "linestyle":"sc--",
-          "markersize":1
+          "markersize":2
         }
       ],
     "colors":
-        ["m", "b", "r", "c", "y", "g", "k", "w"],
+        ["m", "b", "r", "c", "y", "g", "k"],
     "line_styles":
         ["-","--","-.",":"],
     "markers":

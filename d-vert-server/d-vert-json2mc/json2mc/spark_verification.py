@@ -71,8 +71,7 @@ class SparkVerificationTask(VerificationTask):
             self.dag.label_graph()
             print self.dag.g.nodes(data=True)
             gr = DAGRenderer(self.dag.g)
-            if self.display:
-                gr.render(os.path.join(self.app_dir, self.app_name + ".gv"), True)
+            gr.render(os.path.join(self.app_dir, self.app_name + ".gv"), self.display)
             self.context = self.dag.json_context
         else:
             self.result_dir = self.app_dir = os.path.abspath(plotonly_folder)
@@ -255,7 +254,7 @@ class SparkVerificationTask(VerificationTask):
         plt.ylim([0, math.ceil(y_max * 1.1)])
         # print records['TOTALTIME']
         rounded_totaltime = \
-            map(lambda t: round(float(t.strip('?')), 2),
+            map(lambda t: round(float(t.strip('?')), 3),
                 self.output_trace.records['TOTALTIME'])
         plt.ylabel('#cores')
         plt.xticks(steplist, rounded_totaltime, rotation=45)
@@ -264,10 +263,14 @@ class SparkVerificationTask(VerificationTask):
         fontP.set_size('large')
         plt.legend(prop=fontP, loc='upper right')
         plt.grid()
-        self.output_trace.records['LOOP']
-#        plt.axvspan(self.output_trace.records['LOOP'],
-#                    self.output_trace.time_bound,
-#                    color='red', alpha=0.3)
+        # gets the index of the first timestamp >= deadline
+        deadline_timestamp = next(iter([t for t in zip(range(self.output_trace.time_bound),
+                                                       self.output_trace.records['TOTALTIME'])
+                                        if float(t[1].strip('?')) >= self.context["deadline"]]), None)
+        if deadline_timestamp: # it could be that all of the
+            plt.axvspan(deadline_timestamp[0],
+                        self.output_trace.time_bound,
+                        color='red', alpha=0.3)
         # i += 1 end for
     #    plt.tight_layout()
         time_str = self.verification_result.timestamp_str
