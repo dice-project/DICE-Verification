@@ -1,0 +1,56 @@
+{
+    "app_name": "wikistats_reduced_2_bolts_30",
+    "topology": {
+        "spouts": [
+            {
+                "avg_emit_rate": 1.0,
+                "id": "WikiArticleSpout",
+                "parallelism": 2
+            }
+        ],
+        "bolts": [
+            {
+                "alpha": 5.0,
+                "sigma": 1.0,
+                "subs": [
+                    "WIKIARTICLESPOUT"
+                ],
+                "min_ttf": 0,
+                "d": 0.0,
+                "id": "LinkCounterBolt",
+                "parallelism": 2
+            },
+            {
+                "alpha": 0.79,
+                "sigma": 0.0,
+                "subs": [
+                    "LINKCOUNTERBOLT"
+                ],
+                "min_ttf": 0,
+                "d": 0.0,
+                "id": "LinksPerPageCassandraWriter",
+                "parallelism": 1
+            }
+        ],
+        "max_reboot_time": 100,
+        "min_reboot_time": 10,
+        "max_idle_time": 0.1,
+        "queue_threshold": 0,
+        "init_queues": 5
+    },
+    "verification_params": {
+        "plugin": [
+            "ae2sbvzot"
+        ],
+        "max_time": 2000,
+        "base_quantity": 5,
+        "num_steps": 30,
+        "periodic_queues": [
+            "LinkCounterBolt",
+            "LinksPerPageCassandraWriter"
+        ],
+        "strictly_monotonic_queues": [
+            "LinkCounterBolt"
+        ]
+    }
+}

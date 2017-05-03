@@ -14,6 +14,8 @@ SUPPORTED_TECHS = {
 
 TECH_KEYS = SUPPORTED_TECHS.keys()
 
+TOLERANCE = 0.04
+
 PLOT_CFG = {
     "x-label":{
         "fontsize": 14,

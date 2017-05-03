@@ -71,6 +71,31 @@ def uppercase_ids(context):
     return context
 
 
+def normalize_temporal_values(context):
+    '''
+    modify the context so that all the temporal constants are integer, preserving the proportions between values.
+    :param context: JSON context containing the topology and all the tool configuration parameters
+    :return: the modified context
+    '''
+    values_list = []
+    for s in context["topology"]["spouts"]:
+        values_list.append(1.0/s["avg_emit_rate"])
+    for b in context["topology"]["bolts"]:
+        values_list.append(b["alpha"])
+    values_list.append(context["topology"]["max_idle_time"])
+    # obtain normalized_values_dictionary
+    normalization_dict = utils.get_normalization_dict(values_list, cfg.TOLERANCE)
+    # substitute normalized values
+    for s in context["topology"]["spouts"]:
+        #s["avg_emit_rate"] = 1/normalization_dict[1.0/s["avg_emit_rate"]]
+        s["alpha"] = normalization_dict[1.0/s["avg_emit_rate"]]
+    for b in context["topology"]["bolts"]:
+        b["alpha"] = normalization_dict[b["alpha"]]
+    context["topology"]["max_idle_time"] = normalization_dict[context["topology"]["max_idle_time"]]
+    context["verification_params"]["max_time"] = max(normalization_dict.values()) * (1+cfg.TOLERANCE)
+    return context
+
+
 class StormVerificationTask(VerificationTask):
     '''
     Class containing all the specific code needed to run verification
@@ -121,6 +146,7 @@ class StormVerificationTask(VerificationTask):
 #            gr.render(os.path.join(self.app_dir, self.app_name + ".gv"), True)
 #            self.context = self.dag.json_context
             self.context = uppercase_ids(context)
+            self.context = normalize_temporal_values(self.context)
         else:
             self.result_dir = self.app_dir = os.path.abspath(plotonly_folder)
             self.app_name = plotonly_folder.split(os.path.sep)[-3]
@@ -174,33 +200,29 @@ class StormVerificationTask(VerificationTask):
         file_name = self.app_name if self.app_name is not None else "plot"
         topology = self.context["topology"]
         strictly_monotonic_ids = self.context["verification_params"]["strictly_monotonic_queues"]
-        plotted_bolts = topology["bolts"] if len(strictly_monotonic_ids) == 0 \
+        bolts_to_plot = topology["bolts"] if len(strictly_monotonic_ids) == 0 \
             else [b for b in topology["bolts"] if b["id"] in strictly_monotonic_ids]
         steplist = range(self.output_trace.time_bound + 1)
-        num_rows = min(3, len(plotted_bolts))
-        if len(plotted_bolts) % 3:
-            columns = len(plotted_bolts)/3 + 1
-        else:
-            columns = len(plotted_bolts)/3
+        rows, columns = utils.get_grid_dimensions(len(bolts_to_plot))
         #  first round to get the maximum y value
         my_dpi = 96
         plt.figure(figsize=(1460/my_dpi, 900/my_dpi), dpi=my_dpi)
         styles_list = self.get_plot_styles_list(settings)
-        timestamp_indexes = range((num_rows-1)*columns + 1,
-                                  num_rows*columns + 1)
-        print "timestamp_indexes: ", timestamp_indexes
+        timestamp_indexes = range(len(bolts_to_plot) + 1 - columns,
+                                  len(bolts_to_plot) +1)
+        print "timestamp_indexes: {}".format(timestamp_indexes)
         i = 1
         y_max = 1
         # get the maximum "Y" value to be displayed across all plots
-        for b in plotted_bolts:
+        for b in bolts_to_plot:
             y_max = get_y_max(y_max, settings["bolt_vars"], b["id"],
                               self.output_trace.records)
             for s in b["subs"]:
                 y_max = get_y_max(y_max, settings["subs_vars"], s,
                                   self.output_trace.records)
         # plot variables' values
-        for b in plotted_bolts:  # TODO checki if complete
-            plt.subplot(num_rows, columns, i)
+        for b in bolts_to_plot:  # TODO checki if complete
+            plt.subplot(rows, columns, i)
             plot_vars_from_list(self.output_trace.time_bound,
                                 settings["bolt_vars"],
                                 b["id"],
