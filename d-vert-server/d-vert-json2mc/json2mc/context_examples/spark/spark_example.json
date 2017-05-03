@@ -1,11 +1,11 @@
 {
-"app_name" : "simple_app_example",
+"app_name" : "simple_app_example_no_loops",
 "verification_params" :
 {"plugin":"ae2sbvzot",
 "time_bound" : 20,
 "no_loops" : true},
 "tot_cores" : 600,
-"analysis_type" : "boundedness", 
+"analysis_type" : "feasibility",
 "deadline" : 10.0,
 "max_time" : 60000,
 "stages":

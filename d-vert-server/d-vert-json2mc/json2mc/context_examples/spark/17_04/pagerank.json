@@ -1,0 +1,796 @@
+{
+"app_name" : "pagerank_0_c48_t40_no-l_d13500",
+"verification_params" :
+{"plugin":"ae2sbvzot",
+"time_bound" : 40,
+"no_loops" : true},
+"tot_cores" : 48,
+"analysis_type" : "feasibility",
+"deadline" : 131500,
+"max_time" : 131500,
+"stages":
+{
+    "0": {
+        "RDDIds": {
+            "0": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "1": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "2": {
+                "callsite": "coalesce at GraphLoader.scala:71",
+                "name": "CoalescedRDD"
+            },
+            "3": {
+                "callsite": "mapPartitionsWithIndex at GraphLoader.scala:75",
+                "name": "GraphLoader.edgeListFile - edges (hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input)"
+            }
+        },
+        "cachedRDDs": [
+            3
+        ],
+        "duration": 2436167,
+        "genstage": false,
+        "name": "count at GraphLoader.scala:94",
+        "nominalrate": 363829.9295573744,
+        "numtask": 48,
+        "parentsIds": [],
+        "recordsread": 886350468,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 0.0,
+        "shufflerecordswrite": 0.0,
+        "skipped": false,
+        "totalduration": 7012173,
+        "weight": 5.939181509313606
+    },
+    "1": {
+        "RDDIds": {
+            "0": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "1": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "2": {
+                "callsite": "coalesce at GraphLoader.scala:71",
+                "name": "CoalescedRDD"
+            },
+            "3": {
+                "callsite": "mapPartitionsWithIndex at GraphLoader.scala:75",
+                "name": "GraphLoader.edgeListFile - edges (hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input), EdgeRDD, EdgeRDD"
+            },
+            "12": {
+                "callsite": "mapPartitions at GraphImpl.scala:207",
+                "name": "GraphImpl.aggregateMessages - preAgg"
+            }
+        },
+        "cachedRDDs": [
+            3
+        ],
+        "duration": 305433,
+        "genstage": false,
+        "name": "mapPartitions at GraphImpl.scala:207",
+        "nominalrate": 2901947.2944966652,
+        "numtask": 48,
+        "parentsIds": [
+            0
+        ],
+        "recordsread": 1000,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 0.0,
+        "shufflerecordswrite": 422050066,
+        "skipped": false,
+        "weight": 11.491014395955904
+    },
+    "2": {
+        "RDDIds": {
+            "0": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "1": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "2": {
+                "callsite": "coalesce at GraphLoader.scala:71",
+                "name": "CoalescedRDD"
+            },
+            "3": {
+                "callsite": "mapPartitionsWithIndex at GraphLoader.scala:75",
+                "name": "GraphLoader.edgeListFile - edges (hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input), EdgeRDD, EdgeRDD"
+            },
+            "6": {
+                "callsite": "mapPartitions at VertexRDD.scala:356",
+                "name": "VertexRDD.createRoutingTables - vid2pid (aggregation)"
+            }
+        },
+        "cachedRDDs": [
+            3
+        ],
+        "duration": 790156,
+        "genstage": false,
+        "name": "mapPartitions at VertexRDD.scala:356",
+        "nominalrate": 1121741.1093505586,
+        "numtask": 48,
+        "parentsIds": [
+            0
+        ],
+        "recordsread": 1000,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 0.0,
+        "shufflerecordswrite": 823620216,
+        "skipped": false,
+        "weight": 6.202360673082278
+    },
+    "3": {
+        "RDDIds": {
+            "7": {
+                "callsite": "partitionBy at VertexRDD.scala:361",
+                "name": "ShuffledRDD"
+            },
+            "8": {
+                "callsite": "mapPartitions at VertexRDD.scala:361",
+                "name": "MapPartitionsRDD"
+            },
+            "9": {
+                "callsite": "mapPartitions at VertexRDD.scala:345",
+                "name": "VertexRDD, VertexRDD"
+            },
+            "13": {
+                "callsite": "partitionBy at VertexRDDImpl.scala:212",
+                "name": "ShuffledRDD"
+            },
+            "14": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:213",
+                "name": "VertexRDD, GraphOps.outDegrees"
+            },
+            "16": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:154",
+                "name": "VertexRDD"
+            },
+            "20": {
+                "callsite": "mapPartitions at VertexRDDImpl.scala:245",
+                "name": "ReplicatedVertexView.upgrade(true, false) - shippedVerts true false (broadcast)"
+            }
+        },
+        "cachedRDDs": [
+            9,
+            16
+        ],
+        "duration": 1277424,
+        "genstage": false,
+        "name": "mapPartitions at VertexRDDImpl.scala:245",
+        "nominalrate": 975142.3818559851,
+        "numtask": 48,
+        "parentsIds": [
+            1,
+            2
+        ],
+        "recordsread": 1000,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 1245670282,
+        "shufflerecordswrite": 1000000,
+        "skipped": false,
+        "weight": 4.362279478074625
+    },
+    "4": {
+        "RDDIds": {
+            "7": {
+                "callsite": "partitionBy at VertexRDD.scala:361",
+                "name": "ShuffledRDD"
+            },
+            "8": {
+                "callsite": "mapPartitions at VertexRDD.scala:361",
+                "name": "MapPartitionsRDD"
+            },
+            "9": {
+                "callsite": "mapPartitions at VertexRDD.scala:345",
+                "name": "VertexRDD, VertexRDD"
+            },
+            "13": {
+                "callsite": "partitionBy at VertexRDDImpl.scala:212",
+                "name": "ShuffledRDD"
+            },
+            "14": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:213",
+                "name": "VertexRDD, GraphOps.outDegrees"
+            },
+            "16": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:154",
+                "name": "VertexRDD"
+            },
+            "26": {
+                "callsite": "mapPartitions at VertexRDDImpl.scala:94",
+                "name": "VertexRDD"
+            },
+            "30": {
+                "callsite": "mapPartitions at VertexRDDImpl.scala:245",
+                "name": "ReplicatedVertexView.upgrade(true, false) - shippedVerts true false (broadcast)"
+            }
+        },
+        "cachedRDDs": [
+            26,
+            9,
+            16
+        ],
+        "duration": 267156,
+        "genstage": false,
+        "name": "mapPartitions at VertexRDDImpl.scala:245",
+        "nominalrate": 4662707.489257213,
+        "numtask": 48,
+        "parentsIds": [
+            1,
+            2
+        ],
+        "recordsread": 1000,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 0.0,
+        "shufflerecordswrite": 1000000,
+        "skipped": false,
+        "weight": 6.62304608543323
+    },
+    "5": {
+        "RDDIds": {
+            "0": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "1": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "2": {
+                "callsite": "coalesce at GraphLoader.scala:71",
+                "name": "CoalescedRDD"
+            },
+            "3": {
+                "callsite": "mapPartitionsWithIndex at GraphLoader.scala:75",
+                "name": "GraphLoader.edgeListFile - edges (hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input), EdgeRDD, EdgeRDD"
+            },
+            "18": {
+                "callsite": "mapPartitions at EdgeRDDImpl.scala:117",
+                "name": "EdgeRDD"
+            },
+            "21": {
+                "callsite": "partitionBy at ReplicatedVertexView.scala:69",
+                "name": "ShuffledRDD"
+            },
+            "22": {
+                "callsite": "zipPartitions at ReplicatedVertexView.scala:70",
+                "name": "EdgeRDD"
+            },
+            "24": {
+                "callsite": "mapPartitions at EdgeRDDImpl.scala:117",
+                "name": "EdgeRDD"
+            },
+            "28": {
+                "callsite": "mapPartitions at EdgeRDDImpl.scala:117",
+                "name": "EdgeRDD"
+            },
+            "31": {
+                "callsite": "partitionBy at ReplicatedVertexView.scala:69",
+                "name": "ShuffledRDD"
+            },
+            "32": {
+                "callsite": "zipPartitions at ReplicatedVertexView.scala:70",
+                "name": "EdgeRDD"
+            },
+            "34": {
+                "callsite": "mapPartitions at GraphImpl.scala:207",
+                "name": "GraphImpl.aggregateMessages - preAgg"
+            }
+        },
+        "cachedRDDs": [
+            18,
+            28,
+            3
+        ],
+        "duration": 855997,
+        "genstage": false,
+        "name": "mapPartitions at GraphImpl.scala:207",
+        "nominalrate": 2336.456786647617,
+        "numtask": 48,
+        "parentsIds": [
+            3,
+            4
+        ],
+        "recordsread": 1000,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 2000000,
+        "shufflerecordswrite": 422345088,
+        "skipped": false,
+        "weight": 3.1307498741233903
+    },
+    "6": {
+        "RDDIds": {
+            "7": {
+                "callsite": "partitionBy at VertexRDD.scala:361",
+                "name": "ShuffledRDD"
+            },
+            "8": {
+                "callsite": "mapPartitions at VertexRDD.scala:361",
+                "name": "MapPartitionsRDD"
+            },
+            "9": {
+                "callsite": "mapPartitions at VertexRDD.scala:345",
+                "name": "VertexRDD, VertexRDD"
+            },
+            "13": {
+                "callsite": "partitionBy at VertexRDDImpl.scala:212",
+                "name": "ShuffledRDD"
+            },
+            "14": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:213",
+                "name": "VertexRDD, GraphOps.outDegrees"
+            },
+            "16": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:154",
+                "name": "VertexRDD"
+            },
+            "26": {
+                "callsite": "mapPartitions at VertexRDDImpl.scala:94",
+                "name": "VertexRDD"
+            },
+            "35": {
+                "callsite": "partitionBy at VertexRDDImpl.scala:212",
+                "name": "ShuffledRDD"
+            },
+            "36": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:213",
+                "name": "VertexRDD"
+            },
+            "38": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:154",
+                "name": "VertexRDD"
+            },
+            "40": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:142",
+                "name": "VertexRDD"
+            },
+            "42": {
+                "callsite": "mapPartitions at VertexRDDImpl.scala:245",
+                "name": "ReplicatedVertexView.updateVertices - shippedVerts true false (broadcast)"
+            }
+        },
+        "cachedRDDs": [
+            26,
+            9,
+            16,
+            38
+        ],
+        "duration": 423990,
+        "genstage": false,
+        "name": "mapPartitions at VertexRDDImpl.scala:245",
+        "nominalrate": 3934091.2993230973,
+        "numtask": 48,
+        "parentsIds": [
+            1,
+            5,
+            2
+        ],
+        "recordsread": 3000,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 422345088,
+        "shufflerecordswrite": 1000000,
+        "skipped": false,
+        "weight": 2.773426260053303
+    },
+    "7": {
+        "RDDIds": {
+            "0": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "1": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "2": {
+                "callsite": "coalesce at GraphLoader.scala:71",
+                "name": "CoalescedRDD"
+            },
+            "3": {
+                "callsite": "mapPartitionsWithIndex at GraphLoader.scala:75",
+                "name": "GraphLoader.edgeListFile - edges (hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input), EdgeRDD, EdgeRDD"
+            },
+            "18": {
+                "callsite": "mapPartitions at EdgeRDDImpl.scala:117",
+                "name": "EdgeRDD"
+            },
+            "21": {
+                "callsite": "partitionBy at ReplicatedVertexView.scala:69",
+                "name": "ShuffledRDD"
+            },
+            "22": {
+                "callsite": "zipPartitions at ReplicatedVertexView.scala:70",
+                "name": "EdgeRDD"
+            },
+            "24": {
+                "callsite": "mapPartitions at EdgeRDDImpl.scala:117",
+                "name": "EdgeRDD"
+            },
+            "28": {
+                "callsite": "mapPartitions at EdgeRDDImpl.scala:117",
+                "name": "EdgeRDD"
+            },
+            "31": {
+                "callsite": "partitionBy at ReplicatedVertexView.scala:69",
+                "name": "ShuffledRDD"
+            },
+            "32": {
+                "callsite": "zipPartitions at ReplicatedVertexView.scala:70",
+                "name": "EdgeRDD"
+            },
+            "43": {
+                "callsite": "partitionBy at ReplicatedVertexView.scala:110",
+                "name": "ShuffledRDD"
+            },
+            "44": {
+                "callsite": "zipPartitions at ReplicatedVertexView.scala:112",
+                "name": "EdgeRDD"
+            },
+            "45": {
+                "callsite": "RDD at EdgeRDD.scala:41",
+                "name": "EdgeRDDImpl"
+            }
+        },
+        "cachedRDDs": [
+            45,
+            44,
+            18,
+            28,
+            3
+        ],
+        "duration": 607583,
+        "genstage": false,
+        "name": "foreachPartition at PageRank.scala:155",
+        "nominalrate": 4937.597003207792,
+        "numtask": 48,
+        "parentsIds": [
+            6,
+            3,
+            4
+        ],
+        "recordsread": 1000,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 2000000,
+        "shufflerecordswrite": 0.0,
+        "skipped": false,
+        "weight": 1.5397204990923052
+    },
+    "8": {
+        "RDDIds": {
+            "0": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "1": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "2": {
+                "callsite": "coalesce at GraphLoader.scala:71",
+                "name": "CoalescedRDD"
+            },
+            "3": {
+                "callsite": "mapPartitionsWithIndex at GraphLoader.scala:75",
+                "name": "GraphLoader.edgeListFile - edges (hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input), EdgeRDD, EdgeRDD"
+            },
+            "12": {
+                "callsite": "mapPartitions at GraphImpl.scala:207",
+                "name": "GraphImpl.aggregateMessages - preAgg"
+            }
+        },
+        "cachedRDDs": [
+            3
+        ],
+        "genstage": false,
+        "name": "mapPartitions at GraphImpl.scala:207",
+        "nominalrate": 0.0,
+        "numtask": 0,
+        "parentsIds": [
+            0
+        ],
+        "recordsread": 0.0,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 0.0,
+        "shufflerecordswrite": 0.0,
+        "skipped": true,
+        "weight": 0
+    },
+    "9": {
+        "RDDIds": {
+            "0": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "1": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "2": {
+                "callsite": "coalesce at GraphLoader.scala:71",
+                "name": "CoalescedRDD"
+            },
+            "3": {
+                "callsite": "mapPartitionsWithIndex at GraphLoader.scala:75",
+                "name": "GraphLoader.edgeListFile - edges (hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input), EdgeRDD, EdgeRDD"
+            },
+            "6": {
+                "callsite": "mapPartitions at VertexRDD.scala:356",
+                "name": "VertexRDD.createRoutingTables - vid2pid (aggregation)"
+            }
+        },
+        "cachedRDDs": [
+            3
+        ],
+        "genstage": false,
+        "name": "mapPartitions at VertexRDD.scala:356",
+        "nominalrate": 0.0,
+        "numtask": 0,
+        "parentsIds": [
+            0
+        ],
+        "recordsread": 0.0,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 0.0,
+        "shufflerecordswrite": 0.0,
+        "skipped": true,
+        "weight": 0
+    },
+    "10": {
+        "RDDIds": {
+            "7": {
+                "callsite": "partitionBy at VertexRDD.scala:361",
+                "name": "ShuffledRDD"
+            },
+            "8": {
+                "callsite": "mapPartitions at VertexRDD.scala:361",
+                "name": "MapPartitionsRDD"
+            },
+            "9": {
+                "callsite": "mapPartitions at VertexRDD.scala:345",
+                "name": "VertexRDD, VertexRDD"
+            },
+            "13": {
+                "callsite": "partitionBy at VertexRDDImpl.scala:212",
+                "name": "ShuffledRDD"
+            },
+            "14": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:213",
+                "name": "VertexRDD, GraphOps.outDegrees"
+            },
+            "16": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:154",
+                "name": "VertexRDD"
+            },
+            "20": {
+                "callsite": "mapPartitions at VertexRDDImpl.scala:245",
+                "name": "ReplicatedVertexView.upgrade(true, false) - shippedVerts true false (broadcast)"
+            }
+        },
+        "cachedRDDs": [
+            9,
+            16
+        ],
+        "genstage": false,
+        "name": "mapPartitions at VertexRDDImpl.scala:245",
+        "nominalrate": 0.0,
+        "numtask": 0,
+        "parentsIds": [
+            2,
+            1
+        ],
+        "recordsread": 0.0,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 0.0,
+        "shufflerecordswrite": 0.0,
+        "skipped": true,
+        "weight": 0
+    },
+    "11": {
+        "RDDIds": {
+            "7": {
+                "callsite": "partitionBy at VertexRDD.scala:361",
+                "name": "ShuffledRDD"
+            },
+            "8": {
+                "callsite": "mapPartitions at VertexRDD.scala:361",
+                "name": "MapPartitionsRDD"
+            },
+            "9": {
+                "callsite": "mapPartitions at VertexRDD.scala:345",
+                "name": "VertexRDD, VertexRDD"
+            },
+            "13": {
+                "callsite": "partitionBy at VertexRDDImpl.scala:212",
+                "name": "ShuffledRDD"
+            },
+            "14": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:213",
+                "name": "VertexRDD, GraphOps.outDegrees"
+            },
+            "16": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:154",
+                "name": "VertexRDD"
+            },
+            "26": {
+                "callsite": "mapPartitions at VertexRDDImpl.scala:94",
+                "name": "VertexRDD"
+            },
+            "30": {
+                "callsite": "mapPartitions at VertexRDDImpl.scala:245",
+                "name": "ReplicatedVertexView.upgrade(true, false) - shippedVerts true false (broadcast)"
+            }
+        },
+        "cachedRDDs": [
+            9,
+            16
+        ],
+        "genstage": false,
+        "name": "mapPartitions at VertexRDDImpl.scala:245",
+        "nominalrate": 0.0,
+        "numtask": 0,
+        "parentsIds": [
+            2,
+            1
+        ],
+        "recordsread": 0.0,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 0.0,
+        "shufflerecordswrite": 0.0,
+        "skipped": true,
+        "weight": 0
+    },
+    "12": {
+        "RDDIds": {
+            "0": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "1": {
+                "callsite": "textFile at GraphLoader.scala:71",
+                "name": "hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input"
+            },
+            "2": {
+                "callsite": "coalesce at GraphLoader.scala:71",
+                "name": "CoalescedRDD"
+            },
+            "3": {
+                "callsite": "mapPartitionsWithIndex at GraphLoader.scala:75",
+                "name": "GraphLoader.edgeListFile - edges (hdfs://ec2-35-160-250-107.us-west-2.compute.amazonaws.com:9000/SparkBench/PageRank/Input), EdgeRDD, EdgeRDD"
+            },
+            "18": {
+                "callsite": "mapPartitions at EdgeRDDImpl.scala:117",
+                "name": "EdgeRDD"
+            },
+            "21": {
+                "callsite": "partitionBy at ReplicatedVertexView.scala:69",
+                "name": "ShuffledRDD"
+            },
+            "22": {
+                "callsite": "zipPartitions at ReplicatedVertexView.scala:70",
+                "name": "EdgeRDD"
+            },
+            "24": {
+                "callsite": "mapPartitions at EdgeRDDImpl.scala:117",
+                "name": "EdgeRDD"
+            },
+            "28": {
+                "callsite": "mapPartitions at EdgeRDDImpl.scala:117",
+                "name": "EdgeRDD"
+            },
+            "31": {
+                "callsite": "partitionBy at ReplicatedVertexView.scala:69",
+                "name": "ShuffledRDD"
+            },
+            "32": {
+                "callsite": "zipPartitions at ReplicatedVertexView.scala:70",
+                "name": "EdgeRDD"
+            },
+            "34": {
+                "callsite": "mapPartitions at GraphImpl.scala:207",
+                "name": "GraphImpl.aggregateMessages - preAgg"
+            }
+        },
+        "cachedRDDs": [
+            18,
+            3
+        ],
+        "genstage": false,
+        "name": "mapPartitions at GraphImpl.scala:207",
+        "nominalrate": 0.0,
+        "numtask": 0,
+        "parentsIds": [
+            3,
+            4
+        ],
+        "recordsread": 0.0,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 0.0,
+        "shufflerecordswrite": 0.0,
+        "skipped": true,
+        "weight": 0
+    },
+    "13": {
+        "RDDIds": {
+            "7": {
+                "callsite": "partitionBy at VertexRDD.scala:361",
+                "name": "ShuffledRDD"
+            },
+            "8": {
+                "callsite": "mapPartitions at VertexRDD.scala:361",
+                "name": "MapPartitionsRDD"
+            },
+            "9": {
+                "callsite": "mapPartitions at VertexRDD.scala:345",
+                "name": "VertexRDD, VertexRDD"
+            },
+            "13": {
+                "callsite": "partitionBy at VertexRDDImpl.scala:212",
+                "name": "ShuffledRDD"
+            },
+            "14": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:213",
+                "name": "VertexRDD, GraphOps.outDegrees"
+            },
+            "16": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:154",
+                "name": "VertexRDD"
+            },
+            "26": {
+                "callsite": "mapPartitions at VertexRDDImpl.scala:94",
+                "name": "VertexRDD"
+            },
+            "35": {
+                "callsite": "partitionBy at VertexRDDImpl.scala:212",
+                "name": "ShuffledRDD"
+            },
+            "36": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:213",
+                "name": "VertexRDD"
+            },
+            "38": {
+                "callsite": "zipPartitions at VertexRDDImpl.scala:154",
+                "name": "VertexRDD"
+            },
+            "39": {
+                "callsite": "RDD at VertexRDD.scala:57",
+                "name": "VertexRDDImpl"
+            },
+            "46": {
+                "callsite": "saveAsTextFile at pagerankApp.scala:72",
+                "name": "MapPartitionsRDD"
+            }
+        },
+        "cachedRDDs": [
+            39,
+            9,
+            16,
+            38
+        ],
+        "duration": 48267,
+        "genstage": false,
+        "name": "saveAsTextFile at pagerankApp.scala:72",
+        "nominalrate": 34558090.828102015,
+        "numtask": 48,
+        "parentsIds": [
+            5,
+            2,
+            1
+        ],
+        "recordsread": 1000,
+        "recordswrite": 0.0,
+        "shufflerecordsread": 0.0,
+        "shufflerecordswrite": 0.0,
+        "skipped": false,
+        "weight": 1.0
+    }
+}
+}
