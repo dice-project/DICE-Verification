@@ -204,6 +204,22 @@
 				,(plus (loop for j in stages collect
 						(<V1> "RUN_TC" j))))
 				TOT_CORES)
+		
+		; ! (AVA_CC > 0 && ORoria: s in stages (Y(ENABLED_S) && REM_TC>0 ))
+		(!!
+			(&&	
+				([>] (-V- AVA_CC) 0)
+				(||
+					,@(nconc
+					(loop for i in stages collect
+					`(&&
+						(yesterday ,(<P1> "ENABLED_S" i))
+						([>] ,(<V1> "REM_TC" i) 0)))
+					)
+				)
+			)
+		)
+
 
 	)
 )
