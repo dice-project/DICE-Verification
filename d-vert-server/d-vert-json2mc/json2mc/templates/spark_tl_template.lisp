@@ -123,7 +123,7 @@
 		(<->
 			(&&
 				,(<P1> "START_T" j)
-				(yesterday ([=] ,(<V1> "REM_TC" j) ,(<C1> "TOT_TASKS" j))))
+				([=] ,(<V1> "REM_TC" j) ,(<C1> "TOT_TASKS" j)))
 			,(<P1> "START_S" j))
 	; (END_T && (REM_TC = 0)) <-> END_S
 		(<->
@@ -205,7 +205,7 @@
 						(<V1> "RUN_TC" j))))
 				TOT_CORES)
 		
-		; ! (AVA_CC > 0 && ORoria: s in stages (Y(ENABLED_S) && REM_TC>0 ))
+		; ! (AVA_CC > 0 && ORoria: x in stages (Y(ENABLED_S_x) && (REM_TC_x - RUN_TC_x) >0 ))
 		(!!
 			(&&	
 				([>] (-V- AVA_CC) 0)
@@ -213,8 +213,8 @@
 					,@(nconc
 					(loop for i in stages collect
 					`(&&
-						(yesterday ,(<P1> "ENABLED_S" i))
-						([>] ,(<V1> "REM_TC" i) 0)))
+						(yesterday ,(<P1> "ENABLED_S" i)) 
+							([>] ,(<V1> "REM_TC" i) ,(<V1> "RUN_TC" i))))
 					)
 				)
 			)
@@ -241,25 +241,21 @@
 ;						(->
 ;							,(<P1> "ENABLED_S" i)
 							([>=] ,(<V1> "REM_TC" i) (next ,(<V1> "REM_TC" i)));)
-		 ; REM_TC != XREM_TC -> X(START_T)
+		 ; REM_TC != XREM_TC -> X(END_T)
 						(->
 							([!=] ,(<V1> "REM_TC" i) (next ,(<V1> "REM_TC" i)))
-							(next ,(<P1> "START_T" i)))
+							(next ,(<P1> "END_T" i)))
 						
-					;START_T -> RUN_TC = YREM_TC - REM_TC
+					;END_T -> REM_TC = YREM_TC - RUN_TC
 						(->
-							,(<P1> "START_T" i)
-							([=] ,(<V1> "RUN_TC" i) 
+							,(<P1> "END_T" i)
+							([=] ,(<V1> "REM_TC" i) 
 								([-] (yesterday ,(<V1> "REM_TC" i))
-									 ,(<V1> "REM_TC" i))))								
+									 ,(<V1> "RUN_TC" i))))								
 					;RUN_T -> RUN_TC > 0 
 						(->
 							,(<P1> "RUN_T" i)
-;							(&&
 								([>] ,(<V1> "RUN_TC" i) 0)
-;								(until 
-;									([=] ,(<V1> "RUN_TC" i) (next ,(<V1> "RUN_TC" i))) ;UNSAT!!
-;									 ,(<P1> "END_T" i)))
 									 )
 					;!RUN_T -> RUN_TC = 0
 						(->
