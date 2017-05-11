@@ -1,13 +1,13 @@
 {
-"app_name" : "pagerank_0_c48_t40_no-l_d13500",
+"app_name" : "pagerank_acceleration_0_1000_c48_t50_no-l_d200000",
 "verification_params" :
 {"plugin":"ae2sbvzot",
-"time_bound" : 40,
+"time_bound" : 50,
 "no_loops" : true},
 "tot_cores" : 48,
 "analysis_type" : "feasibility",
-"deadline" : 131500,
-"max_time" : 131500,
+"deadline" : 200000,
+"max_time" : 200000,
 "stages":
 {
     "0": {
@@ -36,7 +36,7 @@
         "genstage": false,
         "name": "count at GraphLoader.scala:94",
         "nominalrate": 363829.9295573744,
-        "numtask": 48,
+        "numtask": 1000,
         "parentsIds": [],
         "recordsread": 886350468,
         "recordswrite": 0.0,
@@ -76,7 +76,7 @@
         "genstage": false,
         "name": "mapPartitions at GraphImpl.scala:207",
         "nominalrate": 2901947.2944966652,
-        "numtask": 48,
+        "numtask": 1000,
         "parentsIds": [
             0
         ],
@@ -117,7 +117,7 @@
         "genstage": false,
         "name": "mapPartitions at VertexRDD.scala:356",
         "nominalrate": 1121741.1093505586,
-        "numtask": 48,
+        "numtask": 1000,
         "parentsIds": [
             0
         ],
@@ -167,7 +167,7 @@
         "genstage": false,
         "name": "mapPartitions at VertexRDDImpl.scala:245",
         "nominalrate": 975142.3818559851,
-        "numtask": 48,
+        "numtask": 1000,
         "parentsIds": [
             1,
             2
@@ -223,7 +223,7 @@
         "genstage": false,
         "name": "mapPartitions at VertexRDDImpl.scala:245",
         "nominalrate": 4662707.489257213,
-        "numtask": 48,
+        "numtask": 1000,
         "parentsIds": [
             1,
             2
@@ -295,7 +295,7 @@
         "genstage": false,
         "name": "mapPartitions at GraphImpl.scala:207",
         "nominalrate": 2336.456786647617,
-        "numtask": 48,
+        "numtask": 1000,
         "parentsIds": [
             3,
             4
@@ -368,7 +368,7 @@
         "genstage": false,
         "name": "mapPartitions at VertexRDDImpl.scala:245",
         "nominalrate": 3934091.2993230973,
-        "numtask": 48,
+        "numtask": 1000,
         "parentsIds": [
             1,
             5,
@@ -451,7 +451,7 @@
         "genstage": false,
         "name": "foreachPartition at PageRank.scala:155",
         "nominalrate": 4937.597003207792,
-        "numtask": 48,
+        "numtask": 1000,
         "parentsIds": [
             6,
             3,
@@ -779,7 +779,7 @@
         "genstage": false,
         "name": "saveAsTextFile at pagerankApp.scala:72",
         "nominalrate": 34558090.828102015,
-        "numtask": 48,
+        "numtask": 1000,
         "parentsIds": [
             5,
             2,

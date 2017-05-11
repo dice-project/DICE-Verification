@@ -73,8 +73,23 @@
 (setq the-proc-time-table (make-hash-table :test 'equalp))
 ; (setf (gethash 'S0 the-proc-time-table) (list (- ALPHA_S0 (/ ALPHA_S0 10.0)) (+ ALPHA_S0 (/ ALPHA_S0 10.0))))
 {% for k,v in stages.iteritems() -%}
-(setf (gethash 'S{{ k }} the-proc-time-table) (list (- ALPHA_S{{ k }} (/ ALPHA_S{{ k }} 10.0)) (+ ALPHA_S{{ k }} (/ ALPHA_S{{ k }} 10.0))))
+(setf (gethash 'S{{ k }} the-proc-time-table) 
+	(loop for x in (range (if (> TOT_TASKS_S{{ k }} TOT_CORES) (/ TOT_TASKS_S{{ k }} TOT_CORES) 1) :min 1) collect
+		(list (- (* ALPHA_S{{ k }} x) (/ (* ALPHA_S{{ k }} x) 10.0)) (+ (* ALPHA_S{{ k }} x) (/ (* ALPHA_S{{ k }} x) 10.0)))))
 {% endfor %}
+
+(defvar the-alphas-table)
+(setq the-alphas-table (make-hash-table :test 'equalp))
+{% for k,v in stages.iteritems() -%}
+(setf (gethash 'S{{ k }} the-alphas-table) ALPHA_S{{ k }})
+{% endfor %}
+
+(defvar the-tot-tasks-table)
+(setq the-tot-tasks-table (make-hash-table :test 'equalp))
+{% for k,v in stages.iteritems() -%}
+(setf (gethash 'S{{ k }} the-tot-tasks-table) TOT_TASKS_S{{ k }})
+{% endfor %}
+
 
 (defconstant orig
     (-P- O))
@@ -247,11 +262,11 @@
 							(next ,(<P1> "END_T" i)))
 						
 					;END_T -> REM_TC = YREM_TC - RUN_TC
-						(->
-							,(<P1> "END_T" i)
-							([=] ,(<V1> "REM_TC" i) 
-								([-] (yesterday ,(<V1> "REM_TC" i))
-									 ,(<V1> "RUN_TC" i))))								
+;						(->
+;							,(<P1> "END_T" i)
+;							([=] ,(<V1> "REM_TC" i) 
+;								([-] (yesterday ,(<V1> "REM_TC" i))
+;									 ,(<V1> "RUN_TC" i))))								
 					;RUN_T -> RUN_TC > 0 
 						(->
 							,(<P1> "RUN_T" i)
@@ -329,7 +344,7 @@
 
 
 
-(defmacro clocksBehaviour (stages times)
+(defmacro clocksBehaviour (stages times tot-tasks alphas)
 ; F35
 	`(&&
 ;		,@(loop for j in stages collect
@@ -388,24 +403,48 @@
 					   )
 			;TASK RUNNING DURATION - SINGLE INTERVAL
 					(->
-							,(<P1> "RUN_T" j)
+						,(<P1> "RUN_T" j)
 						(until
 							(&&
 								,(<P1> "RUN_T" j)
 								(!! ,(<P1> "END_T" j)))
-								(&&
-									([>=]
-										,(<V1> "CLOCK_S" j)
-										,(first (gethash j times)))
-									([<=]
-										,(<V1> "CLOCK_S" j)
-										,(second (gethash j times)))
-;									,(t-process j ">=" (first (gethash j times)))
-;									,(t-process j "<=" (second (gethash j times)))
-									,(<P1> "END_T" j))))
+							(&&
+								,(<P1> "END_T" j)
+								(||
+									(&&
+										([>=]
+											,(<V1> "CLOCK_S" j)
+											,(first (first (gethash j times))))
+										([<=]
+											,(<V1> "CLOCK_S" j)
+											,(second (first (gethash j times))))
+										([=] ,(<V1> "REM_TC" j) 
+											([-] (yesterday ,(<V1> "REM_TC" j))
+												,(<V1> "RUN_TC" j)))
+										)
+									,@(if (>= (/ (gethash j tot-tasks) TOT_CORES) 2)
+										(loop for tc from TOT_CORES downto 20 by 10 append
+											(loop for k in (range (max 2 (/ (gethash j tot-tasks) TOT_CORES)) :min 1) collect
+												`(&&
+													([=] ,(<V1> "RUN_TC" j)
+															,tc)
+													([>=]
+														,(<V1> "CLOCK_S" j)
+														,(first (nth (- k 1) (gethash j times))))
+													([<=]
+														,(<V1> "CLOCK_S" j)
+														,(second (nth (- k 1) (gethash j times))))
+													([=] ,(<V1> "REM_TC" j) 
+														([-] (yesterday ,(<V1> "REM_TC" j))
+															,(* tc k)))
+													)
+											)
+										)
+										)
+								); END 
+								)))
 			))
 ))
-
 
 
 (defun genCounters(stages)
@@ -516,8 +555,8 @@
 (defun f-resourcesFormulae (stages)
 	(eval `(resourcesFormulae ,stages)))
 
-(defun f-clocksBehaviour (stages times)
-	(eval `(clocksBehaviour ,stages ,times)))	
+(defun f-clocksBehaviour (stages times tottasks alphas)
+	(eval `(clocksBehaviour ,stages ,times ,tottasks ,alphas)))	
 	
 (defun f-clocksConstraints (stages)
 	(eval `(clocksConstraints ,stages)))
@@ -539,6 +578,7 @@
 ;(pprint (f-resourcesFormulae the-stages))
 ;(print (genClocks the-stages))
 ;(pprint (f-initClocks the-stages))
+(pprint (f-clocksBehaviour the-stages the-proc-time-table the-tot-tasks-table the-alphas-table))
 
 	({{ verification_params.plugin }}:zot {{ verification_params.time_bound }}
 		(&&
@@ -577,7 +617,7 @@
  					(f-countersFormulae the-stages)
 					(f-resourcesFormulae the-stages)
 					(f-clocksConstraints the-stages)
-                    (f-clocksBehaviour the-stages the-proc-time-table)
+                    (f-clocksBehaviour the-stages the-proc-time-table the-tot-tasks-table the-alphas-table)
 				)
 			)
         
