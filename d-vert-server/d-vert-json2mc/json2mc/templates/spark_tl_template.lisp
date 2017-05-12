@@ -402,7 +402,7 @@
 							orig
 							,(<P1> "START_T" j))
 					   )
-			;TASK RUNNING DURATION - SINGLE INTERVAL
+			;TASK RUNNING DURATION 
 					(->
 						,(<P1> "RUN_T" j)
 						(until
@@ -422,30 +422,40 @@
 										([=] ,(<V1> "REM_TC" j) 
 											([-] (yesterday ,(<V1> "REM_TC" j))
 												,(<V1> "RUN_TC" j)))
-										)
-									,@(if (>= (/ (gethash j tot-tasks) TOT_CORES) 2)
-										(loop for tc from TOT_CORES downto 20 by 10 append
-											(loop for k in (range (max 2 (/ (gethash j tot-tasks) TOT_CORES)) :min 1) collect
-												`(&&
-													([=] ,(<V1> "RUN_TC" j)
-															,tc)
-													([>=]
-														,(<V1> "CLOCK_S" j)
-														,(first (nth (- k 1) (gethash j times))))
-													([<=]
-														,(<V1> "CLOCK_S" j)
-														,(second (nth (- k 1) (gethash j times))))
-													([=] ,(<V1> "REM_TC" j) 
-														([-] (yesterday ,(<V1> "REM_TC" j))
-															,(* tc k)))
+									)
+									; generate tformulae for a subset of the possible aggregations
+									; TODO: let it be configurable and adjustable wrt TOT_CORES and TOT_TASKS
+									; n_rounds: maximum number of "batch executions" that can be aggregated 
+									,@(let ((n_rounds (/ (gethash j tot-tasks) TOT_CORES)))									
+										(if (>= n_rounds 2)
+											(loop for tc from TOT_CORES downto (/ TOT_CORES 2) by (/ TOT_CORES 4) append
+												(loop for k from (max 2 (floor n_rounds)) downto 2 
+														by (if (> n_rounds 5) (floor (/ n_rounds 5)) 1) 
+														collect
+													`(&&
+														([=] ,(<V1> "RUN_TC" j)
+																,tc)
+														([>=]
+															,(<V1> "CLOCK_S" j)
+															,(first (nth (- k 1) (gethash j times))))
+														([<=]
+															,(<V1> "CLOCK_S" j)
+															,(second (nth (- k 1) (gethash j times))))
+														([=] ,(<V1> "REM_TC" j) 
+															([-] (yesterday ,(<V1> "REM_TC" j))
+																,(* tc k)))
 													)
+												)
 											)
-										)
-										)
-								); END 
-								)))
+										); end IF
+									); end LET
+								); end OR 
+							); end AND
+						); end UNTIL 
+					); end IMPL (TASK RUNNING DURATION)
 			))
-))
+	); end &&
+);end clocksBehaviour
 
 
 (defun genCounters(stages)
