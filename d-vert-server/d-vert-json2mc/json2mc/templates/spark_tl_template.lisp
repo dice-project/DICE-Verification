@@ -56,6 +56,7 @@
 ;(defconstant MAX_TIME 60000.0)
 (defconstant MAX_TIME {{ max_time }})
 (defconstant DEADLINE {{ deadline }})
+(defconstant TOLERANCE {{ tolerance }})
 
 ;STAGE-SPECIFIC CONSTANTS
 ; (defconstant TOT_TASKS_S0 1000)
@@ -75,7 +76,7 @@
 {% for k,v in stages.iteritems() -%}
 (setf (gethash 'S{{ k }} the-proc-time-table) 
 	(loop for x in (range (if (> TOT_TASKS_S{{ k }} TOT_CORES) (/ TOT_TASKS_S{{ k }} TOT_CORES) 1) :min 1) collect
-		(list (- (* ALPHA_S{{ k }} x) (/ (* ALPHA_S{{ k }} x) 10.0)) (+ (* ALPHA_S{{ k }} x) (/ (* ALPHA_S{{ k }} x) 10.0)))))
+		(list (- (* ALPHA_S{{ k }} x) (* (* ALPHA_S{{ k }} x) TOLERANCE)) (+ (* ALPHA_S{{ k }} x) (* (* ALPHA_S{{ k }} x) TOLERANCE)))))
 {% endfor %}
 
 (defvar the-alphas-table)
