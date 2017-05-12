@@ -617,7 +617,12 @@
 						([<]
 	{% endif %}
 							(-V- TOTALTIME)
-							DEADLINE)))	
+							DEADLINE)))
+			(somf_e
+				(&&
+					([>]
+						(-V- TOTALTIME)
+						DEADLINE)))
 			(yesterday
 			(alwf
 				(&&
