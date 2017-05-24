@@ -1,13 +1,14 @@
 {
-    "app_name" : "pagerank_acceleration_0_1000_c48_t50_no-l_d200000",
+    "app_name" : "pagerank_acceleration_0_1000_c48_t40_no-l_d133000_tc_parametric_forall_nrounds_TEST",
     "verification_params" :
     {"plugin":"ae2sbvzot",
-        "time_bound" : 50,
+        "time_bound" : 40,
+	"parametric_tc": true,
         "no_loops" : true},
     "tot_cores" : 48,
     "analysis_type" : "feasibility",
-    "deadline" : 200000,
-    "max_time" : 200000,
+    "deadline" : 133000,
+    "max_time" : 133000,
     "tolerance": 0.1,
     "stages":
     {
