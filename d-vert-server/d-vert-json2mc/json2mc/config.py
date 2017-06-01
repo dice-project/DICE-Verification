@@ -5,7 +5,9 @@ Created on Jan 19, 2017
 '''
 from storm_verification import StormVerificationTask
 from spark_verification import SparkVerificationTask
+import os
 
+ZOT_CMD = os.environ.get('D-VERT_ZOT_CMD', 'zot')
 
 SUPPORTED_TECHS = {
         "storm": StormVerificationTask,

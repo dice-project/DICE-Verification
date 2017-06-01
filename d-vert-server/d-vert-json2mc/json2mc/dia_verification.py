@@ -12,6 +12,8 @@ import subprocess as sp
 import utils
 import pkg_resources
 
+import config as cfg
+
 
 class VerificationTask(object):
     '''
@@ -62,7 +64,7 @@ class VerificationTask(object):
                                                      self.json_context_path)
         with open(self.json_context_path, 'w+') as outfile:
             json.dump(self.context, outfile, indent=4)
-        command_list = ["zot", "zot_in.lisp"]
+        command_list = [cfg.ZOT_CMD, "zot_in.lisp"]
         proc = sp.Popen(command_list,
                         stdout=sp.PIPE,
                         stderr=sp.PIPE,
