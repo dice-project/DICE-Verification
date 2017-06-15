@@ -95,8 +95,6 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			LocalDateTime now = LocalDateTime.now();
 			verificationAttrs.put(DebugPlugin.ATTR_LAUNCH_TIMESTAMP, now.format(formatter)); 	
 			VerificationToolConfig vtConfig = getVerificationToolConfig(configuration);
-			//int timeBound = configuration.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
-			//DiceLogger.logError(DiceVerificationPlugin.getDefault(), "TIME BOUND: " + timeBound);
 			
 			final boolean keepIntermediateFiles = configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false);
 			final File intermediateFilesDir = getIntermediateFilesDir(configuration);
@@ -105,8 +103,6 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			final File umlFile = getInputFile(configuration);
 			final File configFile = Paths.get(intermediateFilesDir.toURI()).resolve("dump.vtconfig").toFile(); //$NON-NLS-1$
 			final File jsonFile = Paths.get(intermediateFilesDir.toURI()).resolve("context.json").toFile(); //$NON-NLS-1$
-//			final File resultFile = Paths.get(intermediateFilesDir.toURI()).resolve("result.txt").toFile(); //$NON-NLS-1$
-//			final File templateFile = new File(templateFilePath);
  
 			
 			try {
@@ -174,6 +170,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 	
 	public static void openNewBrowserTab(URL url, String browserId){
 		Display.getDefault().syncExec(new Runnable() { 
+			@Override
 			public void run() { 
 					openUrl(url, browserId);
 				} 
@@ -248,18 +245,6 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 	
 	
 	
-	/*public void verifyZOTFile() throws IOException, InterruptedException{
-		//TODO Can we do better?
-		Process proc=null;
-		File wd=new File(this.TMP_DIR);
-		String[] cmd = {"/bin/bash", "-c", "zot "+this.ZOT_MODEL_FILE+" > "+this.ZOT_OUTPUT_FILE};
-		proc = Runtime.getRuntime().exec(cmd, null, wd);
-		LOGGER.info("Waiting for ZOT to finish");
-		proc.waitFor();
-		DiceLogger.logError(DiceVerificationPlugin.getDefault(), "WRITING FILE TO:\n" + jsonFile.getAbsolutePath());
-		LOGGER.info("ZOT to finished");
-	}*/
-
 	private void transformUmlToJson(File umlFile, VerificationToolConfig vtConfig, File jsonFile, IProgressMonitor monitor, Map<String, String> attributes, ILaunchConfiguration launchConfig) throws IOException {
 		
 		JsonVerificationContext jsonContext;
@@ -275,9 +260,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 		String timestamp = attributes.get(DebugPlugin.ATTR_LAUNCH_TIMESTAMP);
 		String verificationIdentifier = justName + "_" + timestamp;
 		
-		
 
-		
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
@@ -328,11 +311,6 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			
 			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "JSON CONTEXT CREATED:\n" + gson.toJson(jsonContext));
 			
-/*			String serverAddress = DiceVerificationUiPlugin.getDefault().getPreferenceStore()
-			        .getString(PreferenceConstants.HOST.getName());
-			String serverPort = DiceVerificationUiPlugin.getDefault().getPreferenceStore()
-			        .getString(PreferenceConstants.PORT.getName());
-*/			
 			String dashboardUrl = serverAddress + ":" + serverPort;
 			String launchVerificationUrl =  dashboardUrl + "/longtasks";
 			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "Building url:\n" + launchVerificationUrl);

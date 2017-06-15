@@ -196,9 +196,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			config.getMonitoredBolts().clear();
 			Set<String> vars = getVariablesFromUmlModel(new File(URI.create(inputFile)));
 			for (String var : vars) {
-				//if (!config.getMonitoredBolts().containsKey(var))
 					config.getMonitoredBolts().put(var, false);
-				
 			}
 /*			for (Map.Entry<String, Boolean> entry : config.getMonitoredBolts().entrySet()) {
 				DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
