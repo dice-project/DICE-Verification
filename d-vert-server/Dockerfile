@@ -82,8 +82,8 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
     RUN pip install .
 
 #apply modifications to zot
-    WORKDIR $SERVER_CODE_FOLDER
-    RUN cp zot_changes/* /usr/local/zot/asdfs
+#    WORKDIR $SERVER_CODE_FOLDER
+#    RUN cp zot_changes/* /usr/local/zot/asdfs
 
 # add user to run celery worker as non-root user
     RUN adduser --disabled-password --gecos '' celery-user && adduser celery-user sudo && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers	
