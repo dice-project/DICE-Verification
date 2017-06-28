@@ -14,6 +14,10 @@ from redis import Redis
 
 from flask_cors import CORS, cross_origin
 import time
+from urllib2 import urlopen
+
+
+my_ip = 'localhost' if os.environ.get('LOCAL_DEPLOY', 'true') == 'true' else urlopen('http://ip.42.pl/raw').read()
 
 app = Flask(__name__,static_folder='static', static_url_path='')
 CORS(app)
@@ -84,7 +88,10 @@ def verification_task(self, task_name, technology, context):
 def index():
     if request.method == 'GET':
         return render_template('index.html',
-                               param_name=session.get('param_name', ''))
+                               param_name=session.get('param_name', ''),
+                               hostname=my_ip,
+                               flask_port=5000,
+                               flower_port=5555)
  
     
 

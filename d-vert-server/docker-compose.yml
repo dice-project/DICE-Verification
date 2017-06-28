@@ -19,6 +19,7 @@ services:
       - './containers-tasks:/opt/DICE-Verification/d-vert-server/static/tasks'
     environment:
       PYTHONUNBUFFERED: 'true'
+      LOCAL_DEPLOY: 'false'
 
   celery:
     build: .
@@ -30,6 +31,7 @@ services:
       - './containers-tasks:/opt/DICE-Verification/d-vert-server/static/tasks'
     environment:
       PYTHONUNBUFFERED: 'true'
+      LOCAL_DEPLOY: 'false'
  
   flower:
     build: .

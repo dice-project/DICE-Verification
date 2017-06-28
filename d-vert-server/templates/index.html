@@ -39,7 +39,7 @@ $( document ).ready(function() {
   console.log( 'ready!' );
 
 (function(){
- var serverUrl = "http://localhost:5000/task_list";
+ var serverUrl = "http://{{ hostname }}:{{ flask_port }}/task_list";
  $.getJSON(serverUrl, function( data ) {
     $('#my-final-table').dynatable({
       dataset: {
@@ -77,7 +77,7 @@ $('body').on('mouseover', 'a.popup-img', function() {
 				<li class="current_page_item"><a href="#" title="">Home</a></li>
 				<li><a href="https://github.com/dice-project/DICE-Verification" target="_blank" accesskey="2" title="Our Github Repository">Code</a></li>
 				<li><a href="http://www.dice-h2020.eu/" target="_blank" title="DICE H2020 European project">DICE H2020</a></li>
-				<li><a href="http://localhost:5555/tasks" target="_blank" title="">Flower</a></li>
+				<li><a href="http://{{ hostname }}:{{ flower_port }}/tasks" target="_blank" title="">Flower</a></li>
 			</ul>
 		</div>
 	</div>
