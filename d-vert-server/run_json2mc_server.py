@@ -15,12 +15,34 @@ from redis import Redis
 from flask_cors import CORS, cross_origin
 import time
 from urllib2 import urlopen
+from werkzeug.wsgi import LimitedStream
 
 
 my_ip = 'localhost' if os.environ.get('LOCAL_DEPLOY', 'true') == 'true' else urlopen('http://ip.42.pl/raw').read()
 
 app = Flask(__name__,static_folder='static', static_url_path='')
 CORS(app)
+
+class StreamConsumingMiddleware(object):
+
+    def __init__(self, app):
+        self.app = app
+
+    def __call__(self, environ, start_response):
+        stream = LimitedStream(environ['wsgi.input'],
+                               int(environ['CONTENT_LENGTH'] or 0))
+        environ['wsgi.input'] = stream
+        app_iter = self.app(environ, start_response)
+        try:
+            stream.exhaust()
+            for event in app_iter:
+                yield event
+        finally:
+            if hasattr(app_iter, 'close'):
+                app_iter.close()
+
+
+app.wsgi_app = StreamConsumingMiddleware(app.wsgi_app)
 
 app.config['SECRET_KEY'] = 'top-secret!'
 
