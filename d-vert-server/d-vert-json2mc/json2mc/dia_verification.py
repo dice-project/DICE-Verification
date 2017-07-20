@@ -81,7 +81,7 @@ class VerificationTask(object):
         print "{}{}Terminated -> output:\n{}".format(prefix,
                                                      str(child_pid),
                                                      output)
-        print "{}Verication complete with plugin: {}".format(prefix,
+        print "{}Verification complete with plugin: {}".format(prefix,
                                                              self.plugin)
 
     def parse_zot_trace(self, file_path=None):

@@ -35,9 +35,9 @@ import config as cfg
 from factory_methods import DiaVerificationFactory
 
 __all__ = []
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __date__ = '2015-11-10'
-__updated__ = '2017-03-18'
+__updated__ = '2017-07-20'
 
 DEBUG = 0
 TESTRUN = 0

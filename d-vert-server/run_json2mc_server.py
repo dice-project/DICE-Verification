@@ -20,8 +20,11 @@ from werkzeug.wsgi import LimitedStream
 
 my_ip = 'localhost' if os.environ.get('LOCAL_DEPLOY', 'true') == 'true' else urlopen('http://ip.42.pl/raw').read()
 
+REDIS_ADDRESS = 'redis'
+
 app = Flask(__name__,static_folder='static', static_url_path='')
 CORS(app)
+
 
 class StreamConsumingMiddleware(object):
 
@@ -44,13 +47,12 @@ class StreamConsumingMiddleware(object):
 
 app.wsgi_app = StreamConsumingMiddleware(app.wsgi_app)
 
+
 app.config['SECRET_KEY'] = 'top-secret!'
 
 # Celery configuration
-app.config['CELERY_BROKER_URL'] = 'redis://redis:6379/0'
-#app.config['CELERY_BROKER_URL'] = 'redis://localhost:6379/0'
-app.config['CELERY_RESULT_BACKEND'] = 'redis://redis:6379/0'
-#app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
+app.config['CELERY_BROKER_URL'] = 'redis://' + REDIS_ADDRESS + ':6379/0'
+app.config['CELERY_RESULT_BACKEND'] = 'redis://' + REDIS_ADDRESS + ':6379/0'
 # FROM OBJECT
 #app.config.from_object('config')
 
@@ -58,7 +60,7 @@ app.config['CELERY_RESULT_BACKEND'] = 'redis://redis:6379/0'
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'], backend=app.config['CELERY_RESULT_BACKEND'])
 celery.conf.update(app.config)
 
-redis = Redis('redis')
+redis = Redis(REDIS_ADDRESS)
 
 def get_static_url(path):
     return os.path.relpath(path, app.static_folder)
@@ -129,6 +131,7 @@ def get_task_list():
     print my_list
     for t in my_list:
         statuslist.append(taskstatus2(remove_prefix(t,'celery-task-meta-')))
+        redis.persist(t)
     # print my_list
     return jsonify(statuslist), 200
     
@@ -258,4 +261,4 @@ def taskstatus2(task_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0', threaded=True)

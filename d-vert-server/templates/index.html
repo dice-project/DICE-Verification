@@ -38,29 +38,80 @@ Released   : 20131104
 $( document ).ready(function() {
   console.log( 'ready!' );
 
-(function(){
- var serverUrl = "http://{{ hostname }}:{{ flask_port }}/task_list";
- $.getJSON(serverUrl, function( data ) {
-    $('#my-final-table').dynatable({
-      dataset: {
-        records: data
-      }});
-});
-})();
+function ShowLocalDate() {
+	var dNow = new Date();
+	var localdate= 'Last Update: ' + dNow.getDate() + '/' + (dNow.getMonth()+1) + '/' + dNow.getFullYear() + ' ' + dNow.getHours() + ':' + (dNow.getMinutes()<10?'0':'') + dNow.getMinutes() + ':' + (dNow.getSeconds()<10?'0':'') + dNow.getSeconds();
+	$('#last-update').text(localdate)
+}
 
+
+function LoadTable() {
+    var serverUrl = "http://{{ hostname }}:{{ flask_port }}/task_list";
+    $.ajax({
+        url: serverUrl,
+        dataType: "json",
+		cache: false,
+    }).done(function (response) {
+        var dynatable = $('#my-final-table').dynatable({
+            dataset: { records: response },
+			features: { pushState: false }
+        }).data('dynatable');
+	});
+    ShowLocalDate();
+};
+
+
+function reloadPage (){
+    location.reload();
+    ShowLocalDate();
+}
+
+var checkboxValue = localStorage.getItem('checkboxValue') || {};
+var $checkbox = $("#autoupdate");
+
+console.log("loading checkbox:" + checkboxValue);
+$checkbox.prop('checked', checkboxValue);
+
+$checkbox.on("change", function(){
+    checkboxValue = this.checked;
+	console.log("onchange checkbox:" + checkboxValue);
+  	localStorage.setItem("checkboxValue", checkboxValue);
+});
+
+
+
+
+window.time = 0; //global declaration
+function autorefresh() {
+	var isChecked = document.getElementById("autoupdate").checked;
+	if (isChecked == true) {
+		time = setInterval(function () {
+		   reloadPage();
+		}, 30000);
+	} else if (isChecked == false) {
+		clearInterval(time);
+	}
+}
+
+LoadTable();
+
+autorefresh();
+document.getElementById('autoupdate').addEventListener('click', autorefresh);
 
 
 $('.popup-img').magnificPopup({
   type: 'image'
 });
 
+$('#update-button').on('click', reloadPage);
+
 $('body').on('mouseover', 'a.popup-img', function() {
-    console.log('ciao');
     $(this).magnificPopup({
       type: 'image'
     });
   });
 });
+
 </script>
 <!--[if IE 6]>
 <link href="default_ie6.css" rel="stylesheet" type="text/css" />
@@ -85,6 +136,9 @@ $('body').on('mouseover', 'a.popup-img', function() {
 <div id="wrapper">
 	<div id="page-wrapper">
 		<div id="page">
+			<div id="last-update" align="center">  </div>
+			<div  align="center"> <button id="update-button" type="button">Refresh Table Now</button> </div>
+			<div  align="center" > <input type="checkbox" id="autoupdate"/> Enable auto-refresh every 30 seconds</div>
 			<div id="wide-content">
        <!-- <a class="popup-img" href="/tasks/Dooku.jpg"> Open popup</a> -->
 				<table id="my-final-table">
