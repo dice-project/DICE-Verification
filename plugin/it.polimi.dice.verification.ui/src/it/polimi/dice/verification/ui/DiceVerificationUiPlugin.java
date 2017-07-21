@@ -67,7 +67,6 @@ public class DiceVerificationUiPlugin extends AbstractUIPlugin {
 
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {
-		// TODO Auto-generated method stub
 		super.initializeImageRegistry(reg);
 		reg.put(IMG_VERIF_MAIN_TAB, getImageDescriptor("icons/verify_icon.png").createImage()); //$NON-NLS-1$
 		reg.put(IMG_CHECKED, getImageDescriptor("icons/checked.gif").createImage());

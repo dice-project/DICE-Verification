@@ -35,7 +35,39 @@ public class BoltClass extends NodeClass{
 		this.stringSubscriptionList = extractSubsciptionList();
 		this.aggregateCoefficient = 0;
 }
+
 	
+	
+	public double getAlpha() {
+		return alpha;
+	}
+
+
+
+	public double getSigma() {
+		return sigma;
+	}
+
+
+
+	public List<String> getStringSubscriptionList() {
+		return stringSubscriptionList;
+	}
+
+
+
+	public int getMinimumTimeToFailure() {
+		return minimumTimeToFailure;
+	}
+
+
+
+	public double getAggregateCoefficient() {
+		return aggregateCoefficient;
+	}
+
+
+
 	public List<NodeClass> getNodeSubscriptionList() {
 		return nodeSubscriptionList;
 	}

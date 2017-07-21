@@ -64,7 +64,7 @@ public class HttpClient {
 			conn.setRequestProperty("Content-Type", "application/json");
 
 			String input = request;
-
+			System.out.println("POSTing "+ request + "\n to " + urlString);
 			OutputStream os = conn.getOutputStream();
 			os.write(input.getBytes());
 			os.flush();

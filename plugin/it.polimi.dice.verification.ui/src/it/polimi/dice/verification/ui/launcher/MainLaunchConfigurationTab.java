@@ -60,6 +60,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.UMLPackage;
 
+import it.polimi.dice.core.logger.DiceLogger;
+import it.polimi.dice.core.ui.dialogs.ContainerSelectionDialog;
+import it.polimi.dice.core.ui.dialogs.FileSelectionDialog;
 import it.polimi.dice.verification.DiceVerificationPlugin;
 import it.polimi.dice.verification.json.StormTopology;
 import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationAttributes;
@@ -72,9 +75,8 @@ import it.polimi.dice.vtconfig.VerificationToolConfig;
 import it.polimi.dice.vtconfig.VtConfigFactory;
 import it.polimi.dice.vtconfig.ZotPlugin;
 import it.polimi.dice.vtconfig.util.VerificationToolConfigSerializer;
-import it.polimi.dice.core.logger.DiceLogger;
-import it.polimi.dice.core.ui.dialogs.ContainerSelectionDialog;
-import it.polimi.dice.core.ui.dialogs.FileSelectionDialog;
+
+
 
 public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 
@@ -207,6 +209,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
+		
 		protected void setInputFileFloat(String inputFile) {
 			this.inputFile = inputFile;
 			String readableInputFile = toReadableString(inputFile);
@@ -458,13 +461,21 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	
 	protected FormData data = new FormData();
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	@Override
 	public void createControl(Composite parent) {
 		Composite topComposite = new Composite(parent, SWT.NONE);
 		topComposite.setLayout(new GridLayout(1, true));
 
-		GridData buttonsGridData = new GridData(SWT.CENTER, SWT.CENTER, false, false);
-		buttonsGridData.widthHint = 100;
+		GridData buttonsGridDataInput = new GridData(SWT.CENTER, SWT.CENTER, false, false);
+		buttonsGridDataInput.widthHint = 100;
+		
+		GridData buttonsGridDataIntermediate = new GridData(SWT.CENTER, SWT.CENTER, false, false);
+		buttonsGridDataIntermediate.widthHint = 100;
+		
+		
 		
 		{ // Model Group
 			Group group = new Group(topComposite, SWT.NONE);
@@ -479,7 +490,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			
 			Button fileButton = new Button(group, SWT.NONE);
 			fileButton.setText(Messages.MainLaunchConfigurationTab_browsLabel);
-			fileButton.setLayoutData(buttonsGridData);
+			fileButton.setLayoutData(buttonsGridDataInput);
 			
 			fileButton.addSelectionListener(new SelectionAdapter() {
 				@Override
@@ -531,7 +542,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			
 			browseIntermediateFilesDirButton = new Button(group, SWT.NONE);
 			browseIntermediateFilesDirButton.setText(Messages.MainLaunchConfigurationTab_browseLabel);
-			browseIntermediateFilesDirButton.setLayoutData(buttonsGridData);
+			browseIntermediateFilesDirButton.setLayoutData(buttonsGridDataIntermediate);
 			browseIntermediateFilesDirButton.setEnabled(false);
 
 			keepIntermediateFilesButton.addSelectionListener(new SelectionAdapter() {

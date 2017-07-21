@@ -26,11 +26,14 @@ public class SpoutClass extends NodeClass{
 	}
 	
 	
+	public Double getAverageEmitRate() {
+		return averageEmitRate;
+	}
+
 	/** Do not use if you do not know what are you doing **/
 	public Class getUMLSpout(){
 		return super.getUmlClass();
 	}
-
 
 	@Override
 	protected int extractParallelism() {
