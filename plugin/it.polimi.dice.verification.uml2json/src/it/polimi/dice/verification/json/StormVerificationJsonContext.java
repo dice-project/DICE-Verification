@@ -1,26 +1,23 @@
 package it.polimi.dice.verification.json;
 
-import com.google.gson.annotations.SerializedName;
-import it.polimi.dice.verification.json.StormTopology;
-
-public class JsonVerificationContext {
+public class StormVerificationJsonContext extends VerificationJsonContext{
 	
-	@SerializedName(value="app_name")
+/*	@SerializedName(value="app_name")
 	private String applicationName;
 	private String description;
 	private String version;
-	private StormTopology topology;
-	@SerializedName(value="verification_params")
+*/	private StormTopology topology;
+/*	@SerializedName(value="verification_params")
 	private VerificationParameters verificationParameters;
+*/	
 	
-	
-	public JsonVerificationContext(StormTopology t, VerificationParameters vp){
+	public StormVerificationJsonContext(StormTopology t, VerificationParameters vp){
+		super(vp);
 		this.topology = t;
-		this.verificationParameters = vp;
 	}
 
 
-	public String getApplicationName() {
+/*	public String getApplicationName() {
 		return applicationName;
 	}
 
@@ -49,7 +46,7 @@ public class JsonVerificationContext {
 		this.version = version;
 	}
 
-
+*/
 	public StormTopology getTopology() {
 		return topology;
 	}
@@ -60,7 +57,7 @@ public class JsonVerificationContext {
 	}
 
 
-	public VerificationParameters getVerificationParameters() {
+/*	public VerificationParameters getVerificationParameters() {
 		return verificationParameters;
 	}
 
@@ -68,6 +65,6 @@ public class JsonVerificationContext {
 	public void setVerificationParameters(VerificationParameters verificationParameters) {
 		this.verificationParameters = verificationParameters;
 	}
-	
+*/	
 
 }

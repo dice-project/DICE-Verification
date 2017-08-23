@@ -1,13 +1,13 @@
-package it.polimi.dice.verification.ui.launcher;
+package it.polimi.dice.verification.ui.launcher.spark;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
-public class VerificationLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
+public class SparkVerificationLaunchConfigurationTabGroup extends AbstractLaunchConfigurationTabGroup {
 
-	public VerificationLaunchConfigurationTabGroup() {
+	public SparkVerificationLaunchConfigurationTabGroup() {
 	}
 
 	@Override

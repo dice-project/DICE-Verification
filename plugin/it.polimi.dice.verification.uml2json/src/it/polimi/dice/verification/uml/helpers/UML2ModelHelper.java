@@ -1,6 +1,8 @@
 package it.polimi.dice.verification.uml.helpers;
 
+import java.io.File;
 import java.io.IOException;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -11,6 +13,7 @@ import org.eclipse.uml2.uml.Classifier;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.InstanceSpecification;
 import org.eclipse.uml2.uml.Model;
+import org.eclipse.uml2.uml.Profile;
 import org.eclipse.uml2.uml.Stereotype;
 import org.eclipse.uml2.uml.UMLPackage;
 
@@ -45,8 +48,11 @@ public class UML2ModelHelper {
 		//A collection of related persistent documents.
 		ResourceSet set = new ResourceSetImpl();
 		
-		//Add the model file to the resource set
-		URI uri = URI.createFileURI(pathToModel);
+		java.net.URI inputFileUri = java.net.URI.create(pathToModel);
+		File inputFile = new File(inputFileUri);
+		
+		URI uri = URI.createURI(inputFile.toURI().toString());
+		
 		set.createResource(uri);
 		Resource r = set.getResource(uri, true);
 		
@@ -60,6 +66,17 @@ public class UML2ModelHelper {
 		}
 		return false;
 	}
+	
+	public static boolean hasProfileApplied(String inputFilePath, String profileName){
+		Model model = loadModel(inputFilePath);
+		boolean found = false;
+		for (Profile p : model.getAllAppliedProfiles()) {
+			if (p.getName().equals(profileName))
+				found = true;
+		}
+		return found;
+	}
+	
 	
 	public static boolean isSpoutInstance(Element e){
 		if(e instanceof InstanceSpecification){
@@ -107,7 +124,17 @@ public class UML2ModelHelper {
 	}
 	
 	
-
+	public static boolean isSparkMap(Element e){
+		if(hasStereotype(e, "SparkMap")) 
+			return true;
+		return false;
+	}
+	
+	public static boolean isSparkReduce(Element e){
+		if(hasStereotype(e, "SparkReduce")) 
+			return true;
+		return false;
+	}
 	public static Stereotype getStereotype(Element e, String name){
 		for(Stereotype st: e.getAppliedStereotypes()){
 			if(st.getName().equals(name)) return st;

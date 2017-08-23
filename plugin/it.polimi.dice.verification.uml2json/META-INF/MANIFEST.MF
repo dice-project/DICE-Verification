@@ -14,10 +14,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.httpcomponents.httpclient;bundle-version="4.3.6",
  org.apache.httpcomponents.httpcore;bundle-version="4.3.3",
  org.eclipse.swt,
- org.eclipse.ui.workbench
+ org.eclipse.ui.workbench,
+ org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: it.polimi.dice.verification.httpclient,
  it.polimi.dice.verification.json,
+ it.polimi.dice.verification.uml.diagrams.activitydiagram,
  it.polimi.dice.verification.uml.diagrams.classdiagram,
  it.polimi.dice.verification.uml.helpers

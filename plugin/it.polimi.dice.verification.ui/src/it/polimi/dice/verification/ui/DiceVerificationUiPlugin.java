@@ -14,6 +14,8 @@ public class DiceVerificationUiPlugin extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "it.polimi.dice.verification.ui"; //$NON-NLS-1$
 
 	public static final String IMG_VERIF_MAIN_TAB = "IMG_VERIF_MAIN_TAB";
+	public static final String IMG_VERIF_MAIN_TAB_SPARK = "IMG_VERIF_MAIN_TAB_SPARK";
+	public static final String IMG_VERIF_MAIN_TAB_STORM = "IMG_VERIF_MAIN_TAB_STORM";
 	public static final String IMG_CHECKED = "IMG_CHECKED";
 	public static final String IMG_UNCHECKED = "IMG_UNCHECKED";
 	
@@ -69,6 +71,8 @@ public class DiceVerificationUiPlugin extends AbstractUIPlugin {
 	protected void initializeImageRegistry(ImageRegistry reg) {
 		super.initializeImageRegistry(reg);
 		reg.put(IMG_VERIF_MAIN_TAB, getImageDescriptor("icons/verify_icon.png").createImage()); //$NON-NLS-1$
+		reg.put(IMG_VERIF_MAIN_TAB_STORM, getImageDescriptor("icons/verify_icon_storm.ico").createImage()); 
+		reg.put(IMG_VERIF_MAIN_TAB_SPARK, getImageDescriptor("icons/verify_icon_spark.ico").createImage()); 
 		reg.put(IMG_CHECKED, getImageDescriptor("icons/checked.gif").createImage());
 		reg.put(IMG_UNCHECKED, getImageDescriptor("icons/unchecked.gif").createImage());
 	}

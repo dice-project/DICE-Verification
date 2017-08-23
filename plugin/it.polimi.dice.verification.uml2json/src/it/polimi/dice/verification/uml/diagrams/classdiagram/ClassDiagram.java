@@ -30,17 +30,6 @@ public class ClassDiagram {
 		}
 		return classes;
 	}
-	/*
-	public Set<Clock> getClocks() {
-		HashSet<Clock> clocks=new HashSet<Clock>();
-		for(Element c: this.uml_sys_package.getOwnedElements()){
-			if(UML2ModelHelper.isClock(c)){
-				clocks.add(new Clock((org.eclipse.uml2.uml.InstanceSpecification)c));
-			}
-		}
-		return clocks;
-	}
-	*/
 	
 	public Set<Spout> getSpouts() {
 		HashSet<Spout> spouts=new HashSet<Spout>();
@@ -62,17 +51,7 @@ public class ClassDiagram {
 		return bolts;
 	}
 	
-	/*
-	public Set<ClockType> getClockTypes() {
-		HashSet<ClockType> clocktypes=new HashSet<ClockType>();
-		for(Element c: this.uml_sys_package.getOwnedElements()){
-			if(c instanceof org.eclipse.uml2.uml.Class && UML2ModelHelper.hasStereotype(c, "ClockType")){
-				clocktypes.add(new ClockType((org.eclipse.uml2.uml.Class)c));
-			}
-		}
-		return clocktypes;
-	}
-	*/
+
 	public Class findClass(String name){
 		for(Element c: this.uml_sys_package.getOwnedElements()){
 			if(c instanceof org.eclipse.uml2.uml.Class){
@@ -106,15 +85,5 @@ public class ClassDiagram {
 		return null;
 	}
 
-/*	public Set<Signal> getSignals() {
-		HashSet<Signal> signals=new HashSet<Signal>();
-		for(Element e: this.uml_sys_package.getOwnedElements()){
-			if(e instanceof org.eclipse.uml2.uml.Signal){
-				signals.add(new Signal((org.eclipse.uml2.uml.Signal)e));
-			}
-		}
-		return signals;
-	}
-*/	
 	
 }

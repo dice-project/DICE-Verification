@@ -5,33 +5,36 @@ import java.util.List;
 
 import com.google.gson.annotations.SerializedName;
 
-import it.polimi.dice.verification.uml.diagrams.classdiagram.BoltClass;
 import it.polimi.dice.vtconfig.ZotPlugin;
 
 public class VerificationParameters {
 	
+		// TODO: cleanup code
 		@SerializedName(value="plugin")
 		private List<String> plugins;
 		@SerializedName(value="max_time")
 		private int maxTime;
-		@SerializedName(value="base_quantity")
-		private int baseQuantity;
-		@SerializedName(value="num_steps")
+		// TODO: convert nume_steps to time_bound in the server
+		@SerializedName(value="time_bound")
 		private int timeBound;
+	
+/*		@SerializedName(value="base_quantity")
+		private int baseQuantity;
 		@SerializedName(value="periodic_queues")
 		private List<String> periodicQueues;
 		@SerializedName(value="strictly_monotonic_queues")
 		private List<String> strictlyMonotonicQueues;
+*/
 	
 		public VerificationParameters(){
 			this.plugins = new ArrayList<>();
 			plugins.add(ZotPlugin.AE2SBVZOT.getName());
 			this.maxTime = 2000;
-			this.baseQuantity = 5;
 			this.timeBound = 15;
+/*			this.baseQuantity = 5;
 			this.periodicQueues = new ArrayList<>();
 			this.strictlyMonotonicQueues = new ArrayList<>();			
-		}
+*/		}
 
 		public List<String> getPlugins() {
 			return plugins;
@@ -49,14 +52,14 @@ public class VerificationParameters {
 			this.maxTime = maxTime;
 		}
 
-		public int getBaseQuantity() {
+/*		public int getBaseQuantity() {
 			return baseQuantity;
 		}
 
 		public void setBaseQuantity(int baseQuantity) {
 			this.baseQuantity = baseQuantity;
 		}
-
+*/
 		public int getTimeBound() {
 			return timeBound;
 		}
@@ -65,7 +68,7 @@ public class VerificationParameters {
 			this.timeBound = timeBound;
 		}
 
-		public List<String> getPeriodicQueues() {
+/*		public List<String> getPeriodicQueues() {
 			return periodicQueues;
 		}
 
@@ -87,16 +90,6 @@ public class VerificationParameters {
 
 		public void setStrictlyMonotonicQueues(List<String> strictlyMonotonicQueues) {
 			this.strictlyMonotonicQueues = strictlyMonotonicQueues;
-		}
+		}*/
 }
 
-
-/*"verification_params":
-{
-  "plugin" : ["ae2sbvzot"],
-  "max_time" :  20000,
-  "base_quantity":2,
-  "num_steps":15,
-  "periodic_queues":["B1","B2","B3"],
-  "strictly_monotonic_queues":["B2","B3"]
-}*/

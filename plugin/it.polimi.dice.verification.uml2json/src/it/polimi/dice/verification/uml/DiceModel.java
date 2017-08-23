@@ -1,14 +1,5 @@
 package it.polimi.dice.verification.uml;
 
-import java.util.HashSet;
-import java.util.Set;
-
-
-//import org.correttouml.uml.diagrams.iod.IOD;
-//import org.correttouml.uml.diagrams.property.Property;
-/*import org.correttouml.uml.diagrams.sequencediagram.SequenceDiagram;*/
-
-import org.eclipse.uml2.uml.Class;
 import org.eclipse.uml2.uml.Element;
 import org.eclipse.uml2.uml.Model;
 import org.eclipse.uml2.uml.PackageableElement;

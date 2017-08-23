@@ -7,10 +7,16 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             delegate="it.polimi.dice.verification.launcher.VerificationLaunchConfigurationDelegate"
-            id="it.polimi.dice.verification.launchConfigurationType1"
+            id="it.polimi.dice.verification.launchConfigurationTypeStorm"
             modes="run"
-            name="DICE Verification">
+            name="DICE Verification - Storm">
       </launchConfigurationType>
+	  <launchConfigurationType
+	    delegate="it.polimi.dice.verification.launcher.SparkVerificationLaunchConfigurationDelegate"
+	    id="it.polimi.dice.verification.launchConfigurationTypeSpark"
+	    modes="run"
+	    name="DICE Verification - Spark">
+	  </launchConfigurationType>
    </extension>
 
 </plugin>

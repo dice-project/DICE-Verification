@@ -1,6 +1,5 @@
 package it.polimi.dice.verification.ui.launcher;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
@@ -11,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
@@ -39,7 +39,6 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
@@ -76,57 +75,12 @@ import it.polimi.dice.vtconfig.VtConfigFactory;
 import it.polimi.dice.vtconfig.ZotPlugin;
 import it.polimi.dice.vtconfig.util.VerificationToolConfigSerializer;
 
+public class StormMainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 
-
-public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
-
-	private static final Image CHECKED = DiceVerificationUiPlugin.getDefault().getImageRegistry().get(DiceVerificationUiPlugin.IMG_CHECKED);;
-	private static final Image UNCHECKED = DiceVerificationUiPlugin.getDefault().getImageRegistry().get(DiceVerificationUiPlugin.IMG_UNCHECKED);
-
-	private class MapEntryViewerFloatComparator extends ViewerComparator {
-		private static final int DESCENDING = 1;
-		private int propertyIndex = 0;
-		private int direction = -DESCENDING; // ASCENDING
-
-		public int getDirection() {
-			return direction == 1 ? SWT.DOWN : SWT.UP;
-		}
-
-		public void setColumn(int column) {
-			if (column == this.propertyIndex) {
-				// Same column as last sort; toggle the direction
-				direction = 1 - direction;
-			} else {
-				// New column; do an ascending sort
-				this.propertyIndex = column;
-				direction = DESCENDING;
-			}
-		}
-
-		@Override
-		public int compare(Viewer viewer, Object e1, Object e2) {
-			@SuppressWarnings("unchecked")
-			Entry<String, Float> entry1 = (Entry<String, Float>) e1;
-			@SuppressWarnings("unchecked")
-			Entry<String, Float> entry2 = (Entry<String, Float>) e2;
-			int result = 0;
-			switch (propertyIndex) {
-			case 0:
-				result = entry1.getKey().compareTo(entry2.getKey());
-				break;
-			case 1:
-				result = entry1.getValue().compareTo(entry2.getValue());
-				break;
-			default:
-				result = 0;
-			}
-			// If descending order, flip the direction
-			if (direction == DESCENDING) {
-				result = -result;
-			}
-			return result;
-		}
-	}
+	private static final Image CHECKED = DiceVerificationUiPlugin.getDefault().getImageRegistry()
+			.get(DiceVerificationUiPlugin.IMG_CHECKED);;
+	private static final Image UNCHECKED = DiceVerificationUiPlugin.getDefault().getImageRegistry()
+			.get(DiceVerificationUiPlugin.IMG_UNCHECKED);
 
 	private class MapEntryViewerBooleanComparator extends ViewerComparator {
 		private static final int DESCENDING = 1;
@@ -173,8 +127,6 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		}
 	}
 
-	
-	
 	private class FormData {
 		private String inputFile;
 		private String intermediateFilesDir;
@@ -183,14 +135,15 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		private VerificationToolConfig config;
 		private String hostAddress;
 		private String portNumber;
-		
+
 		{
 			setConfig(VtConfigFactory.eINSTANCE.createVerificationToolConfig());
 		}
-		
+
 		protected String getInputFile() {
 			return inputFile;
 		}
+
 		protected void setInputFileBoolean(String inputFile) {
 			this.inputFile = inputFile;
 			String readableInputFile = toReadableString(inputFile);
@@ -198,32 +151,16 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			config.getMonitoredBolts().clear();
 			Set<String> vars = getVariablesFromUmlModel(new File(URI.create(inputFile)));
 			for (String var : vars) {
-					config.getMonitoredBolts().put(var, false);
+				config.getMonitoredBolts().put(var, false);
 			}
-/*			for (Map.Entry<String, Boolean> entry : config.getMonitoredBolts().entrySet()) {
-				DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
-			}
-*/
+			/*
+			 * for (Map.Entry<String, Boolean> entry :
+			 * config.getMonitoredBolts().entrySet()) {
+			 * DiceLogger.logError(DiceVerificationUiPlugin.getDefault(),
+			 * "Key: "+ entry.getKey() + " - Value: " + entry.getValue()); }
+			 */
 			viewerBoolean.refresh();
-//			config.setZotPlugin(ZotPlugin.AE2BVZOT);
-			setDirty(true);
-			updateLaunchConfigurationDialog();
-		}
-		
-		protected void setInputFileFloat(String inputFile) {
-			this.inputFile = inputFile;
-			String readableInputFile = toReadableString(inputFile);
-			inputFileText.setText(readableInputFile != null ? readableInputFile : StringUtils.EMPTY);
-			config.getVariableAssignments().clear();
-			Set<String> vars = getVariablesFromUmlModel(new File(URI.create(inputFile)));
-			for (String var : vars) {
-				config.getVariableAssignments().put(var, 1.0f);
-			}
-/*			for (Map.Entry<String, Float> entry : config.getVariableAssignments().entrySet()) {
-				DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
-			}
-*/
-			viewerFloat.refresh();
+			// config.setZotPlugin(ZotPlugin.AE2BVZOT);
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
@@ -231,7 +168,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		protected String getIntermediateFilesDir() {
 			return intermediateFilesDir;
 		}
-		
+
 		protected void setIntermediateFilesDir(String intermediateFilesDir) {
 			this.intermediateFilesDir = intermediateFilesDir;
 			String readableFilesDir = toReadableString(intermediateFilesDir);
@@ -240,20 +177,17 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			updateLaunchConfigurationDialog();
 		}
 
-		
-		protected int getTimeBound(){
+		protected int getTimeBound() {
 			return timeBound;
 		}
-		
+
 		protected void setTimeBound(int timeBound) {
 			this.timeBound = timeBound;
-//			String timeBoundString = String.valueOf(timeBound);
-//			timeBoundText.setText(timeBoundString != null ? timeBoundString : StringUtils.EMPTY);
 			timeBoundSpinner.setSelection(timeBound);
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
-		
+
 		public void setHostAddress(String hostAddress, boolean refresh) {
 			this.hostAddress = hostAddress;
 			if (refresh)
@@ -261,27 +195,27 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
-		
-		public String getHostAddress(){
+
+		public String getHostAddress() {
 			return hostAddress;
 		}
-		
+
 		public void setPortNumber(String portNumber, boolean refresh) {
 			this.portNumber = portNumber;
-			if(refresh)
+			if (refresh)
 				portText.setText(portNumber);
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
-		
-		public String getPortNumber(){
+
+		public String getPortNumber() {
 			return portNumber;
 		}
-		
-				
+
 		protected boolean keepIntermediateFiles() {
 			return keepIntermediateFiles;
 		}
+
 		protected void setKeepIntermediateFiles(boolean keepIntermediateFiles) {
 			this.keepIntermediateFiles = keepIntermediateFiles;
 			keepIntermediateFilesButton.setSelection(keepIntermediateFiles);
@@ -290,10 +224,11 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
+
 		public VerificationToolConfig getConfig() {
 			return config;
 		}
-		
+
 		public void setConfig(VerificationToolConfig config) {
 			this.config = config;
 			config.eAdapters().add(new EContentAdapter() {
@@ -307,99 +242,46 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			if (viewerBoolean != null) {
 				viewerBoolean.setInput(data);
 			}
-/*			if (viewerFloat != null) {
-				viewerFloat.setInput(data);
-			}
-*/
+			/*
+			 * if (viewerFloat != null) { viewerFloat.setInput(data); }
+			 */
 			setDirty(true);
 			updateLaunchConfigurationDialog();
 		}
-		
+
 		private String toReadableString(String fileUriString) {
 			URI uri = URI.create(fileUriString);
 			IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 			if (new File(uri).isFile()) {
 				IFile[] files = root.findFilesForLocationURI(uri);
 				if (files.length > 0) {
-					return org.eclipse.emf.common.util.URI.createPlatformResourceURI(
-							files[0].getFullPath().toString(), false).toString();
+					return org.eclipse.emf.common.util.URI
+							.createPlatformResourceURI(files[0].getFullPath().toString(), false).toString();
 				}
 			} else {
 				IContainer[] containers = root.findContainersForLocationURI(uri);
 				if (containers.length > 0) {
-					return org.eclipse.emf.common.util.URI.createPlatformResourceURI(
-							containers[0].getFullPath().toString(), false).toString();
+					return org.eclipse.emf.common.util.URI
+							.createPlatformResourceURI(containers[0].getFullPath().toString(), false).toString();
 				}
 			}
 			return null;
 		}
 
 	}
-	
 
-	private class DataContentProvider implements IStructuredContentProvider {
-		@Override
-		public Object[] getElements(Object inputElement) {
-			return ((FormData)inputElement).getConfig().getVariableAssignments().toArray();
-		}
-		@Override
-		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		}
-		@Override
-		public void dispose() {
-		}
-	}
-	
 	private class DataContentProviderBoolean implements IStructuredContentProvider {
 		@Override
 		public Object[] getElements(Object inputElement) {
-			return ((FormData)inputElement).getConfig().getMonitoredBolts().toArray();
+			return ((FormData) inputElement).getConfig().getMonitoredBolts().toArray();
 		}
+
 		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		}
+
 		@Override
 		public void dispose() {
-		}
-	}
-	
-	private class ValueEditingSupportFloat extends EditingSupport {
-
-		private final TableViewer viewer;
-		private final CellEditor editor;
-
-		public ValueEditingSupportFloat(TableViewer viewer) {
-			super(viewer);
-			this.viewer = viewer;
-			this.editor = new TextCellEditor(viewer.getTable());
-		}
-
-		@Override
-		protected CellEditor getCellEditor(Object element) {
-			return editor;
-		}
-
-		@Override
-		protected boolean canEdit(Object element) {
-			return true;
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		protected Object getValue(Object element) {
-			return ((Entry<String, Float>) element).getValue().toString();
-		}
-
-		@SuppressWarnings("unchecked")
-		@Override
-		protected void setValue(Object element, Object userInputValue) {
-			try {
-				Float value = Float.valueOf(userInputValue.toString());
-				((Entry<String, Float>) element).setValue(value);
-				viewer.update(element, null);
-			} catch (Throwable t) {
-				ErrorDialog.openError(getShell(), Messages.MainLaunchConfigurationTab_errorTitle, Messages.MainLaunchConfigurationTab_invalidFloatError, new Status(IStatus.ERROR, DiceVerificationPlugin.PLUGIN_ID, t.getLocalizedMessage(), t));
-			}
 		}
 	}
 
@@ -411,14 +293,14 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		public ValueEditingSupportBoolean(TableViewer viewer) {
 			super(viewer);
 			this.viewer = viewer;
-			//this.editor = new TextCellEditor(viewer.getTable());
+			// this.editor = new TextCellEditor(viewer.getTable());
 			this.editor = new CheckboxCellEditor(viewer.getTable(), SWT.CHECK);
 		}
 
 		@Override
 		protected CellEditor getCellEditor(Object element) {
 			return editor;
-			//return new CheckboxCellEditor(null, SWT.CHECK);
+			// return new CheckboxCellEditor(null, SWT.CHECK);
 		}
 
 		@Override
@@ -436,17 +318,17 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		@Override
 		protected void setValue(Object element, Object userInputValue) {
 			try {
-				Boolean value = (Boolean)userInputValue;   //Boolean.valueOf(userInputValue.toString());
+				Boolean value = (Boolean) userInputValue; // Boolean.valueOf(userInputValue.toString());
 				((Entry<String, Boolean>) element).setValue(value);
 				viewer.update(element, null);
 			} catch (Throwable t) {
-				ErrorDialog.openError(getShell(), Messages.MainLaunchConfigurationTab_errorTitle, Messages.MainLaunchConfigurationTab_invalidBooleanError, new Status(IStatus.ERROR, DiceVerificationPlugin.PLUGIN_ID, t.getLocalizedMessage(), t));
+				ErrorDialog.openError(getShell(), Messages.MainLaunchConfigurationTab_errorTitle,
+						Messages.MainLaunchConfigurationTab_invalidBooleanError,
+						new Status(IStatus.ERROR, DiceVerificationPlugin.PLUGIN_ID, t.getLocalizedMessage(), t));
 			}
 		}
 	}
 
-	
-	
 	protected Text inputFileText;
 	protected Button keepIntermediateFilesButton;
 	protected Text timeBoundText;
@@ -458,9 +340,9 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	protected TableViewerColumn valueViewerColumnFloat, valueViewerColumnBoolean;
 	protected Text hostText;
 	protected Text portText;
-	
+
 	protected FormData data = new FormData();
-	
+
 	/**
 	 * @wbp.parser.entryPoint
 	 */
@@ -471,27 +353,25 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 
 		GridData buttonsGridDataInput = new GridData(SWT.CENTER, SWT.CENTER, false, false);
 		buttonsGridDataInput.widthHint = 100;
-		
+
 		GridData buttonsGridDataIntermediate = new GridData(SWT.CENTER, SWT.CENTER, false, false);
 		buttonsGridDataIntermediate.widthHint = 100;
-		
-		
-		
+
 		{ // Model Group
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-			
-			group.setLayout(new GridLayout(2,  false));
+
+			group.setLayout(new GridLayout(2, false));
 			group.setText(Messages.MainLaunchConfigurationTab_modelLabel);
-			
+
 			inputFileText = new Text(group, SWT.BORDER);
 			inputFileText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			inputFileText.setEditable(false);
-			
+
 			Button fileButton = new Button(group, SWT.NONE);
 			fileButton.setText(Messages.MainLaunchConfigurationTab_browsLabel);
 			fileButton.setLayoutData(buttonsGridDataInput);
-			
+
 			fileButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -505,41 +385,44 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 							} else {
 								IFile file = (IFile) selection[0];
 								if (isUmlModel(new File(file.getLocationURI()))) {
-									return new Status(IStatus.OK, DiceVerificationUiPlugin.PLUGIN_ID, StringUtils.EMPTY);
+									return new Status(IStatus.OK, DiceVerificationUiPlugin.PLUGIN_ID,
+											StringUtils.EMPTY);
 								} else {
-									return new Status(IStatus.ERROR, DiceVerificationUiPlugin.PLUGIN_ID, Messages.MainLaunchConfigurationTab_invalidUmlFileError);
+									return new Status(IStatus.ERROR, DiceVerificationUiPlugin.PLUGIN_ID,
+											Messages.MainLaunchConfigurationTab_invalidUmlFileError);
 								}
 							}
 						}
 					});
 					if (data.getInputFile() != null) {
-						IFile[] files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(URI.create(data.getInputFile()));
+						IFile[] files = ResourcesPlugin.getWorkspace().getRoot()
+								.findFilesForLocationURI(URI.create(data.getInputFile()));
 						dialog.setInitialSelection(files);
 					}
 					if (dialog.open() == Dialog.OK) {
-//						data.setInputFileFloat(dialog.getFile().getLocationURI().toString());
+						// data.setInputFileFloat(dialog.getFile().getLocationURI().toString());
 						data.setInputFileBoolean(dialog.getFile().getLocationURI().toString());
 					}
 				}
 			});
 		}
-		
+
 		{ // Options Group
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-			
-			group.setLayout(new GridLayout(2,  false));
+
+			group.setLayout(new GridLayout(2, false));
 			group.setText(Messages.MainLaunchConfigurationTab_intermediateFilesLabel);
 
 			keepIntermediateFilesButton = new Button(group, SWT.CHECK);
 			keepIntermediateFilesButton.setText(Messages.MainLaunchConfigurationTab_saveIntermediateLabel);
 			keepIntermediateFilesButton.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
-			
+
 			intermediateFilesDirText = new Text(group, SWT.BORDER);
 			intermediateFilesDirText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			intermediateFilesDirText.setEnabled(false);
 			intermediateFilesDirText.setEditable(false);
-			
+
 			browseIntermediateFilesDirButton = new Button(group, SWT.NONE);
 			browseIntermediateFilesDirButton.setText(Messages.MainLaunchConfigurationTab_browseLabel);
 			browseIntermediateFilesDirButton.setLayoutData(buttonsGridDataIntermediate);
@@ -548,7 +431,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			keepIntermediateFilesButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					Button button = (Button)e.widget;
+					Button button = (Button) e.widget;
 					data.setKeepIntermediateFiles(button.getSelection());
 				}
 			});
@@ -562,47 +445,46 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 					}
 				}
 			});
-			
+
 		}
-		
-		//Time Bound group
+
+		// Time Bound group
 		{
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-			
-			group.setLayout(new GridLayout(2,  false));
+
+			group.setLayout(new GridLayout(2, false));
 			group.setText(Messages.MainLaunchConfigurationTab_timeBoundLabel);
 			timeBoundSpinner = new Spinner(group, SWT.BORDER);
 			timeBoundSpinner.setMaximum(100);
 			timeBoundSpinner.setMinimum(10);
-			//timeBoundSpinner.setIncrement(1);
+			// timeBoundSpinner.setIncrement(1);
 			timeBoundSpinner.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					data.setTimeBound(timeBoundSpinner.getSelection());
 					setDirty(true);
 				};
 			});
-			
+
 		}
-			
-		
+
 		{ // Zot Plugin group
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-			
+
 			group.setLayout(new RowLayout(SWT.VERTICAL));
 			group.setText(Messages.MainLaunchConfigurationTab_zotPluginLabel);
-			
+
 			Button ae2sbvzotButton = new Button(group, SWT.RADIO);
 			ae2sbvzotButton.setText(Messages.MainLaunchConfigurationTab_ae2sbvzotLabel);
-			
+
 			ae2sbvzotButton.addSelectionListener(new SelectionAdapter() {
 				public void widgetSelected(SelectionEvent e) {
 					data.getConfig().setZotPlugin(ZotPlugin.AE2SBVZOT);
 					setDirty(true);
 				};
 			});
-			
+
 			Button ae2bvzotButton = new Button(group, SWT.RADIO);
 			ae2bvzotButton.setText(Messages.MainLaunchConfigurationTab_ae2bvzotLabel);
 			ae2bvzotButton.addSelectionListener(new SelectionAdapter() {
@@ -611,119 +493,119 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 					setDirty(true);
 				};
 			});
-			
 
-			if(data.getConfig().getZotPlugin()!=null){
+			if (data.getConfig().getZotPlugin() != null) {
 				switch (data.getConfig().getZotPlugin().getValue()) {
 				case ZotPlugin.AE2SBVZOT_VALUE:
 					ae2sbvzotButton.setSelection(true);
 					break;
-					
+
 				case ZotPlugin.AE2BVZOT_VALUE:
 					ae2bvzotButton.setSelection(true);
 					break;
-										
+
 				default:
 					ae2sbvzotButton.setSelection(true);
 					break;
 				}
-	
+
 			}
 
-			
 		}
-		
+
 		{ // Configuration Group - Set Monitored Bolts
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			
-			group.setLayout(new GridLayout(1,  false));
+
+			group.setLayout(new GridLayout(1, false));
 			group.setText(Messages.MainLaunchConfigurationTab_monitoredBoltsLabel);
-			
+
 			Composite tableComposite = new Composite(group, SWT.NONE);
 			tableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			
-			viewerBoolean = new TableViewer(tableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
+
+			viewerBoolean = new TableViewer(tableComposite,
+					SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 			viewerBoolean.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 			viewerBoolean.getTable().setLinesVisible(true);
 			viewerBoolean.getTable().setHeaderVisible(true);
 
-			
 			viewerBoolean.setContentProvider(new DataContentProviderBoolean());
-			
-			
+
 			viewerBoolean.setInput(data);
-			
+
 			MapEntryViewerBooleanComparator comparator = new MapEntryViewerBooleanComparator();
 			viewerBoolean.setComparator(comparator);
 
 			varViewerColumnBoolean = new TableViewerColumn(viewerBoolean, SWT.NONE);
-		    varViewerColumnBoolean.getColumn().setText(Messages.MainLaunchConfigurationTab_boltLabel);
-		    varViewerColumnBoolean.getColumn().setResizable(true);
+			varViewerColumnBoolean.getColumn().setText(Messages.MainLaunchConfigurationTab_boltLabel);
+			varViewerColumnBoolean.getColumn().setResizable(true);
 			varViewerColumnBoolean.setLabelProvider(new ColumnLabelProvider() {
 				@Override
 				public String getText(Object element) {
 					@SuppressWarnings("unchecked")
 					Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
-//					DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), "Key: "+ entry.getKey() + " - Value: " + entry.getValue());
+					// DiceLogger.logError(DiceVerificationUiPlugin.getDefault(),
+					// "Key: "+ entry.getKey() + " - Value: " +
+					// entry.getValue());
 					return entry.getKey();
 				}
 			});
 			varViewerColumnBoolean.getColumn().addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerBooleanComparator comparator = (MapEntryViewerBooleanComparator) viewerBoolean.getComparator();
+					MapEntryViewerBooleanComparator comparator = (MapEntryViewerBooleanComparator) viewerBoolean
+							.getComparator();
 					comparator.setColumn(0);
-			        int dir = comparator.getDirection();
-			        viewerBoolean.getTable().setSortDirection(dir);
-			        viewerBoolean.getTable().setSortColumn(varViewerColumnBoolean.getColumn());
-			        viewerBoolean.refresh();
+					int dir = comparator.getDirection();
+					viewerBoolean.getTable().setSortDirection(dir);
+					viewerBoolean.getTable().setSortColumn(varViewerColumnBoolean.getColumn());
+					viewerBoolean.refresh();
 				}
 			});
 
-			
 			valueViewerColumnBoolean = new TableViewerColumn(viewerBoolean, SWT.NONE);
 			valueViewerColumnBoolean.getColumn().setText(Messages.MainLaunchConfigurationTab_monitoredLabel);
 			valueViewerColumnBoolean.getColumn().setResizable(true);
 			valueViewerColumnBoolean.setLabelProvider(new ColumnLabelProvider() {
-				
-				@Override
-			      public String getText(Object element) {
-			    	 // return null;
-			    	  Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
-			    	  if (entry.getValue()) {
-				          return "Yes";
-				        } else {
-				          return "No";
-				        }
-			      }
 
-			      @SuppressWarnings("unchecked")
+				@SuppressWarnings("unchecked")
 				@Override
-			      public Image getImage(Object element) {
-			    	Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
-					
-			        if (entry.getValue()) {
-			          return CHECKED;
-			          
-			        } else {
-			          return UNCHECKED;
-			        }
-			      }
-			    });
-			
+				public String getText(Object element) {
+					// return null;
+					Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
+					if (entry.getValue()) {
+						return "Yes";
+					} else {
+						return "No";
+					}
+				}
+
+				@SuppressWarnings("unchecked")
+				@Override
+				public Image getImage(Object element) {
+					Entry<String, Boolean> entry = (Entry<String, Boolean>) element;
+
+					if (entry.getValue()) {
+						return CHECKED;
+
+					} else {
+						return UNCHECKED;
+					}
+				}
+			});
 
 			valueViewerColumnBoolean.setEditingSupport(new ValueEditingSupportBoolean(viewerBoolean));
 			valueViewerColumnBoolean.getColumn().addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerBooleanComparator comparator = (MapEntryViewerBooleanComparator) viewerBoolean.getComparator();
+					MapEntryViewerBooleanComparator comparator = (MapEntryViewerBooleanComparator) viewerBoolean
+							.getComparator();
 					comparator.setColumn(1);
-			        int dir = comparator.getDirection();
-			        viewerBoolean.getTable().setSortDirection(dir);
-			        viewerBoolean.getTable().setSortColumn(valueViewerColumnBoolean.getColumn());
-			        viewerBoolean.refresh();
-			        setDirty(true);
+					int dir = comparator.getDirection();
+					viewerBoolean.getTable().setSortDirection(dir);
+					viewerBoolean.getTable().setSortColumn(valueViewerColumnBoolean.getColumn());
+					viewerBoolean.refresh();
+					setDirty(true);
 					updateLaunchConfigurationDialog();
 				}
 			});
@@ -734,138 +616,51 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 			viewerBoolean.getTable().setSortColumn(varViewerColumnBoolean.getColumn());
 			viewerBoolean.getTable().setSortDirection(SWT.UP);
 		}
-		
-/*		
-		{ // Configuration Group 2 - float
-			Group group = new Group(topComposite, SWT.NONE);
-			group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			
-			group.setLayout(new GridLayout(1,  false));
-			group.setText(Messages.MainLaunchConfigurationTab_variablesLabel);
-			
-			Composite tableComposite = new Composite(group, SWT.NONE);
-			tableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			
-			viewerFloat = new TableViewer(tableComposite, SWT.BORDER | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
-			viewerFloat.getTable().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			viewerFloat.getTable().setLinesVisible(true);
-			viewerFloat.getTable().setHeaderVisible(true);
 
-			viewerFloat.setContentProvider(new DataContentProvider());
-			
-			viewerFloat.setInput(data);
-			
-			MapEntryViewerFloatComparator comparator = new MapEntryViewerFloatComparator();
-			viewerFloat.setComparator(comparator);
-
-			varViewerColumnFloat = new TableViewerColumn(viewerFloat, SWT.NONE);
-		    varViewerColumnFloat.getColumn().setText(Messages.MainLaunchConfigurationTab_variableLabel);
-		    varViewerColumnFloat.getColumn().setResizable(true);
-			varViewerColumnFloat.setLabelProvider(new ColumnLabelProvider() {
-				@Override
-				public String getText(Object element) {
-					@SuppressWarnings("unchecked")
-					Entry<String, Float> entry = (Entry<String, Float>) element;
-					return entry.getKey();
-				}
-			});
-			varViewerColumnFloat.getColumn().addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerFloatComparator comparator = (MapEntryViewerFloatComparator) viewerFloat.getComparator();
-					comparator.setColumn(0);
-			        int dir = comparator.getDirection();
-			        viewerFloat.getTable().setSortDirection(dir);
-			        viewerFloat.getTable().setSortColumn(varViewerColumnFloat.getColumn());
-			        viewerFloat.refresh();
-				}
-			});
-
-			
-			valueViewerColumnFloat = new TableViewerColumn(viewerFloat, SWT.NONE);
-			valueViewerColumnFloat.getColumn().setText(Messages.MainLaunchConfigurationTab_valueLabel);
-			valueViewerColumnFloat.getColumn().setResizable(true);
-			valueViewerColumnFloat.setLabelProvider(new ColumnLabelProvider() {
-				@Override
-				public String getText(Object element) {
-					@SuppressWarnings("unchecked")
-					Entry<String, Float> entry = (Entry<String, Float>) element;
-					return entry.getValue().toString();
-				}
-			});
-			valueViewerColumnFloat.setEditingSupport(new ValueEditingSupportFloat(viewerFloat));
-			valueViewerColumnFloat.getColumn().addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					MapEntryViewerFloatComparator comparator = (MapEntryViewerFloatComparator) viewerFloat.getComparator();
-					comparator.setColumn(1);
-			        int dir = comparator.getDirection();
-			        viewerFloat.getTable().setSortDirection(dir);
-			        viewerFloat.getTable().setSortColumn(valueViewerColumnFloat.getColumn());
-			        viewerFloat.refresh();
-				}
-			});
-			TableColumnLayout tableLayout = new TableColumnLayout();
-			tableLayout.setColumnData(varViewerColumnFloat.getColumn(), new ColumnWeightData(1));
-			tableLayout.setColumnData(valueViewerColumnFloat.getColumn(), new ColumnWeightData(3));
-			tableComposite.setLayout(tableLayout);
-			viewerFloat.getTable().setSortColumn(varViewerColumnFloat.getColumn());
-			viewerFloat.getTable().setSortDirection(SWT.UP);
-		}
-*/
-		
 		{ // Connection group
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
-			
-			group.setLayout(new GridLayout(4,  false));
+
+			group.setLayout(new GridLayout(4, false));
 			group.setText(Messages.MainLaunchConfigurationTab_connectionLabel);
-			
-			
+
 			Label hostLabel = new Label(group, SWT.BORDER);
 			hostLabel.setText(Messages.MainLaunchConfigurationTab_hostAddressLabel);
 			hostLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 			hostText = new Text(group, SWT.BORDER);
 			hostText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			hostText.setEditable(true);
-			hostText.addModifyListener(new ModifyListener(){
-			      public void modifyText(ModifyEvent event) {
-				        // Get the widget whose text was modified
-				        Text text = (Text) event.widget;
-				        data.setHostAddress(text.getText(), false);
-				        setDirty(true);
-				        updateLaunchConfigurationDialog();
-				      }
-				    });
-			
-			
-			
-			
-			
+			hostText.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent event) {
+					// Get the widget whose text was modified
+					Text text = (Text) event.widget;
+					data.setHostAddress(text.getText(), false);
+					setDirty(true);
+					updateLaunchConfigurationDialog();
+				}
+			});
+
 			Label portLabel = new Label(group, SWT.BORDER);
 			portLabel.setText(Messages.MainLaunchConfigurationTab_portNumberLabel);
 			portLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
 			portText = new Text(group, SWT.BORDER);
 			portText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 			portText.setEditable(true);
-			portText.addModifyListener(new ModifyListener(){
-			      public void modifyText(ModifyEvent event) {
-			        // Get the widget whose text was modified
-			        Text text = (Text) event.widget;
-			        data.setPortNumber(text.getText(), false);
-			        setDirty(true);
-			        updateLaunchConfigurationDialog();
-			      }
-			    });
-		
-			
+			portText.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent event) {
+					// Get the widget whose text was modified
+					Text text = (Text) event.widget;
+					data.setPortNumber(text.getText(), false);
+					setDirty(true);
+					updateLaunchConfigurationDialog();
+				}
+			});
+
 		}
-		
+
 		setControl(topComposite);
 	}
 
-	
-	
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE);
@@ -873,26 +668,30 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR);
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION);
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 15);
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS, 
-									DiceVerificationUiPlugin.getDefault().getPreferenceStore().getString(PreferenceConstants.HOST.getName()));
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, 
-									DiceVerificationUiPlugin.getDefault().getPreferenceStore().getString(PreferenceConstants.PORT.getName()));
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS, DiceVerificationUiPlugin
+				.getDefault().getPreferenceStore().getString(PreferenceConstants.HOST.getName()));
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, DiceVerificationUiPlugin
+				.getDefault().getPreferenceStore().getString(PreferenceConstants.PORT.getName()));
 	}
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE)) {
-//				data.setInputFileFloat(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
-				data.setInputFileBoolean(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
+				// data.setInputFileFloat(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE,
+				// StringUtils.EMPTY));
+				data.setInputFileBoolean(configuration
+						.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY));
 			}
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES)) {
-				data.setKeepIntermediateFiles(configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false));
+				data.setKeepIntermediateFiles(configuration
+						.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false));
 			}
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR)) {
-				data.setIntermediateFilesDir(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, StringUtils.EMPTY));
+				data.setIntermediateFilesDir(configuration.getAttribute(
+						VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, StringUtils.EMPTY));
 			}
-			
+
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND)) {
 				data.setTimeBound(configuration.getAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, 20));
 			}
@@ -900,18 +699,22 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION)) {
 				try {
-					serializedConfig = configuration.getAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, StringUtils.EMPTY);
+					serializedConfig = configuration.getAttribute(
+							VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, StringUtils.EMPTY);
 					data.setConfig(VerificationToolConfigSerializer.deserialize(serializedConfig));
 				} catch (IOException e) {
-					DiceLogger.logException(DiceVerificationUiPlugin.getDefault(),
-							MessageFormat.format(Messages.MainLaunchConfigurationTab_unableParserError, serializedConfig), e);
+					DiceLogger.logException(DiceVerificationUiPlugin.getDefault(), MessageFormat
+							.format(Messages.MainLaunchConfigurationTab_unableParserError, serializedConfig), e);
 				}
 			}
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS)) {
-				data.setHostAddress(configuration.getAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS, "http://localhost"), true);
+				data.setHostAddress(configuration.getAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS,
+						"http://localhost"), true);
 			}
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER)) {
-				data.setPortNumber(configuration.getAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, "5000"), true);
+				data.setPortNumber(
+						configuration.getAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, "5000"),
+						true);
 			}
 
 		} catch (CoreException e) {
@@ -922,12 +725,15 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, data.getInputFile());
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, data.keepIntermediateFiles());
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, data.intermediateFilesDir);
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION, VerificationToolConfigSerializer.serialize(data.getConfig()));
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, timeBoundSpinner.getSelection());
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS, hostText.getText());
-		configuration.setAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, portText.getText());
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES,
+				data.keepIntermediateFiles());
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR,
+				data.getIntermediateFilesDir());
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.VERIFICATION_CONFIGURATION,
+				VerificationToolConfigSerializer.serialize(data.getConfig()));
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TIME_BOUND, data.getTimeBound());
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.HOST_ADDRESS, data.getHostAddress());
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.PORT_NUMBER, data.getPortNumber());
 	}
 
 	@Override
@@ -937,9 +743,10 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public Image getImage() {
-		return DiceVerificationUiPlugin.getDefault().getImageRegistry().get(DiceVerificationUiPlugin.IMG_VERIF_MAIN_TAB);
+		return DiceVerificationUiPlugin.getDefault().getImageRegistry()
+				.get(DiceVerificationUiPlugin.IMG_VERIF_MAIN_TAB_STORM);
 	}
-	
+
 	@Override
 	public boolean isValid(ILaunchConfiguration configuration) {
 		try {
@@ -957,7 +764,8 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 				return false;
 			}
 			// Check input file exists
-			File inputFile = new File(URI.create(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY)));
+			File inputFile = new File(URI.create(configuration
+					.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY)));
 			if (!inputFile.isFile()) {
 				// Should not happen...
 				setErrorMessage(Messages.MainLaunchConfigurationTab_inputNotExistsError);
@@ -976,12 +784,13 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 					return false;
 				}
 				// Check directory exists
-				File intermediateFilesDir = new File(URI.create(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, StringUtils.EMPTY)));
+				File intermediateFilesDir = new File(URI.create(configuration.getAttribute(
+						VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, StringUtils.EMPTY)));
 				if (!intermediateFilesDir.isDirectory()) {
 					// Should not happen...
 					setErrorMessage(Messages.MainLaunchConfigurationTab_intermediateDirNotExistError);
 					return false;
-				}			
+				}
 			}
 		} catch (CoreException e) {
 			DiceLogger.logException(DiceVerificationUiPlugin.getDefault(), e);
@@ -989,12 +798,13 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		setErrorMessage(null);
 		return true;
 	}
-	
+
 	protected boolean isUmlModel(File file) {
 		ResourceSet resourceSet = new ResourceSetImpl();
 		Resource resource = null;
-		try { 
-			resource = resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()), true);
+		try {
+			resource = resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()),
+					true);
 			EObject eObject = resource.getContents().get(0);
 			if (UMLPackage.eINSTANCE.getNsURI().equals(eObject.eClass().getEPackage().getNsURI())) {
 				return true;
@@ -1007,8 +817,7 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		}
 		return false;
 	}
-	
-	
+
 	protected Set<String> getVariablesFromUmlModel(File file) {
 		Set<String> vars = new HashSet<>();
 		ResourceSet resourceSet = new ResourceSetImpl();
@@ -1016,35 +825,39 @@ public class MainLaunchConfigurationTab extends AbstractLaunchConfigurationTab {
 		StormTopology topology = new StormTopology();
 		List<SpoutClass> spouts = new ArrayList<>();
 		List<BoltClass> bolts = new ArrayList<>();
-//		Gson gson = new Gson();
-		//XMLResource r2 = null;
-		try { 
-			resource = resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()), true);
-		//	r2 = (XMLResource)resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()), true);
+		// Gson gson = new Gson();
+		// XMLResource r2 = null;
+		try {
+			resource = resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()),
+					true);
+			// r2 =
+			// (XMLResource)resourceSet.getResource(org.eclipse.emf.common.util.URI.createFileURI(file.getAbsolutePath()),
+			// true);
 			for (Iterator<EObject> it = resource.getAllContents(); it.hasNext();) {
 				EObject eObject = it.next();
-				if(eObject instanceof org.eclipse.uml2.uml.Class){
-					Element element = (Element)eObject;
+				if (eObject instanceof org.eclipse.uml2.uml.Class) {
+					Element element = (Element) eObject;
 					if (UML2ModelHelper.isSpout(element)) {
-						SpoutClass sc = new SpoutClass((org.eclipse.uml2.uml.Class)eObject);
+						SpoutClass sc = new SpoutClass((org.eclipse.uml2.uml.Class) eObject);
 						spouts.add(sc);
-					}
-					else if (UML2ModelHelper.isBolt(element)) {
-						BoltClass bc = new BoltClass((org.eclipse.uml2.uml.Class)eObject);
+					} else if (UML2ModelHelper.isBolt(element)) {
+						BoltClass bc = new BoltClass((org.eclipse.uml2.uml.Class) eObject);
 						vars.add(bc.getId());
 						bolts.add(bc);
-					//	DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), gson.toJson(bc));
-				}
-				topology.setBolts(bolts);
-				topology.setSpouts(spouts);
-			//	DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), gson.toJson(topology));
+						// DiceLogger.logError(DiceVerificationUiPlugin.getDefault(),
+						// gson.toJson(bc));
+					}
+					topology.setBolts(bolts);
+					topology.setSpouts(spouts);
+					// DiceLogger.logError(DiceVerificationUiPlugin.getDefault(),
+					// gson.toJson(topology));
 				}
 			}
-			
+
 		} catch (Throwable t) {
 			DiceLogger.logError(DiceVerificationUiPlugin.getDefault(), t);
 		}
 		return vars;
 	}
-  
+
 }

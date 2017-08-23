@@ -6,9 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileAttribute;
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -18,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 //import org.eclipse.acceleo.common.preference.AcceleoPreferences;
 import org.eclipse.core.resources.IContainer;
@@ -39,11 +38,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.browser.IWebBrowser;
-import org.eclipse.ui.browser.IWorkbenchBrowserSupport;
 import org.eclipse.uml2.uml.Element;
 
 import com.google.gson.Gson;
@@ -67,7 +61,8 @@ import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 */
 import it.polimi.dice.verification.DiceVerificationPlugin;
 import it.polimi.dice.verification.httpclient.HttpClient;
-import it.polimi.dice.verification.json.JsonVerificationContext;
+import it.polimi.dice.verification.json.StormVerificationJsonContext;
+import it.polimi.dice.verification.json.StormVerificationParameters;
 import it.polimi.dice.verification.json.JsonVerificationTaskRequest;
 import it.polimi.dice.verification.json.StormTopology;
 import it.polimi.dice.verification.json.VerificationParameters;
@@ -97,10 +92,10 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 			VerificationToolConfig vtConfig = getVerificationToolConfig(configuration);
 			
 			final boolean keepIntermediateFiles = configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false);
-			final File intermediateFilesDir = getIntermediateFilesDir(configuration);
+			final File intermediateFilesDir = Utils.getIntermediateFilesDir(configuration);
 			
 
-			final File umlFile = getInputFile(configuration);
+			final File umlFile = Utils.getInputFile(configuration);
 			final File configFile = Paths.get(intermediateFilesDir.toURI()).resolve("dump.vtconfig").toFile(); //$NON-NLS-1$
 			final File jsonFile = Paths.get(intermediateFilesDir.toURI()).resolve("context.json").toFile(); //$NON-NLS-1$
  
@@ -156,64 +151,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 		}
 	}
 	
-	private static void openUrl(URL url, String browserId) {
-	    IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport();
-	    IWebBrowser browser;
-	    try {
-	        browser = support.createBrowser(DiceVerificationPlugin.PLUGIN_ID + "_" + browserId);
-	        browser.openURL(url);
-	    } catch (PartInitException e) {
-	        DiceLogger.logException(DiceVerificationPlugin.getDefault(), e);
-	    }
-	}
-	 
 	
-	public static void openNewBrowserTab(URL url, String browserId){
-		Display.getDefault().syncExec(new Runnable() { 
-			@Override
-			public void run() { 
-					openUrl(url, browserId);
-				} 
-			}); 
-	}
-	
-	
-	
-	
-	private File getInputFile(ILaunchConfiguration configuration) throws CoreException {
-		String inputFileUriString = configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, StringUtils.EMPTY);
-		java.net.URI inputFileUri;
-		inputFileUri = java.net.URI.create(inputFileUriString);
-		File inputFile = new File(inputFileUri);
-		if (!inputFile.isFile()) {
-			throw new CoreException(new Status(IStatus.ERROR, DiceVerificationPlugin.PLUGIN_ID, 
-					MessageFormat.format(Messages.VerificationLaunchConfigurationDelegate_invalidLocationError, inputFile)));
-		}
-		return inputFile;
-	}
-	
-	private File getIntermediateFilesDir(ILaunchConfiguration configuration) throws CoreException {
-		File intermediateFilesDir;
-		if (configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false)) {
-			String intermediateFilesDirUriString = configuration.getAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR, StringUtils.EMPTY);
-			java.net.URI intermediateFilesDirUri;
-			intermediateFilesDirUri = java.net.URI.create(intermediateFilesDirUriString);
-			intermediateFilesDir = new File(intermediateFilesDirUri);
-		} else {
-			try {
-				intermediateFilesDir = Files.createTempDirectory("dice-verification-", new FileAttribute[] {}).toFile(); //$NON-NLS-1$
-				intermediateFilesDir.deleteOnExit();
-			} catch (IOException e) {
-				throw new CoreException(new Status(IStatus.ERROR, DiceVerificationPlugin.PLUGIN_ID, 
-						Messages.VerificationLaunchConfigurationDelegate_unableCreateTempFileError, e));
-			}
-		}
-		if (!intermediateFilesDir.isDirectory()) {
-			throw new CoreException(new Status(IStatus.ERROR, DiceVerificationPlugin.PLUGIN_ID, 
-					MessageFormat.format(Messages.VerificationLaunchConfigurationDelegate_invalidLocationIntermediateFilesError, intermediateFilesDir)));
-		}
-		return intermediateFilesDir;
-	}
 	
 
 	private VerificationToolConfig getVerificationToolConfig(ILaunchConfiguration configuration) throws CoreException {
@@ -247,8 +185,8 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 	
 	private void transformUmlToJson(File umlFile, VerificationToolConfig vtConfig, File jsonFile, IProgressMonitor monitor, Map<String, String> attributes, ILaunchConfiguration launchConfig) throws IOException {
 		
-		JsonVerificationContext jsonContext;
-		VerificationParameters vp = new VerificationParameters(); 
+		StormVerificationJsonContext jsonContext;
+		StormVerificationParameters vp = new StormVerificationParameters(); 
 		List<SpoutClass> spouts = new ArrayList<>();
 		List<BoltClass> bolts = new ArrayList<>();
 		StormTopology topology = new StormTopology();
@@ -306,7 +244,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 					monitoredBoltsList.add(key);
 			}
 			vp.setStrictlyMonotonicQueues(monitoredBoltsList);
-			jsonContext = new JsonVerificationContext(topology, vp);
+			jsonContext = new StormVerificationJsonContext(topology, vp);
 			jsonContext.setApplicationName(verificationIdentifier);
 			
 			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "JSON CONTEXT CREATED:\n" + gson.toJson(jsonContext));
@@ -335,7 +273,7 @@ public class VerificationLaunchConfigurationDelegate extends LaunchConfiguration
 				    Thread.currentThread().interrupt();
 				}
 				nc.getTaskStatusUpdatesFromServer();
-				openNewBrowserTab(new URL(dashboardUrl), "task-list");
+				Utils.openNewBrowserTab(new URL(dashboardUrl), "task-list");
 			}
 			
 		} catch (CoreException e) {

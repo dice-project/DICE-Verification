@@ -10,3 +10,5 @@ d-vert-server/static/tasks/
 d-vert-server/redis-stable/
 
 d-vert-server/quick-install/containers-tasks/
+
+*.ucls

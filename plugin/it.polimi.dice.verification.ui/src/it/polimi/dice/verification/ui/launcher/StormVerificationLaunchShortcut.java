@@ -22,15 +22,17 @@ import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PlatformUI;
 import it.polimi.dice.core.logger.DiceLogger;
-
+import it.polimi.dice.core.ui.dialogs.DialogUtils;
 import it.polimi.dice.verification.DiceVerificationPlugin;
 import it.polimi.dice.verification.ui.launcher.Messages;
 import it.polimi.dice.verification.ui.preferences.PreferenceConstants;
+import it.polimi.dice.verification.uml.helpers.DiceProfileConstants;
+import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
 import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationAttributes;
 import it.polimi.dice.verification.ui.DiceVerificationUiPlugin;
 
 
-public class VerificationLaunchShortcut implements ILaunchShortcut {
+public class StormVerificationLaunchShortcut implements ILaunchShortcut {
 
 	
 	@Override
@@ -59,7 +61,7 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 		if (model == null) {
 			DiceLogger.logError(DiceVerificationUiPlugin.getDefault(),
 					MessageFormat.format(Messages.VerificationLaunchShortcut_unexpectedArgError, 
-					DiceVerificationPlugin.VERIFICATION_LAUNCH_CONFIGURATION_TYPE,model));
+					DiceVerificationPlugin.VERIFICATION_LAUNCH_CONFIGURATION_TYPE_STORM,model));
 			return;
 		}
 		
@@ -68,6 +70,18 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 					MessageFormat.format(Messages.VerificationLaunchShortcut_unknownModeError, mode, model));
 		}
 
+		if (!UML2ModelHelper.hasProfileApplied(model.getURI().toString(), DiceProfileConstants.STORM_PROFILE_NAME)) {
+			DiceLogger.logError(DiceVerificationUiPlugin.getDefault(),
+					MessageFormat.format(Messages.VerificationLaunchShortcut_missingProfileMessage,
+							DiceVerificationPlugin.VERIFICATION_LAUNCH_CONFIGURATION_TYPE_STORM,
+							DiceProfileConstants.STORM_PROFILE_NAME));
+			DialogUtils.getWarningDialog(Messages.VerificationLaunchShortcut_missingProfileText,
+					MessageFormat.format(Messages.VerificationLaunchShortcut_missingProfileMessage,
+							DiceVerificationPlugin.VERIFICATION_LAUNCH_CONFIGURATION_TYPE_STORM,
+							DiceProfileConstants.STORM_PROFILE_NAME));
+			return;
+		}
+		
 		try {
             ILaunchConfiguration launchConfiguration = findLaunchConfiguration(model, mode);
             if (launchConfiguration != null) {
@@ -85,7 +99,7 @@ public class VerificationLaunchShortcut implements ILaunchShortcut {
 		
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		
-		ILaunchConfigurationType verLaunchConfigurationType = launchManager.getLaunchConfigurationType(DiceVerificationPlugin.VERIFICATION_LAUNCH_CONFIGURATION_TYPE);
+		ILaunchConfigurationType verLaunchConfigurationType = launchManager.getLaunchConfigurationType(DiceVerificationPlugin.VERIFICATION_LAUNCH_CONFIGURATION_TYPE_STORM);
 		
 		ILaunchConfiguration[] existingConfigs = launchManager.getLaunchConfigurations(verLaunchConfigurationType);
 		

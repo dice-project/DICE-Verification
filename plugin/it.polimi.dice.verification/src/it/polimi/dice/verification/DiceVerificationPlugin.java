@@ -7,8 +7,9 @@ public class DiceVerificationPlugin extends Plugin {
 	
 	public static final String PLUGIN_ID = "it.polimi.dice.verification"; //$NON-NLS-1$
 
-	public static final String VERIFICATION_LAUNCH_CONFIGURATION_TYPE = "it.polimi.dice.verification.launchConfigurationType1"; //$NON-NLS-1$
-
+	public static final String VERIFICATION_LAUNCH_CONFIGURATION_TYPE_STORM = "it.polimi.dice.verification.launchConfigurationTypeStorm"; //$NON-NLS-1$
+	public static final String VERIFICATION_LAUNCH_CONFIGURATION_TYPE_SPARK = "it.polimi.dice.verification.launchConfigurationTypeSpark"; //$NON-NLS-1$
+	
 	private static DiceVerificationPlugin plugin;
 	
 	/**
