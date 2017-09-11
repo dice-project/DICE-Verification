@@ -53,12 +53,6 @@ app.config['CELERY_RESULT_BACKEND'] = 'redis://redis:6379/0'
 #app.config['CELERY_RESULT_BACKEND'] = 'redis://localhost:6379/0'
 # FROM OBJECT
 #app.config.from_object('config')
-app.config.update(
-     CELERY_ACCEPT_CONTENT = ['json'],
-     CELERY_TASK_SERIALIZER = 'json',
-     CELERY_RESULT_SERIALIZER = 'json',
-)
-
 
 # Initialize Celery
 celery = Celery(app.name, broker=app.config['CELERY_BROKER_URL'], backend=app.config['CELERY_RESULT_BACKEND'])

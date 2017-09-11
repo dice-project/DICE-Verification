@@ -24,7 +24,7 @@ services:
   celery:
     build: .
     user: celery-user
-    command: sh run.sh
+    command: celery worker -l info -A run_json2mc_server.celery --without-gossip --without-mingle --without-heartbeat -Ofair
     links:
       - redis
     volumes:
