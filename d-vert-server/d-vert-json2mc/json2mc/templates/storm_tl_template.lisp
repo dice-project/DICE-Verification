@@ -1164,7 +1164,7 @@
 	(gen-pt-clocks the-spouts the-bolts)
 
 
-	({{verification_params.plugin}}:zot {{verification_params.num_steps}}
+	({{verification_params.plugin}}:zot {{verification_params.time_bound}}
 		(&&
 			(yesterday (f-init-rates the-spouts the-bolts the-impacts-table))
 
