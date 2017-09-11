@@ -88,6 +88,8 @@ RUN apt-get update && apt-get install -y --force-yes --no-install-recommends \
 # add user to run celery worker as non-root user
     RUN adduser --disabled-password --gecos '' celery-user && adduser celery-user sudo && echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers	
     RUN chown -R celery-user ${SERVER_CODE_FOLDER}static/
+    RUN mkdir ${SERVER_CODE_FOLDER}static/tasks/ && chown -R celery-user ${SERVER_CODE_FOLDER}static/tasks/
+
 # move to the server code folder
     WORKDIR $SERVER_CODE_FOLDER 
 
