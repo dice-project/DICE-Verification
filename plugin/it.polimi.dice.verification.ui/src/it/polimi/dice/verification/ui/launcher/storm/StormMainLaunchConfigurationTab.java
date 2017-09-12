@@ -1,4 +1,4 @@
-package it.polimi.dice.verification.ui.launcher;
+package it.polimi.dice.verification.ui.launcher.storm;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,6 +66,7 @@ import it.polimi.dice.verification.DiceVerificationPlugin;
 import it.polimi.dice.verification.json.StormTopology;
 import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationAttributes;
 import it.polimi.dice.verification.ui.DiceVerificationUiPlugin;
+import it.polimi.dice.verification.ui.launcher.common.Messages;
 import it.polimi.dice.verification.ui.preferences.PreferenceConstants;
 import it.polimi.dice.verification.uml.diagrams.classdiagram.BoltClass;
 import it.polimi.dice.verification.uml.diagrams.classdiagram.SpoutClass;

@@ -6,7 +6,7 @@
    <extension
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
-            delegate="it.polimi.dice.verification.launcher.VerificationLaunchConfigurationDelegate"
+            delegate="it.polimi.dice.verification.launcher.StormVerificationLaunchConfigurationDelegate"
             id="it.polimi.dice.verification.launchConfigurationTypeStorm"
             modes="run"
             name="DICE Verification - Storm">

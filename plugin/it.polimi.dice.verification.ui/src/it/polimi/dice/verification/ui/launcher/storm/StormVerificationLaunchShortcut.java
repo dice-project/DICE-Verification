@@ -1,4 +1,4 @@
-package it.polimi.dice.verification.ui.launcher;
+package it.polimi.dice.verification.ui.launcher.storm;
 
 import java.text.MessageFormat;
 import org.apache.commons.lang3.StringUtils;
@@ -24,12 +24,12 @@ import org.eclipse.ui.PlatformUI;
 import it.polimi.dice.core.logger.DiceLogger;
 import it.polimi.dice.core.ui.dialogs.DialogUtils;
 import it.polimi.dice.verification.DiceVerificationPlugin;
-import it.polimi.dice.verification.ui.launcher.Messages;
 import it.polimi.dice.verification.ui.preferences.PreferenceConstants;
 import it.polimi.dice.verification.uml.helpers.DiceProfileConstants;
 import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
 import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationAttributes;
 import it.polimi.dice.verification.ui.DiceVerificationUiPlugin;
+import it.polimi.dice.verification.ui.launcher.common.Messages;
 
 
 public class StormVerificationLaunchShortcut implements ILaunchShortcut {

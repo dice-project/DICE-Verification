@@ -28,7 +28,7 @@ import it.polimi.dice.core.ui.dialogs.DialogUtils;
 import it.polimi.dice.verification.DiceVerificationPlugin;
 import it.polimi.dice.verification.launcher.VerificationLaunchConfigurationAttributes;
 import it.polimi.dice.verification.ui.DiceVerificationUiPlugin;
-import it.polimi.dice.verification.ui.launcher.Messages;
+import it.polimi.dice.verification.ui.launcher.common.Messages;
 import it.polimi.dice.verification.ui.preferences.PreferenceConstants;
 import it.polimi.dice.verification.uml.helpers.DiceProfileConstants;
 import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;

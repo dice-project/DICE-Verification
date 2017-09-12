@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="it.polimi.dice.verification.ui.launcher.StormVerificationLaunchConfigurationTabGroup"
+            class="it.polimi.dice.verification.ui.launcher.storm.StormVerificationLaunchConfigurationTabGroup"
             id="it.polimi.dice.verification.ui.launchConfigurationTabGroupStorm"
             type="it.polimi.dice.verification.launchConfigurationTypeStorm">
       </launchConfigurationTabGroup>
@@ -17,7 +17,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabs">
       <tab
-            class="it.polimi.dice.verification.ui.launcher.StormMainLaunchConfigurationTab"
+            class="it.polimi.dice.verification.ui.launcher.storm.StormMainLaunchConfigurationTab"
             group="it.polimi.dice.verification.ui.launchConfigurationTabGroupStorm"
             id="it.polimi.dice.verification.ui.mainTabStorm"
             name="Main">

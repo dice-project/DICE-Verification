@@ -10,7 +10,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import it.polimi.dice.verification.ui.launcher.StormVerificationLaunchShortcut;
+import it.polimi.dice.verification.ui.launcher.storm.StormVerificationLaunchShortcut;
 
 /**
  * Our sample handler extends AbstractHandler, an IHandler base class.

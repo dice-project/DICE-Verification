@@ -27,6 +27,6 @@ Bundle-ActivationPolicy: lazy
 Export-Package: it.polimi.dice.verification.adapters,
  it.polimi.dice.verification.ui,
  it.polimi.dice.verification.ui.handlers,
- it.polimi.dice.verification.ui.launcher,
+ it.polimi.dice.verification.ui.launcher.storm,
  it.polimi.dice.verification.ui.preferences
 Import-Package: org.apache.commons.lang3

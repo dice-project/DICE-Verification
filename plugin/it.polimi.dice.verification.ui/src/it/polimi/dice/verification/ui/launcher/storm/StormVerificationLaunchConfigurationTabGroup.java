@@ -1,4 +1,4 @@
-package it.polimi.dice.verification.ui.launcher;
+package it.polimi.dice.verification.ui.launcher.storm;
 
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.CommonTab;

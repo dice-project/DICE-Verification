@@ -73,7 +73,7 @@ import it.polimi.dice.vtconfig.VerificationToolConfig;
 import it.polimi.dice.vtconfig.util.VerificationToolConfigSerializer;
 
 
-public class VerificationLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
+public class StormVerificationLaunchConfigurationDelegate extends LaunchConfigurationDelegate {
 
 
 	@Override
