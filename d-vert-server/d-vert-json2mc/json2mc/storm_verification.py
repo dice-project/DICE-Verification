@@ -181,12 +181,12 @@ class StormVerificationTask(VerificationTask):
             self.parse_zot_trace(os.path.join(result_dir, trace_file))
 
     @staticmethod
-    def get_plot_styles_list(settings):
+    def get_plot_styles_list(settings, greyscale):
         # ONELINE  return [''.join(t) for t in list(itertools.product(
         # settings["markers"], setting["line_styles"],setting["colors"]))]
         markers = settings["markers"]
         line_styles = settings["line_styles"]
-        colors = settings["colors"]
+        colors = ["k"] if greyscale else settings["colors"]
         tuples_list = list(itertools.product(markers, line_styles, colors))
         strings_list = [''.join(t) for t in tuples_list]
         # print strings_list
@@ -207,7 +207,7 @@ class StormVerificationTask(VerificationTask):
         #  first round to get the maximum y value
         my_dpi = 96
         plt.figure(figsize=(1460/my_dpi, 900/my_dpi), dpi=my_dpi)
-        styles_list = self.get_plot_styles_list(settings)
+        styles_list = self.get_plot_styles_list(settings, cfg.PLOT_CFG["greyscale"])
         timestamp_indexes = range(len(bolts_to_plot) + 1 - columns,
                                   len(bolts_to_plot) +1)
         print "timestamp_indexes: {}".format(timestamp_indexes)
@@ -247,10 +247,10 @@ class StormVerificationTask(VerificationTask):
                 plt.title("verification time: {}\n\n{}"
                           .format(str(self.verification_result
                                       .verification_time),
-                                  b["id"]),
-                          fontsize=cfg.PLOT_CFG["plot_titles"]["fontsize"])
+                                  b["id"] + " profile"),
+                          fontsize=cfg.PLOT_CFG["plot-titles"]["fontsize"])
             else:
-                plt.title(b["id"], fontsize=cfg.PLOT_CFG["plot_titles"]["fontsize"])
+                plt.title(b["id"], fontsize=cfg.PLOT_CFG["plot-titles"]["fontsize"])
     #        plt.suptitle(file_name)
             # limit the y axis to the maximum value present across the plots
             plt.ylim([0, y_max + 1])
@@ -258,22 +258,22 @@ class StormVerificationTask(VerificationTask):
             rounded_totaltime = \
                 map(lambda t: round(float(t.strip('?')), 2),
                     self.output_trace.records['TOTALTIME'])
-            plt.ylabel('#tuples')
+            plt.ylabel(cfg.PLOT_CFG["y-label"]["text"], fontsize=cfg.PLOT_CFG["y-label"]["fontsize"])
             if i in timestamp_indexes:
                 plt.xticks(steplist, rounded_totaltime, rotation=45)
-                plt.xlabel('TOTALTIME', fontsize=22)
+                plt.xlabel(cfg.PLOT_CFG["x-label"]["text"], fontsize=cfg.PLOT_CFG["x-label"]["fontsize"])
             else:
                 plt.xticks(steplist, ['' for s in steplist])
             fontP = FontProperties()
-            fontP.set_size('x-small')
+            fontP.set_size(cfg.PLOT_CFG["legend"]["size"])
             plt.legend(prop=fontP, loc='upper left')
     #        plt.legend(loc='upper left')
             plt.grid()
             # highlight in red the looping suffix of the output trace
             plt.axvspan(self.output_trace.records['LOOP'],
                         self.output_trace.time_bound,
-                        color='red',
-                        alpha=0.3)
+                        color=cfg.PLOT_CFG["highlighted-area"]["color"],
+                        alpha=cfg.PLOT_CFG["highlighted-area"]["alpha"])
             i += 1  # end for
     #    plt.tight_layout()
         time_str = self.verification_result.timestamp_str

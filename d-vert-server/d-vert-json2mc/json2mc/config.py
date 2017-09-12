@@ -16,15 +16,24 @@ TOLERANCE = 0.04
 
 PLOT_CFG = {
     "x-label":{
-        "fontsize": 14,
-        "s": "time"
+        "fontsize": 22,
+        "text": "TOTALTIME"
     },
     "y-label": {
-        "fontsize": 14,
-        "s": "#tuples"
+        "fontsize": 22,
+        "text": "#tuples"
     },
-    "plot_titles":{
-        "fontsize": 14
+    "plot-titles":{
+        "fontsize": 30
+    },
+    "highlighted-area": {
+        "color" : "red",
+        "alpha" : 0.3
+    },
+    "greyscale" : True,
+    "legend" : {
+        "size" : "large"
     }
+
 
 }
