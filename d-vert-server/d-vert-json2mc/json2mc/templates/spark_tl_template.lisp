@@ -427,13 +427,13 @@
 									; generate tformulae for a subset of the possible aggregations
 									; TODO: let it be configurable and adjustable wrt TOT_CORES and TOT_TASKS
 									; n_rounds: maximum number of "batch executions" that can be aggregated 
-									,@(let ((n_rounds (/ (gethash j tot-tasks) TOT_CORES)))									
+									,@(let ((n_rounds (floor (/ (gethash j tot-tasks) TOT_CORES))))
 										(if (>= n_rounds 2)
 										{%- if not verification_params.parametric_tc %}
-											(loop for tc from TOT_CORES downto (/ TOT_CORES 2) by 20 append ;by (/ TOT_CORES 4) append
+											(loop for tc from TOT_CORES downto (/ TOT_CORES 2) by (/ TOT_CORES 4) append
 										{% endif %}
-												(loop for k from (max 2 (floor n_rounds)) downto 2 
-										;			 by (if (> n_rounds 5) (floor (/ n_rounds 5)) 1) 
+												(loop for k from n_rounds downto 2 
+														by (if (> n_rounds 5) (floor (/ n_rounds 5)) 1)
 														collect
 													`(&&
 													{%- if not verification_params.parametric_tc %}
