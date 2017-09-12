@@ -1,5 +1,7 @@
 package it.polimi.dice.verification.json;
 
+import java.util.HashMap;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -35,7 +37,7 @@ public class JsonVerificationTaskRequest {
 		StormTopology t = new StormTopology();
 		VerificationParameters vp = new StormVerificationParameters();
 		
-		SparkVerificationJsonContext sc = new SparkVerificationJsonContext(vp);
+		SparkVerificationJsonContext sc = new SparkVerificationJsonContext(vp, "Feasibility", 222, 0.1, 200, new HashMap<>());
 		
 		JsonVerificationTaskRequest tr = new JsonVerificationTaskRequest("Ciao", sc);
 		

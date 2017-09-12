@@ -61,11 +61,10 @@ import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 */
 import it.polimi.dice.verification.DiceVerificationPlugin;
 import it.polimi.dice.verification.httpclient.HttpClient;
-import it.polimi.dice.verification.json.StormVerificationJsonContext;
-import it.polimi.dice.verification.json.StormVerificationParameters;
 import it.polimi.dice.verification.json.JsonVerificationTaskRequest;
 import it.polimi.dice.verification.json.StormTopology;
-import it.polimi.dice.verification.json.VerificationParameters;
+import it.polimi.dice.verification.json.StormVerificationJsonContext;
+import it.polimi.dice.verification.json.StormVerificationParameters;
 import it.polimi.dice.verification.uml.diagrams.classdiagram.BoltClass;
 import it.polimi.dice.verification.uml.diagrams.classdiagram.SpoutClass;
 import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
@@ -86,7 +85,7 @@ public class StormVerificationLaunchConfigurationDelegate extends LaunchConfigur
 			monitor.beginTask(Messages.VerificationLaunchConfigurationDelegate_verificationTaskTitle, IProgressMonitor.UNKNOWN);
 			
 			Map<String, String> verificationAttrs = new HashMap<>();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd__HH:mm:ss");
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd__HH_mm_ss");
 			LocalDateTime now = LocalDateTime.now();
 			verificationAttrs.put(DebugPlugin.ATTR_LAUNCH_TIMESTAMP, now.format(formatter)); 	
 			VerificationToolConfig vtConfig = getVerificationToolConfig(configuration);
@@ -249,7 +248,7 @@ public class StormVerificationLaunchConfigurationDelegate extends LaunchConfigur
 			
 			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "JSON CONTEXT CREATED:\n" + gson.toJson(jsonContext));
 			
-			String dashboardUrl = serverAddress + ":" + serverPort;
+			String dashboardUrl = serverAddress.replaceAll("/$", "") + ":" + serverPort;
 			String launchVerificationUrl =  dashboardUrl + "/longtasks";
 			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "Building url:\n" + launchVerificationUrl);
 			

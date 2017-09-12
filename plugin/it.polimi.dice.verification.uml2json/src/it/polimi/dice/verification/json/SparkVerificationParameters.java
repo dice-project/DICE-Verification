@@ -18,10 +18,11 @@ public class SparkVerificationParameters extends VerificationParameters{
 	@SerializedName("parametric_tc")
 	boolean parametricTc;
 	
-	public SparkVerificationParameters(boolean noLoops, boolean parametricTc) {
+	public SparkVerificationParameters(boolean noLoops, boolean parametricTc, int timeBound) {
 		super();
 		this.noLoops = noLoops;
 		this.parametricTc = parametricTc;
+		setTimeBound(timeBound);
 	}
 	
 	public boolean isNoLoops() {

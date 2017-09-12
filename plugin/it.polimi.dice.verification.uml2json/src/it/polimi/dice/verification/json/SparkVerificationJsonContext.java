@@ -29,10 +29,17 @@ public class SparkVerificationJsonContext extends VerificationJsonContext {
 	//List<SparkStage> stages;
 	Map<Integer, SparkStage> stages = new HashMap<>();
 	
-	public SparkVerificationJsonContext(VerificationParameters vp) {
+
+	public SparkVerificationJsonContext(VerificationParameters vp, String analysisType, int deadline,
+			Double tolerance, int totCores, Map<Integer, SparkStage> stages) {
 		super(vp);
-		stages.put(0, new SparkStage());
-		stages.put(1, new SparkStage());
+		this.analysisType = analysisType;
+		this.deadline = deadline;
+		this.maxTime = deadline;
+		this.tolerance = tolerance;
+		this.totCores = totCores;
+		this.stages = stages;
 	}
 
+	
 }
