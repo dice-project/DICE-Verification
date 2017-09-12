@@ -1203,9 +1203,9 @@
 		:over-clocks MAX_TIME
 		:parametric-regions 't
 		{% if verification_params.strictly_monotonic_queues | length %}
-		:smt-assumptions "(and {% for s in verification_params.strictly_monotonic_queues %}(= (r_add_{{s.lower()}} i-loop) (r_add_{{s.lower()}} {{verification_params.num_steps + 1}})){%endfor%})"
+		:smt-assumptions "(and {% for s in verification_params.strictly_monotonic_queues %}(= (r_add_{{s.lower()}} i-loop) (r_add_{{s.lower()}} {{verification_params.time_bound + 1}})){%endfor%})"
 		{% endif %}
-		;:smt-assumptions "(= (r_add_EXPANDER i-loop) (r_add_EXPANDER (+ {{verification_params.num_steps}} 1)))"
+		;:smt-assumptions "(= (r_add_EXPANDER i-loop) (r_add_EXPANDER (+ {{verification_params.time_bound}} 1)))"
 		:discrete-counters (gen-counters-list the-spouts the-bolts the-impacts-table)
 		:paired-clocks (gen-paired-clocks-list the-spouts the-bolts)
     {%  if verification_params.periodic_queues | length %}
