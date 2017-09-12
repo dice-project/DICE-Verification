@@ -1,0 +1,170 @@
+{
+"app_name" : "simple_app_example_no_loops",
+"verification_params" :
+{"plugin":"ae2sbvzot",
+"time_bound" : 20,
+"no_loops" : true},
+"tot_cores" : 600,
+"analysis_type" : "feasibility",
+"deadline" : 10.0,
+"max_time" : 60000,
+"stages":
+{
+    "0": {
+        "RDDIds": {
+            "0": {
+                "callsite": "textFile at NativeMethodAccessorImpl.java:0", 
+                "name": "dataset.txt"
+            }, 
+            "1": {
+                "callsite": "textFile at NativeMethodAccessorImpl.java:0", 
+                "name": "dataset.txt"
+            }, 
+            "2": {
+                "callsite": "reduceByKey at /test.py:6", 
+                "name": "PythonRDD"
+            }, 
+            "3": {
+                "callsite": "reduceByKey at /test.py:6", 
+                "name": "PairwiseRDD"
+            }
+        }, 
+        "cachedRDDs": [], 
+        "duration": 584, 
+        "genstage": false, 
+        "name": "reduceByKey at /test.py:6", 
+        "nominalrate": 32.534246575342465, 
+        "numtask": 1000, 
+        "parentsIds": [], 
+        "recordsread": 19, 
+        "recordswrite": 0.0, 
+        "shufflerecordsread": 0.0, 
+        "shufflerecordswrite": 1, 
+        "skipped": false, 
+        "totalduration": 10440, 
+        "weight": 2.5
+    }, 
+    "1": {
+        "RDDIds": {
+            "4": {
+                "callsite": "partitionBy at NativeMethodAccessorImpl.java:0", 
+                "name": "ShuffledRDD"
+            }, 
+            "5": {
+                "callsite": "mapPartitions at PythonRDD.scala:422", 
+                "name": "MapPartitionsRDD"
+            }, 
+            "6": {
+                "callsite": "aggregateByKey at /test.py:8", 
+                "name": "PythonRDD"
+            }, 
+            "7": {
+                "callsite": "aggregateByKey at /test.py:8", 
+                "name": "PairwiseRDD"
+            }
+        }, 
+        "cachedRDDs": [], 
+        "duration": 1080, 
+        "genstage": false, 
+        "name": "aggregateByKey at /test.py:8", 
+        "nominalrate": 9.25925925925926, 
+        "numtask": 500, 
+        "parentsIds": [
+            0
+        ], 
+        "recordsread": 0.0, 
+        "recordswrite": 0.0, 
+        "shufflerecordsread": 1, 
+        "shufflerecordswrite": 1, 
+        "skipped": false, 
+        "weight": 3.5
+    }, 
+    "2": {
+        "RDDIds": {
+            "4": {
+                "callsite": "partitionBy at NativeMethodAccessorImpl.java:0", 
+                "name": "ShuffledRDD"
+            }, 
+            "5": {
+                "callsite": "mapPartitions at PythonRDD.scala:422", 
+                "name": "MapPartitionsRDD"
+            }, 
+            "10": {
+                "callsite": "aggregateByKey at /test.py:10", 
+                "name": "PythonRDD"
+            }, 
+            "11": {
+                "callsite": "aggregateByKey at /test.py:10", 
+                "name": "PairwiseRDD"
+            }
+        }, 
+        "cachedRDDs": [], 
+        "duration": 950, 
+        "genstage": false, 
+        "name": "aggregateByKey at /test.py:10", 
+        "nominalrate": 10.526315789473685, 
+        "numtask": 500, 
+        "parentsIds": [
+            0
+        ], 
+        "recordsread": 0.0, 
+        "recordswrite": 0.0, 
+        "shufflerecordsread": 1, 
+        "shufflerecordswrite": 1, 
+        "skipped": false, 
+        "weight": 2.5
+    }, 
+    "3": {
+        "RDDIds": {
+            "8": {
+                "callsite": "partitionBy at NativeMethodAccessorImpl.java:0", 
+                "name": "ShuffledRDD"
+            }, 
+            "9": {
+                "callsite": "mapPartitions at PythonRDD.scala:422", 
+                "name": "MapPartitionsRDD"
+            }, 
+            "12": {
+                "callsite": "partitionBy at NativeMethodAccessorImpl.java:0", 
+                "name": "ShuffledRDD"
+            }, 
+            "13": {
+                "callsite": "mapPartitions at PythonRDD.scala:422", 
+                "name": "MapPartitionsRDD"
+            }, 
+            "14": {
+                "callsite": "RDD at PythonRDD.scala:48", 
+                "name": "PythonRDD"
+            }, 
+            "15": {
+                "callsite": "RDD at PythonRDD.scala:48", 
+                "name": "PythonRDD"
+            }, 
+            "16": {
+                "callsite": "cartesian at NativeMethodAccessorImpl.java:0", 
+                "name": "CartesianRDD"
+            }, 
+            "17": {
+                "callsite": "collect at /test.py:12", 
+                "name": "PythonRDD"
+            }
+        }, 
+        "cachedRDDs": [], 
+        "duration": 2570, 
+        "genstage": false, 
+        "name": "collect at /test.py:12", 
+        "nominalrate": 7.782101167315175, 
+        "numtask": 500, 
+        "parentsIds": [
+            1, 
+            2
+        ], 
+        "recordsread": 0.0, 
+        "recordswrite": 0.0, 
+        "shufflerecordsread": 4, 
+        "shufflerecordswrite": 0.0, 
+        "skipped": false, 
+        "weight": 1.0
+    }
+}
+}

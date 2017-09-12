@@ -1,0 +1,27 @@
+{
+  "app_name" : "simple_dag_2_stages_c48_t20_no-l_d30",
+  "verification_params" :
+  {"plugin":"ae2sbvzot",
+    "time_bound" : 20,
+    "no_loops" : true},
+  "tot_cores" : 48,
+  "analysis_type" : "feasibility",
+  "deadline" : 30,
+  "max_time" : 30,
+  "tolerance": 0.1,
+  "stages":
+  {
+    "0": {
+      "duration": 1000,
+      "numtask": 1000,
+      "parentsIds": [],
+      "skipped": false
+    },
+    "1": {
+      "duration": 300,
+      "numtask": 100,
+      "parentsIds": ["0"],
+      "skipped": false
+    }
+  }
+}
