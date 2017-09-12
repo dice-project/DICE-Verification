@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 public abstract class Node {
 
-	protected org.eclipse.uml2.uml.ActivityNode uml_activitynode;
+	protected transient org.eclipse.uml2.uml.ActivityNode uml_activitynode;
 	
 	public Collection<Node> getIncomingNodes(){
 		Collection<Node> nodes=new HashSet<Node>();
@@ -48,4 +48,5 @@ public abstract class Node {
 		return this.uml_activitynode.hashCode();
 	}
 
+	
 }

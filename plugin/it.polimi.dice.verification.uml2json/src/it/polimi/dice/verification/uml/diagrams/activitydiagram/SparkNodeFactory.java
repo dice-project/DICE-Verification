@@ -1,17 +1,18 @@
 package it.polimi.dice.verification.uml.diagrams.activitydiagram;
 
 import it.polimi.dice.verification.uml.helpers.UML2ModelHelper;
+import it.polimi.dice.verification.uml2json.exceptions.NodeNotSupportedException;
 
-public class NodeFactory {
+public class SparkNodeFactory {
 
 	public static Node getInstance(
-			org.eclipse.uml2.uml.ActivityNode uml_activitynode) {
-		try {
+			org.eclipse.uml2.uml.ActivityNode uml_activitynode) throws NodeNotSupportedException{
+			String nodetype = uml_activitynode.getClass().getName();
 			if (uml_activitynode instanceof org.eclipse.uml2.uml.InitialNode) {
 				return new InitialNode(
 						(org.eclipse.uml2.uml.InitialNode) uml_activitynode);
 			}
-			if (uml_activitynode instanceof org.eclipse.uml2.uml.ActivityFinalNode) {
+			/*			if (uml_activitynode instanceof org.eclipse.uml2.uml.ActivityFinalNode) {
 				return new FinalNode(
 						(org.eclipse.uml2.uml.ActivityFinalNode) uml_activitynode);
 			}
@@ -35,6 +36,7 @@ public class NodeFactory {
 				return new MergeNode(
 						(org.eclipse.uml2.uml.MergeNode) uml_activitynode);
 			}
+*/		
 			if (uml_activitynode instanceof org.eclipse.uml2.uml.OpaqueAction) {
 				if (UML2ModelHelper.isSparkTransformation(uml_activitynode)) {
 					return new SparkTransformationNode((org.eclipse.uml2.uml.OpaqueAction) uml_activitynode);
@@ -43,11 +45,7 @@ public class NodeFactory {
 					return new SparkActionNode((org.eclipse.uml2.uml.OpaqueAction) uml_activitynode);
 				}				
 			}
-			throw new Exception("Activity node not supported");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+			throw new NodeNotSupportedException(nodetype);
 	}
-
 }
+

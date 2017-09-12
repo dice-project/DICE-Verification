@@ -8,9 +8,11 @@ public class SparkActionNode extends SparkOperationNode {
 	
 	private Action actionType;
 	
+	
 	public SparkActionNode(org.eclipse.uml2.uml.OpaqueAction uml_activitynode){
 		super(uml_activitynode);
 		this.actionType = extractTransformationType();
+		this.numTasks = extractNumTasks();
 		System.out.println("ACTION NODE! - Id: " + this.getId() + " Type: " + this.actionType + " duration: " + getDuration());
 
 		
@@ -29,4 +31,9 @@ public class SparkActionNode extends SparkOperationNode {
 		return duration;
 	}
 
+	protected int extractNumTasks(){
+		String numTasks_s = (String) uml_activitynode.getValue(UML2ModelHelper.getStereotype(uml_activitynode, DiceProfileConstants.SPARK_ACTION_STEREOTYPE), DiceProfileConstants.SPARK_OPERATION_NUM_TASKS);
+		int numTasks = numTasks_s != null ? Integer.parseInt(numTasks_s) : DEFAULT_NUM_TASKS;
+		return numTasks;
+	}
 }

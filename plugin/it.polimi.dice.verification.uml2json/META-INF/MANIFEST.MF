@@ -22,4 +22,5 @@ Export-Package: it.polimi.dice.verification.httpclient,
  it.polimi.dice.verification.json,
  it.polimi.dice.verification.uml.diagrams.activitydiagram,
  it.polimi.dice.verification.uml.diagrams.classdiagram,
- it.polimi.dice.verification.uml.helpers
+ it.polimi.dice.verification.uml.helpers,
+ it.polimi.dice.verification.uml2json.transformations

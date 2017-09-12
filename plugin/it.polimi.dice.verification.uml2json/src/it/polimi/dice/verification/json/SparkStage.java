@@ -1,6 +1,8 @@
 package it.polimi.dice.verification.json;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gson.annotations.SerializedName;
@@ -34,20 +36,50 @@ public class SparkStage {
         "weight": 1.0
     } */
 	
+
+	private int id;
 	private Map<Integer, SparkOperationNode> operations = new HashMap<>();
-	private int duration;
+	private transient SparkOperationNode lastOperation;
+	private int duration = 0;
 	private String name; 
 	private Double rate;
 	@SerializedName("numtask")
 	private int numTask;
+	private transient boolean completed = false;
+	private List<Integer> parentIds;
+	private transient List<SparkStage> predecessors = new ArrayList<>();
+	private transient int opCounter = 0;
 	
 	
+	public SparkStage(SparkOperationNode n){
+		this.name = "Stage_"+n.getId();
+		addOperation(n);
+	}
+	
+	public SparkStage() {
+	}
+
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public Map<Integer, SparkOperationNode> getOperations() {
-		return operations;
+		return new HashMap<Integer, SparkOperationNode>(operations);
 	}
 	public void setOperations(Map<Integer, SparkOperationNode> operations) {
 		this.operations = operations;
 	}
+	
+	public void addOperation(SparkOperationNode op){
+		op.addStage(this);
+		operations.put(opCounter++, op);
+		lastOperation = op;
+		duration += op.getDuration();
+	}
+	
 	public int getDuration() {
 		return duration;
 	}
@@ -72,7 +104,47 @@ public class SparkStage {
 	public void setNumTask(int numTask) {
 		this.numTask = numTask;
 	}
+		
+	public boolean isCompleted() {
+		return completed;
+	}
+	public void setCompleted(boolean completed) {
+		this.completed = completed;
+	}
+	public List<Integer> getParentIds() {
+		return parentIds;
+	}
+	public void setParentIds(List<Integer> parentIds) {
+		this.parentIds = parentIds;
+	}
+	public List<SparkStage> getPredecessors() {
+		return new ArrayList<>(predecessors);
+	}
+	public void setPredecessors(List<SparkStage> predecessors) {
+		this.predecessors = predecessors;
+	}
 	
-
+	public void addPredecessor(SparkStage pred){
+		predecessors.add(pred);
+		parentIds.add(pred.getId());
+	}
+	
+	public SparkOperationNode getLastOperation(){
+		return lastOperation;
+	}
+	
+	public SparkStage duplicate(int id){
+		SparkStage dupStage = new SparkStage();
+		dupStage.setId(id);
+		dupStage.setName("copyOf"+name);
+		dupStage.setDuration(duration);
+		dupStage.setNumTask(numTask);
+		for (SparkOperationNode op : getOperations().values()) {
+			op.addStage(dupStage);
+		}
+		dupStage.setOperations(getOperations());
+		dupStage.setPredecessors(predecessors);
+		return dupStage;
+	}
 
 }

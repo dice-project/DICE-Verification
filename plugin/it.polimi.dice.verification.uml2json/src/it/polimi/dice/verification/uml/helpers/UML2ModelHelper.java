@@ -124,14 +124,14 @@ public class UML2ModelHelper {
 	}
 	
 	
-	public static boolean isSparkMap(Element e){
-		if(hasStereotype(e, "SparkMap")) 
+	public static boolean isSparkTransformation(Element e){
+		if(hasStereotype(e, DiceProfileConstants.SPARK_TRANSFORMATION_STEREOTYPE)) 
 			return true;
 		return false;
 	}
 	
-	public static boolean isSparkReduce(Element e){
-		if(hasStereotype(e, "SparkReduce")) 
+	public static boolean isSparkAction(Element e){
+		if(hasStereotype(e, DiceProfileConstants.SPARK_ACTION_STEREOTYPE)) 
 			return true;
 		return false;
 	}

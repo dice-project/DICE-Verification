@@ -11,6 +11,7 @@ public interface DiceProfileConstants {
 	public static final String SPARK_SCENARIO_STEREOTYPE = "SparkScenario";
 	
 	public static final String SPARK_OPERATION_DURATION = "duration";
+	public static final String SPARK_OPERATION_NUM_TASKS = "numTasks";
 	public static final String SPARK_ACTION_TYPE = "ReduceType";
 	public static final String SPARK_TRANSFORMATION_TYPE = "MapType";
 	
