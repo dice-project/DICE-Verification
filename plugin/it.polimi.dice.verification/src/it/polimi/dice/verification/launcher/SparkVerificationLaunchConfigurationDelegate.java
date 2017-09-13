@@ -81,9 +81,16 @@ public class SparkVerificationLaunchConfigurationDelegate extends LaunchConfigur
 		VerificationParameters vp = new SparkVerificationParameters(true, true, timeBound);
 		VerificationJsonContext jsonContext = new SparkVerificationJsonContext(vp, analysisType, deadline, 0.01, 48, executionDAG);
 		
+		String filename = umlFile.getName();
+		int pos = filename.lastIndexOf(".");
+		String justName = pos > 0 ? filename.substring(0, pos) : filename;	
+		
+		String appName = justName+"_"+now_s;
+		jsonContext.setApplicationName(appName);
+		
 		String requestTitle = taskName + "_" + now_s;
 		
-		JsonVerificationTaskRequest request = new JsonVerificationTaskRequest(requestTitle, jsonContext);
+		JsonVerificationTaskRequest request = new JsonVerificationTaskRequest(requestTitle, jsonContext, "spark");
 		
 		
 		HttpClient nc = new HttpClient();

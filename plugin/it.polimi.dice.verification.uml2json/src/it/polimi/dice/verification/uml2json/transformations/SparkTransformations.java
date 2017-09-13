@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,7 +15,6 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 
 import it.polimi.dice.core.util.Stack;
 import it.polimi.dice.verification.json.SparkStage;
-import it.polimi.dice.verification.json.SparkVerificationJsonContext;
 import it.polimi.dice.verification.spark.Partitioner;
 import it.polimi.dice.verification.spark.ShuffleEffect;
 import it.polimi.dice.verification.uml.diagrams.activitydiagram.InitialNode;

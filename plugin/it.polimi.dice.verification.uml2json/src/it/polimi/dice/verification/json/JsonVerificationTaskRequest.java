@@ -1,22 +1,19 @@
 package it.polimi.dice.verification.json;
 
-import java.util.HashMap;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.SerializedName;
 
 public class JsonVerificationTaskRequest {
 	
 	private String title;
 	@SerializedName("json_context")
-	
 	private VerificationJsonContext jsonContext;
+	protected String technology;
 	
-	public JsonVerificationTaskRequest(String title, VerificationJsonContext jsonContext) {
+	public JsonVerificationTaskRequest(String title, VerificationJsonContext jsonContext, String technology) {
 		super();
 		this.title = title;
 		this.jsonContext = jsonContext;
+		this.technology = technology;
 	}
 	public String getTitle() {
 		return title;
@@ -31,18 +28,8 @@ public class JsonVerificationTaskRequest {
 		this.jsonContext = jsonContext;
 	}
 	
-	
-
-	public static void main(String[] args) {
-		StormTopology t = new StormTopology();
-		VerificationParameters vp = new StormVerificationParameters();
-		
-		SparkVerificationJsonContext sc = new SparkVerificationJsonContext(vp, "Feasibility", 222, 0.1, 200, new HashMap<>());
-		
-		JsonVerificationTaskRequest tr = new JsonVerificationTaskRequest("Ciao", sc);
-		
-		Gson gson = new GsonBuilder().create();
-		System.out.println(gson.toJson(tr));
-		
+	public void setTechnology(String technology){
+		this.technology = technology;
 	}
+	
 }

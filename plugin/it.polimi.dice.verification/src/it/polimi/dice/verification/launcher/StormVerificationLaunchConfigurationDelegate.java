@@ -253,7 +253,7 @@ public class StormVerificationLaunchConfigurationDelegate extends LaunchConfigur
 			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "Building url:\n" + launchVerificationUrl);
 			
 
-			JsonVerificationTaskRequest vtr = new JsonVerificationTaskRequest(verificationIdentifier, jsonContext);
+			JsonVerificationTaskRequest vtr = new JsonVerificationTaskRequest(verificationIdentifier, jsonContext, "storm");
 			
 			Gson gsonBuilder = new GsonBuilder().create();
 			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "WRITING FILE TO:\n" + jsonFile.getAbsolutePath());

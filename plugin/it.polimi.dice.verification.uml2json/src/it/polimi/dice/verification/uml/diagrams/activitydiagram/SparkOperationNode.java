@@ -6,7 +6,6 @@ import java.util.Set;
 import com.google.gson.annotations.SerializedName;
 
 import it.polimi.dice.verification.json.SparkStage;
-import it.polimi.dice.verification.spark.Partitioner;
 
 public abstract class SparkOperationNode extends Node {
 	
@@ -67,6 +66,9 @@ public abstract class SparkOperationNode extends Node {
 		return duration;
 	}
 
+	public int getNumTasks(){
+		return numTasks;
+	}
 	
 	protected abstract Double extractDuration();
 	

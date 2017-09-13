@@ -342,15 +342,20 @@ class SparkDAG(object):
         self.labels = set()
         self.carry_on_labels = {}
         self.is_labeled = False
+        tmp_plugin = self.json_context["verification_params"]["plugin"]
+        # temporary assignment to cope with plugins list defined in eclipse client
+        self.plugin = tmp_plugin[0] if isinstance(tmp_plugin, list) else tmp_plugin
+        self.json_context["verification_params"]["plugin"] = self.plugin
         # add nodes to graph
         for k, v in self.json_context["stages"].iteritems():
             self.g.add_node(k)
-            if v["skipped"]:
-                print "skipped"
-                self.g.node[k]["skipped"] = True
-                self.g.node[k]['fillcolor'] = 'red'
-                self.json_context["stages"][k]["duration"] = 10.0
-                self.json_context["stages"][k]["numtask"] = 1
+            if "skipped" in v:
+                if v["skipped"]:
+                    print "skipped"
+                    self.g.node[k]["skipped"] = True
+                    self.g.node[k]['fillcolor'] = 'red'
+                    self.json_context["stages"][k]["duration"] = 10.0
+                    self.json_context["stages"][k]["numtask"] = 1
             else:
                 self.g.node[k]["skipped"] = False
                 self.g.node[k]['fillcolor'] = 'white'

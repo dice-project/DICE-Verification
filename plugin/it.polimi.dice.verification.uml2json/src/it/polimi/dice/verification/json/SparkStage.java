@@ -44,9 +44,9 @@ public class SparkStage {
 	private String name; 
 	private Double rate;
 	@SerializedName("numtask")
-	private int numTask;
+	private int numTask = 1;
 	private transient boolean completed = false;
-	private List<Integer> parentIds;
+	private List<Integer> parentsIds = new ArrayList<>();
 	private transient List<SparkStage> predecessors = new ArrayList<>();
 	private transient int opCounter = 0;
 	
@@ -54,6 +54,7 @@ public class SparkStage {
 	public SparkStage(SparkOperationNode n){
 		this.name = "Stage_"+n.getId();
 		addOperation(n);
+		this.numTask = n.getNumTasks() > 0 ? n.getNumTasks() : 1;
 	}
 	
 	public SparkStage() {
@@ -111,11 +112,11 @@ public class SparkStage {
 	public void setCompleted(boolean completed) {
 		this.completed = completed;
 	}
-	public List<Integer> getParentIds() {
-		return parentIds;
+	public List<Integer> getParentsIds() {
+		return parentsIds;
 	}
-	public void setParentIds(List<Integer> parentIds) {
-		this.parentIds = parentIds;
+	public void setParentsIds(List<Integer> parentIds) {
+		this.parentsIds = parentIds;
 	}
 	public List<SparkStage> getPredecessors() {
 		return new ArrayList<>(predecessors);
@@ -126,7 +127,7 @@ public class SparkStage {
 	
 	public void addPredecessor(SparkStage pred){
 		predecessors.add(pred);
-		parentIds.add(pred.getId());
+		parentsIds.add(pred.getId());
 	}
 	
 	public SparkOperationNode getLastOperation(){
