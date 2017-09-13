@@ -17,13 +17,6 @@
    </license>
 
    <plugin
-         id="it.polimi.dice.verification.ui"
-         download-size="0"
-         install-size="0"
-         version="0.3.0.qualifier"
-         unpack="false"/>
-
-   <plugin
          id="it.polimi.dice.core"
          download-size="0"
          install-size="0"
@@ -32,6 +25,13 @@
 
    <plugin
          id="it.polimi.dice.core.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="it.polimi.dice.verification.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

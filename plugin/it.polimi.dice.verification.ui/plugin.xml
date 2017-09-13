@@ -102,7 +102,7 @@
    <extension
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
-            class="it.polimi.dice.verification.ui.launcher.StormVerificationLaunchShortcut"
+            class="it.polimi.dice.verification.ui.launcher.storm.StormVerificationLaunchShortcut"
             icon="icons/verify_icon_storm.ico"
             id="it.polimi.dice.verification.ui.storm.shortcut"
             label="DICE &amp;Verification - Storm"
