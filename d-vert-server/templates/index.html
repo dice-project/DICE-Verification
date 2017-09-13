@@ -53,9 +53,11 @@ function LoadTable() {
 		cache: false,
     }).done(function (response) {
         var dynatable = $('#my-final-table').dynatable({
-            dataset: { records: response },
+            dataset: { records: response,
+                        perPageDefault: 50},
 			features: { pushState: false }
         }).data('dynatable');
+
 	});
     ShowLocalDate();
 };
