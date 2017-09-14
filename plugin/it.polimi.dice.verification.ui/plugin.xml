@@ -50,25 +50,18 @@
          <menu
                icon="icons/verify_icon.png"
                id="it.polimi.dice.verification.ui.menus.diceVerificationMenu"
-               label="Verification Tools"
-               mnemonic="M">
+               label="Verification Tools">
             <command
-                  commandId="it.polimi.dice.verification.ui.commands.launchVerificationCommand"
-                  id="it.polimi.dice.verification.ui.menus.launchStormVerificationCommand"
+                  commandId="it.polimi.dice.verification.ui.commands.launchStormVerificationCommand"
                   icon="icons/verify_icon_storm.ico"
-                  mnemonic="S">
-                  <visibleWhen
-                     checkEnabled="true">
-               	  </visibleWhen>
+                  label="Launch DICE Verification - Storm"
+                  style="push">
             </command>
             <command
-                  commandId="it.polimi.dice.verification.ui.commands.launchVerificationCommand"
-                  id="it.polimi.dice.verification.ui.menus.launchSparkVerificationCommand"
+                  commandId="it.polimi.dice.verification.ui.commands.launchSparkVerificationCommand"
                   icon="icons/verify_icon_spark.ico"
-                  mnemonic="S">
-                  <visibleWhen
-                     checkEnabled="true">
-               	  </visibleWhen>
+                  label="Launch DICE Verification - Spark"
+                  style="push">
             </command>
          </menu>
       </menuContribution>
@@ -91,17 +84,6 @@
       </menuContribution>--> 
    </extension>
    <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="it.polimi.dice.verification.ui.handlers.LaunchStormVerificationHandler"
-            commandId="it.polimi.dice.verification.ui.commands.launchStormVerificationCommand">
-      </handler>
-    <handler
-            class="it.polimi.dice.verification.ui.handlers.LaunchSparkVerificationHandler"
-            commandId="it.polimi.dice.verification.ui.commands.launchSparkVerificationCommand">
-      </handler>
-   </extension>
-   <extension
          point="org.eclipse.ui.commands">
       <category
             id="it.polimi.dice.verification.ui.commands.verificationCategory"
@@ -109,12 +91,14 @@
       </category>
       <command
             categoryId="it.polimi.dice.verification.ui.commands.verificationCategory"
+            defaultHandler="it.polimi.dice.verification.ui.handlers.LaunchStormVerificationHandler"
             description="Launches DICE Verification for Storm Applications"
             id="it.polimi.dice.verification.ui.commands.launchStormVerificationCommand"
             name="Launch DICE Verification - Storm">
       </command>
       <command
             categoryId="it.polimi.dice.verification.ui.commands.verificationCategory"
+            defaultHandler="it.polimi.dice.verification.ui.handlers.LaunchSparkVerificationHandler"
             description="Launches DICE Verification for Spark Applications"
             id="it.polimi.dice.verification.ui.commands.launchSparkVerificationCommand"
             name="Launch DICE Verification - Spark">

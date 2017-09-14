@@ -10,7 +10,6 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import it.polimi.dice.verification.ui.launcher.spark.SparkVerificationLaunchShortcut;
 import it.polimi.dice.verification.ui.launcher.storm.StormVerificationLaunchShortcut;
 
 /**
@@ -31,7 +30,7 @@ public class LaunchStormVerificationHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindowChecked(event);
-		ILaunchShortcut launchShortcut = new SparkVerificationLaunchShortcut();
+		ILaunchShortcut launchShortcut = new StormVerificationLaunchShortcut();
 		if (window != null) {
 			IWorkbenchPage page = window.getActivePage();
 			if (page != null) {
