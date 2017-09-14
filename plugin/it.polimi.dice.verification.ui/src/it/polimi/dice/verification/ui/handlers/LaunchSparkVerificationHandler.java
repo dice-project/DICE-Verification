@@ -17,11 +17,11 @@ import it.polimi.dice.verification.ui.launcher.storm.StormVerificationLaunchShor
  * @see org.eclipse.core.commands.IHandler
  * @see org.eclipse.core.commands.AbstractHandler
  */
-public class LaunchVerificationHandler extends AbstractHandler {
+public class LaunchSparkVerificationHandler extends AbstractHandler {
 	/**
 	 * The constructor.
 	 */
-	public LaunchVerificationHandler() {
+	public LaunchSparkVerificationHandler() {
 	}
 
 	/**
