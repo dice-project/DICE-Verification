@@ -50,7 +50,7 @@
          <menu
                icon="icons/verify_icon.png"
                id="it.polimi.dice.verification.ui.menus.diceVerificationMenu"
-               label="Verification Tools">
+               label="DICE Verification Tools">
             <command
                   commandId="it.polimi.dice.verification.ui.commands.launchStormVerificationCommand"
                   icon="icons/verify_icon_storm.ico"
