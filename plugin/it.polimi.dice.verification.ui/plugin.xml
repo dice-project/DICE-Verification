@@ -33,12 +33,12 @@
          point="org.eclipse.debug.ui.launchConfigurationTypeImages">
       <launchConfigurationTypeImage
             configTypeID="it.polimi.dice.verification.launchConfigurationTypeStorm"
-            icon="icons/verify_icon_storm.ico"
+            icon="icons/verify_icon_storm.png"
             id="it.polimi.dice.verification.ui.launchConfigurationTypeImage">
       </launchConfigurationTypeImage>
       <launchConfigurationTypeImage
             configTypeID="it.polimi.dice.verification.launchConfigurationTypeSpark"
-            icon="icons/verify_icon_spark.ico"
+            icon="icons/verify_icon_spark.png"
             id="it.polimi.dice.verification.ui.launchConfigurationTypeImage">
       </launchConfigurationTypeImage>
    </extension>
@@ -53,13 +53,13 @@
                label="DICE Verification Tools">
             <command
                   commandId="it.polimi.dice.verification.ui.commands.launchStormVerificationCommand"
-                  icon="icons/verify_icon_storm.ico"
+                  icon="icons/verify_icon_storm.png"
                   label="Launch DICE Verification - Storm"
                   style="push">
             </command>
             <command
                   commandId="it.polimi.dice.verification.ui.commands.launchSparkVerificationCommand"
-                  icon="icons/verify_icon_spark.ico"
+                  icon="icons/verify_icon_spark.png"
                   label="Launch DICE Verification - Spark"
                   style="push">
             </command>
@@ -108,7 +108,7 @@
          point="org.eclipse.debug.ui.launchShortcuts">
       <shortcut
             class="it.polimi.dice.verification.ui.launcher.storm.StormVerificationLaunchShortcut"
-            icon="icons/verify_icon_storm.ico"
+            icon="icons/verify_icon_storm.png"
             id="it.polimi.dice.verification.ui.storm.shortcut"
             label="DICE &amp;Verification - Storm"
             modes="run">
@@ -158,7 +158,7 @@
       </shortcut>
             <shortcut
             class="it.polimi.dice.verification.ui.launcher.spark.SparkVerificationLaunchShortcut"
-            icon="icons/verify_icon_spark.ico"
+            icon="icons/verify_icon_spark.png"
             id="it.polimi.dice.verification.ui.spark.shortcut"
             label="DICE &amp;Verification - Spark"
             modes="run">
