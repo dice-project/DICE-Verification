@@ -62,6 +62,17 @@ function LoadTable() {
     ShowLocalDate();
 };
 
+function LoadTableJson(){
+    $('#my-final-table').dynatable({
+      dataset: {
+          records: {{ json_list | safe }},
+          perPageDefault: 50
+      },
+      features: { pushState: false }
+    });
+    ShowLocalDate();
+};
+
 
 function reloadPage (){
     location.reload();
@@ -95,7 +106,7 @@ function autorefresh() {
 	}
 }
 
-LoadTable();
+LoadTableJson();
 
 autorefresh();
 document.getElementById('autoupdate').addEventListener('click', autorefresh);

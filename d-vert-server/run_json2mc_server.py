@@ -16,11 +16,12 @@ from flask_cors import CORS, cross_origin
 import time
 from urllib2 import urlopen
 from werkzeug.wsgi import LimitedStream
+import json
 
 
 my_ip = 'localhost' if os.environ.get('LOCAL_DEPLOY', 'true') == 'true' else urlopen('http://ip.42.pl/raw').read()
 
-REDIS_ADDRESS = 'redis'
+REDIS_ADDRESS = 'localhost'
 
 app = Flask(__name__,static_folder='static', static_url_path='')
 CORS(app)
@@ -110,12 +111,14 @@ def verification_task(self, task_name, technology, context):
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    task_list_json = task_list()
     if request.method == 'GET':
         return render_template('index.html',
                                param_name=session.get('param_name', ''),
                                hostname=my_ip,
                                flask_port=5000,
-                               flower_port=5555)
+                               flower_port=5555,
+                               json_list=json.dumps(task_list_json))
  
     
 
@@ -126,18 +129,21 @@ def send_js(path):
 
 @app.route('/task_list', methods=['GET'])
 def get_task_list():
-    my_list = redis.keys('celery-task-meta-*')
-    statuslist = []
-    print my_list
-    for t in my_list:
-        statuslist.append(taskstatus2(remove_prefix(t,'celery-task-meta-')))
-        redis.persist(t)
-    # print my_list
-    return jsonify(statuslist), 200
+    return jsonify(task_list()), 200
     
 def remove_prefix(s, prefix):
     return s[len(prefix):] if s.startswith(prefix) else s
 
+
+def task_list():
+    my_list = redis.keys('celery-task-meta-*')
+    statuslist = []
+    # print my_list
+    for t in my_list:
+        statuslist.append(task_status(remove_prefix(t, 'celery-task-meta-')))
+        redis.persist(t)
+    # print my_list
+    return statuslist
 
 @app.route('/longtasks', methods=['POST'])
 def create_task():
@@ -157,17 +163,17 @@ def create_task():
                                                params["json_context"]],
                                                soft_time_limit=params["timeout"])
 #    verification_task(params["title"])
-    return jsonify({}), 202, {'Location': url_for('taskstatus',
+    return jsonify({}), 202, {'Location': url_for('get_task_status',
                                                   task_id=task.id)}
 
 
 
 @app.route('/status/<task_id>')
-def taskstatus(task_id):
-    return jsonify(taskstatus2(task_id))
+def get_task_status(task_id):
+    return jsonify(task_status(task_id))
 
 def get_static_img_popup_link(fig_path, link_text):
-    print 'fig_path:',fig_path, "link_text:",link_text
+    # print 'fig_path:',fig_path, "link_text:",link_text
     if fig_path is None:
         return 'N/A'
     elif fig_path == '':
@@ -206,7 +212,7 @@ def get_outcome_render(outcome):
     else:
         return outcome + ' <img src="imgs/question_mark_16x16.png"'
 
-def taskstatus2(task_id):
+def task_status(task_id):
     task = verification_task.AsyncResult(task_id)
     if task.state == states.PENDING:
         response = {
