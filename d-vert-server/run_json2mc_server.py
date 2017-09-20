@@ -21,7 +21,7 @@ import json
 
 my_ip = 'localhost' if os.environ.get('LOCAL_DEPLOY', 'true') == 'true' else urlopen('http://ip.42.pl/raw').read()
 
-REDIS_ADDRESS = 'localhost'
+REDIS_ADDRESS = 'redis'
 
 app = Flask(__name__,static_folder='static', static_url_path='')
 CORS(app)
@@ -94,7 +94,7 @@ def verification_task(self, task_name, technology, context):
         fig_path = v_task.figure_path
         lisp_path = os.path.join(v_task.result_dir, "zot_in.lisp")
         result_file = os.path.join(v_task.result_dir, v_task.result_file)
-        json_path = v_task.json_context_path
+        json_path = v_task.json_starting_context_path
         return {'name': task_name, 'result': outcome.upper(),
                 'verification_time':ver_time, 'hist_file': hist_file,
                 'fig_path':fig_path, 'json_path': json_path,

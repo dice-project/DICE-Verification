@@ -60,10 +60,18 @@ class VerificationTask(object):
                                  'copy_of_' + template_filename))
         self.json_context_path = os.path.join(self.result_dir, 'conf',
                                             'copy_of_' + context_filename)
+        self.json_starting_context_path = os.path.join(self.result_dir, 'conf',
+                                              'copy_of_start_' + context_filename)
         print '{}Dumping JSON context to: {}'.format(prefix,
                                                      self.json_context_path)
         with open(self.json_context_path, 'w+') as outfile:
             json.dump(self.context, outfile, indent=4)
+        starting_context = getattr(self, 'starting_context', None)
+        if starting_context:
+            print '{}Dumping JSON Starting context to: {}'.format(prefix,
+                                                         self.json_starting_context_path)
+            with open(self.json_starting_context_path, 'w+') as outfile:
+                json.dump(starting_context, outfile, indent=4)
         command_list = [cfg.ZOT_CMD, "zot_in.lisp"]
         proc = sp.Popen(command_list,
                         stdout=sp.PIPE,

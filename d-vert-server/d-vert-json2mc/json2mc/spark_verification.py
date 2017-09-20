@@ -90,59 +90,7 @@ class SparkVerificationTask(VerificationTask):
             self.process_zot_results(self.result_dir,
                                      os.path.join(self.result_dir,
                                                   self.hist_file))
-
-    '''
-    def launch_verification(self):
-        self.result_dir = os.path.join(self.app_dir, self.plugin)
-        prefix = "[{}]".format(self.plugin)
-        print "{} Creating {} directory".format(prefix, self.result_dir)
-        utils.make_sure_path_exists(os.path.join(self.result_dir, 'conf'))
-        # make_sure_path_exists(app_dir)
-        # self.context["verification_params"]["plugin"] = plugin
-        with open(os.path.join(self.result_dir, "zot_in.lisp"), "w+") as out_f:
-            out_f.write(self.template.render(self.context))
-        template_filename = self.template_path.split(os.path.sep)[-1]
-        context_filename = self.context['app_name'] + '.json'
-        print "{}Copying {} to {}".format(prefix,
-                                          self.template_path,
-                                          self.result_dir)
-        shutil.copy(self.template_path,
-                    os.path.join(self.result_dir, 'conf',
-                                 'copy_of_' + template_filename))
-        json_model_save_path = os.path.join(self.result_dir, 'conf',
-                                            'copy_of_' + context_filename)
-        print '{}Dumping JSON context to: {}'.format(prefix,
-                                                     json_model_save_path)
-        with open(json_model_save_path, 'w+') as outfile:
-            json.dump(self.context, outfile, indent=4)
-    # print os.getcwd()
-#        os.chdir(app_dir)
-        command_list = ["zot", "zot_in.lisp"]
-#        print prefix, 'moving to: ' + os.getcwd()
-        proc = Popen(command_list,
-                     stdout=PIPE,
-                     stderr=PIPE,
-                     cwd=self.result_dir)
-        child_pid = proc.pid
-        print ("{}Launched command {} on dir. {} "
-               "with plugin {} ({})").format(prefix,
-                                             " ".join(command_list),
-                                             self.result_dir,
-                                             self.plugin,
-                                             str(child_pid))
-    # wait for the child to complete
-        (output, error) = proc.communicate()
-        if error:
-            print "{}error: {}".format(prefix, error)
-        print "{}{}Terminated -> output:\n{}".format(prefix,
-                                                     str(child_pid),
-                                                     output)
-#        bashCommand = "zot zot_in.lisp"
-#        os.system(bashCommand)
-        print "{}Verication complete with plugin: {}".format(prefix,
-                                                             self.plugin)
-        return json_model_save_path
-        '''
+        self.starting_context = self.context
 
     def parse_zot_trace(self, file_path=None):
         """Create new ZotTrace object after parsing history file."""

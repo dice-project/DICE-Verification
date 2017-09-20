@@ -77,6 +77,6 @@ def get_normalization_dict(values, tolerance):
     # print "common_denom:{}".format(common_denom)
     normalization_dict = {k: int(f.numerator/tolerance) * (common_denom/f.denominator)
                          for (k, f) in rationals_dict.items()}
-    print "normalization_dict: {}".format(normalization_dict)
+    # print "normalization_dict: {}".format(normalization_dict)
     return normalization_dict
 

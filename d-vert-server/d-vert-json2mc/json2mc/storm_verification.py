@@ -25,6 +25,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 from __builtin__ import staticmethod
+import copy
 
 
 def get_y_max(cur_y_max, var_list, component_id, records):
@@ -70,6 +71,32 @@ def uppercase_ids(context):
          context["verification_params"]["strictly_monotonic_queues"]]
     return context
 
+
+def get_only_required_nodes(context):
+    if len(context['verification_params']['strictly_monotonic_queues']) > 0:
+        required_node_ids = set([])
+        bolts_map = {}
+        for b in context["topology"]["bolts"]:
+            bolts_map[b['id'].upper()] = b['subs']
+        # print 'bolts_map: ', bolts_map
+        for q in context['verification_params']['strictly_monotonic_queues']:
+            q = q.upper()
+            required_node_ids.add(q)
+            # print 'visiting {}'.format(q)
+            parents = set(bolts_map[q])
+            # print "parents of {}: {}".format(q, parents)
+            while parents:
+                p = parents.pop()
+                # print "popping ", p
+                required_node_ids.add(p)
+                if p in bolts_map:
+                    parents.update(bolts_map[p])
+        required_spouts = [s for s in context["topology"]["spouts"] if s['id'] in required_node_ids]
+        required_bolts = [b for b in context["topology"]["bolts"] if b['id'] in required_node_ids]
+        context["topology"]["bolts"] = required_bolts
+        context["topology"]["spouts"] = required_spouts
+        context["verification_params"]["periodic_queues"] = [b['id'] for b in context["topology"]["bolts"] if b['id'] in required_node_ids]
+    return context
 
 def normalize_temporal_values(context):
     '''
@@ -145,8 +172,9 @@ class StormVerificationTask(VerificationTask):
 #            gr = DAGRenderer(self.dag.g)
 #            gr.render(os.path.join(self.app_dir, self.app_name + ".gv"), True)
 #            self.context = self.dag.json_context
-            self.context = uppercase_ids(context)
-            self.context = normalize_temporal_values(self.context)
+            self.starting_context = copy.deepcopy(uppercase_ids(context))
+            self.context = get_only_required_nodes(context)
+            normalize_temporal_values(context)
         else:
             self.result_dir = self.app_dir = os.path.abspath(plotonly_folder)
             self.app_name = plotonly_folder.split(os.path.sep)[-3]
@@ -155,7 +183,7 @@ class StormVerificationTask(VerificationTask):
             with open(os.path.join(self.result_dir, 'conf',
                                    'copy_of_'+self.app_name+'.json'),
                       "r") as c_file:
-                self.context = json.load(c_file)
+                self.context = self.starting_context = json.load(c_file)
             self.process_zot_results(self.result_dir,
                                      os.path.join(self.result_dir,
                                                   self.hist_file))
@@ -293,6 +321,7 @@ class StormVerificationTask(VerificationTask):
                 template_path: {} \n
                 template: {} \n
                 context: {} \n
+                starting_context: {} \n
                 output_dir: {} \n
                 result_dir: {} \n
                 app_name: {} \n
@@ -303,6 +332,7 @@ class StormVerificationTask(VerificationTask):
                 display: {}
                 '''.format(self.template_path,
                            self.template,
+                           self.starting_context,
                            self.context,
                            self.output_dir,
                            self.result_dir,
