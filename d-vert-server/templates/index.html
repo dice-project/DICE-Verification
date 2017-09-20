@@ -52,7 +52,7 @@ function LoadTable() {
         dataType: "json",
 		cache: false,
     }).done(function (response) {
-        var dynatable = $('#my-final-table').dynatable({
+        var dynatable = $('#tasks-dashboard-table').dynatable({
             dataset: { records: response,
                         perPageDefault: 50},
 			features: { pushState: false }
@@ -63,7 +63,7 @@ function LoadTable() {
 };
 
 function LoadTableJson(){
-    $('#my-final-table').dynatable({
+    $('#tasks-dashboard-table').dynatable({
       dataset: {
           records: {{ json_list | safe }},
           perPageDefault: 50
@@ -154,7 +154,7 @@ $('body').on('mouseover', 'a.popup-img', function() {
 			<div  align="center" > <input type="checkbox" id="autoupdate"/> Enable auto-refresh every 30 seconds</div>
 			<div id="wide-content">
        <!-- <a class="popup-img" href="/tasks/Dooku.jpg"> Open popup</a> -->
-				<table id="my-final-table">
+				<table id="tasks-dashboard-table">
           <thead>
             <tr>
               <th data-dynatable-column="id">id</th>
