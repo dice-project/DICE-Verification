@@ -8,7 +8,7 @@ public class Messages extends NLS {
 	public static String SparkMainLaunchConfigurationTab_lblDeadline_text;
 	public static String SparkMainLaunchConfigurationTab_lblAnalysisType_text;
 	public static String SparkMainLaunchConfigurationTab_grpAnalysisSettings_text;
-	public static String MainLaunchConfigurationTab_monitoredBoltsLabel;
+	public static String MainLaunchConfigurationTab_boltsToBeAnalyzedLabel;
 	public static String MainLaunchConfigurationTab_boltLabel;
 	public static String MainLaunchConfigurationTab_ae2bvzotLabel;
 	public static String MainLaunchConfigurationTab_ae2sbvzotLabel;
@@ -33,7 +33,7 @@ public class Messages extends NLS {
 	public static String MainLaunchConfigurationTab_saveIntermediateLabel;
 	public static String MainLaunchConfigurationTab_unableParserError;
 	public static String MainLaunchConfigurationTab_valueLabel;
-	public static String MainLaunchConfigurationTab_monitoredLabel;
+	public static String MainLaunchConfigurationTab_verifyBoltLabel;
 	public static String MainLaunchConfigurationTab_variableLabel;
 	public static String MainLaunchConfigurationTab_variablesLabel;
 	public static String MainLaunchConfigurationTab_connectionLabel;

@@ -519,7 +519,7 @@ public class StormMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 			group.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
 			group.setLayout(new GridLayout(1, false));
-			group.setText(Messages.MainLaunchConfigurationTab_monitoredBoltsLabel);
+			group.setText(Messages.MainLaunchConfigurationTab_boltsToBeAnalyzedLabel);
 
 			Composite tableComposite = new Composite(group, SWT.NONE);
 			tableComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -565,7 +565,7 @@ public class StormMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 			});
 
 			valueViewerColumnBoolean = new TableViewerColumn(viewerBoolean, SWT.NONE);
-			valueViewerColumnBoolean.getColumn().setText(Messages.MainLaunchConfigurationTab_monitoredLabel);
+			valueViewerColumnBoolean.getColumn().setText(Messages.MainLaunchConfigurationTab_verifyBoltLabel);
 			valueViewerColumnBoolean.getColumn().setResizable(true);
 			valueViewerColumnBoolean.setLabelProvider(new ColumnLabelProvider() {
 
