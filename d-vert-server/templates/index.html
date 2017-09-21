@@ -16,10 +16,9 @@ Released   : 20131104
 <meta name="description" content="" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>D-VerT Tasks Dashboard</title>
-<style>
-  @import url("style/style.css");
-  @import url("style/dynatable/jquery.dynatable.css");
-  </style>
+
+<link rel="stylesheet" href="style/style.css">
+<link rel="stylesheet" href="style/dynatable/jquery.dynatable.css">
 
 <script src="style/jquery-3.1.0.min.js"></script>
 <script type="text/javascript" src="style/dynatable/jquery.dynatable.js"></script>
@@ -31,7 +30,19 @@ Released   : 20131104
 
 <!-- Magnific Popup core JS file -->
 <script src="style/magnific-popup/jquery.magnific-popup.js"></script>
-
+<link rel="stylesheet" href="style/jquery-ui-1.12.1/jquery-ui.css">
+<script src="style/jquery-ui-1.12.1/jquery-ui.js"></script>
+<script>
+    $( function() {
+    $( document ).tooltip();
+    } );
+</script>
+<style>
+    label {
+    display: inline-block;
+    width: 5em;
+    }
+</style>
 
 
 <script>
@@ -55,7 +66,8 @@ function LoadTable() {
         var dynatable = $('#tasks-dashboard-table').dynatable({
             dataset: { records: response,
                         perPageDefault: 50},
-			features: { pushState: false }
+			features: { pushState: false,
+                        search: false }
         }).data('dynatable');
 
 	});
@@ -68,7 +80,9 @@ function LoadTableJson(){
           records: {{ json_list | safe }},
           perPageDefault: 50
       },
-      features: { pushState: false }
+      features: { paginate: false,
+                  pushState: false,
+                  search: false }
     });
     ShowLocalDate();
 };
@@ -164,8 +178,8 @@ $('body').on('mouseover', 'a.popup-img', function() {
               <th data-dynatable-column="verification_time">Duration </th>
               <th data-dynatable-column="result_file">Result File </th>
               <th data-dynatable-column="out_trace">Output Trace</th>
-              <th data-dynatable-column="json_path">JSON File</th>
-              <th data-dynatable-column="lisp_path">Lisp File</th>
+              <th data-dynatable-column="json_path">JSON Configuration File</th>
+              <th data-dynatable-column="lisp_path">Zot Lisp Script</th>
             </tr>
           </thead>
         </table>

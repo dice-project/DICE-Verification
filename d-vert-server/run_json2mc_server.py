@@ -88,14 +88,14 @@ def verification_task(self, task_name, technology, context):
         else:
             print 'FINISHED WITH ERRORS'
 
-        outcome = v_task.verification_result.outcome
+        outcome = v_task.verification_result.outcome.upper()
         ver_time = v_task.verification_result.verification_time
-        hist_file = os.path.join(v_task.result_dir, v_task.hist_file)
+        hist_file = os.path.join(v_task.result_dir, v_task.hist_file) if outcome == 'SAT' else None
         fig_path = v_task.figure_path
         lisp_path = os.path.join(v_task.result_dir, "zot_in.lisp")
         result_file = os.path.join(v_task.result_dir, v_task.result_file)
         json_path = v_task.json_starting_context_path
-        return {'name': task_name, 'result': outcome.upper(),
+        return {'name': task_name, 'result': outcome,
                 'verification_time':ver_time, 'hist_file': hist_file,
                 'fig_path':fig_path, 'json_path': json_path,
                 'lisp_path':lisp_path, 'result_file':result_file}
@@ -175,23 +175,23 @@ def get_task_status(task_id):
 def get_static_img_popup_link(fig_path, link_text):
     # print 'fig_path:',fig_path, "link_text:",link_text
     if fig_path is None:
-        return 'N/A'
+        return ''
     elif fig_path == '':
-        return 'N/A'
+        return ''
     else:
         # return '<a class="popup-img" href="'+url_for('static', filename=get_static_url(fig_path))+'"> '+ link_text + '</a>'
         return '<a class="popup-img" href="{}">{}</a>'.format(url_for('static', filename=get_static_url(fig_path)),
                                                                  link_text)
 
-def get_static_new_tab_link(file_path, link_text):
-#    print 'file_path:',file_path, "link_text:",link_text
-    if file_path is None:
-        return 'N/A'
-    elif file_path == '':
-        return 'N/A'
+def get_static_new_tab_link(file_path, link_text, show_icon=True):
+    icon = '<img src="imgs/new_tab.png">' if show_icon else ''
+    if file_path is None or file_path == '':
+        return '<a title="No output trace is generated \n' \
+               ' when no problem is detected (UNSAT result)">' \
+               'N/A </a>'
     else:
-        return '<a href="{}" target="_blank"> {} <img src="imgs/new_tab.png"></a>'.format(url_for('static', filename=get_static_url(file_path)),
-                                                                                          link_text)
+        return '<a href="{}" target="_blank"> {} {} </a>'.format(url_for('static', filename=get_static_url(file_path)),
+                                                                                          link_text, icon)
                                                                     
 
 def get_static_current_tab_link(file_path, link_text):
@@ -201,16 +201,18 @@ def get_static_current_tab_link(file_path, link_text):
     elif file_path == '':
         return 'N/A'
     else:
-        return '<a href="{}"> {} </a>'.format(url_for('static', filename=get_static_url(file_path)),
+        return '<a href="{}"> {}</a>'.format(url_for('static', filename=get_static_url(file_path)),
                                               link_text)
 
 def get_outcome_render(outcome):
     if outcome == 'SAT':
-        return outcome + ' <img src="imgs/warning_16x16.png"'
+        return '<img src="imgs/warning_32x32.png" title="Problem detected on the selected bolts! \n' \
+               '(SAT)\n' \
+               'Check the output trace">'
     elif outcome == 'UNSAT':
-        return outcome + ' <img src="imgs/success_16x16.png"'
+        return '<img src="imgs/success_32x32.png" title="NO Problem detected on the selected bolts! \n (UNSAT) ">'
     else:
-        return outcome + ' <img src="imgs/question_mark_16x16.png"'
+        return '<img src="imgs/question_mark_32x32.png" title="the task did not terminate correctly">'
 
 def task_status(task_id):
     task = verification_task.AsyncResult(task_id)
@@ -244,16 +246,27 @@ def task_status(task_id):
                 'verification_time': str(task.info.get('verification_time', ''))+' s',
                 'fig_path': get_static_img_popup_link(task.info.get('fig_path', ''), 'view'),
                 'hist_file': get_static_new_tab_link(task.info.get('hist_file', ''), 'view'),
-                'out_trace': '<ul style="list-style-type: none;"> \
-                                <li>'+ get_static_new_tab_link(task.info.get('hist_file', ''), 'text') +'</li> \
-                                <li>'+ get_static_img_popup_link(task.info.get('fig_path', ''), 'figure') +'</li> \
-                            </ul>',
+                'out_trace': '<center>' \
+                             '<ul style="list-style-type: none;"> \
+                                <li>'+ get_static_new_tab_link(task.info.get('hist_file', ''),
+                                                               '<img src="imgs/text_trace_24x24.png" '
+                                                               'title="Open the textual output trace"'
+                                                               '>', False) +
+                                '</li> \
+                                </br> \
+                                <li>'+ get_static_img_popup_link(task.info.get('fig_path', ''),
+                                                                 '<img src="imgs/show_plot_24x24.png"'
+                                                                 'title="Open the graphical output trace"'
+                                                                 '>') +
+                             '</li> \
+                             </ul> \
+                             <center>',
                 'json_path': get_static_new_tab_link(task.info.get('json_path', ''), 'view'),
-                'lisp_path': get_static_current_tab_link(task.info.get('lisp_path', ''), 'download'),
+                'lisp_path': get_static_new_tab_link(task.info.get('lisp_path', ''), 'view'),
                 'result_file': get_static_new_tab_link(task.info.get('result_file', ''), 'view')
             }
             if 'result' in task.info:
-                response['result'] = get_outcome_render(task.info['result'])
+                response['result'] = '<center>'+get_outcome_render(task.info['result'])+ '</center>'
                 response['state'] = 'COMPLETE'
     else:
         # something went wrong in the background job
