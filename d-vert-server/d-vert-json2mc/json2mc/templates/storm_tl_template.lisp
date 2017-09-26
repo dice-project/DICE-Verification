@@ -201,16 +201,19 @@
 					(-P- ,(format nil "STARTFAILURE_~S" i))
 					(&& (-P- ,(format nil "FAIL_~S" i))
 							(!! (yesterday (-P- ,(format nil "FAIL_~S" i)))))))
-;SINGLE BOLT FAILING new
-    (loop for i in bolts collect
-     	`(->
-    			 (-P- ,(format nil "STARTFAILURE_~S" i))
-    			 (&&
-    				 ,@(loop for j in bolts when
-       					 (not (eq j i)) collect
-      						 `(!! (-P- ,(format nil "STARTFAILURE_~S" j)))
-      						 )))
- 				 )
+;SINGLE BOLT FAILING
+    (if
+        (> (list-length bolts) 1)
+            (loop for i in bolts collect
+                `(->
+                         (-P- ,(format nil "STARTFAILURE_~S" i))
+                         (&&
+                             ,@(loop for j in bolts when
+                                 (not (eq j i)) collect
+                                     `(!! (-P- ,(format nil "STARTFAILURE_~S" j)))
+                                     )))
+             )
+         )
 ;IDLE (OLD) --> NOOP (just for debugging traces)
 			(loop for i in bolts collect
              `(<->
