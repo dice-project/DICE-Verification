@@ -134,7 +134,7 @@ public class SparkMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, false, false));
 
-			group.setLayout(new GridLayout(4, true));
+			group.setLayout(new GridLayout(4, false));
 			group.setText("Task Details");
 
 			Label taskNameLabel = new Label(group, SWT.BORDER);

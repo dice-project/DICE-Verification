@@ -129,6 +129,8 @@ public class StormMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 	}
 
 	private class FormData {
+		private String taskName;
+		private String taskDescription;
 		private String inputFile;
 		private String intermediateFilesDir;
 		private int timeBound;
@@ -141,6 +143,28 @@ public class StormMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 			setConfig(VtConfigFactory.eINSTANCE.createVerificationToolConfig());
 		}
 
+		public String getTaskName() {
+			return taskName;
+		}
+
+		public void setTaskName(String taskName, boolean refresh) {
+			this.taskName = taskName;
+			if (refresh)
+				taskNameText.setText(taskName);
+			setDirty(true);
+		}
+
+		public String getTaskDescription() {
+			return taskDescription;
+		}
+
+		public void setTaskDescription(String taskDescription, boolean refresh) {
+			this.taskDescription = taskDescription;
+			if (refresh)
+				taskDescriptionText.setText(taskDescription);
+			setDirty(true);
+		}
+				
 		protected String getInputFile() {
 			return inputFile;
 		}
@@ -154,12 +178,6 @@ public class StormMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 			for (String var : vars) {
 				config.getMonitoredBolts().put(var, false);
 			}
-			/*
-			 * for (Map.Entry<String, Boolean> entry :
-			 * config.getMonitoredBolts().entrySet()) {
-			 * DiceLogger.logError(DiceVerificationUiPlugin.getDefault(),
-			 * "Key: "+ entry.getKey() + " - Value: " + entry.getValue()); }
-			 */
 			viewerBoolean.refresh();
 			// config.setZotPlugin(ZotPlugin.AE2BVZOT);
 			setDirty(true);
@@ -330,6 +348,9 @@ public class StormMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 		}
 	}
 
+	
+	protected Text taskNameText;
+	protected Text taskDescriptionText;
 	protected Text inputFileText;
 	protected Button keepIntermediateFilesButton;
 	protected Text timeBoundText;
@@ -358,6 +379,55 @@ public class StormMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 		GridData buttonsGridDataIntermediate = new GridData(SWT.CENTER, SWT.CENTER, false, false);
 		buttonsGridDataIntermediate.widthHint = 100;
 
+		
+		{ // Task Details Group
+			Group group = new Group(topComposite, SWT.NONE);
+			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, false, false));
+
+			group.setLayout(new GridLayout(4, false));
+			group.setText("Task Details");
+
+			Label taskNameLabel = new Label(group, SWT.BORDER);
+			taskNameLabel.setText("Task Name");
+			taskNameLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+			taskNameLabel.setToolTipText("Optional custom identifier for the verification task. Default value is UML file name.");
+
+			taskNameText = new Text(group, SWT.BORDER);
+			taskNameText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+			taskNameText.setEditable(true);
+			taskNameText.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent event) {
+					// Get the widget whose text was modified
+					Text text = (Text) event.widget;
+					data.setTaskName(text.getText(), false);
+					setDirty(true);
+					updateLaunchConfigurationDialog();
+				}
+			});
+
+			Label taskDescriptionLabel = new Label(group, SWT.BORDER);
+			taskDescriptionLabel.setText("Task Description");
+			taskDescriptionLabel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+			taskDescriptionLabel.setToolTipText("Optional description about the verification task.");
+
+			taskDescriptionText = new Text(group, SWT.MULTI | SWT.BORDER | SWT.WRAP | SWT.V_SCROLL);
+			GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
+			gridData.heightHint = 2 * taskDescriptionText.getLineHeight();
+			taskDescriptionText.setLayoutData(gridData);
+			taskDescriptionText.setEditable(true);
+			taskDescriptionText.addModifyListener(new ModifyListener() {
+				public void modifyText(ModifyEvent event) {
+					// Get the widget whose text was modified
+					Text text = (Text) event.widget;
+					data.setTaskDescription(text.getText(), false);
+					setDirty(true);
+					updateLaunchConfigurationDialog();
+				}
+			});
+
+		}
+
+				
 		{ // Model Group
 			Group group = new Group(topComposite, SWT.NONE);
 			group.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
@@ -664,6 +734,8 @@ public class StormMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TASK_NAME, StringUtils.EMPTY);
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TASK_DESCRIPTION, StringUtils.EMPTY);
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE);
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false);
 		configuration.removeAttribute(VerificationLaunchConfigurationAttributes.INTERMEDIATE_FILES_DIR);
@@ -678,6 +750,14 @@ public class StormMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
+			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.TASK_NAME)) {
+				data.setTaskName(configuration.getAttribute(VerificationLaunchConfigurationAttributes.TASK_NAME,
+						StringUtils.EMPTY), true);
+			}
+			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.TASK_DESCRIPTION)) {
+				data.setTaskDescription(configuration.getAttribute(
+						VerificationLaunchConfigurationAttributes.TASK_DESCRIPTION, StringUtils.EMPTY), true);
+			}
 			if (configuration.hasAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE)) {
 				// data.setInputFileFloat(configuration.getAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE,
 				// StringUtils.EMPTY));
@@ -725,6 +805,9 @@ public class StormMainLaunchConfigurationTab extends AbstractLaunchConfiguration
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TASK_NAME, data.getTaskName());
+		configuration.setAttribute(VerificationLaunchConfigurationAttributes.TASK_DESCRIPTION,
+				data.getTaskDescription());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.INPUT_FILE, data.getInputFile());
 		configuration.setAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES,
 				data.keepIntermediateFiles());

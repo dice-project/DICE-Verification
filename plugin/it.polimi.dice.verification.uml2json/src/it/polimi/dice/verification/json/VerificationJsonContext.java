@@ -11,8 +11,7 @@ public class VerificationJsonContext {
 	@SerializedName(value="verification_params")
 	private VerificationParameters verificationParameters;
 
-	public VerificationJsonContext(/*StormTopology t, */VerificationParameters vp){
-//		this.topology = t;
+	public VerificationJsonContext(VerificationParameters vp){
 		this.verificationParameters = vp;
 	}
 	

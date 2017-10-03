@@ -87,21 +87,27 @@ public class StormVerificationLaunchConfigurationDelegate extends LaunchConfigur
 			Map<String, String> verificationAttrs = new HashMap<>();
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd__HH_mm_ss");
 			LocalDateTime now = LocalDateTime.now();
-			verificationAttrs.put(DebugPlugin.ATTR_LAUNCH_TIMESTAMP, now.format(formatter)); 	
+			verificationAttrs.put(DebugPlugin.ATTR_LAUNCH_TIMESTAMP, now.format(formatter)); 
 			VerificationToolConfig vtConfig = getVerificationToolConfig(configuration);
+			
+			final String taskName = configuration.getAttribute(VerificationLaunchConfigurationAttributes.TASK_NAME, "");
+			final String taskDescription = configuration.getAttribute(VerificationLaunchConfigurationAttributes.TASK_DESCRIPTION, "");
+			final String trimmedTaskName = taskName.trim().replaceAll("\\s+", "_");
+			verificationAttrs.put("TASK_NAME", trimmedTaskName);
+			verificationAttrs.put("TASK_DESCR", taskDescription);
 			
 			final boolean keepIntermediateFiles = configuration.getAttribute(VerificationLaunchConfigurationAttributes.KEEP_INTERMEDIATE_FILES, false);
 			final File intermediateFilesDir = Utils.getIntermediateFilesDir(configuration);
 			
 
 			final File umlFile = Utils.getInputFile(configuration);
-			final File configFile = Paths.get(intermediateFilesDir.toURI()).resolve("dump.vtconfig").toFile(); //$NON-NLS-1$
+			// final File configFile = Paths.get(intermediateFilesDir.toURI()).resolve("dump.vtconfig").toFile(); //$NON-NLS-1$
 			final File jsonFile = Paths.get(intermediateFilesDir.toURI()).resolve("context.json").toFile(); //$NON-NLS-1$
- 
+			
 			
 			try {
 				try {
-					dumpConfig(vtConfig, configFile, new SubProgressMonitor(monitor, 1));
+					// dumpConfig(vtConfig, configFile, new SubProgressMonitor(monitor, 1));
 					transformUmlToJson(umlFile, vtConfig, jsonFile, new SubProgressMonitor(monitor, 1), verificationAttrs, configuration);
 				} finally {
 					// Refresh workspace if intermediate files were stored in it
@@ -195,7 +201,9 @@ public class StormVerificationLaunchConfigurationDelegate extends LaunchConfigur
 		int pos = filename.lastIndexOf(".");
 		String justName = pos > 0 ? filename.substring(0, pos) : filename;			
 		String timestamp = attributes.get(DebugPlugin.ATTR_LAUNCH_TIMESTAMP);
-		String verificationIdentifier = justName + "_" + timestamp;
+		String taskName = attributes.get("TASK_NAME");
+		String taskDescription = attributes.get("TASK_DESCR");
+		String verificationIdentifier = justName + "_" + taskName + "_" + timestamp;
 		
 
 		if (monitor == null) {
@@ -245,6 +253,7 @@ public class StormVerificationLaunchConfigurationDelegate extends LaunchConfigur
 			vp.setStrictlyMonotonicQueues(monitoredBoltsList);
 			jsonContext = new StormVerificationJsonContext(topology, vp);
 			jsonContext.setApplicationName(verificationIdentifier);
+			jsonContext.setDescription(taskDescription);
 			
 			DiceLogger.logInfo(DiceVerificationPlugin.getDefault(), "JSON CONTEXT CREATED:\n" + gson.toJson(jsonContext));
 			
