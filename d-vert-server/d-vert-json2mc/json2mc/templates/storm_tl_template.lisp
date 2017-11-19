@@ -680,13 +680,6 @@
 							(->
 								(-P- ,(format nil "EMIT_~S" j))
 								(&&
-;         					([=] (-V-,(intern (format nil "R_EMIT_~S" j)))
-;										([+]
-;											([*] (-V-,(intern (format nil "R_PROCESS_~S" j)))
-;  												 		 ,(intern (format nil "SIGMA_~S" j)))
-;											,(intern (format nil "D_~S" j))) ;PROBLEM WHEN D=0 !?! SOLVED!
-;									)
-
 										;BUFFER INCREMENT
 									 ([=] (-V-,(intern (format nil "BUFFER_~S" j)))
 										 ([+] (yesterday (-V-,(intern (format nil "BUFFER_~S" j))))

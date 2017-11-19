@@ -67,7 +67,7 @@
 ;tasks average duration
 ; (defconstant ALPHA_S0 1672)
 {% for k,v in stages.iteritems() -%}
-(defconstant ALPHA_S{{ k }} {{ v.duration / v.numtask }})
+(defconstant ALPHA_S{{ k }} {{ v.t_task }})
 {% endfor %}
 
 (defvar the-proc-time-table)
