@@ -30,16 +30,6 @@ class VerificationTask(object):
     result_file = 'output.1.txt'
     # standard history file for zot (containing output trace)
     hist_file = 'output.hist.txt'
-    '''
-    def __init__(self,
-                 template_path=None,
-                 context=None,
-                 output_dir=base_dir + "output_dir",
-                 result_folder=None,
-                 display=False,
-                 graphical_conf_path=base_dir +
-                 "visual/settings.json"):
-    '''
 
     def launch_verification(self):
         self.result_dir = os.path.join(self.app_dir, self.plugin)
@@ -69,30 +59,43 @@ class VerificationTask(object):
         starting_context = getattr(self, 'starting_context', None)
         if starting_context:
             print '{}Dumping JSON Starting context to: {}'.format(prefix,
-                                                         self.json_starting_context_path)
+                                                                  self.json_starting_context_path)
             with open(self.json_starting_context_path, 'w+') as outfile:
                 json.dump(starting_context, outfile, indent=4)
         command_list = [cfg.ZOT_CMD, "zot_in.lisp"]
+
+        try:
+            print ("{}Launching command {} on dir. {} "
+                   "with plugin {}").format(prefix,
+                                            " ".join(command_list),
+                                            self.result_dir,
+                                            self.plugin)
+            proc_out = sp.check_output(command_list, stderr=sp.STDOUT, cwd=self.result_dir)
+            print "{}Terminated -> output:\n{}".format(prefix, proc_out)
+            print "{}Verification complete with plugin: {}".format(prefix,
+                                                                   self.plugin)
+            # do something with output
+        except sp.CalledProcessError as exc:
+            print("Status : FAIL", exc.returncode, exc.output)
+
+        '''
         proc = sp.Popen(command_list,
                         stdout=sp.PIPE,
                         stderr=sp.PIPE,
                         cwd=self.result_dir)
-        child_pid = proc.pid
-        print ("{}Launched command {} on dir. {} "
-               "with plugin {} ({})").format(prefix,
-                                             " ".join(command_list),
-                                             self.result_dir,
-                                             self.plugin,
-                                             str(child_pid))
-    # wait for the child to complete
-        (output, error) = proc.communicate()
+        '''
+
+
+        '''
         if error:
-            print "{}error: {}".format(prefix, error)
+            print "{}Error!".format(prefix)
+            raise VerificationException(error)
         print "{}{}Terminated -> output:\n{}".format(prefix,
                                                      str(child_pid),
                                                      output)
         print "{}Verification complete with plugin: {}".format(prefix,
-                                                             self.plugin)
+                                                               self.plugin)
+        '''
 
     def parse_zot_trace(self, file_path=None):
         raise NotImplementedError()

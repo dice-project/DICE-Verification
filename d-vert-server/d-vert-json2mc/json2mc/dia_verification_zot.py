@@ -24,10 +24,10 @@ class ZotResult(VerificationResult):
         '''
         Constructor
         '''
-        self.result_dir = result_dir.rstrip('/')+'/'
-        self.result_file_path = self.result_dir+self.result_file
-        res_f = open(self.result_file_path)
-        lines = res_f.readlines()
+        self.result_dir = os.path.abspath(result_dir)
+        self.result_file_path = os.path.join(self.result_dir, self.result_file)
+        with open(self.result_file_path) as res_f:
+            lines = res_f.readlines()
         self.outcome = None
         self.verification_time = None
         self.timestamp = None
@@ -39,23 +39,23 @@ class ZotResult(VerificationResult):
                                             .strip(':')
                                             .strip(')')
                                             .split(" ")[-1]))
-            if(self.outcome == 'sat'):
+            if self.outcome == 'sat':
                 print 'Outcome is {} '.format(self.outcome.upper())
                 # app_dir+'/'+'output.hist.txt'
-                my_file_path = self.result_dir+self.hist_file
+                my_file_path = os.path.join(self.result_dir, self.hist_file)
                 print 'I AM in {}'.format(os.getcwd())
                 # GETTING LAST MODIFIED DATE FROM THE FILE
                 moddate_seconds = os.stat(my_file_path)[8]  # 10 attributes
                 self.timestamp = dt.fromtimestamp(moddate_seconds)
                 self.timestamp_str = (self.timestamp
                                       .strftime(self.timestamp_format))
-            elif(self.outcome == 'unsat'):
+            elif self.outcome == 'unsat':
                 print 'Outcome is {} '.format(self.outcome.upper())
             else:
-                print ("Outcome: {} -> there may be a problem. See {}"
+                print ("Outcome: {} -> \n\n THERE MIGHT BE A PROBLEM. check {} for further info."
                        .format(self.outcome, self.result_file))
             print "Verification time: {}".format(self.verification_time)
-#            print 'Result saved to ', app_dir, ' directory.'
+            print "Result saved to {} directory".format(self.result_dir)
 
 
 class ZotTrace(VerificationTrace):

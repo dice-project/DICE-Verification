@@ -25,8 +25,9 @@ class DAGRenderer(object):
         '''
         self.dot = graphviz.Digraph(comment='My plot')
         self.g = graph
+        print "init DAGRenderer"
         for n in sorted(graph.nodes()):
-            print n
+            print "node {}:\n{}".format(n, graph.node[n])
             if "label" in graph.node[n]:
                 self.dot.node(n, "S{}\n<{}>".format(n, graph.node[n]["label"]),
                               style="filled",
