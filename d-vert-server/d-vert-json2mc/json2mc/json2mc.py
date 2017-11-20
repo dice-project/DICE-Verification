@@ -34,6 +34,10 @@ from argparse import RawDescriptionHelpFormatter
 import config as cfg
 from factory_methods import DiaVerificationFactory
 
+from dia_verification import VerificationException
+
+from tinydb import TinyDB, Query
+
 __all__ = []
 __version__ = "0.3.0"
 __date__ = '2015-11-10'
@@ -42,6 +46,24 @@ __updated__ = '2017-09-13'
 DEBUG = 0
 TESTRUN = 0
 PROFILE = 0
+
+
+def persist_results_on_db(v_task):
+    db = TinyDB('d_vert_db.json')
+    outcome = v_task.verification_result.outcome
+    v_time = v_task.verification_result.verification_time
+    cores = v_task.context['tot_cores']
+    tasks = v_task.context['stages']['0']['numtask']
+    time_bound = v_task.context['verification_params']['time_bound']
+    deadline = v_task.context['deadline']
+    id = v_task.app_name
+    db.insert({'id': id,
+               'cores': cores,
+               'tasks': tasks,
+               'time_bound': time_bound,
+               'deadline': deadline,
+               'outcome': outcome,
+               'v_time': v_time})
 
 
 def create_lisp_list(l):
@@ -144,6 +166,7 @@ USAGE
                             dest="graphical_conf_path",
                             help="path to JSON file containing the graphical "
                             "configuration [default: %(default)s]")
+        parser.add_argument("--db", dest="db", action="store_true")
 
         # Process arguments
         args = parser.parse_args()
@@ -160,6 +183,7 @@ USAGE
         template_path = args.template_path
         graphical_conf_path = args.graphical_conf_path
         label = args.label
+        db = args.db
         
 
         print("Context_path: {}".format(context_path))
@@ -183,15 +207,20 @@ USAGE
                                                                    output_dir=output_dir,
                                                                    display=display)
                     print v_task
-                    v_task.launch_verification()
-                    if v_task.result_dir:
-                        v_task.process_zot_results()
-                        if v_task.verification_result.outcome == 'sat':
-#                            v_task.verification_result
-                            v_task.plot_trace()
-                        print 'DONE'
-                    else:
-                        print 'FINISHED WITH ERRORS'
+                    try:
+                        v_task.launch_verification()
+                        if v_task.result_dir:
+                            v_task.process_zot_results()
+                            if v_task.verification_result.outcome == 'sat':
+                                v_task.plot_trace()
+                            if db:
+                                persist_results_on_db(v_task)
+                            print 'DONE'
+                        else:
+                            print 'FINISHED WITH ERRORS'
+                    except VerificationException as e:
+                        print "Errors while performing the verification task!\n{}\nAborting ...".format(e)
+
             except IOError as e:
                 # Does not exist OR no read permissions
                 print "Unable to open file"

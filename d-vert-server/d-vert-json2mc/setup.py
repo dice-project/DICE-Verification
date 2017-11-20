@@ -23,5 +23,6 @@ setup(name='D-VerT-json2mc',
                         'Jinja2>=2.8',
                         'matplotlib>=1.5.3',
                         'networkx==1.11',
+                        'tinydb==3.6.0'],
       zip_safe=False,
       include_package_data=True)
