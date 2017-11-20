@@ -308,6 +308,9 @@ class SparkDAG(object):
                 else:
                     self.g.node[k]["skipped"] = False
                     self.g.node[k]['fillcolor'] = 'white'
+            else:
+                self.g.node[k]["skipped"] = False
+                self.g.node[k]['fillcolor'] = 'white'
             # remove possible duplicates in parentIds
             self.json_context["stages"][k]["parentsIds"] =\
                 list(set(v["parentsIds"]))
