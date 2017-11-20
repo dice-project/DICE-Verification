@@ -22,6 +22,6 @@ setup(name='D-VerT-json2mc',
       install_requires=['graphviz>=0.5.2',
                         'Jinja2>=2.8',
                         'matplotlib>=1.5.3',
-                        'networkx>=1.11'],
+                        'networkx==1.11',
       zip_safe=False,
       include_package_data=True)
