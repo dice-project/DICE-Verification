@@ -13,6 +13,7 @@ import utils
 import pkg_resources
 
 import config as cfg
+from exceptions import VerificationException
 
 
 class VerificationTask(object):
@@ -76,26 +77,9 @@ class VerificationTask(object):
                                                                    self.plugin)
             # do something with output
         except sp.CalledProcessError as exc:
-            print("Status : FAIL", exc.returncode, exc.output)
+            print "Error (return code: {})".format(exc.returncode)
+            raise VerificationException(exc.output)
 
-        '''
-        proc = sp.Popen(command_list,
-                        stdout=sp.PIPE,
-                        stderr=sp.PIPE,
-                        cwd=self.result_dir)
-        '''
-
-
-        '''
-        if error:
-            print "{}Error!".format(prefix)
-            raise VerificationException(error)
-        print "{}{}Terminated -> output:\n{}".format(prefix,
-                                                     str(child_pid),
-                                                     output)
-        print "{}Verification complete with plugin: {}".format(prefix,
-                                                               self.plugin)
-        '''
 
     def parse_zot_trace(self, file_path=None):
         raise NotImplementedError()
