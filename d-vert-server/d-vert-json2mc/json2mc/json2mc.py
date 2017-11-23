@@ -39,9 +39,9 @@ from dia_verification import VerificationException
 from tinydb import TinyDB, Query
 
 __all__ = []
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 __date__ = '2015-11-10'
-__updated__ = '2017-09-13'
+__updated__ = '2017-11-20'
 
 DEBUG = 0
 TESTRUN = 0

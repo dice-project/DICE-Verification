@@ -1,7 +1,7 @@
 appdirs==1.4.0
 cycler==0.10.0
 decorator==4.0.11
-functools32==3.2.3.post2
+functools32>=3.2
 graphviz==0.5.2
 Jinja2==2.9.4
 MarkupSafe==0.23
