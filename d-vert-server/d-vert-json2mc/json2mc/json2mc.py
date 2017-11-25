@@ -37,6 +37,7 @@ from factory_methods import DiaVerificationFactory
 from dia_verification import VerificationException
 
 from tinydb import TinyDB, Query
+from datetime import datetime as dt
 
 __all__ = []
 __version__ = "0.3.1"
@@ -48,22 +49,35 @@ TESTRUN = 0
 PROFILE = 0
 
 
+def get_current_datetime_string():
+    """
+    :return: current time a string with format %Y-%m-%d__%H_%M_%S
+    """
+    return dt.now().strftime('%Y-%m-%d__%H_%M_%S')
+
+
 def persist_results_on_db(v_task):
     db = TinyDB('d_vert_db.json')
     outcome = v_task.verification_result.outcome
     v_time = v_task.verification_result.verification_time
     cores = v_task.context['tot_cores']
     tasks = v_task.context['stages']['0']['numtask']
+    input_records = v_task.context['stages']['0']['records_read']
     time_bound = v_task.context['verification_params']['time_bound']
     deadline = v_task.context['deadline']
+    result_dir = v_task.result_dir
     id = v_task.app_name
     db.insert({'id': id,
                'cores': cores,
                'tasks': tasks,
+               'input_records': input_records,
                'time_bound': time_bound,
                'deadline': deadline,
                'outcome': outcome,
-               'v_time': v_time})
+               'result_dir': result_dir,
+               'v_time': v_time,
+               'end_timestamp:':get_current_datetime_string()
+               })
 
 
 def create_lisp_list(l):
