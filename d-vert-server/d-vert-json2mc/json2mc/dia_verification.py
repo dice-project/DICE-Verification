@@ -63,7 +63,7 @@ class VerificationTask(object):
                                                                   self.json_starting_context_path)
             with open(self.json_starting_context_path, 'w+') as outfile:
                 json.dump(starting_context, outfile, indent=4)
-        command_list = [cfg.ZOT_CMD, "zot_in.lisp"]
+        command_list = [cfg.ZOT_CMD, "zot_in.lisp", self.context['app_name']]
 
         try:
             print ("{}Launching command {} on dir. {} "

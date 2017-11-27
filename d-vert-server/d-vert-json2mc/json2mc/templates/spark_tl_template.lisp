@@ -430,10 +430,12 @@
 									,@(let ((n_rounds (floor (/ (gethash j tot-tasks) TOT_CORES))))
 										(if (>= n_rounds 2)
 										{%- if not verification_params.parametric_tc %}
-											(loop for tc from TOT_CORES  downto (min (ceiling (/ TOT_CORES 2) 12)) by 4 append
+										;	(loop for tc from TOT_CORES  downto (min (ceiling (/ TOT_CORES 2)) 12) by 12 append
+											(loop for tc in (list TOT_CORES 16) append
 										{% endif %}
 												(loop for k from n_rounds downto 2 
 														by (if (> n_rounds 5) (floor (/ n_rounds 5)) 1)
+												; (loop for k in (list n_rounds)
 														collect
 													`(&&
 													{%- if not verification_params.parametric_tc %}
