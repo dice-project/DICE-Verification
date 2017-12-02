@@ -40,14 +40,17 @@ from tinydb import TinyDB, Query
 from datetime import datetime as dt
 
 __all__ = []
-__version__ = "0.3.1"
+__version__ = "0.3.2"
 __date__ = '2015-11-10'
-__updated__ = '2017-11-20'
+__updated__ = '2017-12-01'
 
 DEBUG = 0
 TESTRUN = 0
 PROFILE = 0
 
+STARTED = 'start'
+COMPLETED = 'complete'
+ERROR = 'error'
 
 def get_current_datetime_string():
     """
@@ -56,28 +59,51 @@ def get_current_datetime_string():
     return dt.now().strftime('%Y-%m-%d__%H_%M_%S')
 
 
-def persist_results_on_db(v_task):
-    db = TinyDB('d_vert_db.json')
-    outcome = v_task.verification_result.outcome
-    v_time = v_task.verification_result.verification_time
+def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
+    db = TinyDB(os.path.join(os.path.abspath(db_location), 'd_vert_db.json'))
+    '''
+    cores = None
+    tasks = None
+    deadline = None
+    input_records = None
+    if isinstance(v_task, DiaVerificationFactory.__supported_techs.get('spark', None)):
+    '''
     cores = v_task.context['tot_cores']
     tasks = v_task.context['stages']['0']['numtask']
+    deadline = v_task.context['deadline']
     input_records = v_task.context['stages']['0']['records_read']
     time_bound = v_task.context['verification_params']['time_bound']
-    deadline = v_task.context['deadline']
     result_dir = v_task.result_dir
     id = v_task.app_name
-    db.insert({'id': id,
-               'cores': cores,
-               'tasks': tasks,
-               'input_records': input_records,
-               'time_bound': time_bound,
-               'deadline': deadline,
-               'outcome': outcome,
-               'result_dir': result_dir,
-               'v_time': v_time,
-               'end_timestamp:':get_current_datetime_string()
-               })
+    v_time = None
+    timestamp_label = None
+    if status == COMPLETED:
+        timestamp_label = 'end_timestamp'
+        outcome = v_task.verification_result.outcome
+        v_time = v_task.verification_result.verification_time
+    elif status == STARTED:
+        timestamp_label = 'start_timestamp'
+        outcome = 'running'
+    elif status == ERROR:
+        timestamp_label = 'interruption_timestamp'
+        outcome = 'ERROR/TIMEOUT'
+    app_type = v_task.context['app_type'] if 'app_type' in v_task.context else None
+    table = db.table('{}_C{}_T{}_rec{}'.format(app_type, cores, tasks, input_records))
+    entry = Query()
+    table.upsert({'id': id,
+                  'cores': cores,
+                  'tasks': tasks,
+                  'input_records': input_records,
+                  'time_bound': time_bound,
+                  'deadline': deadline,
+                  'outcome': outcome,
+                  'result_dir': result_dir,
+                  'v_time': v_time,
+                  'app_type': app_type,
+                  timestamp_label: get_current_datetime_string()
+                  },
+                 entry.id == id
+                 )
 
 
 def create_lisp_list(l):
@@ -222,18 +248,21 @@ USAGE
                                                                    display=display)
                     print v_task
                     try:
+                        if db:
+                            persist_results_on_db(v_task, output_dir, STARTED)
                         v_task.launch_verification()
                         if v_task.result_dir:
                             v_task.process_zot_results()
                             if v_task.verification_result.outcome == 'sat':
                                 v_task.plot_trace()
                             if db:
-                                persist_results_on_db(v_task)
+                                persist_results_on_db(v_task, output_dir, COMPLETED)
                             print 'DONE'
                         else:
                             print 'FINISHED WITH ERRORS'
                     except VerificationException as e:
                         print "Errors while performing the verification task!\n{}\nAborting ...".format(e)
+                        persist_results_on_db(v_task, output_dir, ERROR)
 
             except IOError as e:
                 # Does not exist OR no read permissions
@@ -277,3 +306,4 @@ if __name__ == "__main__":
         statsfile.close()
         sys.exit(0)
     sys.exit(main())
+

@@ -142,8 +142,8 @@ class SparkVerificationTask(VerificationTask):
             var_msize = var["markersize"]
             # print var_id, '\t\t', records[var_id]
             if var_id not in bool_set:
-                # print 'Plotting: ',var_id, "style:", var_style
-                plt.plot(step_list, records[var_id], var_style, label=var_id,
+                # print 'Plotting: {}: {}'.format(var_id, records[var_id])
+                plt.plot(step_list, [int(x) for x in records[var_id]], var_style, label=var_id,
                          linewidth=var_lw, markersize=var_msize)
             else:  # works only for START_T_X
                 bool_series = \
@@ -213,7 +213,7 @@ class SparkVerificationTask(VerificationTask):
         plt.xticks(steplist, rounded_totaltime, rotation=45)
         plt.xlabel('TOTALTIME', fontsize=18)
         fontP = FontProperties()
-        fontP.set_size('large')
+        fontP.set_size('small')
         plt.legend(prop=fontP, loc='upper right')
         plt.grid()
         # gets the index of the first timestamp >= deadline

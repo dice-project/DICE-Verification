@@ -7,7 +7,11 @@ Created on Jan 6, 2017
 import os
 import shutil
 import json
-import subprocess as sp
+import sys
+if os.name == 'posix' and sys.version_info[0] < 3:
+    import subprocess32 as sp
+else:
+    import subprocess as sp
 
 import utils
 import pkg_resources
@@ -79,6 +83,8 @@ class VerificationTask(object):
         except sp.CalledProcessError as exc:
             print "Error (return code: {})".format(exc.returncode)
             raise VerificationException(exc.output)
+        #except sp.TimeoutExpired as te:
+        #    print "Timeout Expired!\n{}".format(te)
 
 
     def parse_zot_trace(self, file_path=None):

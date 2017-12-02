@@ -67,7 +67,7 @@
 ;tasks average duration
 ; (defconstant ALPHA_S0 1672)
 {% for k,v in stages.iteritems() -%}
-(defconstant ALPHA_S{{ k }} {{ v.t_task }})
+(defconstant ALPHA_S{{ k }} {{ v.t_task_verification }})
 {% endfor %}
 
 (defvar the-proc-time-table)
@@ -424,18 +424,19 @@
 											([-] (yesterday ,(<V1> "REM_TC" j))
 												,(<V1> "RUN_TC" j)))
 									)
-									; generate tformulae for a subset of the possible aggregations
+									; generate formulae for a subset of the possible aggregations
 									; TODO: let it be configurable and adjustable wrt TOT_CORES and TOT_TASKS
 									; n_rounds: maximum number of "batch executions" that can be aggregated 
 									,@(let ((n_rounds (floor (/ (gethash j tot-tasks) TOT_CORES))))
 										(if (>= n_rounds 2)
 										{%- if not verification_params.parametric_tc %}
 										;	(loop for tc from TOT_CORES  downto (min (ceiling (/ TOT_CORES 2)) 12) by 12 append
-											(loop for tc in (list TOT_CORES 16) append
+										;	(loop for tc in (list TOT_CORES) append ;(if (> TOT_CORES 32) 32  16)) append
+											(loop for tc in (list TOT_CORES (- TOT_CORES (mod (gethash j tot-tasks) TOT_CORES))) append
 										{% endif %}
-												(loop for k from n_rounds downto 2 
+												(loop for k from n_rounds downto 2
 														by (if (> n_rounds 5) (floor (/ n_rounds 5)) 1)
-												; (loop for k in (list n_rounds)
+												 ;(loop for k in (list n_rounds)
 														collect
 													`(&&
 													{%- if not verification_params.parametric_tc %}
