@@ -1,0 +1,140 @@
+{
+    "analysis_type": "feasibility",
+    "app_name": "exp_ok_t320_5nodes_10runs_c64_t30_no_l_d90000_tc_by20_n_rounds_by2",
+    "deadline": 90000,
+    "max_time": 90000,
+    "stages": {
+        "0": {
+            "avg_gq": 0.9322010525021258,
+            "avg_io_factor": 1.0,
+            "avg_t_record": 0.004949444095391135,
+            "id": "0",
+            "numtask": 320,
+            "parentsIds": [],
+            "records_read": 462856790,
+            "skipped": false,
+            "t_task_verification": 7679.6866
+        },
+        "1": {
+            "avg_gq": 0.8327294834158031,
+            "avg_io_factor": 0.4834234404846418,
+            "avg_t_record": 0.0006519983294038734,
+            "id": "1",
+            "numtask": 320,
+            "parentsIds": [
+                0
+            ],
+            "records_read": 462856790.0,
+            "skipped": false,
+            "t_task_verification": 1132.5026
+        },
+        "13": {
+            "avg_gq": 0.7682127616163106,
+            "avg_io_factor": 1.0,
+            "avg_t_record": 0.00013327393575533674,
+            "id": "13",
+            "numtask": 320,
+            "parentsIds": [
+                5,
+                2,
+                1
+            ],
+            "records_read": 881929620.619137,
+            "skipped": false,
+            "t_task_verification": 478.1318
+        },
+        "2": {
+            "avg_gq": 0.8607463325305633,
+            "avg_io_factor": 0.9379386809588796,
+            "avg_t_record": 0.0010899896028055776,
+            "id": "2",
+            "numtask": 320,
+            "parentsIds": [
+                0
+            ],
+            "records_read": 462856790.0,
+            "skipped": false,
+            "t_task_verification": 1831.6557
+        },
+        "3": {
+            "avg_gq": 0.9432108527157645,
+            "avg_io_factor": 1.0,
+            "avg_t_record": 0.001028026044496459,
+            "id": "3",
+            "numtask": 320,
+            "parentsIds": [
+                1,
+                2
+            ],
+            "records_read": 657887108.9589385,
+            "skipped": false,
+            "t_task_verification": 2240.7671
+        },
+        "4": {
+            "avg_gq": 0.8321428512091991,
+            "avg_io_factor": 1.0,
+            "avg_t_record": 0.000175171359752448,
+            "id": "4",
+            "numtask": 320,
+            "parentsIds": [
+                1,
+                2
+            ],
+            "records_read": 657887108.9589385,
+            "skipped": false,
+            "t_task_verification": 432.7794
+        },
+        "5": {
+            "avg_gq": 0.8667546095088647,
+            "avg_io_factor": 0.17027428308690418,
+            "avg_t_record": 0.00043305945795777496,
+            "id": "5",
+            "numtask": 320,
+            "parentsIds": [
+                3,
+                4
+            ],
+            "records_read": 1315774217.917877,
+            "skipped": false,
+            "t_task_verification": 2054.3894
+        },
+        "6": {
+            "avg_gq": 0.7942547937401837,
+            "avg_io_factor": 1.0,
+            "avg_t_record": 0.0003004408353903367,
+            "id": "6",
+            "numtask": 320,
+            "parentsIds": [
+                1,
+                5,
+                2
+            ],
+            "records_read": 881929620.619137,
+            "skipped": false,
+            "t_task_verification": 1042.5168
+        },
+        "7": {
+            "avg_gq": 0.8066988227092307,
+            "avg_io_factor": 1.0,
+            "avg_t_record": 0.00011708733191392263,
+            "id": "7",
+            "numtask": 320,
+            "parentsIds": [
+                6,
+                3,
+                4
+            ],
+            "records_read": 2197703838.537014,
+            "skipped": false,
+            "t_task_verification": 996.8221
+        }
+    },
+    "tolerance": 0.0,
+    "tot_cores": 64,
+    "verification_params": {
+        "no_loops": true,
+        "parametric_tc": false,
+        "plugin": "ae2sbvzot",
+        "time_bound": 30
+    }
+}
