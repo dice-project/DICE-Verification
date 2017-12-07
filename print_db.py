@@ -3,6 +3,96 @@ import argparse
 
 DEFAULT_FILE_PATH = '/home/ubuntu/DICE-Verification/d-vert-server/d-vert-json2mc/d4s_27_11/d_vert_db.json'
 
+import plotly.plotly as py
+import plotly.graph_objs as go
+import plotly.offline as offline
+import os
+
+def get_layout(title, x_title, y_title):
+    return go.Layout(
+        title=title,
+        xaxis=dict(
+            title=x_title,
+            titlefont=dict(
+                family='Courier New, monospace',
+                size=18,
+                color='#7f7f7f'
+            )
+        ),
+        yaxis=dict(
+            title=y_title,
+            titlefont=dict(
+                family='Courier New, monospace',
+                size=18,
+                color='#7f7f7f'
+            ),
+            exponentformat='none'
+        )
+    )
+
+
+def plot_figure(data, title, x_axis_label, y_axis_label, out_folder):
+    layout = get_layout(title,
+                        x_axis_label,
+                        y_axis_label)
+    fig = go.Figure(data=data, layout=layout)
+    # url = py.plot(fig, filename=title, auto_open=False)
+    # fig = py.get_figure(url)
+    local_path = os.path.abspath(os.path.join(out_folder, '{}.html'.format(fig['layout']['title'])))
+    # print("{} -> local: {}".format(url, local_path))
+    utils.make_sure_path_exists(os.path.dirname(local_path))
+    print("Saving plot in: {}".format(local_path))
+    # py.image.save_as(fig, local_path)
+    offline.plot(figure_or_data=fig, filename=local_path,
+                 # image='png',
+                 image_filename=title, auto_open=False)
+
+
+def scatter_table(conf_name, rows):
+    sats = [r for r in rows if r['outcome'] == 'sat']
+    unsats = [r for r in rows if r['outcome'] == 'unsat']
+    x_sat = [row['deadline'] for row in sats]
+    y_sat = [row['v_time'] for row in sats]
+    labels_sat = ['outcome: {} - \ntime bound: {}'.format(row['outcome'], row['time_bound']) for row in sats]
+    x_unsat = [row['deadline'] for row in unsats]
+    y_unsat = [row['v_time'] for row in unsats]
+    labels_unsat = ['outcome: {} - \ntime bound: {}'.format(row['outcome'], row['time_bound']) for row in unsats]
+
+    local_path = os.path.join('plots', '{}.html'.format(conf_name))
+    trace_sat = go.Scatter(
+        x=x_sat,
+        y=y_sat,
+        mode='markers',
+        name='SAT',
+        marker=dict(
+            size=10,
+            color='rgba(0, 255, 0, .9)',
+            line=dict(
+                width=2,
+            )
+        ),
+        text=labels_sat
+    )
+    trace_unsat = go.Scatter(
+        x=x_unsat,
+        y=y_unsat,
+        mode='markers',
+        name='UNSAT',
+        marker=dict(
+            size=10,
+            color='rgba(255, 0, 0, .9)',
+            line=dict(
+                width=2,
+            )
+        ),
+        text=labels_unsat
+    )
+    data = [trace_sat, trace_unsat]
+    layout = get_layout(conf_name,
+                        'deadline [ms]',
+                        'verification time [s]')
+    fig = go.Figure(data=data, layout=layout)
+    offline.plot(figure_or_data=fig, filename=local_path, image_filename=conf_name, auto_open=False)
 
 def display_normal(rows):
     for row in rows:
@@ -39,6 +129,7 @@ def show_entire_db(db, display):
         print(t)
         tb = db.table(t)
         display(tb)
+        scatter_table(t, tb)
 
 
 def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v_time_limit):
