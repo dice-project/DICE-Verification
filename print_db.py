@@ -111,6 +111,15 @@ def display_normal(rows):
                                    if 'end_timestamp' in row
                                    else 'Unknown'))
 
+
+def get_min_sat_deadline(rows, display):
+    sats = [row for row in rows if row['outcome'] == 'sat']
+    min_deadline = min(row['deadline'] for row in sats)
+    rows_w_min_deadline = [row for row in sats if row['deadline'] == min_deadline]
+    print('the minimum SAT deadline is: {},\nobtained with the following experiments:'.format(min_deadline))
+    display(rows_w_min_deadline)
+    return rows_w_min_deadline
+
 def display_latex(rows):
     for row in rows:
         print('{} & {} & {} & {} & {} & {} & {} & {} \\\\ \hline'.format(row['app_type'] if 'app_type' in row else 'pageRank',
@@ -125,11 +134,14 @@ def display_latex(rows):
 
 def show_entire_db(db, display):
     for t in db.tables():
-        print('\n ~~~~~~~~~ \n')
+        print('\n ~~~~~~~~~')
         print(t)
         tb = db.table(t)
         display(tb)
+        print('~~~~~~~~~'*5)
+        get_min_sat_deadline(tb, display)
         scatter_table(t, tb)
+
 
 
 def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v_time_limit):
@@ -155,9 +167,11 @@ def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v
         query = reduce(lambda a, b: a & b, query_conditions)
         res = tb.search(query)
         if res:
-            print('\n ~~~~~~~~~ \n')
+            print('\n ~~~~~~~~~')
             print(t)
             display(res)
+            print('~~~~~~~~~' * 5)
+            get_min_sat_deadline(res, display)
 
 
 def get_results(args):
@@ -172,7 +186,7 @@ def get_results(args):
     display = display_latex if args.latex else display_normal
     print('Sowing results for:\n'
           'app_type == {} & cores == {} & run.input_records == {} & run.tasks == {}'.format(app_type, cores, records, tasks))
-    if not tasks and not cores and not records:
+    if not tasks and not cores and not records and not app_type and not outcome:
         show_entire_db(db, display)
     else:
         show_queried_values(db=db, display=display, app_type=app_type, outcome=outcome, cores=cores, tasks=tasks,
