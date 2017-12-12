@@ -1,14 +1,17 @@
 from tinydb import TinyDB, Query
 import argparse
+import os
 
-DEFAULT_FILE_PATH = '/home/ubuntu/DICE-Verification/d-vert-server/d-vert-json2mc/d4s_27_11/d_vert_db.json'
+file_dir = os.path.dirname(os.path.realpath(__file__))
+DEFAULT_FILE_PATH = os.path.join(file_dir, 'd-vert-server/d-vert-json2mc/d4s_27_11/d_vert_db.json')
 
 import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as offline
 import os
 
-def get_layout(title, x_title, y_title):
+
+def get_layout(title, x_title, y_title, logarithmic=False, y_max=None, min_deadline=None):
     return go.Layout(
         title=title,
         xaxis=dict(
@@ -26,11 +29,26 @@ def get_layout(title, x_title, y_title):
                 size=18,
                 color='#7f7f7f'
             ),
-            exponentformat='none'
-        )
+            exponentformat='none',
+            type='log' if logarithmic else '-',
+            autorange=True
+        ),
+        shapes=[
+            # Line Vertical
+            {
+                'type': 'line',
+                'x0': min_deadline,
+                'y0': -y_max*0.1,
+                'x1': min_deadline,
+                'y1': y_max*1.1,
+                'line': {
+                    'color': 'rgb(0, 0, 0)',
+                    'width': 1
+                },
+            }] if y_max and min_deadline else []
     )
 
-
+'''
 def plot_figure(data, title, x_axis_label, y_axis_label, out_folder):
     layout = get_layout(title,
                         x_axis_label,
@@ -46,9 +64,9 @@ def plot_figure(data, title, x_axis_label, y_axis_label, out_folder):
     offline.plot(figure_or_data=fig, filename=local_path,
                  # image='png',
                  image_filename=title, auto_open=False)
+'''
 
-
-def scatter_table(conf_name, rows):
+def scatter_table(conf_name, rows, logarithmic):
     sats = [r for r in rows if r['outcome'] == 'sat']
     unsats = [r for r in rows if r['outcome'] == 'unsat']
     x_sat = [row['deadline'] for row in sats]
@@ -57,15 +75,17 @@ def scatter_table(conf_name, rows):
     x_unsat = [row['deadline'] for row in unsats]
     y_unsat = [row['v_time'] for row in unsats]
     labels_unsat = ['outcome: {} - \ntime bound: {}'.format(row['outcome'], row['time_bound']) for row in unsats]
+    max_y = max(y_sat + y_unsat) if y_sat and y_unsat else None
+    rows_w_min_deadline, min_deadline = get_min_sat_deadline(rows)
 
-    local_path = os.path.join('plots', '{}.html'.format(conf_name))
+    local_path = os.path.join('plots', '{}{}.html'.format(conf_name, '_log' if logarithmic else ''))
     trace_sat = go.Scatter(
         x=x_sat,
         y=y_sat,
         mode='markers',
         name='SAT',
         marker=dict(
-            size=10,
+            size=6,
             color='rgba(0, 255, 0, .9)',
             line=dict(
                 width=2,
@@ -79,10 +99,11 @@ def scatter_table(conf_name, rows):
         mode='markers',
         name='UNSAT',
         marker=dict(
-            size=10,
+            symbol="square",
+            size=6,
             color='rgba(255, 0, 0, .9)',
             line=dict(
-                width=2,
+                width=1,
             )
         ),
         text=labels_unsat
@@ -90,7 +111,8 @@ def scatter_table(conf_name, rows):
     data = [trace_sat, trace_unsat]
     layout = get_layout(conf_name,
                         'deadline [ms]',
-                        'verification time [s]')
+                        'verification time [s]',
+                        logarithmic, max_y, min_deadline)
     fig = go.Figure(data=data, layout=layout)
     offline.plot(figure_or_data=fig, filename=local_path, image_filename=conf_name, auto_open=False)
 
@@ -112,13 +134,13 @@ def display_normal(rows):
                                    else 'Unknown'))
 
 
-def get_min_sat_deadline(rows, display):
+def get_min_sat_deadline(rows):
     sats = [row for row in rows if row['outcome'] == 'sat']
-    min_deadline = min(row['deadline'] for row in sats)
-    rows_w_min_deadline = [row for row in sats if row['deadline'] == min_deadline]
-    print('the minimum SAT deadline is: {},\nobtained with the following experiments:'.format(min_deadline))
-    display(rows_w_min_deadline)
-    return rows_w_min_deadline
+    rows_w_min_deadline = min_deadline = None
+    if sats:
+        min_deadline = min(row['deadline'] for row in sats)
+        rows_w_min_deadline = [row for row in sats if row['deadline'] == min_deadline]
+    return rows_w_min_deadline, min_deadline
 
 def display_latex(rows):
     for row in rows:
@@ -132,15 +154,18 @@ def display_latex(rows):
                                                row['v_time']))
 
 
-def show_entire_db(db, display):
+def show_entire_db(db, display, logarithmic):
     for t in db.tables():
         print('\n ~~~~~~~~~')
         print(t)
         tb = db.table(t)
         display(tb)
         print('~~~~~~~~~'*5)
-        get_min_sat_deadline(tb, display)
-        scatter_table(t, tb)
+        rows_w_min_deadline, min_deadline = get_min_sat_deadline(tb)
+        if rows_w_min_deadline:
+            print('the minimum SAT deadline is: {},\nobtained with the following experiments:'.format(min_deadline))
+            display(rows_w_min_deadline)
+        scatter_table(t, tb, logarithmic)
 
 
 
@@ -171,7 +196,10 @@ def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v
             print(t)
             display(res)
             print('~~~~~~~~~' * 5)
-            get_min_sat_deadline(res, display)
+            rows_w_min_deadline, min_deadline = get_min_sat_deadline(res)
+            if rows_w_min_deadline:
+                print('the minimum SAT deadline is: {},\nobtained with the following experiments:'.format(min_deadline))
+                display(rows_w_min_deadline)
 
 
 def get_results(args):
@@ -182,12 +210,13 @@ def get_results(args):
     app_type = args.benchmark
     outcome = args.outcome
     v_time_limit = args.v_time_limit
+    logarithmic = args.log
     db = TinyDB(file_path)
     display = display_latex if args.latex else display_normal
     print('Sowing results for:\n'
           'app_type == {} & cores == {} & run.input_records == {} & run.tasks == {}'.format(app_type, cores, records, tasks))
     if not tasks and not cores and not records and not app_type and not outcome:
-        show_entire_db(db, display)
+        show_entire_db(db, display, logarithmic)
     else:
         show_queried_values(db=db, display=display, app_type=app_type, outcome=outcome, cores=cores, tasks=tasks,
                             records=records, v_time_limit=v_time_limit)
@@ -221,14 +250,16 @@ if __name__ == "__main__":
     parser.add_argument("-f", "--file", dest="file_path", type=str,
                         default=DEFAULT_FILE_PATH,
                         help="file path [default: %(default)s]")
-    parser.add_argument('-b', '--benchmark', default='kmeans',
+    parser.add_argument('-b', '--benchmark', default=None,
                         choices=['pagerank', 'kmeans', 'sort_by_key'],
                         help='the benchmark application to run')
     parser.add_argument('--outcome', default=None,
-                        choices=['sat', 'unsat', 'other'],
+                        choices=['sat', 'unsat', 'running', 'other'],
                         help='show only specific outcomes')
     parser.add_argument('-l', '--latex', action='store_true',
                         help='display row in latex table format')
+    parser.add_argument('--log', action='store_true',
+                        help='plots yaxis in logaritmic format')
 
     parser.set_defaults(func=get_results)
     args = parser.parse_args()
