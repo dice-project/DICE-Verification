@@ -38,14 +38,28 @@ def get_layout(title, x_title, y_title, logarithmic=False, y_max=None, min_deadl
             {
                 'type': 'line',
                 'x0': min_deadline,
-                'y0': -y_max*0.1,
+                'y0': -y_max*0.05,
                 'x1': min_deadline,
                 'y1': y_max*1.1,
                 'line': {
                     'color': 'rgb(0, 0, 0)',
-                    'width': 1
-                },
-            }] if y_max and min_deadline else []
+                    'width': 1,
+                    'dash': 'dot'
+                }
+            },
+            {
+                'type': 'line',
+                'x0': 82133,
+                'y0': -y_max * 0.05,
+                'x1': 82133,
+                'y1': y_max * 1.1,
+                'line': {
+                    'color': 'rgb(0, 0, 0)',
+                    'width': 1,
+                    'dash': 'dash'
+                }
+            }
+        ] if y_max and min_deadline else []
     )
 
 '''
@@ -79,16 +93,33 @@ def scatter_table(conf_name, rows, logarithmic):
     rows_w_min_deadline, min_deadline = get_min_sat_deadline(rows)
 
     local_path = os.path.join('plots', '{}{}.html'.format(conf_name, '_log' if logarithmic else ''))
+    trace_text = go.Scatter(
+        x=[min_deadline,
+           #min_deadline
+           ],
+        y=[max_y*1.05,
+           #- max_y*0.1
+           ] if max_y else [0,
+                            #0
+                            ],
+        text=['',
+              # min_deadline
+              ]if max_y else ['',
+                              #''
+                              ],
+        mode='text',
+        showlegend=False
+    )
     trace_sat = go.Scatter(
         x=x_sat,
         y=y_sat,
         mode='markers',
-        name='SAT',
+        name='Feasible',
         marker=dict(
             size=6,
             color='rgba(0, 255, 0, .9)',
             line=dict(
-                width=2,
+                width=1,
             )
         ),
         text=labels_sat
@@ -97,18 +128,18 @@ def scatter_table(conf_name, rows, logarithmic):
         x=x_unsat,
         y=y_unsat,
         mode='markers',
-        name='UNSAT',
+        name='Unfeasible',
         marker=dict(
-            symbol="square",
+            symbol="x",
             size=6,
             color='rgba(255, 0, 0, .9)',
             line=dict(
-                width=1,
+                width=0.5,
             )
         ),
         text=labels_unsat
     )
-    data = [trace_sat, trace_unsat]
+    data = [trace_sat, trace_unsat, trace_text]
     layout = get_layout(conf_name,
                         'deadline [ms]',
                         'verification time [s]',
@@ -131,7 +162,9 @@ def display_normal(rows):
                                    else 'Unknown',
                                    row['end_timestamp']
                                    if 'end_timestamp' in row
-                                   else 'Unknown'))
+                                   else row['interruption_timestamp']
+                                   if 'interruption_timestamp' in row
+                                   else'Unknown'))
 
 
 def get_min_sat_deadline(rows):
