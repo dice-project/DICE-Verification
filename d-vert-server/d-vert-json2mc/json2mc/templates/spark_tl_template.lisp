@@ -44,7 +44,7 @@
 (defvar the-labels-table)
 (setq the-labels-table (make-hash-table :test 'equalp))
 {% for k,v in stages.iteritems() -%}
-(setf (gethash 'S{{k}} the-labels-table) '(S{{ v.label }}))
+(setf (gethash 'S{{k}} the-labels-table) 'S{{ v.label }})
 {% endfor %}
 ;extract values by invoking:
 ;(gethash i the-labels-table)
@@ -110,7 +110,7 @@
 
 
 
-(defmacro stagesStateEvolution(stages dependency-table)
+(defmacro stagesStateEvolution(stages dependency-table labels-table)
 `(&&
   ,@(nconc  
      ;COMPLETED_S <-> P(END_S)
@@ -126,43 +126,64 @@
          (&&
             ,@(loop for i in (gethash j dependency-table) collect
                 `,(<P1> "COMPLETED_S" i)))))
-     ;ENABLED_S && !(START_S || P(START_S)) -> F(START_S) 
-;      (loop for i in stages collect
- ;      `(->
-  ;          (&&
-   ;             ,(<P1> "ENABLED_S" i)
-    ;            (!!(somp ,(<P1> "START_S" i))))
-  ;          (somf_e ,(<P1> "START_S" i))))
-  					; (START_T && Y(REM_TC = TOT_TASKS)) <-> START_S
+	;START_ENABLED_S <-> ENABLED && !Y(ENABLED)
+     (loop for j in stages collect
+       `(<->
+         ,(<P1> "START_ENABLED_S" j)
+         (&&
+		 	,(<P1> "ENABLED_S" j)
+			(!! (yesterday ,(<P1> "ENABLED_S" j)))
+            )))
+  	;  START_S_i <-> (RUN_S_i && START_T_l(i) && REM_TC_l(i) == TOT_TASKS_i && ENABLED_i && !COMPLETED_i)
      (loop for j in stages collect
        `(&&
-		(<->
-			(&&
-				,(<P1> "START_T" j)
-				([=] ,(<V1> "REM_TC" j) ,(<C1> "TOT_TASKS" j)))
-			,(<P1> "START_S" j))
-	; (END_T && (REM_TC = 0)) <-> END_S
-		(<->
-			(&&
-				,(<P1> "END_T" j)
-				([=] ,(<V1> "REM_TC" j) 0))
-	 		,(<P1> "END_S" j))))
+			(<->
+				,(<P1> "START_S" j)
+				(&&
+					,(<P1> "RUN_S" j)
+					,(<P1> "START_T" (gethash j labels-table))
+					([=] 
+						,(<V1> "REM_TC" (gethash j labels-table)) 
+						,(<C1> "TOT_TASKS" j))
+					(yesterday ,(<P1> "ENABLED_S" j))
+					(!! ,(<P1> "COMPLETED_S" j))))
+		; END_S_i <-> (RUN_S_i && END_T_l(i) && (REM_TC_l(i) = 0) Y(!COMPLETED_i))
+			(<->
+				,(<P1> "END_S" j)
+				(&&
+					,(<P1> "RUN_S" j)
+					,(<P1> "END_T" (gethash j labels-table))
+					([=] ,(<V1> "REM_TC" (gethash j labels-table)) 0)
+					(!!(yesterday ,(<P1> "COMPLETED_S" j)))
+					))
+		; RUN_S -> RUN_S since START_S && RUN_S until END_S	
+			(->
+				,(<P1> "RUN_S" j)
+				(&&
+					(since
+						,(<P1> "RUN_S" j)
+						,(<P1> "START_S" j))
+					(until
+						,(<P1> "RUN_S" j)
+						,(<P1> "END_S" j))))
+		); end &&
+	); end loop
     )
   )
 )
 
 
 
-(defmacro tasksStateEvolution(stages)
+(defmacro tasksStateEvolution(stages labels labels-table)
 `(&&
   ,@(nconc
   ;START_T -> RUN_T && !END_T && Y(!RUN_T snc (ORI || END_T)) && (END_T release !START_T)
-	(loop for i in stages collect
+	(loop for i in labels collect
 		`(->
 			,(<P1> "START_T" i)
 			(&&
 			,(<P1> "RUN_T" i)
-			(yesterday ,(<P1> "ENABLED_S" i))
+;			(yesterday ,(<P1> "ENABLED_S" i))
 			(!! ,(<P1> "END_T" i))
 			(yesterday
 				(since
@@ -177,11 +198,16 @@
 				(!! ,(<P1> "START_T" i))))
 					)))
 		;RUN_T -> somp START_S RUN_T snc START_T && RUN_T until END_T
-      (loop for i in stages collect
+      (loop for i in labels collect
          `(->
            ,(<P1> "RUN_T" i)
            (&&
-;			 ,(<P1> "RUN_S" i) 
+;			 ,(<P1> "RUN_S" i)
+			 (|| 
+				,@(loop for j in stages when
+					(eq (gethash j labels-table) i) collect
+						`,(<P1> "RUN_S" j))
+			 )
              (since
                ,(<P1> "RUN_T" i)
                ,(<P1> "START_T" i))
@@ -189,7 +215,7 @@
                 ,(<P1> "RUN_T" i)
                 ,(<P1> "END_T" i)))))
       ;RUN_T -> RUN_T && Y(!END_T snc (ori || START_T) && X(X(START_T) release !RUN_T)
-		(loop for i in stages collect
+		(loop for i in labels collect
 			`(->
 				,(<P1> "END_T" i)
 				(&&
@@ -206,35 +232,37 @@
 ;						(release
 ;								(next ,(<P1> "START_T" i))
 ;								(!! ,(<P1> "RUN_T" i))))
-							)))
+				); end &&
+			); end ->
+		); end loop
     )
  )
 )
 
-(defmacro resourcesFormulae(stages)
+(defmacro resourcesFormulae(labels)
 	`(&&
 		; sum(RUN_TC) + AVA_CC = TOT_CORES 
 		([=]
 			([+] 
 				(-V- AVA_CC)
-				,(plus (loop for j in stages collect
+				,(plus (loop for j in labels collect
 						(<V1> "RUN_TC" j))))
 				TOT_CORES)
 		
 		; ! (AVA_CC > 0 && ORoria: x in stages (Y(ENABLED_S_x) && (REM_TC_x - RUN_TC_x) >0 ))
-		(!!
-			(&&	
-				([>] (-V- AVA_CC) 0)
-				(||
-					,@(nconc
-					(loop for i in stages collect
-					`(&&
-						(yesterday ,(<P1> "ENABLED_S" i)) 
-							([>] ,(<V1> "REM_TC" i) ,(<V1> "RUN_TC" i))))
-					)
-				)
-			)
-		)
+;		(!!
+;			(&&	
+;				([>] (-V- AVA_CC) 0)
+;				(||
+;					,@(nconc
+;					(loop for i in stages collect
+;					`(&&
+;						(yesterday ,(<P1> "ENABLED_S" i)) 
+;							([>] ,(<V1> "REM_TC" i) ,(<V1> "RUN_TC" i))))
+;					)
+;				)
+;			)
+;		)
 
 
 	)
@@ -242,32 +270,45 @@
 
 
 
-(defmacro countersFormulae(stages)
+(defmacro countersFormulae(stages labels labels-table)
 	`(&&
 		,@(nconc
-		;;; RUN_TC != XRUN_TC -> Y(START_T) || END_T
 			(loop for i in stages collect
 				`(&&
+					; START_ENABLED_S_i -> REM_TC_l(i) == TOT_TASKS_S_i
+					(->
+						,(<P1> "START_ENABLED_S" i)
+						(next ([=] ,(<V1> "REM_TC" (gethash i labels-table)) ,(<C1> "TOT_TASKS" i))))
+					;RUN_S_i -> REM_TC_l(i) >= XREM_TC_l(i)
+					(->
+						,(<P1> "RUN_S" i)
+						([<=] ,(<V1> "REM_TC" (gethash i labels-table)) (yesterday ,(<V1> "REM_TC" (gethash i labels-table)))))  
+				); end &&
+			); end loop stages
+			(loop for i in labels collect
+				`(&&
+					; RUN_TC != XRUN_TC -> Y(START_T) || END_T
+					(-> 
+						([!=] ,(<V1> "RUN_TC" i) (next ,(<V1> "RUN_TC" i)))
+						(||
+							(next ,(<P1> "START_T" i))
+							,(<P1> "END_T" i)))
+		 ; REM_TC != YREM_TC -> X(END_T)
 						(->
-							([!=] ,(<V1> "RUN_TC" i) (next ,(<V1> "RUN_TC" i)))
-							(||
-								(next ,(<P1> "START_T" i))
-								,(<P1> "END_T" i)))
-		;;; REM_TC >= XREM_TC
-;						(->
-;							,(<P1> "ENABLED_S" i)
-							([>=] ,(<V1> "REM_TC" i) (next ,(<V1> "REM_TC" i)));)
-		 ; REM_TC != XREM_TC -> X(END_T)
-						(->
-							([!=] ,(<V1> "REM_TC" i) (next ,(<V1> "REM_TC" i)))
-							(next ,(<P1> "END_T" i)))
-						
+							([!=] ,(<V1> "REM_TC" i) (yesterday ,(<V1> "REM_TC" i)))
+							(|| 
+								,(<P1> "END_T" i)
+								,@(loop for j in stages when
+									(eq (gethash j labels-table) i) collect
+										`,(<P1> "START_ENABLED_S" j))
+							)
+						)
 					;END_T -> REM_TC = YREM_TC - RUN_TC
-;						(->
-;							,(<P1> "END_T" i)
-;							([=] ,(<V1> "REM_TC" i) 
-;								([-] (yesterday ,(<V1> "REM_TC" i))
-;									 ,(<V1> "RUN_TC" i))))								
+;;						(->
+;;							,(<P1> "END_T" i)
+;;							([=] ,(<V1> "REM_TC" i) 
+;;								([-] (yesterday ,(<V1> "REM_TC" i))
+;;									 ,(<V1> "RUN_TC" i))))								
 					;RUN_T -> RUN_TC > 0 
 						(->
 							,(<P1> "RUN_T" i)
@@ -277,10 +318,10 @@
 						(->
 							(!! ,(<P1> "RUN_T" i))
 							([=] ,(<V1> "RUN_TC" i) 0))		
-); end &&
-); end loop
-); end nconc
-); end &&
+				); end &&
+			); end loop
+		); end nconc
+	); end &&
 ); end defmacro 
 
 
@@ -295,11 +336,11 @@
 )
 
 
-(defmacro countersGEqZero(stages)
+(defmacro countersGEqZero(labels)
 `(&&
 	([>=] (-V- AVA_CC) 0)
   ,@(nconc
-    (loop for i in stages collect
+    (loop for i in labels collect
        `(&&
 					([>=] ,(<V1> "RUN_TC" i) 0)			 
 					([>=] ,(<V1> "REM_TC" i) 0)
@@ -308,45 +349,7 @@
 
 
 
-(defun t-process (j sign c)
-    (let
-  		((fmla0 (cond
-  					((string= sign "<") `([<] ,(<V2> "PT" j  0) ,c))
-  					((string= sign "<=") `([<=] ,(<V2> "PT" j  0) ,c))
-  					((string= sign ">") `([>] ,(<V2> "PT" j  0) ,c))
-  					((string= sign ">=") `([>=] ,(<V2> "PT" j  0) ,c))
-  					((string= sign "=") `([=] ,(<V2> "PT" j  0) ,c))))
-  		 (fmla1 (cond
-  					((string= sign "<") `([<] ,(<V2> "PT" j  1) ,c))
-  					((string= sign "<=") `([<=] ,(<V2> "PT" j  1) ,c))
-  					((string= sign ">") `([>] ,(<V2> "PT" j  1) ,c))
-  					((string= sign ">=") `([>=] ,(<V2> "PT" j  1) ,c))
-  					((string= sign "=") `([=] ,(<V2> "PT" j  1) ,c)))))
-  		`(&&
-  			(->
-  				(&&
-  					([>] ,(<V2> "PT" j  0) 0.0)
-  					(||
-  						([=] ,(<V2> "PT" j  1) 0.0)
-  						(since
-  							([>] ,(<V2> "PT" j  1) 0.0)
-  							([=] ,(<V2> "PT" j  0) 0.0))))
-  				,fmla0)
-  			(->
-  				(&&
-  					([>] ,(<V2> "PT" j  1) 0.0)
-  					(||
-  						([=] ,(<V2> "PT" j  0) 0.0)
-  						(since
-  							([>] ,(<V2> "PT" j  0) 0.0)
-  							([=] ,(<V2> "PT" j  1) 0.0))))
-  				,fmla1)))
-        )
-
-
-
-
-(defmacro clocksBehaviour (stages times tot-tasks alphas)
+(defmacro clocksBehaviour (stages labels times tot-tasks alphas labels-table)
 ; F35
 	`(&&
 ;		,@(loop for j in stages collect
@@ -370,28 +373,28 @@
 
 
 		;RESET IDLECORES CLOCK
-		(<->
-			([=] (-V- CLOCK_IDC) 0)
-			(||
-				(&&
-					(-P- IDLE_CORES)
-					(!!(yesterday (-P- IDLE_CORES))))
-				(||
-					,@(loop for k in stages collect
-							(<P1> "START_T" k)))))
+;		(<->
+;			([=] (-V- CLOCK_IDC) 0)
+;			(||
+;				(&&
+;					(-P- IDLE_CORES)
+;					(!!(yesterday (-P- IDLE_CORES))))
+;				(||
+;					,@(loop for k in stages collect
+;							(<P1> "START_T" k)))))
 
 		;IDLE_CORES DURATION
-			(->
-				(-P- IDLE_CORES)
-							(until
-									(-P- IDLE_CORES)
-								(&&
-									([<] (-V- CLOCK_IDC) MAX_IDLE_TIME)
-									(||
-										,@(loop for k in stages collect
-												(<P1> "START_T" k))))))							
+;			(->
+;				(-P- IDLE_CORES)
+;							(until
+;									(-P- IDLE_CORES)
+;								(&&
+;									([<] (-V- CLOCK_IDC) MAX_IDLE_TIME)
+;									(||
+;										,@(loop for k in stages collect
+;												(<P1> "START_T" k))))))							
 
-		,@(loop for j in stages collect
+			,@(loop for j in labels collect
 				;STAGE CLOCK RESET CONDITIONS
 				`(&&
 					(<->
@@ -402,27 +405,31 @@
 						(||
 							orig
 							,(<P1> "START_T" j))
-					   )
+					   )))
 			;TASK RUNNING DURATION 
+			,@(loop for j in stages collect
+				`(&&
 					(->
-						,(<P1> "RUN_T" j)
+						(&&
+							,(<P1> "RUN_S" j)
+							,(<P1> "RUN_T" (gethash j labels-table)))
 						(until
 							(&&
-								,(<P1> "RUN_T" j)
-								(!! ,(<P1> "END_T" j)))
+								,(<P1> "RUN_T" (gethash j labels-table))
+								(!! ,(<P1> "END_T" (gethash j labels-table))))
 							(&&
-								,(<P1> "END_T" j)
+								,(<P1> "END_T" (gethash j labels-table))
 								(||
 									(&&
 										([>=]
-											,(<V1> "CLOCK_S" j)
+											,(<V1> "CLOCK_S" (gethash j labels-table))
 											,(first (first (gethash j times))))
 										([<=]
-											,(<V1> "CLOCK_S" j)
+											,(<V1> "CLOCK_S" (gethash j labels-table))
 											,(second (first (gethash j times))))
-										([=] ,(<V1> "REM_TC" j) 
-											([-] (yesterday ,(<V1> "REM_TC" j))
-												,(<V1> "RUN_TC" j)))
+										([=] ,(<V1> "REM_TC" (gethash j labels-table)) 
+											([-] (yesterday ,(<V1> "REM_TC" (gethash j labels-table)))
+												,(<V1> "RUN_TC" (gethash j labels-table))))
 									)
 									; generate formulae for a subset of the possible aggregations
 									; TODO: let it be configurable and adjustable wrt TOT_CORES and TOT_TASKS
@@ -440,19 +447,19 @@
 														collect
 													`(&&
 													{%- if not verification_params.parametric_tc %}
-														([=] ,(<V1> "RUN_TC" j)
+														([=] ,(<V1> "RUN_TC" (gethash j labels-table))
 																,tc)
 													{% endif %}
 														([>=]
-															,(<V1> "CLOCK_S" j)
+															,(<V1> "CLOCK_S" (gethash j labels-table))
 															,(first (nth (- k 1) (gethash j times))))
 														([<=]
-															,(<V1> "CLOCK_S" j)
+															,(<V1> "CLOCK_S" (gethash j labels-table))
 															,(second (nth (- k 1) (gethash j times))))
-														([=] ,(<V1> "REM_TC" j) 
-															([-] (yesterday ,(<V1> "REM_TC" j))
+														([=] ,(<V1> "REM_TC" (gethash j labels-table)) 
+															([-] (yesterday ,(<V1> "REM_TC" (gethash j labels-table)))
 															{%- if verification_params.parametric_tc %}
-																([*] ,k ,(<V1> "RUN_TC" j))))
+																([*] ,k ,(<V1> "RUN_TC" (gethash j labels-table)))))
 															{% else %}
 																,(* tc k)))
 															{% endif %}
@@ -472,9 +479,9 @@
 );end clocksBehaviour
 
 
-(defun genCounters(stages)
+(defun genCounters(labels)
 	  (define-tvar AVA_CC *int*)
-      (loop for j in stages do
+      (loop for j in labels do
         	(eval `(define-tvar ,(intern (format nil "REM_TC_~S" j)) *int*))
 			(eval `(define-tvar ,(<C1> "RUN_TC" j) *int*))
 ;			(eval `(define-tvar ,(<C1> "N_ROUNDS_C" j) *int*))
@@ -482,10 +489,10 @@
 
 
 
-(defun genClocks (stages)
+(defun genClocks (labels)
  	(define-tvar TOTALTIME *real*)
-	(define-tvar CLOCK_IDC *real*)
-	(loop for j in stages do
+;	(define-tvar CLOCK_IDC *real*)
+	(loop for j in labels do
 ;		(eval `(define-tvar ,(intern (format nil "PT_~S_0" j)) *real*))
 ;		(eval `(define-tvar ,(intern (format nil "PT_~S_1" j)) *real*))
 		(eval `(define-tvar ,(intern (format nil "CLOCK_S_~S" j)) *real*))
@@ -497,11 +504,11 @@
 				((atom l) (list l))
 				(t (loop for a in l appending (flatten a)))))
 
-(defun gen-counters-list(stages)
+(defun gen-counters-list(labels)
 			(flatten
 			`(
 				(-V- AVA_CC)
-			,@(loop for j in stages collect
+			,@(loop for j in labels collect
 				(list
 					(intern (format nil "RUN_TC_~S" j))
 					(intern (format nil "REM_TC_~S" j))
@@ -517,22 +524,24 @@
 ;           (!! ,(<P1> "RUN_S" i))
 )))))
 
-(defmacro initCounters(stages)
+(defmacro initCounters(labels)
 `(&&
   ([=] (-V- AVA_CC) TOT_CORES)
   ,@(nconc
-    (loop for i in stages collect
-       `(&&
-					([=] ,(<V1> "RUN_TC" i) 0)			 					 
-					([=] ,(<V1> "REM_TC" i) ,(<C1> "TOT_TASKS" i))
-)))))
+    (loop for i in labels collect
+;       `(&&
+					`([=] ,(<V1> "RUN_TC" i) 0)			 					 
+;					([=] ,(<V1> "REM_TC" i) ,(<C1> "TOT_TASKS" i))
+;		)
+	))
+))
 
 
-(defmacro initClocks(stages)
+(defmacro initClocks(labels)
 `(&&
 	([=] (-V- TOTALTIME) 0.0)
-	([=] (-V- CLOCK_IDC) 0.0)
-	,@(loop for j in stages collect
+;	([=] (-V- CLOCK_IDC) 0.0)
+	,@(loop for j in labels collect
 		`(&&
 ;				([=] (-V- ,(intern (format nil "PT_~S_0" j))) 0.0)
 ;				([>] (-V- ,(intern (format nil "PT_~S_1" j))) 0.0)
@@ -542,13 +551,13 @@
 
 
 
-(defmacro clocksConstraints (stages)
+(defmacro clocksConstraints (labels)
 	`(&&
 			([>=] (-V- TOTALTIME) 0.0)
-			([>=] (-V- CLOCK_IDC) 0.0)
+;			([>=] (-V- CLOCK_IDC) 0.0)
 			(next (alwf ([>] (-V- TOTALTIME) 0.0)))
 	;		(somf ([=] (-V- TOTALTIME) MAX_TIME))
-			,@(loop for j in stages collect
+			,@(loop for j in labels collect
 			  `(&&
 ;	    			([>=] (-V- ,(intern (format nil "PT_~S_0" j))) 0.0)
 ;	          		([>=] (-V- ,(intern (format nil "PT_~S_1" j))) 0.0)
@@ -560,69 +569,60 @@
 
 
 ;;; WRAPPERS FOR EVALUATING MACRO PARAMETERS
-(defun f-stagesStateEvolution (stages dependency-table)
-	(eval `(stagesStateEvolution ,stages ,dependency-table)))
+(defun f-stagesStateEvolution (stages dependency-table labels-table)
+	(eval `(stagesStateEvolution ,stages ,dependency-table ,labels-table)))
 
-(defun f-tasksStateEvolution (stages)
-	(eval `(tasksStateEvolution ,stages)))
+(defun f-tasksStateEvolution (stages labels labels-table)
+	(eval `(tasksStateEvolution ,stages ,labels ,labels-table)))
 
-(defun f-initProps (stages)
-	(eval `(initProps ,stages)))
+(defun f-initProps (labels)
+	(eval `(initProps ,labels)))
 
-(defun f-initCounters (stages)
-	(eval `(initCounters ,stages)))
+(defun f-initCounters (labels)
+	(eval `(initCounters ,labels)))
 
-(defun f-countersGEqZero (stages)
-	(eval `(countersGEqZero ,stages)))
+(defun f-countersGEqZero (labels)
+	(eval `(countersGEqZero ,labels)))
 
-(defun f-countersFormulae (stages)
-	(eval `(countersFormulae ,stages)))	
+(defun f-countersFormulae (stages labels labels-table)
+	(eval `(countersFormulae ,stages ,labels ,labels-table)))
 
-(defun f-resourcesFormulae (stages)
-	(eval `(resourcesFormulae ,stages)))
+(defun f-resourcesFormulae (labels)
+	(eval `(resourcesFormulae ,labels)))
 
-(defun f-clocksBehaviour (stages times tottasks alphas)
-	(eval `(clocksBehaviour ,stages ,times ,tottasks ,alphas)))	
+(defun f-clocksBehaviour (stages labels times tot-tasks alphas labels-table)
+	(eval `(clocksBehaviour ,stages ,labels ,times ,tot-tasks ,alphas ,labels-table)))
 	
-(defun f-clocksConstraints (stages)
-	(eval `(clocksConstraints ,stages)))
+(defun f-clocksConstraints (labels)
+	(eval `(clocksConstraints ,labels)))
 
-(defun f-initClocks (stages)
-	(eval `(initClocks ,stages)))
+(defun f-initClocks (labels)
+	(eval `(initClocks ,labels)))
 
 (defun f-allCompleted (stages)
 	(eval `(allCompleted ,stages)))
 
 	;;; GENERATE CLOCK VARIABLES
-	(genClocks the-stages)
+	(genClocks the-labels)
 
 ;GENERATE COUNTERS
- (genCounters the-stages)
+ (genCounters the-labels)
 
 ;(pprint (f-tasksStateEvolution the-stages))
 ;(pprint (f-countersFormulae the-stages))
 ;(pprint (f-resourcesFormulae the-stages))
 ;(print (genClocks the-stages))
 ;(pprint (f-initClocks the-stages))
-(pprint (f-clocksBehaviour the-stages the-proc-time-table the-tot-tasks-table the-alphas-table))
+;(pprint (f-clocksBehaviour the-stages the-proc-time-table the-tot-tasks-table the-alphas-table))
+;(pprint (f-initCounters the-stages))
+(pprint (f-tasksStateEvolution the-stages the-labels the-labels-table))
 
 	({{ verification_params.plugin }}:zot {{ verification_params.time_bound }}
 		(&&
-			(yesterday (f-initClocks the-stages))
+			(yesterday (f-initClocks the-labels))
 
 ;			(yesterday (f-initProps the-stages))
-			(yesterday (f-initCounters the-stages))
-;			(yesterday(somf_e 
-;				(&&
-;					(-P- END_T_S1)
-;					(next (&&
-;							(!!(-P- RUN_T_S1))
-;							(!!(-P- START_T_S1))))
-;					(somf_e (-P- START_T_S1)))))
-;			(somf_e (-P- START_T_S1))
-;			(somf_e (-P- START_S_S2))
-;			(somf_e ([=] (-V- REM_TC_S1) 0))
-	
+			(yesterday (f-initCounters the-labels))
 			(somf_e (&&
 						(f-allCompleted the-stages)
 	{%- if analysis_type == 'boundedness' %}
@@ -642,13 +642,13 @@
 			(alwf
 				(&&
 					(-P- COMPLETED_S_SS)				
-					(f-stagesStateEvolution the-stages the-dependency-table)
-					(f-tasksStateEvolution the-stages)
-					(f-countersGEqZero the-stages)
- 					(f-countersFormulae the-stages)
-					(f-resourcesFormulae the-stages)
-					(f-clocksConstraints the-stages)
-                    (f-clocksBehaviour the-stages the-proc-time-table the-tot-tasks-table the-alphas-table)
+					(f-stagesStateEvolution the-stages the-dependency-table the-labels-table)
+					(f-tasksStateEvolution the-stages the-labels the-labels-table)
+					(f-countersGEqZero the-labels)
+ 					(f-countersFormulae the-stages the-labels the-labels-table)
+					(f-resourcesFormulae the-labels)
+					(f-clocksConstraints the-labels)
+                    (f-clocksBehaviour the-stages the-labels the-proc-time-table the-tot-tasks-table the-alphas-table the-labels-table)
 				)
 			)
         
@@ -670,6 +670,6 @@
 		{% endif %}
         
     
-		:discrete-counters (gen-counters-list the-stages)
+		:discrete-counters (gen-counters-list the-labels)
 
 )

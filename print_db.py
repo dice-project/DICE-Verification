@@ -3,7 +3,7 @@ import argparse
 import os
 
 file_dir = os.path.dirname(os.path.realpath(__file__))
-DEFAULT_FILE_PATH = os.path.join(file_dir, 'd-vert-server/d-vert-json2mc/d4s_27_11/d_vert_db.json')
+DEFAULT_FILE_PATH = os.path.join(file_dir, 'd-vert-server/d-vert-json2mc/out/d_vert_db.json')
 
 import plotly.plotly as py
 import plotly.graph_objs as go
@@ -202,7 +202,7 @@ def show_entire_db(db, display, logarithmic):
 
 
 
-def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v_time_limit):
+def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v_time_limit, labeling):
     for t in db.tables():
         tb = db.table(t)
         run = Query()
@@ -222,6 +222,8 @@ def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v
             query_conditions.append((run.input_records == records))
         if v_time_limit:
             query_conditions.append((run.v_time <= v_time_limit))
+        if labeling:
+            query_conditions.append((run.labeling == labeling))
         query = reduce(lambda a, b: a & b, query_conditions)
         res = tb.search(query)
         if res:
@@ -244,15 +246,16 @@ def get_results(args):
     outcome = args.outcome
     v_time_limit = args.v_time_limit
     logarithmic = args.log
+    labeling = args.labeling
     db = TinyDB(file_path)
     display = display_latex if args.latex else display_normal
-    print('Sowing results for:\n'
+    print('Showing results for:\n'
           'app_type == {} & cores == {} & run.input_records == {} & run.tasks == {}'.format(app_type, cores, records, tasks))
-    if not tasks and not cores and not records and not app_type and not outcome:
+    if not any([tasks, cores, records, app_type, outcome, v_time_limit, labeling]):
         show_entire_db(db, display, logarithmic)
     else:
         show_queried_values(db=db, display=display, app_type=app_type, outcome=outcome, cores=cores, tasks=tasks,
-                            records=records, v_time_limit=v_time_limit)
+                            records=records, v_time_limit=v_time_limit, labeling=labeling)
 
 
 
@@ -289,6 +292,8 @@ if __name__ == "__main__":
     parser.add_argument('--outcome', default=None,
                         choices=['sat', 'unsat', 'running', 'other'],
                         help='show only specific outcomes')
+    parser.add_argument('--labeling', action='store_true',
+                        help='select only only runs in which labeling was used')
     parser.add_argument('-l', '--latex', action='store_true',
                         help='display row in latex table format')
     parser.add_argument('--log', action='store_true',

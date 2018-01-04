@@ -170,9 +170,13 @@ class SparkVerificationTask(VerificationTask):
         y_max = 1
         # plot variables' values
         stages = ["S"+str(s) for s in self.context["stages"]]
+        labels = ["S" + str(s) for s in self.context["labels"]]
         stage_vars_list = [x[0]["var_prefix"]+x[1]
                            for x in itertools.product(settings["stage_vars"],
                                                       stages)]
+        label_vars_list = [x[0]["var_prefix"] + x[1]
+                           for x in itertools.product(settings["stage_vars"],
+                                                      labels)]
         global_vars_list = [x["var_prefix"]
                             for x in settings["global_vars"]]
 #        for j in self.context["jobs"]:
@@ -182,13 +186,13 @@ class SparkVerificationTask(VerificationTask):
                                  '',
                                  self.output_trace.records,
                                  self.output_trace.bool_set)
-        y_max = self.get_y_max(y_max, stage_vars_list + global_vars_list,
+        y_max = self.get_y_max(y_max, label_vars_list + global_vars_list,
                                self.output_trace.records)
         vars_styles_dict = {}
         if styles_list is not None\
-                and len(stage_vars_list) <= len(styles_list):
-            vars_styles_dict = dict(zip(stage_vars_list, styles_list))
-        for s in stages:
+                and len(label_vars_list) <= len(styles_list):
+            vars_styles_dict = dict(zip(label_vars_list, styles_list))
+        for s in labels:
             self.plot_vars_from_list(self.output_trace.time_bound,
                                      settings["stage_vars"],
                                      s,
@@ -327,6 +331,16 @@ class SparkDAG(object):
             self.g.node[n]["label"] = label
             self.carry_on_labels[n].add(label)
 
+    def get_all_ancestors(self, node):
+        visited = set()
+        cur_pred = set(self.g.predecessors(node))
+        while cur_pred:
+            p = cur_pred.pop()
+            if p not in visited:
+                cur_pred.update(self.g.predecessors(p))
+                visited.add(p)
+        return visited
+
     def label_graph(self):
         '''
         visits the DAG following the precedences among stages
@@ -337,12 +351,13 @@ class SparkDAG(object):
         while queue:
             vertex = queue.pop(0)
             if vertex not in visited:
-                print "Visiting {}".format(vertex)
+                print "Visiting {}.. succ: {}".format(vertex, self.g.successors(vertex))
                 visited.add(vertex)
                 succ = self.g.successors(vertex)
                 finished_labels = False
                 while succ:
                     s = succ.pop()
+                    print "from {}'s successors, pop {} -> remaining: {}".format(vertex, s, succ)
                     predec_s = set(self.g.predecessors(s))
                     # if all the predecessors have already been visited
                     if not (predec_s - visited):
@@ -351,7 +366,7 @@ class SparkDAG(object):
                         if self.carry_on_labels[vertex]:
                             l = self.carry_on_labels[vertex].pop()
                         else:
-                            labelling_nodes = [x for x in predec_s
+                            labelling_nodes = [x for x in self.get_all_ancestors(s)
                                                if self.carry_on_labels[x]]
                             if labelling_nodes:
                                 l = (self.carry_on_labels[labelling_nodes[0]]
@@ -368,8 +383,8 @@ class SparkDAG(object):
                             self.carry_on_labels[s].add(l)
                             # if there are still labels to be assigned,re-apply
                             # the procedure on all successors of vertex
-                            if not succ:
-                                succ = self.g.successors(vertex)
+                            # if not succ:
+                            #    succ = self.g.successors(vertex)
 #                queue.extend(set(self.g[vertex]) - visited)
 #                for n in self.g.successors(vertex):
 #                    # if all the predecessors have been already visited

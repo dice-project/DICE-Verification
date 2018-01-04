@@ -75,6 +75,7 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
     time_bound = v_task.context['verification_params']['time_bound']
     result_dir = v_task.result_dir
     id = v_task.app_name
+    labeling =  True
     v_time = None
     timestamp_label = None
     if status == COMPLETED:
@@ -100,7 +101,8 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
                   'result_dir': result_dir,
                   'v_time': v_time,
                   'app_type': app_type,
-                  timestamp_label: get_current_datetime_string()
+                  timestamp_label: get_current_datetime_string(),
+                  'labeling': labeling
                   },
                  entry.id == id
                  )
