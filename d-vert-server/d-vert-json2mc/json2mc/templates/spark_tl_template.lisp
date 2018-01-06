@@ -134,7 +134,7 @@
 		 	,(<P1> "ENABLED_S" j)
 			(!! (yesterday ,(<P1> "ENABLED_S" j)))
             )))
-  	;  START_S_i <-> (RUN_S_i && START_T_l(i) && REM_TC_l(i) == TOT_TASKS_i && ENABLED_i && !COMPLETED_i)
+  	;  START_S_i <-> (RUN_S_i && START_T_l(i) && REM_TC_l(i) == TOT_TASKS_i && Y(ENABLED_i) && !COMPLETED_i)
      (loop for j in stages collect
        `(&&
 			(<->
@@ -147,7 +147,7 @@
 						,(<C1> "TOT_TASKS" j))
 					(yesterday ,(<P1> "ENABLED_S" j))
 					(!! ,(<P1> "COMPLETED_S" j))))
-		; END_S_i <-> (RUN_S_i && END_T_l(i) && (REM_TC_l(i) = 0) Y(!COMPLETED_i))
+		; END_S_i <-> (RUN_S_i && END_T_l(i) && (REM_TC_l(i) = 0) && Y(ENABLED) && !Y(COMPLETED_i))
 			(<->
 				,(<P1> "END_S" j)
 				(&&
@@ -197,7 +197,7 @@
 				,(<P1> "END_T" i)
 				(!! ,(<P1> "START_T" i))))
 					)))
-		;RUN_T -> somp START_S RUN_T snc START_T && RUN_T until END_T
+		;RUN_T -> RUN_T snc START_T && RUN_T until END_T && ORoria RUN_S_j (where label(j) == i)
       (loop for i in labels collect
          `(->
            ,(<P1> "RUN_T" i)
@@ -214,7 +214,7 @@
              (until
                 ,(<P1> "RUN_T" i)
                 ,(<P1> "END_T" i)))))
-      ;RUN_T -> RUN_T && Y(!END_T snc (ori || START_T) && X(X(START_T) release !RUN_T)
+      ;END_T -> RUN_T && Y(!END_T snc (ori || START_T)
 		(loop for i in labels collect
 			`(->
 				,(<P1> "END_T" i)
@@ -227,11 +227,6 @@
 								,(<P1> "START_T" i)
 								orig)
 							))
-; REDUNDANT
-;					(next
-;						(release
-;								(next ,(<P1> "START_T" i))
-;								(!! ,(<P1> "RUN_T" i))))
 				); end &&
 			); end ->
 		); end loop
@@ -293,14 +288,14 @@
 						(||
 							(next ,(<P1> "START_T" i))
 							,(<P1> "END_T" i)))
-		 ; REM_TC != YREM_TC -> X(END_T)
+		 ; REM_TC != YREM_TC -> X(END_T) || ORoria Y(START_ENABLED_j) with label(j) = i
 						(->
 							([!=] ,(<V1> "REM_TC" i) (yesterday ,(<V1> "REM_TC" i)))
 							(|| 
 								,(<P1> "END_T" i)
 								,@(loop for j in stages when
 									(eq (gethash j labels-table) i) collect
-										`,(<P1> "START_ENABLED_S" j))
+										`(yesterday ,(<P1> "START_ENABLED_S" j)))
 							)
 						)
 					;END_T -> REM_TC = YREM_TC - RUN_TC
