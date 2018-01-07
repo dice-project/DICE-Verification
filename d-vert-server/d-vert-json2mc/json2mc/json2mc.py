@@ -75,7 +75,7 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
     time_bound = v_task.context['verification_params']['time_bound']
     result_dir = v_task.result_dir
     id = v_task.app_name
-    labeling =  True
+    labeling = v_task.context['labeling'] if 'labeling' in v_task.context else False
     v_time = None
     timestamp_label = None
     if status == COMPLETED:
@@ -242,7 +242,7 @@ USAGE
                 with open(context_path, "r") as param_file:
                     context = json.load(param_file,
                                         object_pairs_hook=OrderedDict)
-
+                    context['labeling'] = label
                     v_task = DiaVerificationFactory.get_verif_task(tech=technology,
                                                                    template_path=template_path,
                                                                    context=context,

@@ -169,14 +169,11 @@ class SparkVerificationTask(VerificationTask):
         i = 1
         y_max = 1
         # plot variables' values
-        stages = ["S"+str(s) for s in self.context["stages"]]
-        labels = ["S" + str(s) for s in self.context["labels"]]
-        stage_vars_list = [x[0]["var_prefix"]+x[1]
-                           for x in itertools.product(settings["stage_vars"],
-                                                      stages)]
+        stages_or_labels = "labels" if self.context['labeling'] else "stages"
+        plotted_ids = ["S" + str(s) for s in self.context[stages_or_labels]]
         label_vars_list = [x[0]["var_prefix"] + x[1]
                            for x in itertools.product(settings["stage_vars"],
-                                                      labels)]
+                                                      plotted_ids)]
         global_vars_list = [x["var_prefix"]
                             for x in settings["global_vars"]]
 #        for j in self.context["jobs"]:
@@ -192,7 +189,7 @@ class SparkVerificationTask(VerificationTask):
         if styles_list is not None\
                 and len(label_vars_list) <= len(styles_list):
             vars_styles_dict = dict(zip(label_vars_list, styles_list))
-        for s in labels:
+        for s in plotted_ids:
             self.plot_vars_from_list(self.output_trace.time_bound,
                                      settings["stage_vars"],
                                      s,

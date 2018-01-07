@@ -38,13 +38,20 @@
 (setf (gethash 'S{{k}} the-dependency-table) '(S{{ v.parentsIds|join(' S') }}))
 {% endfor %}
 
-
+{%- if labeling %}
 (defconstant the-labels '(S{{ labels|join(' S') }}))
+{% else %}
+(defconstant the-labels '(S{{ stages|join(' S') }}))
+{% endif %}
 
 (defvar the-labels-table)
 (setq the-labels-table (make-hash-table :test 'equalp))
 {% for k,v in stages.iteritems() -%}
+{%- if labeling -%}
 (setf (gethash 'S{{k}} the-labels-table) 'S{{ v.label }})
+{%- else -%}
+(setf (gethash 'S{{k}} the-labels-table) 'S{{k}})
+{%- endif %}
 {% endfor %}
 ;extract values by invoking:
 ;(gethash i the-labels-table)
