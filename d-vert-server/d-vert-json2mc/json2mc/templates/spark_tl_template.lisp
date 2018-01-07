@@ -222,19 +222,19 @@
 				TOT_CORES)
 		
 		; ! (AVA_CC > 0 && ORoria: x in stages (Y(ENABLED_S_x) && (REM_TC_x - RUN_TC_x) >0 ))
-		(!!
-			(&&	
-				([>] (-V- AVA_CC) 0)
-				(||
-					,@(nconc
-					(loop for i in stages collect
-					`(&&
-						(yesterday ,(<P1> "ENABLED_S" i)) 
-							([>] ,(<V1> "REM_TC" i) ,(<V1> "RUN_TC" i))))
-					)
-				)
-			)
-		)
+;		(!!
+;			(&&	
+;				([>] (-V- AVA_CC) 0)
+;				(||
+;					,@(nconc
+;					(loop for i in stages collect
+;					`(&&
+;						(yesterday ,(<P1> "ENABLED_S" i)) 
+;							([>] ,(<V1> "REM_TC" i) ,(<V1> "RUN_TC" i))))
+;					)
+;				)
+;			)
+;		)
 
 
 	)
