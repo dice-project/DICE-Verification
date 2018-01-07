@@ -14,7 +14,7 @@ the file containing the graphical configuration, etc.
 
 @author:     Francesco Marconi
 
-@copyright:  2015-2017 Politecnico di Milano. All rights reserved.
+@copyright:  2015-2018 Politecnico di Milano. All rights reserved.
 
 @license:    Apache License 2.0
 
@@ -40,9 +40,9 @@ from tinydb import TinyDB, Query
 from datetime import datetime as dt
 
 __all__ = []
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 __date__ = '2015-11-10'
-__updated__ = '2017-12-01'
+__updated__ = '2018-01-07'
 
 DEBUG = 0
 TESTRUN = 0
@@ -60,7 +60,9 @@ def get_current_datetime_string():
 
 
 def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
-    db = TinyDB(os.path.join(os.path.abspath(db_location), 'd_vert_db.json'))
+    db_abs_path = os.path.join(os.path.abspath(db_location), 'd_vert_db.json')
+    print "Persisting on db at {} ...".format(db_abs_path)
+    db = TinyDB(db_abs_path)
     '''
     cores = None
     tasks = None
@@ -104,7 +106,7 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
                   timestamp_label: get_current_datetime_string(),
                   'labeling': labeling
                   },
-                 entry.id == id
+                 (entry.id == id) & (entry.labeling == labeling)
                  )
 
 
@@ -183,7 +185,7 @@ USAGE
                                                  "[{}]".format(", ".join(cfg.TECH_KEYS)),
                                                  "[{}]_example.json"
                                                  .format(", ".join(cfg.TECH_KEYS)))))
-        parser.add_argument("-l", "--label", dest="label",
+        parser.add_argument("-l", "--label", dest="label", default=False,
                             action="store_true",
                             help="apply graph labeling to reduce the size of "
                             "the formal model created [default: %(default)s]")
