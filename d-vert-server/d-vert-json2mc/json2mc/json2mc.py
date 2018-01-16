@@ -31,10 +31,10 @@ from collections import OrderedDict
 
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
-import config as cfg
+import supported_techs as cfg
 from factory_methods import DiaVerificationFactory
 
-from dia_verification import VerificationException
+from v_exceptions import VerificationException
 
 from tinydb import TinyDB, Query
 from datetime import datetime as dt

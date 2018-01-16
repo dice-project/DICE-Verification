@@ -26,7 +26,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
-
+from operator import itemgetter
 
 class SparkVerificationTask(VerificationTask):
     '''
@@ -320,6 +320,9 @@ class SparkDAG(object):
                 self.g.add_edge(str(p), str(k))
             # initialize carry_on_labels to empty set
             self.carry_on_labels[k] = set()
+        # initialize the out_counters
+        for n in self.g.nodes():
+            self.g.node[n]['out_count'] = self.g.out_degree(n)
         # identify set of starting nodes (those without predecessors)
         self.starting_nodes = [x for x in self.g.nodes()
                                if not self.g.predecessors(x)]
@@ -337,6 +340,12 @@ class SparkDAG(object):
                 cur_pred.update(self.g.predecessors(p))
                 visited.add(p)
         return visited
+
+    def get_transmittable_labels(self, node):
+        ancestors = [x for x in self.get_all_ancestors(node)
+                     if self.carry_on_labels[x]]
+        return [l for ls in [self.carry_on_labels[x] for x in ancestors] for l in ls] + [y for y in
+                                                                                         self.carry_on_labels[node]]
 
     def label_graph(self):
         '''
@@ -360,24 +369,36 @@ class SparkDAG(object):
                     if not (predec_s - visited):
                         queue.append(s)
                         print "labeling {}".format(s)
-                        if self.carry_on_labels[vertex]:
-                            l = self.carry_on_labels[vertex].pop()
-                        else:
-                            labelling_nodes = [x for x in self.get_all_ancestors(s)
-                                               if self.carry_on_labels[x]]
-                            if labelling_nodes:
-                                l = (self.carry_on_labels[labelling_nodes[0]]
-                                     .pop())
+                        candidates = [{'id': n, 'out_count': self.g.node[n]['out_count'],
+                                       'carry_on_labels': self.get_transmittable_labels(n)} for n in predec_s
+                                      if self.g.node[n]['out_count'] > 0 and self.get_transmittable_labels(n) > 0]
+                        print "candidates: {}".format(candidates)
+                        if candidates:
+                            sorted_candidates = sorted(candidates, key=itemgetter('out_count'))
+                            # this can be simplified
+                            best_candidate = sorted_candidates[0]['id']
+                            print "best candidate: {} -> {}".format(best_candidate, self.g.node[best_candidate])
+                            self.g.node[best_candidate]['out_count'] -= 1
+                            if self.carry_on_labels[best_candidate]:
+                                l = self.carry_on_labels[best_candidate].pop()
                             else:
-                                l = self.generateNewLabel()
-                                finished_labels = True
+                                labelling_nodes = [x for x in self.get_all_ancestors(best_candidate)
+                                                   if self.carry_on_labels[x]]
+                                if labelling_nodes:
+                                    l = (self.carry_on_labels[labelling_nodes[0]].pop())
+                                else:  # should never happen
+                                    l = self.generateNewLabel()
+                                    finished_labels = True
+                        else:
+                            l = self.generateNewLabel()
+                            finished_labels = True
                         # if s still has to be labeled, then label it
                         if "label" not in self.g.node[s]:
                             print "({}) -> {}".format(s, l)
                             self.g.node[s]["label"] = l
                             self.carry_on_labels[s].add(l)
-                        if not finished_labels:
-                            self.carry_on_labels[s].add(l)
+#                        if not finished_labels:
+#                            self.carry_on_labels[s].add(l)
                             # if there are still labels to be assigned,re-apply
                             # the procedure on all successors of vertex
                             # if not succ:
