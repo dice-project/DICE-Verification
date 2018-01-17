@@ -166,16 +166,17 @@ def multikeysort(items, columns):
 
 def display_normal(rows):
     for row in rows:
-        print('app_type:{}\t cores:{} time_bound:{}\tdeadline:{}\t'
-              'outcome:{}\tlabeling:{}\tv_time:{}\tstarted:{}\t'
+        print('app_type:{}\tcores:{}\tdeadline:{}\tlabeling:{}\ttime_bound:{}\t'
+              'outcome:{}\tv_time:{}\t max_memory:{}\tstarted:{} '
               'finished:{}'.format(row['app_type']
                                    if 'app_type' in row else 'unknown',
                                    row['cores'],
-                                   row['time_bound'],
                                    row['deadline'],
-                                   row['outcome'],
                                    row['labeling'] if 'labeling' in row else False,
+                                   row['time_bound'],
+                                   row['outcome'],
                                    row['v_time'],
+                                   row['max_memory'] if 'max_memory' in row else 'Unknown',
                                    row['start_timestamp']
                                    if 'start_timestamp' in row
                                    else 'Unknown',
@@ -220,8 +221,7 @@ def show_entire_db(db, display, logarithmic):
         scatter_table(t, tb, logarithmic)
 
 
-
-def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v_time_limit, labeling):
+def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v_time_limit, labeling, time_bound):
     for t in db.tables():
         tb = db.table(t)
         run = Query()
@@ -241,7 +241,9 @@ def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v
             query_conditions.append((run.input_records == records))
         if v_time_limit:
             query_conditions.append((run.v_time <= v_time_limit))
-        if labeling:
+        if time_bound:
+            query_conditions.append((run.time_bound == time_bound))
+        if labeling is not None:
             query_conditions.append((run.labeling == labeling))
         query = reduce(lambda a, b: a & b, query_conditions)
 	tmp = tb.search(query)
@@ -265,17 +267,18 @@ def get_results(args):
     app_type = args.benchmark
     outcome = args.outcome
     v_time_limit = args.v_time_limit
+    time_bound = args.time_bound
     logarithmic = args.log
     labeling = args.labeling
     db = TinyDB(file_path)
     display = display_latex if args.latex else display_normal
     print('Showing results for:\n'
           'app_type == {} & cores == {} & run.input_records == {} & run.tasks == {}'.format(app_type, cores, records, tasks))
-    if not any([tasks, cores, records, app_type, outcome, v_time_limit, labeling]):
+    if not any([tasks, cores, records, app_type, outcome, v_time_limit, labeling, time_bound]):
         show_entire_db(db, display, logarithmic)
     else:
         show_queried_values(db=db, display=display, app_type=app_type, outcome=outcome, cores=cores, tasks=tasks,
-                            records=records, v_time_limit=v_time_limit, labeling=labeling)
+                            records=records, v_time_limit=v_time_limit, labeling=labeling, time_bound=time_bound)
 
 
 
@@ -297,8 +300,10 @@ if __name__ == "__main__":
                                  "[default: %(default)s]")
 
     parser.add_argument("-v", "--v-time-limit", dest="v_time_limit", type=int,
-                        help="show only rows with verification time lower that v_time_limit"
-                             "[default: %(default)s]")
+                        help="show only rows with verification time lower that v_time_limit")
+
+    parser.add_argument("-k", "--time-bound", dest="time_bound", type=int,
+                        help="show only rows with a specific time bound")
 
     parser.add_argument("-i", "--input-records", dest="records", type=int,
                             help="input records"
@@ -312,8 +317,13 @@ if __name__ == "__main__":
     parser.add_argument('--outcome', default=None,
                         choices=['sat', 'unsat', 'running', 'other'],
                         help='show only specific outcomes')
-    parser.add_argument('--labeling', action='store_true',
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('--labeling', action='store_true', dest='labeling', default=None,
                         help='select only only runs in which labeling was used')
+    group.add_argument('--no-labeling', action='store_false', dest='labeling', default=None,
+                        help='select only only runs in which labeling was not used')
+#    parser.add_argument('--labeling', action='store_true',
+#                        help='select only only runs in which labeling was used')
     parser.add_argument('-l', '--latex', action='store_true',
                         help='display row in latex table format')
     parser.add_argument('--log', action='store_true',
