@@ -8,6 +8,7 @@ from dia_verification import VerificationTrace
 
 import os
 from datetime import datetime as dt
+import re
 
 
 class ZotResult(VerificationResult):
@@ -29,16 +30,19 @@ class ZotResult(VerificationResult):
         with open(self.result_file_path) as res_f:
             lines = res_f.readlines()
         self.outcome = None
+        self.all_stats = None
         self.verification_time = None
+        self.max_memory = None
+        self.memory = None
         self.timestamp = None
         self.timestamp_str = None
         if lines:
             self.outcome = lines[0].strip()
-            self.verification_time = (float(lines[-1]
-                                            .strip()
-                                            .strip(':')
-                                            .strip(')')
-                                            .split(" ")[-1]))
+            self.all_stats = {y[0]: y[1] for x in lines[-1:-32:-1] if ':' in x for y in
+                              [re.sub(' +', ' ', x).strip().strip(':').strip(')').split(' ')]}
+            self.verification_time = float(self.all_stats['time'])
+            self.max_memory = float(self.all_stats['max-memory'])
+            self.memory = float(self.all_stats['memory'])
             if self.outcome == 'sat':
                 print 'Outcome is {} '.format(self.outcome.upper())
                 # app_dir+'/'+'output.hist.txt'
@@ -55,6 +59,7 @@ class ZotResult(VerificationResult):
                 print ("Outcome: {} -> \n\n THERE MIGHT BE A PROBLEM. check {} for further info."
                        .format(self.outcome, self.result_file))
             print "Verification time: {}".format(self.verification_time)
+            print "Max-memory: {} - Memory: {}".format(self.max_memory, self.memory)
             print "Result saved to {} directory".format(self.result_dir)
 
 

@@ -40,9 +40,9 @@ from tinydb import TinyDB, Query
 from datetime import datetime as dt
 
 __all__ = []
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 __date__ = '2015-11-10'
-__updated__ = '2018-01-07'
+__updated__ = '2018-01-16'
 
 DEBUG = 0
 TESTRUN = 0
@@ -78,12 +78,14 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
     result_dir = v_task.result_dir
     id = v_task.app_name
     labeling = v_task.context['labeling'] if 'labeling' in v_task.context else False
-    v_time = None
+    v_time = v_memory = v_max_memory = None
     timestamp_label = None
     if status == COMPLETED:
         timestamp_label = 'end_timestamp'
         outcome = v_task.verification_result.outcome
         v_time = v_task.verification_result.verification_time
+        v_max_memory = v_task.verification_result.max_memory
+        v_memory = v_task.verification_result.memory
     elif status == STARTED:
         timestamp_label = 'start_timestamp'
         outcome = 'running'
@@ -104,7 +106,9 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
                   'v_time': v_time,
                   'app_type': app_type,
                   timestamp_label: get_current_datetime_string(),
-                  'labeling': labeling
+                  'labeling': labeling,
+                  'memory': v_memory,
+                  'max_memory': v_max_memory
                   },
                  (entry.id == id) & (entry.labeling == labeling)
                  )
