@@ -39,4 +39,5 @@ class DAGRenderer(object):
         print self.dot.source
 
     def render(self, path=None, view=False):
+        print("rendering to {}".format(path))
         self.dot.render(path, view=view)

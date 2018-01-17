@@ -3,7 +3,7 @@ Created on Feb 10, 2017
 
 @author: Francesco Marconi
 '''
-import config as cfg
+import supported_techs as cfg
 
 class DiaVerificationFactory(object):
     '''

@@ -17,7 +17,7 @@ import utils
 import pkg_resources
 
 import config as cfg
-from exceptions import VerificationException
+from v_exceptions import VerificationException
 
 
 class VerificationTask(object):
