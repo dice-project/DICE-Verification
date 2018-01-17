@@ -147,16 +147,35 @@ def scatter_table(conf_name, rows, logarithmic):
     fig = go.Figure(data=data, layout=layout)
     offline.plot(figure_or_data=fig, filename=local_path, image_filename=conf_name, auto_open=False)
 
+
+def multikeysort(items, columns):
+    from operator import itemgetter
+    comparers = [((itemgetter(col[1:].strip()), -1) if col.startswith('-') else (itemgetter(col.strip()), 1)) for col in
+                 columns]
+
+    def comparer(left, right):
+        for fn, mult in comparers:
+            result = cmp(fn(left), fn(right))
+            if result:
+                return mult * result
+        else:
+            return 0
+
+    return sorted(items, cmp=comparer)
+
+
 def display_normal(rows):
     for row in rows:
-        print('app_type: {}\t cores:{} time_bound: {} deadline:{}\t'
-              'outcome: {}\tv_time:  {}\tstarted:{}\t'
+        print('app_type:{}\t cores:{} time_bound:{}\tdeadline:{}\t'
+              'outcome:{}\tlabeling:{}\tv_time:{}\tstarted:{}\t'
               'finished:{}'.format(row['app_type']
                                    if 'app_type' in row else 'unknown',
                                    row['cores'],
                                    row['time_bound'],
                                    row['deadline'],
-                                   row['outcome'], row['v_time'],
+                                   row['outcome'],
+                                   row['labeling'] if 'labeling' in row else False,
+                                   row['v_time'],
                                    row['start_timestamp']
                                    if 'start_timestamp' in row
                                    else 'Unknown',
@@ -225,7 +244,8 @@ def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v
         if labeling:
             query_conditions.append((run.labeling == labeling))
         query = reduce(lambda a, b: a & b, query_conditions)
-        res = tb.search(query)
+	tmp = tb.search(query)
+        res = multikeysort(tmp, ['deadline', 'labeling', 'time_bound'])
         if res:
             print('\n ~~~~~~~~~')
             print(t)
