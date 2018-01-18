@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'>
+<nta>
+    <declaration>// Place global declarations here.
+
+const int NUMBER_OF_CPU = {{ tot_cores }};
+const int NUMBER_OF_STAGES = {{ stages | length }};
+
+int[0,NUMBER_OF_CPU] available_cpu = {{ tot_cores }};
+
+{% for l in labels -%}
+int [0, {{ stages.values() | map(attribute="label") | select("equalto", l) | join | length - 1}}] active_stage{{ l }} = 0;
+{% endfor %}
+
+clock time;
+    </declaration>
+{% for l in labels -%}
+    <template>
+        <name x="5" y="5">Stage{{ l }}</name>
+        <declaration>// Place local declarations here.
+clock c;
+
+int[0, {{ stages.values() | selectattr("label", "equalto", l) | map(attribute="numtask") | max }}] ntasks=0;
+
+int TASK_DURATION;
+int NUMBER_OF_TASKS;
+
+int def_task_duration(int active){
+	{% for s in indexes[l] -%}
+		if (active=={{ loop.index - 1 }})
+			return {{ stages[s]["t_task_verification"] | int }};
+	{% endfor -%}
+return 0;
+}
+
+int def_number_of_tasks(int active){
+   {% for s in indexes[l] -%}
+		if (active=={{ loop.index - 1 }})
+			return {{ stages[s]["numtask"] | int }};
+	{% endfor -%}
+return 0;
+}
+
+int def_active_stage(int active){
+   {% for s in range(0, indexes[l]|length-1) -%}
+		if (active=={{ loop.index - 1 }})
+			return {{ loop.index }};
+	{% endfor -%}	
+return 0;
+}
+</declaration>
+       
+    <location id="init" x="-250" y="408">
+        <name x="-250" y="416">Init</name>
+    </location>
+    <location id="batch_finished" x="16" y="408">
+            <name x="24" y="416">Batch_finished</name>
+    </location>
+    {% for k in range(1, tot_cores + 1) -%}
+    <location id="cores{{ k }}" x="{{ 80   * loop.index - 500}}" y="104">
+        <name x="{{ 80 * loop.index - 500}}" y="80">_{{ k }}_run_tc</name>
+        <label kind="invariant" x="0" y="0">c&lt;=TASK_DURATION</label>
+    </location>
+    {% endfor %}
+    <init ref="init"/>
+    <transition>
+        <source ref="init"/>
+        <target ref="batch_finished"/>
+        <label kind="guard" x="-246" y="400">
+        {% for s in indexes[l] -%}   
+           {% if stages[s].parentsIds|length > 0 -%}
+           (active_stage{{ l }}!={{ loop.index-1 }} || {% for p in stages[s].parentsIds -%} active_stage{{stages[p|string].label}}&gt;{{ indexes[stages[p|string].label][p|string] }}{% if (0 < loop.index) and (loop.index < stages[s].parentsIds|length) -%} &amp;&amp; {% endif -%}{% endfor -%}){% if (0 < loop.index) and (loop.index < indexes[l]|length) -%}&amp;&amp;{% endif %}
+        {% endif -%}
+        {% endfor -%}
+        </label>
+        <label kind="assignment" x="-672" y="1960">TASK_DURATION=def_task_duration(active_stage{{ l }}),
+NUMBER_OF_TASKS=def_number_of_tasks(active_stage{{ l }}),
+ntasks=0</label>
+    </transition> 
+    <transition>
+       <source ref="batch_finished"/>
+       <target ref="init"/>
+       <label kind="guard" x="392" y="1960">ntasks==NUMBER_OF_TASKS</label>
+       <label kind="assignment" x="432" y="1976">active_stage{{ l }}=def_active_stage(active_stage{{ l }})</label>
+    </transition>
+    {% for k in range(1, tot_cores + 1) -%}
+    <transition>
+       <source ref="batch_finished"/>
+       <target ref="cores{{ k }}"/>
+       <label kind="guard" x="{{ 40   * loop.index - 300}}" y="160">available_cpu&gt;{{ k-1 }} &amp;&amp; ntasks &lt;=NUMBER_OF_TASKS-{{ k }}</label>
+       <label kind="assignment" x="{{ 40   * loop.index -300}}" y="184">c=0, available_cpu=available_cpu-{{ k }}</label>
+    </transition>
+    {% endfor %}
+    {% for k in range(1, tot_cores + 1) -%}
+    <transition>
+       <source ref="cores{{ k }}"/>
+       <target ref="batch_finished"/>
+       <label kind="guard" x="512" y="424">c == TASK_DURATION</label>
+       <label kind="assignment" x="512" y="440">ntasks = ntasks+{{ k }}, available_cpu=available_cpu+{{ k }}</label>
+    </transition>
+    {% endfor %}
+</template>
+{% endfor %}
+
+<system>// Place template instantiations here.
+{% for l in labels -%}
+stage{{ l }} = Stage{{ l }}();
+{% endfor %}
+
+// cost0 = CumulativeCost();
+
+// List one or more processes to be composed into a system.
+system stage{{ labels | join(', stage') }};</system>
+</nta>

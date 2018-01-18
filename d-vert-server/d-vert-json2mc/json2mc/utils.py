@@ -80,3 +80,11 @@ def get_normalization_dict(values, tolerance):
     # print "normalization_dict: {}".format(normalization_dict)
     return normalization_dict
 
+
+def order_int(a, b):
+    if int(a) > int(b):
+        return 1
+    elif int(a) < int(b):
+        return -1
+    else:
+        return 0

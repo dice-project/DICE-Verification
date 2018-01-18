@@ -34,6 +34,8 @@ from argparse import RawDescriptionHelpFormatter
 import supported_techs as cfg
 from factory_methods import DiaVerificationFactory
 
+from dia_verification_uppaal import UppaalEngine
+
 from v_exceptions import VerificationException
 
 from tinydb import TinyDB, Query
@@ -175,6 +177,9 @@ USAGE
         parser = ArgumentParser(description=program_license,
                                 formatter_class=RawDescriptionHelpFormatter)
         group1 = parser.add_mutually_exclusive_group()
+        parser.add_argument("-e", "--engine", choices=['zot', 'uppaal'],
+                            default='zot',
+                            help="verification engine")
         parser.add_argument("-T", "--technology", dest="technology",
                             default=cfg.TECH_KEYS[0],
                             help="reference technology (supported: {})"
@@ -232,7 +237,7 @@ USAGE
         graphical_conf_path = args.graphical_conf_path
         label = args.label
         db = args.db
-        
+        engine = args.engine
 
         print("Context_path: {}".format(context_path))
 
@@ -255,22 +260,26 @@ USAGE
                                                                    output_dir=output_dir,
                                                                    display=display)
                     print v_task
-                    try:
-                        if db:
-                            persist_results_on_db(v_task, output_dir, STARTED)
-                        v_task.launch_verification()
-                        if v_task.result_dir:
-                            v_task.process_zot_results()
-                            if v_task.verification_result.outcome == 'sat':
-                                v_task.plot_trace()
+                    # TODO: instantiate UppaalEngine if uppaal
+                    if engine == "uppaal":
+                        uppal = UppaalEngine(v_task)
+                    else:
+                        try:
                             if db:
-                                persist_results_on_db(v_task, output_dir, COMPLETED)
-                            print 'DONE'
-                        else:
-                            print 'FINISHED WITH ERRORS'
-                    except VerificationException as e:
-                        print "Errors while performing the verification task!\n{}\nAborting ...".format(e)
-                        persist_results_on_db(v_task, output_dir, ERROR)
+                                persist_results_on_db(v_task, output_dir, STARTED)
+                            v_task.launch_verification()
+                            if v_task.result_dir:
+                                v_task.process_zot_results()
+                                if v_task.verification_result.outcome == 'sat':
+                                    v_task.plot_trace()
+                                if db:
+                                    persist_results_on_db(v_task, output_dir, COMPLETED)
+                                print 'DONE'
+                            else:
+                                print 'FINISHED WITH ERRORS'
+                        except VerificationException as e:
+                            print "Errors while performing the verification task!\n{}\nAborting ...".format(e)
+                            persist_results_on_db(v_task, output_dir, ERROR)
 
             except IOError as e:
                 # Does not exist OR no read permissions

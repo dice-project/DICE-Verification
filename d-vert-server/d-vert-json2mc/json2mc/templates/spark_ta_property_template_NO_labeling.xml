@@ -1,0 +1,1 @@
+E<>({% for s in finalstages %} stage{{ s }}.Completed {% if (0 < loop.index) and (loop.index < finalstages|length) -%}&&{% endif %}{% endfor %}&& time<{{ deadline }})

@@ -19,11 +19,8 @@ clock time;</declaration>
 
 clock c;
 int[0, NUMBER_OF_TASKS] ntasks=0;</declaration>
-        <location id="id0" x="16" y="-192">
-            <urgent/>
-        </location>
-        <location id="init" x="16" y="-192">
-            <name x="6" y="-222">Init</name>
+        <location id="init" x="-250" y="408">
+            <name x="-250" y="416">Init</name>
         </location>
         <location id="completed" x="16" y="496">
             <name x="24" y="512">Completed</name>
@@ -38,19 +35,11 @@ int[0, NUMBER_OF_TASKS] ntasks=0;</declaration>
         <location id="batch_finished" x="16" y="408">
             <name x="24" y="416">Batch_finished</name>
         </location>
-        <init ref="id0"/>
-        <transition>
-            <source ref="init"/>
-            <target ref="id0"/>
-        </transition>
-        <transition>
-            <source ref="id0"/>
-            <target ref="init"/>
-        </transition>
+        <init ref="init"/>
         <transition>
             <source ref="init"/>
             <target ref="batch_finished"/>
-            <label kind="guard" x="24" y="-144">
+            <label kind="guard" x="-246" y="400">
             {% for p in s.parentsIds -%}
             stage[{{ p }}]==1 &amp;&amp;
             {% endfor -%}

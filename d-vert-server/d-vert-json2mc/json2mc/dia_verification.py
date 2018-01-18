@@ -20,6 +20,14 @@ import config as cfg
 from v_exceptions import VerificationException
 
 
+class VerificationEngine(object):
+
+    def launch_verification(self):
+        pass
+
+    def process_result(self):
+        pass
+
 class VerificationTask(object):
     '''
     classdocs
@@ -68,7 +76,6 @@ class VerificationTask(object):
             with open(self.json_starting_context_path, 'w+') as outfile:
                 json.dump(starting_context, outfile, indent=4)
         command_list = [cfg.ZOT_CMD, "zot_in.lisp", self.context['app_name']]
-
         try:
             print ("{}Launching command {} on dir. {} "
                    "with plugin {}").format(prefix,
@@ -85,7 +92,6 @@ class VerificationTask(object):
             raise VerificationException(exc.output)
         #except sp.TimeoutExpired as te:
         #    print "Timeout Expired!\n{}".format(te)
-
 
     def parse_zot_trace(self, file_path=None):
         raise NotImplementedError()

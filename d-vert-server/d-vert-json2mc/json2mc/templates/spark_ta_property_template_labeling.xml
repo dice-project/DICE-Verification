@@ -1,0 +1,1 @@
+E<>({% for stage_id,label in finalstages.iteritems() -%} active_stage{{ label }} == {{ indexes[label][stage_id] }} && stage{{ label }}.ntasks=={{ stages[stage_id]["numtask"]}} {% if (0 < loop.index) and (loop.index < finalstages|length) %} &&  {% endif -%} {% endfor %} && time<{{ deadline }})
