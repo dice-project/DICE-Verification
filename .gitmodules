@@ -1,0 +1,3 @@
+[submodule "dilworth_labeling"]
+	path = d-vert-server/d-vert-json2mc/json2mc/dilworth_labeling
+	url = https://github.com/gioenn/dilworth_labeling

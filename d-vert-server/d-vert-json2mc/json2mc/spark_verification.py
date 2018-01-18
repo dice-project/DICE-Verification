@@ -12,6 +12,8 @@ from dia_verification_zot import ZotResult
 from dia_verification_zot import ZotTrace
 import utils as utils
 import networkx as nx
+from dilworth_labeling.core import LabeledDiGraph
+
 
 # from subprocess import Popen, PIPE
 import jinja2
@@ -73,7 +75,6 @@ class SparkVerificationTask(VerificationTask):
             with open(self.template_path, "r") as tmp:
                 self.template = jinja2.Template(tmp.read())
             self.dag = SparkDAG(context)
-            self.dag.label_graph()
             print self.dag.g.nodes(data=True)
             gr = DAGRenderer(self.dag.g)
             gr.render(os.path.join(self.app_dir, self.app_name + ".gv"), self.display)
@@ -278,24 +279,15 @@ class SparkDAG(object):
 
     '''
 
-    def generateNewLabel(self):
-        if self.labels:
-            new_label = max(self.labels) + 1
-        else:
-            new_label = 0
-        self.labels.add(new_label)
-        print "New Label", new_label
-        return new_label
-
     def __init__(self, json_context):
         '''
         Constructor
         '''
         self.json_context = json_context
-        self.g = nx.DiGraph()
-        self.labels = set()
+        self.g = LabeledDiGraph()
         self.carry_on_labels = {}
         self.is_labeled = False
+        self.labels = set()
         # add nodes to graph
         for k, v in self.json_context["stages"].iteritems():
             self.g.add_node(k)
@@ -318,99 +310,10 @@ class SparkDAG(object):
             # add predecessors
             for p in self.json_context["stages"][k]["parentsIds"]:
                 self.g.add_edge(str(p), str(k))
-            # initialize carry_on_labels to empty set
-            self.carry_on_labels[k] = set()
-        # initialize the out_counters
-        for n in self.g.nodes():
-            self.g.node[n]['out_count'] = self.g.out_degree(n)
-        # identify set of starting nodes (those without predecessors)
-        self.starting_nodes = [x for x in self.g.nodes()
-                               if not self.g.predecessors(x)]
-        for n in self.starting_nodes:
-            label = self.generateNewLabel()
-            self.g.node[n]["label"] = label
-            self.carry_on_labels[n].add(label)
-
-    def get_all_ancestors(self, node):
-        visited = set()
-        cur_pred = set(self.g.predecessors(node))
-        while cur_pred:
-            p = cur_pred.pop()
-            if p not in visited:
-                cur_pred.update(self.g.predecessors(p))
-                visited.add(p)
-        return visited
-
-    def get_transmittable_labels(self, node):
-        ancestors = [x for x in self.get_all_ancestors(node)
-                     if self.carry_on_labels[x]]
-        return [l for ls in [self.carry_on_labels[x] for x in ancestors] for l in ls] + [y for y in
-                                                                                         self.carry_on_labels[node]]
-
-    def label_graph(self):
-        '''
-        visits the DAG following the precedences among stages
-        and labels each node in such a way that labels can be re-used
-        for stages whose execution is mutually exclusive
-        '''
-        visited, queue = set(), self.starting_nodes
-        while queue:
-            vertex = queue.pop(0)
-            if vertex not in visited:
-                print "Visiting {}.. succ: {}".format(vertex, self.g.successors(vertex))
-                visited.add(vertex)
-                succ = self.g.successors(vertex)
-                finished_labels = False
-                while succ:
-                    s = succ.pop()
-                    print "from {}'s successors, pop {} -> remaining: {}".format(vertex, s, succ)
-                    predec_s = set(self.g.predecessors(s))
-                    # if all the predecessors have already been visited
-                    if not (predec_s - visited):
-                        queue.append(s)
-                        print "labeling {}".format(s)
-                        candidates = [{'id': n, 'out_count': self.g.node[n]['out_count'],
-                                       'carry_on_labels': self.get_transmittable_labels(n)} for n in predec_s
-                                      if self.g.node[n]['out_count'] > 0 and self.get_transmittable_labels(n) > 0]
-                        print "candidates: {}".format(candidates)
-                        if candidates:
-                            sorted_candidates = sorted(candidates, key=itemgetter('out_count'))
-                            # this can be simplified
-                            best_candidate = sorted_candidates[0]['id']
-                            print "best candidate: {} -> {}".format(best_candidate, self.g.node[best_candidate])
-                            self.g.node[best_candidate]['out_count'] -= 1
-                            if self.carry_on_labels[best_candidate]:
-                                l = self.carry_on_labels[best_candidate].pop()
-                            else:
-                                labelling_nodes = [x for x in self.get_all_ancestors(best_candidate)
-                                                   if self.carry_on_labels[x]]
-                                if labelling_nodes:
-                                    l = (self.carry_on_labels[labelling_nodes[0]].pop())
-                                else:  # should never happen
-                                    l = self.generateNewLabel()
-                                    finished_labels = True
-                        else:
-                            l = self.generateNewLabel()
-                            finished_labels = True
-                        # if s still has to be labeled, then label it
-                        if "label" not in self.g.node[s]:
-                            print "({}) -> {}".format(s, l)
-                            self.g.node[s]["label"] = l
-                            self.carry_on_labels[s].add(l)
-#                        if not finished_labels:
-#                            self.carry_on_labels[s].add(l)
-                            # if there are still labels to be assigned,re-apply
-                            # the procedure on all successors of vertex
-                            # if not succ:
-                            #    succ = self.g.successors(vertex)
-#                queue.extend(set(self.g[vertex]) - visited)
-#                for n in self.g.successors(vertex):
-#                    # if all the predecessors have been already visited
-#                    if not (set(self.g.predecessors(n)) - visited):
-#                        queue.append(n)
-        # copy labels into the JSON context (should be improved)
-        self.json_context["labels"] = list(self.labels)
-        for i in self.json_context["stages"]:
-            self.json_context["stages"][i]["label"] = self.g.node[i]["label"]
-        self.is_labeled = True
-        return visited
+            """
+                visits the DAG following the precedences among stages
+                and labels each node in such a way that labels can be re-used
+                for stages whose execution is mutually exclusive
+            """
+            chains = self.g.label()
+            self.labels = set(range(len(chains)))
