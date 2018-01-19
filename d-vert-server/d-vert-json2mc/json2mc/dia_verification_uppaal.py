@@ -78,7 +78,7 @@ class UppaalEngine(VerificationEngine):
             print("{}Launching command {} on dir. {} ").format(prefix,
                                                                " ".join(command_list),
                                                                self.app_dir)
-            proc_out = sp.check_output(['ls', '-l'], stderr=sp.STDOUT, cwd=self.app_dir)
+            proc_out = sp.check_output(command_list, stderr=sp.STDOUT, cwd=self.app_dir)
             print "{}Terminated -> output:\n{}".format(prefix, proc_out)
             with open(os.path.join(self.app_dir, 'output.txt'), "w+") as of:
                 of.write(proc_out)
