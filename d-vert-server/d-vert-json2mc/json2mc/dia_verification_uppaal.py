@@ -123,9 +123,9 @@ class UppaalResult(VerificationResult):
                               y in
                               [re.sub(' -- ', '', x).strip().split(':') if len(x.split(' -- ')) <= 2
                                else ['outcome', x.split(' -- ')[-1].strip()]]}
-            self.verification_time = self.all_stats['cpu_user_time_used']
-            self.max_memory = self.all_stats['virtual_memory_used']
-            self.memory = self.all_stats['resident_memory_used']
+            self.verification_time = float(self.all_stats['cpu_user_time_used'].split(' ')[0])/1000
+            self.max_memory = float(self.all_stats['virtual_memory_used'].split(' ')[0])/1000
+            self.memory = float(self.all_stats['resident_memory_used'].split(' ')[0])/1000
             self.outcome = 'unsat' if 'NOT' in self.all_stats['outcome'] else 'sat'
             if self.outcome == 'sat':
                 print 'Outcome is {} '.format(self.outcome.upper())
