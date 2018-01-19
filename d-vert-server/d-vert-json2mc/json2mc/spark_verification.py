@@ -92,6 +92,11 @@ class SparkVerificationTask(VerificationTask):
                                      os.path.join(self.result_dir,
                                                   self.hist_file))
         self.starting_context = self.context
+        utils.make_sure_path_exists(os.path.join(self.app_dir, "conf"))
+        with open(os.path.join(self.app_dir, "conf",
+                                'copy_of_' + self.app_name + '.json'), 'w+') as c_file:
+            json.dump(self.context, c_file, indent=4, sort_keys=True)
+
 
     def parse_zot_trace(self, file_path=None):
         """Create new ZotTrace object after parsing history file."""
@@ -285,9 +290,6 @@ class SparkDAG(object):
         '''
         self.json_context = json_context
         self.g = LabeledDiGraph()
-        self.carry_on_labels = {}
-        self.is_labeled = False
-        self.labels = set()
         # add nodes to graph
         for k, v in self.json_context["stages"].iteritems():
             self.g.add_node(k)
@@ -310,10 +312,16 @@ class SparkDAG(object):
             # add predecessors
             for p in self.json_context["stages"][k]["parentsIds"]:
                 self.g.add_edge(str(p), str(k))
-            """
-                visits the DAG following the precedences among stages
-                and labels each node in such a way that labels can be re-used
-                for stages whose execution is mutually exclusive
-            """
-            chains = self.g.label()
-            self.labels = set(range(len(chains)))
+        """
+            visits the DAG following the precedences among stages
+            and labels each node in such a way that labels can be re-used
+            for stages whose execution is mutually exclusive
+        """
+        chains = self.g.label()
+        self.labels = set()
+        for n in self.g.nodes():
+            l = self.g.node[n]['label']
+            self.json_context["stages"][n]['label'] = l
+            self.labels.add(l)
+            print('({})->{}'.format(n, l))
+        self.json_context["labels"] = list(self.labels)
