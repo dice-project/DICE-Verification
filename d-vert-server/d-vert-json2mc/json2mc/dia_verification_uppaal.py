@@ -14,7 +14,6 @@ class UppaalEngine(VerificationEngine):
 
     file_dir = pkg_resources.resource_filename(resource_package, "")
     # base directory
-    #    file_dir = os.path.dirname(os.path.realpath(__file__))
     base_dir = os.environ.get('FORMAL_DICE',
                               file_dir)
     model_filename = 'model.xml'
@@ -43,8 +42,9 @@ class UppaalEngine(VerificationEngine):
         if labeling:
             # LABELING
             print {s['id']: s['label'] for s in stages.values()}
+            stages_int = {int(s): v for s, v in stages.items()}
             labels = {l: {s["id"]: idx for idx, s in
-                          enumerate([x for x in stages.values() if x['label'] == l])}
+                          enumerate([x for x in stages_int.values() if x['label'] == l])}
                       for l in v_task.context["labels"]}
             v_task.context.update({"indexes": labels})
             print warning("Label -> (associated_node -> index)\n{}".format(labels))
@@ -70,20 +70,17 @@ class UppaalEngine(VerificationEngine):
 
     def launch_verification(self):
         prefix = 'uppaal'
-        command_list = [cfg.UPPAAL_CMD, self.model_filename, '-u', self.model_filename, self.property_filename]
+        command_list = [cfg.UPPAAL_CMD, '-u', self.model_filename, self.property_filename]
         try:
             print("{}Launching command {} on dir. {} ").format(prefix,
                                                                " ".join(command_list),
                                                                self.app_dir)
             proc_out = sp.check_output(command_list, stderr=sp.STDOUT, cwd=self.app_dir)
-            print
-            "{}Terminated -> output:\n{}".format(prefix, proc_out)
-            print
-            "{}Verification complete.".format(prefix)
+            print "{}Terminated -> output:\n{}".format(prefix, proc_out)
+            print "{}Verification complete.".format(prefix)
             # do something with output
         except sp.CalledProcessError as exc:
-            print
-            "Error (return code: {})".format(exc.returncode)
+            print "Error (return code: {})".format(exc.returncode)
             raise VerificationException(exc.output)
 
     def process_result(self):
