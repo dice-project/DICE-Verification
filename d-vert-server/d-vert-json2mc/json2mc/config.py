@@ -6,6 +6,7 @@ Created on Jan 19, 2017
 import os
 
 ZOT_CMD = os.environ.get('D_VERT_ZOT_CMD', 'zot')
+UPPAAL_CMD = os.environ.get('D_VERT_UPPAAL_CMD', 'verifyta')
 
 TOLERANCE = 0.04
 

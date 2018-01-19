@@ -262,7 +262,8 @@ USAGE
                     print v_task
                     # TODO: instantiate UppaalEngine if uppaal
                     if engine == "uppaal":
-                        uppal = UppaalEngine(v_task)
+                        uppaal = UppaalEngine(v_task)
+                        uppaal.launch_verification()
                     else:
                         try:
                             if db:
