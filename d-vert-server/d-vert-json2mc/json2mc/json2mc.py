@@ -65,13 +65,6 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
     db_abs_path = os.path.join(os.path.abspath(db_location), 'd_vert_db.json')
     print "Persisting on db at {} ...".format(db_abs_path)
     db = TinyDB(db_abs_path)
-    '''
-    cores = None
-    tasks = None
-    deadline = None
-    input_records = None
-    if isinstance(v_task, DiaVerificationFactory.__supported_techs.get('spark', None)):
-    '''
     cores = v_task.context['tot_cores']
     tasks = v_task.context['stages']['0']['numtask']
     deadline = v_task.context['deadline']
@@ -82,6 +75,7 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
     labeling = v_task.context['labeling'] if 'labeling' in v_task.context else False
     v_time = v_memory = v_max_memory = None
     timestamp_label = None
+    engine = v_task.context['engine']
     if status == COMPLETED:
         timestamp_label = 'end_timestamp'
         outcome = v_task.verification_result.outcome
@@ -95,9 +89,11 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
         timestamp_label = 'interruption_timestamp'
         outcome = 'ERROR/TIMEOUT'
     app_type = v_task.context['app_type'] if 'app_type' in v_task.context else None
-    table = db.table('{}_C{}_T{}_rec{}'.format(app_type, cores, tasks, input_records))
+    table = db.table('{}_{}_C{}_T{}_rec{}'.format(app_type, engine, cores, tasks, input_records))
     entry = Query()
     table.upsert({'id': id,
+                  'benchmark':app_type,
+                  'engine': engine,
                   'cores': cores,
                   'tasks': tasks,
                   'input_records': input_records,
@@ -254,6 +250,7 @@ USAGE
                     context = json.load(param_file,
                                         object_pairs_hook=OrderedDict)
                     context['labeling'] = label
+                    context['engine'] = engine
                     v_task = DiaVerificationFactory.get_verif_task(tech=technology,
                                                                    template_path=template_path,
                                                                    context=context,
@@ -262,8 +259,17 @@ USAGE
                     print v_task
                     # TODO: instantiate UppaalEngine if uppaal
                     if engine == "uppaal":
-                        uppaal = UppaalEngine(v_task)
-                        uppaal.launch_verification()
+                        try:
+                            uppaal = UppaalEngine(v_task)
+                            if db:
+                                persist_results_on_db(v_task, output_dir, STARTED)
+                            uppaal.launch_verification(v_task)
+                            uppaal.process_result(v_task)
+                            if db:
+                                persist_results_on_db(v_task, output_dir, COMPLETED)
+                        except VerificationException as e:
+                            print "Errors while performing the verification task!\n{}\nAborting ...".format(e)
+                            persist_results_on_db(v_task, output_dir, ERROR)
                     else:
                         try:
                             if db:
