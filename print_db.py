@@ -166,14 +166,14 @@ def multikeysort(items, columns):
 
 def display_normal(rows):
     for row in rows:
-        print('app_type:{}\tcores:{}\tdeadline:{}\tlabeling:{}\ttime_bound:{}\t'
+        print('app_type:{}\tcores:{}\tdeadline:{}\ttime_bound:{}\tlabeling:{}\t'
               'outcome:{}\tv_time:{}\t max_memory:{}\tstarted:{} '
               'finished:{}'.format(row['app_type']
                                    if 'app_type' in row else 'unknown',
                                    row['cores'],
                                    row['deadline'],
-                                   row['labeling'] if 'labeling' in row else False,
                                    row['time_bound'],
+                                   row['labeling'] if 'labeling' in row else False,
                                    row['outcome'],
                                    row['v_time'],
                                    row['max_memory'] if 'max_memory' in row else 'Unknown',
@@ -221,7 +221,7 @@ def show_entire_db(db, display, logarithmic):
         scatter_table(t, tb, logarithmic)
 
 
-def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v_time_limit, labeling, time_bound):
+def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v_time_limit, labeling, time_bound, engine):
     for t in db.tables():
         tb = db.table(t)
         run = Query()
@@ -245,8 +245,10 @@ def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v
             query_conditions.append((run.time_bound == time_bound))
         if labeling is not None:
             query_conditions.append((run.labeling == labeling))
+        if engine:
+            query_conditions.append((run.engine == engine))
         query = reduce(lambda a, b: a & b, query_conditions)
-	tmp = tb.search(query)
+        tmp = tb.search(query)
         res = multikeysort(tmp, ['deadline', 'labeling', 'time_bound'])
         if res:
             print('\n ~~~~~~~~~')
@@ -264,21 +266,23 @@ def get_results(args):
     tasks = args.tasks
     records = args.records
     cores = args.cores
-    app_type = args.benchmark
+    app_type = args.benchmark.lower() if args.benchmark else None
     outcome = args.outcome
     v_time_limit = args.v_time_limit
     time_bound = args.time_bound
     logarithmic = args.log
     labeling = args.labeling
+    engine = args.engine
     db = TinyDB(file_path)
     display = display_latex if args.latex else display_normal
     print('Showing results for:\n'
           'app_type == {} & cores == {} & run.input_records == {} & run.tasks == {}'.format(app_type, cores, records, tasks))
-    if not any([tasks, cores, records, app_type, outcome, v_time_limit, labeling, time_bound]):
+    if not any([engine, tasks, cores, records, app_type, outcome, v_time_limit, labeling, time_bound]):
         show_entire_db(db, display, logarithmic)
     else:
         show_queried_values(db=db, display=display, app_type=app_type, outcome=outcome, cores=cores, tasks=tasks,
-                            records=records, v_time_limit=v_time_limit, labeling=labeling, time_bound=time_bound)
+                            records=records, v_time_limit=v_time_limit, labeling=labeling, time_bound=time_bound,
+                            engine=engine)
 
 
 
@@ -312,7 +316,7 @@ if __name__ == "__main__":
                         default=DEFAULT_FILE_PATH,
                         help="file path [default: %(default)s]")
     parser.add_argument('-b', '--benchmark', default=None,
-                        choices=['pagerank', 'kmeans', 'sort_by_key'],
+                        choices=['pagerank', 'kmeans', 'sort_by_key', 'svm', "tpch_18", "tpch_22"],
                         help='the benchmark application to run')
     parser.add_argument('--outcome', default=None,
                         choices=['sat', 'unsat', 'running', 'other'],
@@ -328,6 +332,9 @@ if __name__ == "__main__":
                         help='display row in latex table format')
     parser.add_argument('--log', action='store_true',
                         help='plots yaxis in logaritmic format')
+    parser.add_argument('-e', '--engine', default=None,
+                        choices=['zot', 'uppaal'],
+                        help='verification engine')
 
     parser.set_defaults(func=get_results)
     args = parser.parse_args()

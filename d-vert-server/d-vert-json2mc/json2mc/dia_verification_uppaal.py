@@ -55,9 +55,15 @@ class UppaalEngine(VerificationEngine):
                             not any([int(k) in s["parentsIds"] for s in stages.values()])}
         else:
             # NO LABELING
-            final_stages = [k for k in stages.keys() if not any([k in v["parentsIds"] for v in stages.values()])]
-
+            stage_id_map = {s: idx for idx, s in enumerate(stages.keys())}
+            print okgreen("stage_id_map: {}".format(stage_id_map))
+            v_task.context['stage_id_map'] = stage_id_map
+            for k, s in v_task.context['stages'].items():
+                s['ordinal_id'] = stage_id_map[s['id']]
+                print v_task.context['stages'][k]['ordinal_id']
+            final_stages = [stage_id_map[k] for k in stages.keys() if not any([k in v["parentsIds"] for v in stages.values()])]
         v_task.context.update({"finalstages": final_stages})
+
         print okblue("Final stage -> label\n{}".format(final_stages))
 
         make_sure_path_exists(self.app_dir)
@@ -68,7 +74,6 @@ class UppaalEngine(VerificationEngine):
         print "rendering property with template: {} \n to {}".format(self.property_template_path, v_task.app_dir)
         with open(os.path.join(self.app_dir, self.property_filename), 'w+') as outfile:
             outfile.write(self.property_template.render(v_task.context))
-        print "end"
 
 
     def launch_verification(self, v_task):

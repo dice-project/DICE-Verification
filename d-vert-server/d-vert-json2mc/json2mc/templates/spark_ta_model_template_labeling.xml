@@ -9,15 +9,15 @@ const int NUMBER_OF_STAGES = {{ stages | length }};
 int[0,NUMBER_OF_CPU] available_cpu = {{ tot_cores }};
 
 {% for l in labels -%}
-int [0, {{ stages.values() | map(attribute="label") | select("equalto", l) | join | length - 1}}] active_stage{{ l }} = 0;
+int [0, {{ indexes[l] | length }} ] active_stage{{ l }} = 0;
 {% endfor %}
 
 clock time;
     </declaration>
 {% for l in labels -%}
-    <template>
-        <name x="5" y="5">Stage{{ l }}</name>
-        <declaration>// Place local declarations here.
+<template>
+    <name x="5" y="5">Stage{{ l }}</name>
+    <declaration>// Place local declarations here.
 clock c;
 
 int[0, {{ stages.values() | selectattr("label", "equalto", l) | map(attribute="numtask") | max }}] ntasks=0;
@@ -42,14 +42,16 @@ return 0;
 }
 
 int def_active_stage(int active){
-   {% for s in range(0, indexes[l]|length-1) -%}
+   {% for s in range(0, indexes[l]|length) -%}
 		if (active=={{ loop.index - 1 }})
 			return {{ loop.index }};
 	{% endfor -%}	
 return 0;
 }
 </declaration>
-       
+    <location id="completed" x="-501" y="297">
+        <name x="-511" y="263">Completed</name>
+    </location>
     <location id="init" x="-250" y="408">
         <name x="-250" y="416">Init</name>
     </location>
@@ -63,15 +65,28 @@ return 0;
     </location>
     {% endfor %}
     <init ref="init"/>
+    		<transition>
+			<source ref="batch_finished"/>
+			<target ref="completed"/>
+			<label kind="guard" x="-483" y="263">(active_stage{{ l }}=={{ indexes[l] | length - 1 }} &amp;&amp; ntasks == def_number_of_tasks(active_stage{{ l }}))</label>
+			<label kind="assignment" x="-483" y="297"> active_stage{{ l }} = {{ indexes[l] | length }} </label>
+		</transition>
     <transition>
         <source ref="init"/>
         <target ref="batch_finished"/>
         <label kind="guard" x="-246" y="400">
         {% for s, idx in indexes[l].iteritems() -%}
            {% if stages[s].parentsIds|length > 0 -%}
-           (active_stage{{ l }}!={{ idx }} || {% for p in stages[s].parentsIds -%} active_stage{{stages[p|string].label}}&gt;{{ indexes[stages[p|string].label][p|string] }}{% if (0 < loop.index) and (loop.index < stages[s].parentsIds|length) -%} &amp;&amp; {% endif -%}{% endfor -%}){% if (0 < loop.index) and (loop.index < indexes[l]|length) -%}&amp;&amp;{% endif %}
+               (active_stage{{ l }}!={{ idx }} ||
+                    {% for p in stages[s].parentsIds -%}
+                        active_stage{{stages[p|string].label}} &gt; {{ indexes[stages[p|string].label][p|string] }}
+                        &amp;&amp;
+                {% endfor -%}
+                true)
+            &amp;&amp;
         {% endif -%}
         {% endfor -%}
+            true
         </label>
         <label kind="assignment" x="-672" y="1960">TASK_DURATION=def_task_duration(active_stage{{ l }}),
 NUMBER_OF_TASKS=def_number_of_tasks(active_stage{{ l }}),

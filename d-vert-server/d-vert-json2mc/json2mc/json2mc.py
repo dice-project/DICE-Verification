@@ -68,7 +68,8 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
     cores = v_task.context['tot_cores']
     tasks = v_task.context['stages']['0']['numtask']
     deadline = v_task.context['deadline']
-    input_records = v_task.context['stages']['0']['records_read']
+    input_records = v_task.context['stages']['0']['records_read'] if 'records_read' in v_task.context['stages'][
+        '0'] else v_task.context['stages']['0']['recordsread']
     time_bound = v_task.context['verification_params']['time_bound']
     result_dir = v_task.result_dir
     id = v_task.app_name
