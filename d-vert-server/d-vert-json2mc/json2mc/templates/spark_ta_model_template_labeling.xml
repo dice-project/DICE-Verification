@@ -42,7 +42,7 @@ return 0;
 }
 
 int def_active_stage(int active){
-   {% for s in range(0, indexes[l]|length) -%}
+   {% for s in range(0, indexes[l]|length - 1) -%}
 		if (active=={{ loop.index - 1 }})
 			return {{ loop.index }};
 	{% endfor -%}	
@@ -78,11 +78,11 @@ return 0;
         {% for s, idx in indexes[l].iteritems() -%}
            {% if stages[s].parentsIds|length > 0 -%}
                (active_stage{{ l }}!={{ idx }} ||
-                    {% for p in stages[s].parentsIds -%}
+                    ({% for p in stages[s].parentsIds -%}
                         active_stage{{stages[p|string].label}} &gt; {{ indexes[stages[p|string].label][p|string] }}
                         &amp;&amp;
                 {% endfor -%}
-                true)
+                true))
             &amp;&amp;
         {% endif -%}
         {% endfor -%}
@@ -95,7 +95,7 @@ ntasks=0</label>
     <transition>
        <source ref="batch_finished"/>
        <target ref="init"/>
-       <label kind="guard" x="392" y="1960">ntasks==NUMBER_OF_TASKS</label>
+       <label kind="guard" x="392" y="1960">active_stage{{ l }} &lt; {{ indexes[l] | length - 1 }}  &amp;&amp; ntasks==NUMBER_OF_TASKS</label>
        <label kind="assignment" x="432" y="1976">active_stage{{ l }}=def_active_stage(active_stage{{ l }})</label>
     </transition>
     {% for k in range(1, tot_cores + 1) -%}
