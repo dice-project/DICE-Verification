@@ -9,6 +9,7 @@ import subprocess as sp
 from v_exceptions import VerificationException
 import re
 from datetime import datetime as dt
+DUMMY_LABELING = False
 
 class UppaalEngine(VerificationEngine):
 
@@ -23,8 +24,12 @@ class UppaalEngine(VerificationEngine):
 
     def __init__(self, v_task):
         labeling = v_task.context["labeling"]
-        model_template_filename = "spark_ta_model_template_{}labeling.xml".format('' if labeling else 'NO_')
-        property_template_filename = "spark_ta_property_template_{}labeling.xml".format('' if labeling else 'NO_')
+        depth_first = v_task.context['depth_first'] if 'depth_first' in v_task.context else False
+
+        model_template_filename = "spark_ta_model_template_{}labeling.xml".format('' if labeling or DUMMY_LABELING
+                                                                                  else 'NO_')
+        property_template_filename = "spark_ta_property_template_{}labeling.xml".format('' if labeling or DUMMY_LABELING
+                                                                                  else 'NO_')
         self.model_template_path = os.path.join(UppaalEngine.base_dir,
                                                 "templates",
                                                 model_template_filename)
@@ -42,8 +47,12 @@ class UppaalEngine(VerificationEngine):
 
         stages = v_task.context["stages"]
 
-        if labeling:
-            # LABELING
+        if not labeling and DUMMY_LABELING:
+            for k, v in stages.items():
+                v['label'] = int(k)
+            v_task.context["labels"] = [int(k) for k in stages.keys()]
+
+        if labeling or DUMMY_LABELING:
             print {s['id']: s['label'] for s in stages.values()}
             stages_int = {int(s): v for s, v in stages.items()}
             labels = {l: {s["id"]: idx for idx, s in
@@ -62,10 +71,10 @@ class UppaalEngine(VerificationEngine):
                 s['ordinal_id'] = stage_id_map[s['id']]
                 print v_task.context['stages'][k]['ordinal_id']
             final_stages = [stage_id_map[k] for k in stages.keys() if not any([k in v["parentsIds"] for v in stages.values()])]
+
         v_task.context.update({"finalstages": final_stages})
 
         print okblue("Final stage -> label\n{}".format(final_stages))
-
         make_sure_path_exists(self.app_dir)
         # RENDER MODEL AND PROPERTY
         print "rendering model with template: {}".format(self.model_template_path)
@@ -78,7 +87,10 @@ class UppaalEngine(VerificationEngine):
 
     def launch_verification(self, v_task):
         prefix = '[uppaal]'
-        command_list = [cfg.UPPAAL_CMD, '-u', self.model_filename, self.property_filename]
+        options = ['-u']
+        # options.append('-d')
+        # options.append('-C')
+        command_list = [cfg.UPPAAL_CMD] + options + [self.model_filename, self.property_filename]
         try:
             print("{}Launching command {} on dir. {} ").format(prefix,
                                                                " ".join(command_list),
@@ -86,7 +98,12 @@ class UppaalEngine(VerificationEngine):
             proc_out = sp.check_output(command_list, stderr=sp.STDOUT, cwd=self.app_dir)
             print "{}Terminated -> output:\n{}".format(prefix, proc_out)
             with open(os.path.join(self.app_dir, 'output.txt'), "w+") as of:
-                of.write(proc_out)
+                of.write(proc_out
+                         .replace('^[[K^M', '\n')
+                         .replace('^[[2K', '')
+                         .replace('\x1b[2K', '')
+                         .replace('\x1b[K\r', '\n')
+                         )
             print "{}Verification complete.".format(prefix)
             # do something with output
         except sp.CalledProcessError as exc:
@@ -124,10 +141,13 @@ class UppaalResult(VerificationResult):
         self.timestamp = None
         self.timestamp_str = None
         if lines:
+            for tmp in [y for x in lines if '--' in x for y in
+                    [re.sub(' -- ', '', x).strip().split(':') if not x.strip().startswith('-- Formula')
+            else ['outcome', re.sub(' -- ', '', x).strip()]]]:
+                print tmp
             self.all_stats = {re.sub(' +', '_', y[0].strip().lower()): y[1].strip() for x in lines if '--' in x for
-                              y in
-                              [re.sub(' -- ', '', x).strip().split(':') if len(x.split(' -- ')) <= 2
-                               else ['outcome', x.split(' -- ')[-1].strip()]]}
+                              y in [re.sub(' -- ', '', x).strip().split(':') if not x.strip().startswith('-- Formula')
+                                    else ['outcome', re.sub(' -- ', '', x).strip()] ]}
             self.verification_time = float(self.all_stats['cpu_user_time_used'].split(' ')[0])/1000
             self.max_memory = float(self.all_stats['virtual_memory_used'].split(' ')[0])/1000
             self.memory = float(self.all_stats['resident_memory_used'].split(' ')[0])/1000

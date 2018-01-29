@@ -68,7 +68,7 @@ return 0;
     		<transition>
 			<source ref="batch_finished"/>
 			<target ref="completed"/>
-			<label kind="guard" x="-483" y="263">(active_stage{{ l }}=={{ indexes[l] | length - 1 }} &amp;&amp; ntasks == def_number_of_tasks(active_stage{{ l }}))</label>
+			<label kind="guard" x="-483" y="263">(active_stage{{ l }}=={{ indexes[l] | length - 1 }} &amp;&amp; ntasks == NUMBER_OF_TASKS)</label>
 			<label kind="assignment" x="-483" y="297"> active_stage{{ l }} = {{ indexes[l] | length }} </label>
 		</transition>
     <transition>

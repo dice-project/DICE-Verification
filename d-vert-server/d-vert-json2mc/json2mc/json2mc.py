@@ -217,6 +217,7 @@ USAGE
                             help="path to JSON file containing the graphical "
                             "configuration [default: %(default)s]")
         parser.add_argument("--db", dest="db", action="store_true")
+        parser.add_argument("--dept-first", dest="depth_first", action="store_true")
 
         # Process arguments
         args = parser.parse_args()
@@ -235,6 +236,7 @@ USAGE
         label = args.label
         db = args.db
         engine = args.engine
+        depth_first = args.depth_first
 
         print("Context_path: {}".format(context_path))
 
@@ -252,6 +254,7 @@ USAGE
                                         object_pairs_hook=OrderedDict)
                     context['labeling'] = label
                     context['engine'] = engine
+                    context['depth_first'] = depth_first
                     v_task = DiaVerificationFactory.get_verif_task(tech=technology,
                                                                    template_path=template_path,
                                                                    context=context,

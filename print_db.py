@@ -167,24 +167,28 @@ def multikeysort(items, columns):
 def display_normal(rows):
     for row in rows:
         print('app_type:{}\tcores:{}\tdeadline:{}\ttime_bound:{}\tlabeling:{}\t'
-              'outcome:{}\tv_time:{}\t max_memory:{}\tstarted:{} '
-              'finished:{}'.format(row['app_type']
-                                   if 'app_type' in row else 'unknown',
-                                   row['cores'],
-                                   row['deadline'],
-                                   row['time_bound'],
-                                   row['labeling'] if 'labeling' in row else False,
-                                   row['outcome'],
-                                   row['v_time'],
-                                   row['max_memory'] if 'max_memory' in row else 'Unknown',
-                                   row['start_timestamp']
-                                   if 'start_timestamp' in row
-                                   else 'Unknown',
-                                   row['end_timestamp']
-                                   if 'end_timestamp' in row
-                                   else row['interruption_timestamp']
-                                   if 'interruption_timestamp' in row
-                                   else'Unknown'))
+              'outcome:{}\tv_time:{}\tmem1:{}\tmem2:{}'
+#              '\tstarted:{}'
+#              '\tfinished:{}'
+              .format(row['app_type']
+                      if 'app_type' in row else 'unknown',
+                      row['cores'],
+                      row['deadline'],
+                      row['time_bound'],
+                      row['labeling'] if 'labeling' in row else False,
+                      row['outcome'],
+                      row['v_time'],
+                      row['max_memory'] if 'max_memory' in row else 'Unknown',
+                      row['memory'] if 'memory' in row else 'Unknown',
+#                      row['start_timestamp']
+#                      if 'start_timestamp' in row
+#                      else 'Unknown',
+#                      row['end_timestamp']
+#                      if 'end_timestamp' in row
+#                      else row['interruption_timestamp']
+#                      if 'interruption_timestamp' in row
+#                      else 'Unknown'
+                      ))
 
 
 def get_min_sat_deadline(rows):
@@ -207,6 +211,20 @@ def display_latex(rows):
                                                row['v_time']))
 
 
+def display_markdown(rows):
+    print("| Application | Cores | Deadline | Labeling | Outcome | Verification Time | Max Memory |\n"
+          "|-------|:-------:|:------:|:--------:|:--------:|:------:|:------:|")
+    for r in rows:
+        print("| {} | {} | {} | {} | {} | {} | {} |".format(r['app_type'],
+                                                            r['cores'],
+                                                            r['deadline'],
+                                                            r['labeling'],
+                                                            r['outcome'],
+                                                            r['v_time'],
+                                                            r['max_memory'] if 'max_memory' in r else None
+                                                            ))
+
+
 def show_entire_db(db, display, logarithmic):
     for t in db.tables():
         print('\n ~~~~~~~~~')
@@ -215,9 +233,11 @@ def show_entire_db(db, display, logarithmic):
         display(tb)
         print('~~~~~~~~~'*5)
         rows_w_min_deadline, min_deadline = get_min_sat_deadline(tb)
+        '''
         if rows_w_min_deadline:
             print('the minimum SAT deadline is: {},\nobtained with the following experiments:'.format(min_deadline))
             display(rows_w_min_deadline)
+        '''
         scatter_table(t, tb, logarithmic)
 
 
@@ -251,14 +271,17 @@ def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v
         tmp = tb.search(query)
         res = multikeysort(tmp, ['deadline', 'labeling', 'time_bound'])
         if res:
-            print('\n ~~~~~~~~~')
-            print(t)
+            print('\n')
+            print("### {}".format(t))
             display(res)
-            print('~~~~~~~~~' * 5)
+            print('\n')
             rows_w_min_deadline, min_deadline = get_min_sat_deadline(res)
+            '''
             if rows_w_min_deadline:
                 print('the minimum SAT deadline is: {},\nobtained with the following experiments:'.format(min_deadline))
                 display(rows_w_min_deadline)
+            '''
+
 
 
 def get_results(args):
@@ -274,9 +297,9 @@ def get_results(args):
     labeling = args.labeling
     engine = args.engine
     db = TinyDB(file_path)
-    display = display_latex if args.latex else display_normal
-    print('Showing results for:\n'
-          'app_type == {} & cores == {} & run.input_records == {} & run.tasks == {}'.format(app_type, cores, records, tasks))
+    display = display_markdown if args.latex else display_normal
+    # print('Showing results for:\n'
+    #   'app_type == {} & cores == {} & run.input_records == {} & run.tasks == {}'.format(app_type, cores, records, tasks))
     if not any([engine, tasks, cores, records, app_type, outcome, v_time_limit, labeling, time_bound]):
         show_entire_db(db, display, logarithmic)
     else:
@@ -316,7 +339,8 @@ if __name__ == "__main__":
                         default=DEFAULT_FILE_PATH,
                         help="file path [default: %(default)s]")
     parser.add_argument('-b', '--benchmark', default=None,
-                        choices=['pagerank', 'kmeans', 'sort_by_key', 'svm', "tpch_18", "tpch_22"],
+                        choices=['pagerank', 'kmeans', 'sort_by_key', 'svm', "tpch_18", "tpch_22", 'tpch_22_7n',
+                                 'tpch_22_6n', 'tpch_22_8n_a', 'tpch_22_8n_b', 'tpch_22_8n_c'],
                         help='the benchmark application to run')
     parser.add_argument('--outcome', default=None,
                         choices=['sat', 'unsat', 'running', 'other'],
