@@ -10,11 +10,11 @@ from v_exceptions import VerificationException
 import re
 from datetime import datetime as dt
 DUMMY_LABELING = False
+DEFAULT_SEARCH_ORDER = 'breadth-first'
+
 
 class UppaalEngine(VerificationEngine):
-
     resource_package = __name__  # Could be any module/package name
-
     file_dir = pkg_resources.resource_filename(resource_package, "")
     # base directory
     base_dir = os.environ.get('FORMAL_DICE',
@@ -24,7 +24,7 @@ class UppaalEngine(VerificationEngine):
 
     def __init__(self, v_task):
         labeling = v_task.context["labeling"]
-        depth_first = v_task.context['depth_first'] if 'depth_first' in v_task.context else False
+        self.search_order = v_task.context['search_order'] if 'search_order' in v_task.context else DEFAULT_SEARCH_ORDER
 
         model_template_filename = "spark_ta_model_template_{}labeling.xml".format('' if labeling or DUMMY_LABELING
                                                                                   else 'NO_')
@@ -84,11 +84,12 @@ class UppaalEngine(VerificationEngine):
         with open(os.path.join(self.app_dir, self.property_filename), 'w+') as outfile:
             outfile.write(self.property_template.render(v_task.context))
 
-
     def launch_verification(self, v_task):
         prefix = '[uppaal]'
+        # -u: show summary after verification (incorrect for liveness properties).
         options = ['-u']
-        # options.append('-d')
+        if self.search_order and self.search_order == 'depth-first':
+            options.append('-d')
         # options.append('-C')
         command_list = [cfg.UPPAAL_CMD] + options + [self.model_filename, self.property_filename]
         try:

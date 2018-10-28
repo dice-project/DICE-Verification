@@ -74,6 +74,7 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
     result_dir = v_task.result_dir
     id = v_task.app_name
     labeling = v_task.context['labeling'] if 'labeling' in v_task.context else False
+    search_order = v_task.context['search_order'] if 'search_order' in v_task.context else None
     v_time = v_memory = v_max_memory = None
     timestamp_label = None
     engine = v_task.context['engine']
@@ -107,9 +108,10 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
                   timestamp_label: get_current_datetime_string(),
                   'labeling': labeling,
                   'memory': v_memory,
-                  'max_memory': v_max_memory
+                  'max_memory': v_max_memory,
+                  'search_order': search_order,
                   },
-                 (entry.id == id) & (entry.labeling == labeling)
+                 (entry.id == id) & (entry.labeling == labeling) & (entry.search_order == search_order)
                  )
 
 

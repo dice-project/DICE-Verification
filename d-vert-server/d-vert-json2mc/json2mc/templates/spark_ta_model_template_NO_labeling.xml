@@ -14,7 +14,7 @@ clock time;</declaration>
  {% for k, s in stages.iteritems() -%}
     <template>
         <name x="5" y="5">Stage{{ stage_id_map[k] }}</name>
-        <parameter>const int TASK_DURATION, const int STAGE_ID, const int NUMBER_OF_TASKS</parameter>
+        <parameter>const int TASK_DURATION, const int EPSILON, const int STAGE_ID, const int NUMBER_OF_TASKS</parameter>
         <declaration>// Place local declarations here.
 
 clock c;
@@ -29,7 +29,7 @@ int[0, NUMBER_OF_TASKS] ntasks=0;</declaration>
     {% for tc in range(1, tot_cores + 1) -%}
         <location id="cores{{ tc }}" x="{{ 80   * loop.index - 500}}" y="104">
             <name x="{{ 80 * loop.index - 500}}" y="80">_{{ tc }}_run_tc</name>
-            <label kind="invariant" x="0" y="0">c&lt;=TASK_DURATION</label>
+            <label kind="invariant" x="0" y="0">c&lt;=TASK_DURATION+EPSILON</label>
         </location>
     {% endfor %}
         <location id="batch_finished" x="16" y="408">
@@ -59,7 +59,7 @@ int[0, NUMBER_OF_TASKS] ntasks=0;</declaration>
         <transition>
             <source ref="cores{{ tc }}"/>
             <target ref="batch_finished"/>
-            <label kind="guard" x="512" y="424">c == TASK_DURATION</label>
+            <label kind="guard" x="512" y="424">c >= TASK_DURATION-EPSILON</label>
             <label kind="assignment" x="512" y="440">ntasks = ntasks+{{ tc }}, available_cpu=available_cpu+{{ tc }}</label>
             <nail x="624" y="408"/>
         </transition>
@@ -74,7 +74,7 @@ int[0, NUMBER_OF_TASKS] ntasks=0;</declaration>
     {% endfor %}
     <system>// Place template instantiations here.
 {% for k, s in stages.iteritems() -%}
-stage{{ stage_id_map[k] }} = Stage{{ stage_id_map[k] }}({{ s.t_task_verification | int }}, {{ stage_id_map[k] }}, {{ s.numtask }});
+stage{{ stage_id_map[k] }} = Stage{{ stage_id_map[k] }}({{ (s.t_task_verification * (1 + tolerance)) | int }}, {{ (s.t_task_verification * (1 + tolerance) * tolerance) | int }}, {{ stage_id_map[k] }}, {{ s.numtask }});
 {% endfor %}
 
 // cost0 = CumulativeCost();
@@ -82,3 +82,4 @@ stage{{ stage_id_map[k] }} = Stage{{ stage_id_map[k] }}({{ s.t_task_verification
 // List one or more processes to be composed into a system.
 system stage{{ stages.values() | join(', stage', attribute='ordinal_id') }};</system>
 </nta>
+

@@ -664,13 +664,13 @@
 		:smt-lib :smt2
 		:logic :QF_UFRDL
 		{%- if verification_params.no_loops %}
-		:over-clocks 0 
-		:parametric-regions nil 
+		:over-clocks 1
+		:no-periodic-regions 't
 		{% else %}
 		:over-clocks MAX_TIME
 		:parametric-regions 't
 		{% endif %}
-        
+
     
 		:discrete-counters (gen-counters-list the-labels)
 

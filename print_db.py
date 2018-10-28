@@ -1,15 +1,15 @@
 from tinydb import TinyDB, Query
 import argparse
 import os
-
-file_dir = os.path.dirname(os.path.realpath(__file__))
-DEFAULT_FILE_PATH = os.path.join(file_dir, 'd-vert-server/d-vert-json2mc/out/d_vert_db.json')
-
 import plotly.plotly as py
 import plotly.graph_objs as go
 import plotly.offline as offline
-import os
+from colors import header, okblue, okgreen, warning, bold, underline, fail
 
+file_dir = os.path.dirname(os.path.realpath(__file__))
+DEFAULT_FILE_PATH = os.path.join(file_dir, 'd-vert-server/d-vert-json2mc/out/d_vert_db.json')
+DEFAULT_SEARCH_ORDER = 'breadth-first'
+SEARCH_ORDERS = ['breadth-first', 'depth-first']
 
 def get_layout(title, x_title, y_title, logarithmic=False, y_max=None, min_deadline=None):
     return go.Layout(
@@ -166,8 +166,26 @@ def multikeysort(items, columns):
 
 def display_normal(rows):
     for row in rows:
-        print('app_type:{}\tcores:{}\tdeadline:{}\ttime_bound:{}\tlabeling:{}\t'
-              'outcome:{}\tv_time:{}\tmem1:{}\tmem2:{}'
+        if row['outcome'] == 'running':
+            show_so = header
+        elif row['outcome'] == 'ERROR/TIMEOUT':
+            show_so = fail
+        elif 'search_order' in row and row['search_order'] == 'breadth-first':
+            show_so = warning
+        else:
+            show_so = okblue
+        show_lbl = underline if row['labeling'] else bold
+        print(show_so(show_lbl(
+            'app_type:{}'
+            '\tcores:{}'
+            '\tdeadline:{}'
+            '\ttime_bound:{}'
+            '\tlabeling:{}'
+            '\tsearch_order:{}'
+            '\toutcome:{}'
+            '\tv_time:{}'
+            '\tmem1:{}'
+            '\tmem2:{}'
 #              '\tstarted:{}'
 #              '\tfinished:{}'
               .format(row['app_type']
@@ -176,6 +194,7 @@ def display_normal(rows):
                       row['deadline'],
                       row['time_bound'],
                       row['labeling'] if 'labeling' in row else False,
+                      row['search_order'] if 'search_order' in row else False,
                       row['outcome'],
                       row['v_time'],
                       row['max_memory'] if 'max_memory' in row else 'Unknown',
@@ -188,7 +207,7 @@ def display_normal(rows):
 #                      else row['interruption_timestamp']
 #                      if 'interruption_timestamp' in row
 #                      else 'Unknown'
-                      ))
+                      ))))
 
 
 def get_min_sat_deadline(rows):
@@ -212,17 +231,32 @@ def display_latex(rows):
 
 
 def display_markdown(rows):
-    print("| Application | Cores | Deadline | Labeling | Outcome | Verification Time | Max Memory |\n"
-          "|-------|:-------:|:------:|:--------:|:--------:|:------:|:------:|")
+    home_dir = '/Users/francesco/Documents/phd/Spark-D-VerT/DICE-Verification/d-vert-server/d-vert-json2mc/d4s_27_11'
+    print("| Application | Cores | Deadline |"
+          # " Labeling |"
+          " Outcome | Verification Time |"
+          # " Max Memory |"
+          " id |"
+          "\n"
+          "|-------|:-------:|:------:|:--------:|:--------:|"
+          # ":------:|"
+          # ":------:|"
+          ":------:|"
+          )
     for r in rows:
-        print("| {} | {} | {} | {} | {} | {} | {} |".format(r['app_type'],
-                                                            r['cores'],
-                                                            r['deadline'],
-                                                            r['labeling'],
-                                                            r['outcome'],
-                                                            r['v_time'],
-                                                            r['max_memory'] if 'max_memory' in r else None
-                                                            ))
+        print("| {} | {} | {} | {} | {} |"
+        # " {} |"
+        # " {} |"
+        " {} |"
+              "".format(r['app_type'] if 'app_type' in r else None,
+                        r['cores'],
+                        r['deadline'],
+                        # r['labeling'],
+                        r['outcome'],
+                        r['v_time'],
+                        # r['max_memory'] if 'max_memory' in r else None
+                        r['id']  # os.path.join(home_dir, r['id'])
+                        ))
 
 
 def show_entire_db(db, display, logarithmic):
@@ -230,7 +264,10 @@ def show_entire_db(db, display, logarithmic):
         print('\n ~~~~~~~~~')
         print(t)
         tb = db.table(t)
-        display(tb)
+        res = multikeysort(tb, ['deadline',
+                                 # 'labeling',
+                                 'time_bound'])
+        display(res)
         print('~~~~~~~~~'*5)
         rows_w_min_deadline, min_deadline = get_min_sat_deadline(tb)
         '''
@@ -241,7 +278,9 @@ def show_entire_db(db, display, logarithmic):
         scatter_table(t, tb, logarithmic)
 
 
-def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v_time_limit, labeling, time_bound, engine):
+def show_queried_values(db, display, app_type, outcome, cores,
+                        tasks, records, v_time_limit, labeling,
+                        time_bound, engine, search_order):
     for t in db.tables():
         tb = db.table(t)
         run = Query()
@@ -265,22 +304,30 @@ def show_queried_values(db, display, app_type, outcome, cores, tasks, records, v
             query_conditions.append((run.time_bound == time_bound))
         if labeling is not None:
             query_conditions.append((run.labeling == labeling))
+        if search_order:
+            query_conditions.append((run.search_order == search_order))
         if engine:
             query_conditions.append((run.engine == engine))
         query = reduce(lambda a, b: a & b, query_conditions)
         tmp = tb.search(query)
-        res = multikeysort(tmp, ['deadline', 'labeling', 'time_bound'])
+        res = multikeysort(tmp, ['deadline',
+                                 'search_order',
+                                 'labeling',
+                                 # 'time_bound',
+                                 ])
         if res:
             print('\n')
             print("### {}".format(t))
             display(res)
-            print('\n')
+            #print('\n')
             rows_w_min_deadline, min_deadline = get_min_sat_deadline(res)
-            '''
+
             if rows_w_min_deadline:
-                print('the minimum SAT deadline is: {},\nobtained with the following experiments:'.format(min_deadline))
-                display(rows_w_min_deadline)
-            '''
+                print('the minimum SAT deadline is: {}'
+                      #',\nobtained with the following experiments:'
+                      ''.format(min_deadline))
+                #display(rows_w_min_deadline)
+
 
 
 
@@ -296,16 +343,17 @@ def get_results(args):
     logarithmic = args.log
     labeling = args.labeling
     engine = args.engine
+    search_order = args.search_order
     db = TinyDB(file_path)
     display = display_markdown if args.latex else display_normal
     # print('Showing results for:\n'
     #   'app_type == {} & cores == {} & run.input_records == {} & run.tasks == {}'.format(app_type, cores, records, tasks))
-    if not any([engine, tasks, cores, records, app_type, outcome, v_time_limit, labeling, time_bound]):
+    if not any([engine, tasks, cores, records, app_type, outcome, v_time_limit, labeling, time_bound, search_order]):
         show_entire_db(db, display, logarithmic)
     else:
         show_queried_values(db=db, display=display, app_type=app_type, outcome=outcome, cores=cores, tasks=tasks,
                             records=records, v_time_limit=v_time_limit, labeling=labeling, time_bound=time_bound,
-                            engine=engine)
+                            engine=engine, search_order=search_order)
 
 
 
@@ -350,8 +398,6 @@ if __name__ == "__main__":
                         help='select only only runs in which labeling was used')
     group.add_argument('--no-labeling', action='store_false', dest='labeling', default=None,
                         help='select only only runs in which labeling was not used')
-#    parser.add_argument('--labeling', action='store_true',
-#                        help='select only only runs in which labeling was used')
     parser.add_argument('-l', '--latex', action='store_true',
                         help='display row in latex table format')
     parser.add_argument('--log', action='store_true',
@@ -359,6 +405,9 @@ if __name__ == "__main__":
     parser.add_argument('-e', '--engine', default=None,
                         choices=['zot', 'uppaal'],
                         help='verification engine')
+    parser.add_argument('-o', '--search-order',
+                        choices=SEARCH_ORDERS,
+                        help='search order')
 
     parser.set_defaults(func=get_results)
     args = parser.parse_args()

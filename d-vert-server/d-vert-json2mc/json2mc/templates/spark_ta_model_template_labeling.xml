@@ -23,15 +23,26 @@ clock c;
 int[0, {{ stages.values() | selectattr("label", "equalto", l) | map(attribute="numtask") | max }}] ntasks=0;
 
 int TASK_DURATION;
+int EPSILON;
 int NUMBER_OF_TASKS;
-
+        
 int def_task_duration(int active){
 	{% for s, idx in indexes[l].iteritems() -%}
 		if (active=={{ idx }})
-			return {{ stages[s]["t_task_verification"] | int }};
+			return {{ (stages[s]["t_task_verification"] * (1 + tolerance)) | int }};
 	{% endfor -%}
 return 0;
 }
+
+
+int def_epsilon(int active){
+	{% for s, idx in indexes[l].iteritems() -%}
+		if (active=={{ idx }})
+			return {{ (stages[s]["t_task_verification"] * (1 + tolerance) * tolerance)  | int }};
+	{% endfor -%}
+return 0;
+}
+
 
 int def_number_of_tasks(int active){
    {% for  s, idx in indexes[l].iteritems() -%}
@@ -61,7 +72,7 @@ return 0;
     {% for k in range(1, tot_cores + 1) -%}
     <location id="cores{{ k }}" x="{{ 80   * loop.index - 500}}" y="104">
         <name x="{{ 80 * loop.index - 500}}" y="80">_{{ k }}_run_tc</name>
-        <label kind="invariant" x="0" y="0">c&lt;=TASK_DURATION</label>
+        <label kind="invariant" x="0" y="0"> c &lt;= TASK_DURATION + EPSILON</label>
     </location>
     {% endfor %}
     <init ref="init"/>
@@ -88,9 +99,10 @@ return 0;
         {% endfor -%}
             true
         </label>
-        <label kind="assignment" x="-672" y="1960">TASK_DURATION=def_task_duration(active_stage{{ l }}),
-NUMBER_OF_TASKS=def_number_of_tasks(active_stage{{ l }}),
-ntasks=0</label>
+        <label kind="assignment" x="-672" y="1960"> TASK_DURATION = def_task_duration(active_stage{{ l }}),
+            NUMBER_OF_TASKS=def_number_of_tasks(active_stage{{ l }}),
+            EPSILON = def_epsilon(active_stage{{ l }}),
+            ntasks=0</label>
     </transition> 
     <transition>
        <source ref="batch_finished"/>
@@ -110,7 +122,7 @@ ntasks=0</label>
     <transition>
        <source ref="cores{{ k }}"/>
        <target ref="batch_finished"/>
-       <label kind="guard" x="512" y="424">c == TASK_DURATION</label>
+       <label kind="guard" x="512" y="424"> c >= TASK_DURATION - EPSILON</label>
        <label kind="assignment" x="512" y="440">ntasks = ntasks+{{ k }}, available_cpu=available_cpu+{{ k }}</label>
     </transition>
     {% endfor %}
