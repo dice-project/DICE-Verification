@@ -71,6 +71,7 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
     input_records = v_task.context['stages']['0']['records_read'] if 'records_read' in v_task.context['stages'][
         '0'] else v_task.context['stages']['0']['recordsread']
     time_bound = v_task.context['verification_params']['time_bound']
+    plugin = v_task.context['verification_params']['plugin']
     result_dir = v_task.result_dir
     id = v_task.app_name
     labeling = v_task.context['labeling'] if 'labeling' in v_task.context else False
@@ -93,6 +94,7 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
     app_type = v_task.context['app_type'] if 'app_type' in v_task.context else None
     table = db.table('{}_{}_C{}_T{}_rec{}'.format(app_type, engine, cores, tasks, input_records))
     entry = Query()
+    plugin_condition = (entry.plugin == plugin) if engine == 'zot' else True
     table.upsert({'id': id,
                   'benchmark':app_type,
                   'engine': engine,
@@ -110,8 +112,12 @@ def persist_results_on_db(v_task, db_location='./', status=COMPLETED):
                   'memory': v_memory,
                   'max_memory': v_max_memory,
                   'search_order': search_order,
+                  'plugin': plugin,
                   },
-                 (entry.id == id) & (entry.labeling == labeling) & (entry.search_order == search_order)
+                 (entry.id == id)
+                 & (entry.labeling == labeling)
+                 & (entry.search_order == search_order)
+                 & plugin_condition
                  )
 
 

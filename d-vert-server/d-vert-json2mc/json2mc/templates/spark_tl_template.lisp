@@ -74,8 +74,10 @@
 ;tasks average duration
 ; (defconstant ALPHA_S0 1672)
 {% for k,v in stages.iteritems() -%}
-(defconstant ALPHA_S{{ k }} {{ v.t_task_verification * (1 + tolerance) }})
+(defconstant ALPHA_S{{ k }} {{ (v.t_task_verification * (1 + tolerance)) | int }})
+(defconstant EPSILON_S{{ k }} {{ (v.t_task_verification * (1 + tolerance) * tolerance) | int }})
 {% endfor %}
+
 
 (defvar the-proc-time-table)
 (setq the-proc-time-table (make-hash-table :test 'equalp))
@@ -83,7 +85,8 @@
 {% for k,v in stages.iteritems() -%}
 (setf (gethash 'S{{ k }} the-proc-time-table) 
 	(loop for x in (range (if (> TOT_TASKS_S{{ k }} TOT_CORES) (/ TOT_TASKS_S{{ k }} TOT_CORES) 1) :min 1) collect
-		(list (- (* ALPHA_S{{ k }} x) (* (* ALPHA_S{{ k }} x) TOLERANCE)) (+ (* ALPHA_S{{ k }} x) (* (* ALPHA_S{{ k }} x) TOLERANCE)))))
+		;(list (- (* ALPHA_S{{ k }} x) (* (* ALPHA_S{{ k }} x) TOLERANCE)) (+ (* ALPHA_S{{ k }} x) (* (* ALPHA_S{{ k }} x) TOLERANCE)))))
+		(list (- (* ALPHA_S{{ k }} x) (* EPSILON_S{{ k }} x) ) (+ (* ALPHA_S{{ k }} x) (* EPSILON_S{{ k }} x) ))))
 {% endfor %}
 
 (defvar the-alphas-table)
@@ -441,7 +444,8 @@
 										{%- if not verification_params.parametric_tc %}
 										;	(loop for tc from TOT_CORES  downto (min (ceiling (/ TOT_CORES 2)) 12) by 12 append
 										;	(loop for tc in (list TOT_CORES) append ;(if (> TOT_CORES 32) 32  16)) append
-											(loop for tc in (list TOT_CORES (- TOT_CORES (mod (gethash j tot-tasks) TOT_CORES))) append
+										    (loop for tc in (list TOT_CORES (mod (gethash j tot-tasks) TOT_CORES) (- TOT_CORES (mod (gethash j tot-tasks) TOT_CORES))) append
+										;   (loop for tc in (range TOT_CORES) append
 										{% endif %}
 												(loop for k from n_rounds downto 2
 														by (if (> n_rounds 5) (floor (/ n_rounds 5)) 1)

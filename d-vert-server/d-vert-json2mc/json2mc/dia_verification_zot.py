@@ -88,7 +88,7 @@ class ZotTrace(VerificationTrace):
                 records["LOOP"] = step
             else:
                 key_value = line.split(" = ")  # split line into key and value
-                key = key_value[0]   # key is first item in list
+                key = key_value[0].upper()   # key is first item in list
                 if len(key_value) > 1:  # counter variable
                     value = key_value[1]   # value is 2nd item
                 else:  # boolean variable (only key in trace)
